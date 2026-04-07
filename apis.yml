@@ -9,8 +9,7 @@ type: Index
 position: Consumer
 access: 3rd-Party
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
-tags:
-  - API
+tags: []
 created: '2025-03-01'
 modified: '2025-03-01'
 url: >-
@@ -25,8 +24,7 @@ apis:
       dont have to juggle apps while juggling your project. Everythings in one place,
       accessible anywhere, with endless ability to connect.
     humanURL: ' https://www.procore.com/platform/procore-api'
-    tags:
-      - API
+    tags: []
     properties:
       - type: Documentation
         url: ' https://www.procore.com/platform/procore-api'
