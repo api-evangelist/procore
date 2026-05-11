@@ -74,6 +74,34 @@ commonProperties:
     url: https://www.procore.com/legal/terms-of-service
   - type: PrivacyPolicy
     url: https://www.procore.com/legal/privacy
+common:
+  - type: Integrations
+    url: https://www.procore.com/partners
+integrations:
+  - name: Orange hexagon
+  - name: Company logo for Sage
+  - name: Company logo for AWS
+  - name: Company logo for Wipfli
+  - name: Company logo for Box
+  - name: Company logo for Samsara
+  - name: Company logo for Docusign
+  - name: Construction worker on a ladder
+  - name: 'Construction workers protected with Procore''s equipment'
+  - name: Low angle view of a building
+  - name: Software Advice
+  - name: G2
+  - name: Apple
+  - name: Google Play
+  - name: Procore
+  - name: LinkedIn
+  - name: Facebook
+  - name: X, formerly Twitter,
+  - name: Instagram
+  - name: Youtube
+  - name: Phone handset
+  - name: Email
+  - name: Life ring support
+  - name: User
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
