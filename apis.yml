@@ -51,7 +51,7 @@ apis:
         url: https://developers.procore.com/signup
       - type: Marketplace
         url: https://marketplace.procore.com
-      - type: Changelog
+      - type: ChangeLog
         url: https://developers.procore.com/changelog
       - type: Support
         url: https://developers.procore.com/developer_support
