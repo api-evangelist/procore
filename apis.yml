@@ -75,6 +75,10 @@ commonProperties:
   - type: PrivacyPolicy
     url: https://www.procore.com/legal/privacy
 common:
+  - type: GitHubOrganization
+    url: https://github.com/procore
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/procore-technologies
   - type: Integrations
     url: https://www.procore.com/partners
 integrations:
