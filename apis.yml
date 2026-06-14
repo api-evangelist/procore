@@ -1,111 +1,109 @@
 aid: procore
 name: Procore
-description: >-
-  Procore is a leading construction management platform that connects people,
-  applications, and devices across a single source of truth. The Procore API
-  enables developers to build custom apps and integrations, extract meaningful
-  insights, integrate with other industry-leading construction solutions, and
-  use Procore as a primary system of record. The platform supports the entire
-  construction lifecycle including project management, financials, quality and
-  safety, field productivity, and resource management.
+description: Procore is a leading construction management platform that connects people,
+  applications, and devices across a single source of truth. The Procore API enables
+  developers to build custom apps and integrations, extract meaningful insights, integrate
+  with other industry-leading construction solutions, and use Procore as a primary
+  system of record. The platform supports the entire construction lifecycle including
+  project management, financials, quality and safety, field productivity, and resource
+  management.
 type: Index
 position: Consumer
 access: 3rd-Party
 image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
+- Construction
+- Project Management
+- Construction Management
+- Field Productivity
+- Financial Management
+created: '2025-03-01'
+modified: '2026-04-28'
+url: https://raw.githubusercontent.com/api-evangelist/procore/refs/heads/main/apis.yml
+specificationVersion: '0.19'
+apis:
+- aid: procore:procore-api
+  name: Procore API
+  description: The Procore API provides programmatic access to Procore's construction
+    management platform, enabling developers to build custom applications and integrations.
+    The API exposes endpoints for projects, companies, users, directory, drawings,
+    RFIs, submittals, change events, budgets, and more. Procore also operates an App
+    Marketplace for distributing integrations built on the platform.
+  humanURL: https://www.procore.com/platform/procore-api
+  baseURL: https://api.procore.com
+  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  tags:
   - Construction
   - Project Management
   - Construction Management
-  - Field Productivity
-  - Financial Management
-created: '2025-03-01'
-modified: '2026-04-28'
-url: >-
-  https://raw.githubusercontent.com/api-evangelist/procore/refs/heads/main/apis.yml
-specificationVersion: '0.19'
-apis:
-  - aid: procore:procore-api
-    name: Procore API
-    description: >-
-      The Procore API provides programmatic access to Procore's construction
-      management platform, enabling developers to build custom applications and
-      integrations. The API exposes endpoints for projects, companies, users,
-      directory, drawings, RFIs, submittals, change events, budgets, and more.
-      Procore also operates an App Marketplace for distributing integrations
-      built on the platform.
-    humanURL: https://www.procore.com/platform/procore-api
-    baseURL: https://api.procore.com
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
-    tags:
-      - Construction
-      - Project Management
-      - Construction Management
-    properties:
-      - type: Documentation
-        url: https://developers.procore.com/documentation/introduction
-      - type: APIReference
-        url: https://developers.procore.com/reference
-      - type: Portal
-        url: https://developers.procore.com
-      - type: SignUp
-        url: https://developers.procore.com/signup
-      - type: Marketplace
-        url: https://marketplace.procore.com
-      - type: ChangeLog
-        url: https://developers.procore.com/changelog
-      - type: Support
-        url: https://developers.procore.com/developer_support
-      - type: StatusPage
-        url: http://status.procore.com
-      - type: TermsOfService
-        url: https://www.procore.com/legal/terms-of-service
-      - type: PrivacyPolicy
-        url: https://www.procore.com/legal/privacy
-commonProperties:
-  - type: Website
-    url: https://www.procore.com
+  properties:
+  - type: Documentation
+    url: https://developers.procore.com/documentation/introduction
+  - type: APIReference
+    url: https://developers.procore.com/reference
   - type: Portal
     url: https://developers.procore.com
+  - type: SignUp
+    url: https://developers.procore.com/signup
   - type: Marketplace
     url: https://marketplace.procore.com
+  - type: ChangeLog
+    url: https://developers.procore.com/changelog
+  - type: Support
+    url: https://developers.procore.com/developer_support
   - type: StatusPage
     url: http://status.procore.com
   - type: TermsOfService
     url: https://www.procore.com/legal/terms-of-service
   - type: PrivacyPolicy
     url: https://www.procore.com/legal/privacy
+  - url: graphql/procore-graphql.md
+    type: GraphQL
+commonProperties:
+- type: Website
+  url: https://www.procore.com
+- type: Portal
+  url: https://developers.procore.com
+- type: Marketplace
+  url: https://marketplace.procore.com
+- type: StatusPage
+  url: http://status.procore.com
+- type: TermsOfService
+  url: https://www.procore.com/legal/terms-of-service
+- type: PrivacyPolicy
+  url: https://www.procore.com/legal/privacy
 common:
-  - type: GitHubOrganization
-    url: https://github.com/procore
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/procore-technologies
-  - type: Integrations
-    url: https://www.procore.com/partners
+- type: GitHubOrganization
+  url: https://github.com/procore
+- type: LinkedIn
+  url: https://www.linkedin.com/company/procore-technologies
+- type: Integrations
+  url: https://www.procore.com/partners
 integrations:
-  - name: Orange hexagon
-  - name: Company logo for Sage
-  - name: Company logo for AWS
-  - name: Company logo for Wipfli
-  - name: Company logo for Box
-  - name: Company logo for Samsara
-  - name: Company logo for Docusign
-  - name: Construction worker on a ladder
-  - name: 'Construction workers protected with Procore''s equipment'
-  - name: Low angle view of a building
-  - name: Software Advice
-  - name: G2
-  - name: Apple
-  - name: Google Play
-  - name: Procore
-  - name: LinkedIn
-  - name: Facebook
-  - name: X, formerly Twitter,
-  - name: Instagram
-  - name: Youtube
-  - name: Phone handset
-  - name: Email
-  - name: Life ring support
-  - name: User
+- name: Orange hexagon
+- name: Company logo for Sage
+- name: Company logo for AWS
+- name: Company logo for Wipfli
+- name: Company logo for Box
+- name: Company logo for Samsara
+- name: Company logo for Docusign
+- name: Construction worker on a ladder
+- name: Construction workers protected with Procore's equipment
+- name: Low angle view of a building
+- name: Software Advice
+- name: G2
+- name: Apple
+- name: Google Play
+- name: Procore
+- name: LinkedIn
+- name: Facebook
+- name: X, formerly Twitter,
+- name: Instagram
+- name: Youtube
+- name: Phone handset
+- name: Email
+- name: Life ring support
+- name: User
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com

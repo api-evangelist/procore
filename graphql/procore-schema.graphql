@@ -1,0 +1,1105 @@
+"""
+Procore Construction Management Platform - Conceptual GraphQL Schema
+Source: https://developers.procore.com/reference/rest/v1/
+GitHub: https://github.com/procore-oss
+"""
+
+scalar DateTime
+scalar JSON
+
+# ─────────────────────────────────────────────
+# Company and User Management
+# ─────────────────────────────────────────────
+
+type Company {
+  id: ID!
+  name: String!
+  isActive: Boolean!
+  logo: String
+  address: String
+  city: String
+  stateCode: String
+  zip: String
+  country: String
+  phone: String
+  website: String
+  details: CompanyDetails
+  users: [CompanyUser!]
+  projects: [Project!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CompanyDetails {
+  id: ID!
+  companyId: ID!
+  numberOfEmployees: String
+  licenseNumber: String
+  taxId: String
+  businessType: String
+  timezone: String
+  defaultCurrencyCode: String
+  logoUrl: String
+  primaryContact: User
+}
+
+type CompanyUser {
+  id: ID!
+  company: Company!
+  user: User!
+  role: CompanyRole!
+  isActive: Boolean!
+  jobTitle: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CompanyRole {
+  id: ID!
+  name: String!
+  description: String
+  isAdmin: Boolean!
+  permissions: [String!]
+}
+
+type User {
+  id: ID!
+  login: String!
+  name: String!
+  firstName: String
+  lastName: String
+  email: String!
+  isActive: Boolean!
+  details: UserDetails
+  roles: [UserRole!]
+  permissions: UserPermissions
+  avatarUrl: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserDetails {
+  id: ID!
+  userId: ID!
+  phone: String
+  mobilePhone: String
+  fax: String
+  jobTitle: String
+  address: String
+  city: String
+  stateCode: String
+  zip: String
+  country: String
+  initials: String
+  businessPhone: String
+  notes: String
+}
+
+type UserRole {
+  id: ID!
+  name: String!
+  project: Project
+  company: Company
+  assignedAt: DateTime!
+}
+
+type UserPermissions {
+  userId: ID!
+  projectId: ID
+  companyId: ID
+  canCreate: Boolean!
+  canRead: Boolean!
+  canUpdate: Boolean!
+  canDelete: Boolean!
+  canAdmin: Boolean!
+  modules: [String!]
+}
+
+# ─────────────────────────────────────────────
+# Project Management
+# ─────────────────────────────────────────────
+
+type Project {
+  id: ID!
+  name: String!
+  displayName: String
+  projectNumber: String
+  description: String
+  active: Boolean!
+  company: Company!
+  details: ProjectDetails
+  stage: ProjectStage
+  status: ProjectStatus!
+  startDate: String
+  completionDate: String
+  totalValue: Float
+  address: String
+  city: String
+  stateCode: String
+  zip: String
+  country: String
+  latitude: Float
+  longitude: Float
+  timeZone: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ProjectDetails {
+  id: ID!
+  projectId: ID!
+  projectOwner: String
+  architect: String
+  contractType: String
+  originatedFrom: String
+  designStartDate: String
+  estimatedValue: Float
+  publicProject: Boolean
+  laborRequirement: String
+  projectRegion: String
+  projectBidType: String
+  projectOwnerType: String
+  customFields: JSON
+}
+
+type ProjectStage {
+  id: ID!
+  name: String!
+  description: String
+  sortOrder: Int
+}
+
+enum ProjectStatus {
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
+
+# ─────────────────────────────────────────────
+# Submittals
+# ─────────────────────────────────────────────
+
+type Submittal {
+  id: ID!
+  project: Project!
+  number: String!
+  title: String!
+  status: String!
+  specSection: SpecSection
+  dueDate: String
+  submittedAt: DateTime
+  receivedAt: DateTime
+  responsibleContractor: SubContractor
+  submittedBy: User
+  reviewedBy: User
+  items: [SubmittalItem!]
+  revisions: [SubmittalRevision!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type SubmittalItem {
+  id: ID!
+  submittal: Submittal!
+  description: String!
+  quantity: Int
+  unitOfMeasure: String
+  manufacturer: String
+  model: String
+  status: String!
+  notes: String
+}
+
+type SubmittalRevision {
+  id: ID!
+  submittal: Submittal!
+  revisionNumber: Int!
+  status: String!
+  submittedAt: DateTime
+  returnedAt: DateTime
+  submittedBy: User
+  reviewedBy: User
+  notes: String
+  attachments: [Document!]
+}
+
+# ─────────────────────────────────────────────
+# RFIs
+# ─────────────────────────────────────────────
+
+type RFI {
+  id: ID!
+  project: Project!
+  number: String!
+  subject: String!
+  question: String!
+  status: String!
+  priority: String
+  dueDate: String
+  assignedTo: User
+  initiatedBy: User
+  specSection: SpecSection
+  drawing: Drawing
+  responses: [RFIResponse!]
+  attachments: [Document!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type RFIResponse {
+  id: ID!
+  rfi: RFI!
+  body: String!
+  officialResponse: Boolean!
+  respondedBy: User!
+  respondedAt: DateTime!
+  attachments: [Document!]
+}
+
+# ─────────────────────────────────────────────
+# Correspondence
+# ─────────────────────────────────────────────
+
+type Correspondence {
+  id: ID!
+  project: Project!
+  number: String!
+  subject: String!
+  body: String
+  status: String!
+  correspondenceType: CorrespondenceType!
+  fromCompany: Company
+  toCompany: Company
+  sentAt: DateTime
+  receivedAt: DateTime
+  dueDate: String
+  attachments: [Document!]
+  createdBy: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CorrespondenceType {
+  id: ID!
+  name: String!
+  description: String
+  prefix: String
+  defaultDueDays: Int
+}
+
+# ─────────────────────────────────────────────
+# Daily Logs
+# ─────────────────────────────────────────────
+
+type DailyLog {
+  id: ID!
+  project: Project!
+  logDate: String!
+  status: String!
+  notes: String
+  workLogs: [WorkLog!]
+  weatherLogs: [WeatherLog!]
+  createdBy: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type WorkLog {
+  id: ID!
+  dailyLog: DailyLog!
+  subContractor: SubContractor
+  trade: String
+  numberOfWorkers: Int
+  hoursWorked: Float
+  description: String
+  costCode: CostCode
+}
+
+type WeatherLog {
+  id: ID!
+  dailyLog: DailyLog!
+  timeObserved: String
+  temperature: Float
+  humidity: Float
+  windSpeed: Float
+  windDirection: String
+  skyCondition: String
+  precipitation: String
+  notes: String
+}
+
+# ─────────────────────────────────────────────
+# Inspections
+# ─────────────────────────────────────────────
+
+type Inspection {
+  id: ID!
+  project: Project!
+  name: String!
+  status: String!
+  template: InspectionTemplate
+  details: InspectionDetail
+  items: [InspectionItem!]
+  checklists: [Checklist!]
+  inspectedBy: User
+  scheduledAt: DateTime
+  completedAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type InspectionDetail {
+  id: ID!
+  inspection: Inspection!
+  location: String
+  description: String
+  trade: String
+  specSection: SpecSection
+  drawing: Drawing
+  notes: String
+}
+
+type InspectionTemplate {
+  id: ID!
+  project: Project!
+  name: String!
+  description: String
+  trade: String
+  items: [InspectionItem!]
+  isDefault: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type InspectionItem {
+  id: ID!
+  inspection: Inspection
+  template: InspectionTemplate
+  description: String!
+  response: String
+  notes: String
+  sortOrder: Int
+  attachments: [Document!]
+}
+
+type Checklist {
+  id: ID!
+  project: Project!
+  name: String!
+  status: String!
+  items: [InspectionItem!]
+  assignedTo: User
+  dueDate: String
+  completedAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Observations
+# ─────────────────────────────────────────────
+
+type Observation {
+  id: ID!
+  project: Project!
+  number: String!
+  name: String!
+  type: String!
+  status: String!
+  priority: String
+  trade: String
+  location: String
+  assignedTo: User
+  createdBy: User!
+  dueDate: String
+  closedAt: DateTime
+  items: [ObservationItem!]
+  attachments: [Document!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ObservationItem {
+  id: ID!
+  observation: Observation!
+  description: String!
+  status: String!
+  assignedTo: User
+  dueDate: String
+  closedAt: DateTime
+  notes: String
+  attachments: [Document!]
+}
+
+# ─────────────────────────────────────────────
+# Incidents
+# ─────────────────────────────────────────────
+
+type Incident {
+  id: ID!
+  project: Project!
+  number: String!
+  title: String!
+  description: String
+  incidentType: IncidentType!
+  status: String!
+  occurredAt: DateTime!
+  location: String
+  reportedBy: User!
+  involvedParties: [User!]
+  witnesses: [String!]
+  correctiveActions: String
+  attachments: [Document!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type IncidentType {
+  id: ID!
+  name: String!
+  description: String
+  requiresOshaRecording: Boolean!
+}
+
+# ─────────────────────────────────────────────
+# Drawings
+# ─────────────────────────────────────────────
+
+type Drawing {
+  id: ID!
+  project: Project!
+  number: String!
+  title: String!
+  discipline: String
+  drawingSet: DrawingSet
+  currentRevision: DrawingRevision
+  revisions: [DrawingRevision!]
+  url: String
+  thumbnailUrl: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type DrawingSet {
+  id: ID!
+  project: Project!
+  name: String!
+  description: String
+  date: String
+  status: String!
+  drawings: [Drawing!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type DrawingRevision {
+  id: ID!
+  drawing: Drawing!
+  revisionNumber: String!
+  revisionDate: String
+  uploadedBy: User
+  url: String
+  status: String!
+  notes: String
+  createdAt: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Specifications
+# ─────────────────────────────────────────────
+
+type Specification {
+  id: ID!
+  project: Project!
+  title: String!
+  description: String
+  sections: [SpecSection!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type SpecSection {
+  id: ID!
+  specification: Specification!
+  number: String!
+  title: String!
+  description: String
+  revisions: [SpecRevision!]
+  currentRevision: SpecRevision
+}
+
+type SpecRevision {
+  id: ID!
+  specSection: SpecSection!
+  revisionNumber: String!
+  issuedDate: String
+  uploadedBy: User
+  url: String
+  notes: String
+  createdAt: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Meetings
+# ─────────────────────────────────────────────
+
+type Meeting {
+  id: ID!
+  project: Project!
+  title: String!
+  meetingNumber: Int!
+  status: String!
+  scheduledAt: DateTime
+  location: String
+  attendees: [User!]
+  items: [MeetingItem!]
+  minutes: MeetingMinutes
+  createdBy: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type MeetingItem {
+  id: ID!
+  meeting: Meeting!
+  number: Int!
+  title: String!
+  description: String
+  status: String!
+  assignedTo: User
+  dueDate: String
+  notes: String
+  sortOrder: Int
+}
+
+type MeetingMinutes {
+  id: ID!
+  meeting: Meeting!
+  body: String
+  publishedAt: DateTime
+  publishedBy: User
+  attachments: [Document!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Documents
+# ─────────────────────────────────────────────
+
+type Document {
+  id: ID!
+  project: Project!
+  name: String!
+  description: String
+  fileType: String
+  fileSize: Int
+  folder: DocumentFolder
+  currentVersion: DocumentVersion
+  versions: [DocumentVersion!]
+  uploadedBy: User!
+  isPrivate: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type DocumentFolder {
+  id: ID!
+  project: Project!
+  name: String!
+  description: String
+  parent: DocumentFolder
+  children: [DocumentFolder!]
+  documents: [Document!]
+  isPrivate: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type DocumentVersion {
+  id: ID!
+  document: Document!
+  versionNumber: Int!
+  url: String!
+  fileSize: Int
+  uploadedBy: User!
+  notes: String
+  createdAt: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Photos
+# ─────────────────────────────────────────────
+
+type Photo {
+  id: ID!
+  project: Project!
+  fileName: String!
+  description: String
+  url: String!
+  thumbnailUrl: String
+  album: Album
+  takenAt: DateTime
+  location: String
+  latitude: Float
+  longitude: Float
+  uploadedBy: User!
+  tags: [String!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Album {
+  id: ID!
+  project: Project!
+  name: String!
+  description: String
+  coverPhoto: Photo
+  photos: [AlbumPhoto!]
+  photoCount: Int!
+  createdBy: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type AlbumPhoto {
+  id: ID!
+  album: Album!
+  photo: Photo!
+  caption: String
+  addedAt: DateTime!
+  addedBy: User!
+}
+
+# ─────────────────────────────────────────────
+# Schedule
+# ─────────────────────────────────────────────
+
+type Schedule {
+  id: ID!
+  project: Project!
+  name: String!
+  description: String
+  status: String!
+  startDate: String
+  finishDate: String
+  tasks: [ScheduleTask!]
+  milestones: [ScheduleMilestone!]
+  createdBy: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ScheduleTask {
+  id: ID!
+  schedule: Schedule!
+  wbsCode: String
+  name: String!
+  description: String
+  startDate: String
+  finishDate: String
+  duration: Int
+  percentComplete: Float
+  status: String!
+  predecessors: [ScheduleTask!]
+  assignedTo: User
+  costCode: CostCode
+  notes: String
+}
+
+type ScheduleMilestone {
+  id: ID!
+  schedule: Schedule!
+  name: String!
+  description: String
+  date: String!
+  status: String!
+  assignedTo: User
+}
+
+# ─────────────────────────────────────────────
+# Budget and Financials
+# ─────────────────────────────────────────────
+
+type Budget {
+  id: ID!
+  project: Project!
+  status: String!
+  originalBudgetAmount: Float!
+  approvedBudgetChanges: Float!
+  revisedBudgetAmount: Float!
+  pendingBudgetChanges: Float!
+  projectedCost: Float
+  actualCost: Float
+  lineItems: [BudgetLineItem!]
+  changes: [BudgetChange!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type BudgetLineItem {
+  id: ID!
+  budget: Budget!
+  costCode: CostCode!
+  description: String
+  originalAmount: Float!
+  approvedChanges: Float!
+  revisedAmount: Float!
+  forecastAmount: Float
+  actualAmount: Float
+  committedAmount: Float
+  pendingAmount: Float
+}
+
+type BudgetChange {
+  id: ID!
+  budget: Budget!
+  number: String!
+  title: String!
+  description: String
+  status: String!
+  amount: Float!
+  approvedBy: User
+  approvedAt: DateTime
+  createdBy: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CostCode {
+  id: ID!
+  company: Company!
+  code: String!
+  name: String!
+  description: String
+  isActive: Boolean!
+  parentCode: CostCode
+  subCodes: [CostCode!]
+}
+
+type DirectCost {
+  id: ID!
+  project: Project!
+  description: String!
+  amount: Float!
+  costCode: CostCode
+  vendor: Company
+  invoiceNumber: String
+  invoiceDate: String
+  paymentDate: String
+  status: String!
+  receiptUrl: String
+  createdBy: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Contracts and Procurement
+# ─────────────────────────────────────────────
+
+type SubContractor {
+  id: ID!
+  company: Company!
+  project: Project
+  name: String!
+  trade: String
+  contactName: String
+  contactEmail: String
+  contactPhone: String
+  address: String
+  isActive: Boolean!
+  contracts: [Contract!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Contract {
+  id: ID!
+  project: Project!
+  number: String!
+  title: String!
+  status: String!
+  contractType: String!
+  subContractor: SubContractor
+  executedAt: DateTime
+  startDate: String
+  completionDate: String
+  originalAmount: Float!
+  approvedChangesAmount: Float!
+  revisedAmount: Float!
+  retentionPercent: Float
+  changes: [ContractChange!]
+  invoices: [Invoice!]
+  complianceDocuments: [ComplianceDocument!]
+  createdBy: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ContractChange {
+  id: ID!
+  contract: Contract!
+  number: String!
+  title: String!
+  description: String
+  status: String!
+  amount: Float!
+  approvedBy: User
+  approvedAt: DateTime
+  effectiveDate: String
+  createdBy: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Bid {
+  id: ID!
+  bidPackage: BidPackage!
+  subContractor: SubContractor!
+  status: String!
+  submittedAt: DateTime
+  amount: Float
+  notes: String
+  attachments: [Document!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type BidPackage {
+  id: ID!
+  project: Project!
+  number: String!
+  title: String!
+  description: String
+  status: String!
+  trade: String
+  dueDate: String
+  bidOpeningDate: String
+  bids: [Bid!]
+  costCode: CostCode
+  specSections: [SpecSection!]
+  createdBy: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Invoices, Payments, and Compliance
+# ─────────────────────────────────────────────
+
+type Invoice {
+  id: ID!
+  contract: Contract!
+  project: Project!
+  number: String!
+  status: String!
+  invoiceDate: String!
+  periodStart: String
+  periodEnd: String
+  amountDue: Float!
+  amountPaid: Float!
+  retentionAmount: Float
+  submittedBy: User
+  submittedAt: DateTime
+  approvedBy: User
+  approvedAt: DateTime
+  payments: [Payment!]
+  complianceDocuments: [ComplianceDocument!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Payment {
+  id: ID!
+  invoice: Invoice!
+  amount: Float!
+  paymentDate: String!
+  checkNumber: String
+  method: String
+  notes: String
+  createdBy: User!
+  createdAt: DateTime!
+}
+
+type ComplianceDocument {
+  id: ID!
+  project: Project
+  contract: Contract
+  subContractor: SubContractor!
+  documentType: String!
+  status: String!
+  issuer: String
+  policyNumber: String
+  effectiveDate: String
+  expirationDate: String
+  coverageAmount: Float
+  documentUrl: String
+  reviewedBy: User
+  reviewedAt: DateTime
+  notes: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Platform Administration
+# ─────────────────────────────────────────────
+
+type APIKey {
+  id: ID!
+  company: Company!
+  user: User!
+  name: String!
+  keyPrefix: String!
+  scopes: [String!]!
+  lastUsedAt: DateTime
+  expiresAt: DateTime
+  isActive: Boolean!
+  createdAt: DateTime!
+}
+
+type OAuthToken {
+  id: ID!
+  user: User!
+  application: String!
+  scopes: [String!]!
+  expiresAt: DateTime
+  refreshToken: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Webhook {
+  id: ID!
+  company: Company!
+  project: Project
+  url: String!
+  events: [String!]!
+  isActive: Boolean!
+  secret: String
+  createdBy: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Root Types
+# ─────────────────────────────────────────────
+
+type Query {
+  company(id: ID!): Company
+  companies: [Company!]!
+
+  user(id: ID!): User
+  users(companyId: ID!): [User!]!
+
+  project(id: ID!): Project
+  projects(companyId: ID!, active: Boolean): [Project!]!
+
+  submittal(id: ID!, projectId: ID!): Submittal
+  submittals(projectId: ID!): [Submittal!]!
+
+  rfi(id: ID!, projectId: ID!): RFI
+  rfis(projectId: ID!): [RFI!]!
+
+  correspondence(id: ID!, projectId: ID!): Correspondence
+  correspondences(projectId: ID!): [Correspondence!]!
+
+  dailyLog(id: ID!, projectId: ID!): DailyLog
+  dailyLogs(projectId: ID!, startDate: String, endDate: String): [DailyLog!]!
+
+  inspection(id: ID!, projectId: ID!): Inspection
+  inspections(projectId: ID!): [Inspection!]!
+
+  checklist(id: ID!, projectId: ID!): Checklist
+  checklists(projectId: ID!): [Checklist!]!
+
+  observation(id: ID!, projectId: ID!): Observation
+  observations(projectId: ID!): [Observation!]!
+
+  incident(id: ID!, projectId: ID!): Incident
+  incidents(projectId: ID!): [Incident!]!
+
+  drawing(id: ID!, projectId: ID!): Drawing
+  drawings(projectId: ID!, drawingSetId: ID): [Drawing!]!
+  drawingSet(id: ID!, projectId: ID!): DrawingSet
+  drawingSets(projectId: ID!): [DrawingSet!]!
+
+  specification(id: ID!, projectId: ID!): Specification
+  specifications(projectId: ID!): [Specification!]!
+
+  meeting(id: ID!, projectId: ID!): Meeting
+  meetings(projectId: ID!): [Meeting!]!
+
+  document(id: ID!, projectId: ID!): Document
+  documents(projectId: ID!, folderId: ID): [Document!]!
+  documentFolder(id: ID!, projectId: ID!): DocumentFolder
+  documentFolders(projectId: ID!): [DocumentFolder!]!
+
+  photo(id: ID!, projectId: ID!): Photo
+  photos(projectId: ID!, albumId: ID): [Photo!]!
+  album(id: ID!, projectId: ID!): Album
+  albums(projectId: ID!): [Album!]!
+
+  schedule(id: ID!, projectId: ID!): Schedule
+  schedules(projectId: ID!): [Schedule!]!
+
+  budget(projectId: ID!): Budget
+  costCodes(companyId: ID!): [CostCode!]!
+  directCosts(projectId: ID!): [DirectCost!]!
+
+  subContractor(id: ID!, companyId: ID!): SubContractor
+  subContractors(companyId: ID!, projectId: ID): [SubContractor!]!
+
+  contract(id: ID!, projectId: ID!): Contract
+  contracts(projectId: ID!): [Contract!]!
+
+  bidPackage(id: ID!, projectId: ID!): BidPackage
+  bidPackages(projectId: ID!): [BidPackage!]!
+
+  invoice(id: ID!, contractId: ID!): Invoice
+  invoices(contractId: ID!): [Invoice!]!
+
+  complianceDocuments(projectId: ID, contractId: ID): [ComplianceDocument!]!
+
+  webhooks(companyId: ID!): [Webhook!]!
+}
+
+type Mutation {
+  createProject(companyId: ID!, name: String!, projectNumber: String): Project!
+  updateProject(id: ID!, name: String, active: Boolean): Project!
+
+  createSubmittal(projectId: ID!, number: String!, title: String!): Submittal!
+  updateSubmittal(id: ID!, projectId: ID!, status: String): Submittal!
+
+  createRFI(projectId: ID!, subject: String!, question: String!): RFI!
+  updateRFI(id: ID!, projectId: ID!, status: String): RFI!
+  addRFIResponse(rfiId: ID!, body: String!): RFIResponse!
+
+  createDailyLog(projectId: ID!, logDate: String!): DailyLog!
+
+  createInspection(projectId: ID!, name: String!, templateId: ID): Inspection!
+  updateInspection(id: ID!, projectId: ID!, status: String): Inspection!
+
+  createObservation(projectId: ID!, name: String!, type: String!): Observation!
+  updateObservation(id: ID!, projectId: ID!, status: String): Observation!
+
+  createIncident(projectId: ID!, title: String!, incidentTypeId: ID!, occurredAt: DateTime!): Incident!
+
+  createMeeting(projectId: ID!, title: String!): Meeting!
+  addMeetingItem(meetingId: ID!, title: String!): MeetingItem!
+
+  createBudgetChange(projectId: ID!, title: String!, amount: Float!): BudgetChange!
+
+  createContractChange(contractId: ID!, title: String!, amount: Float!): ContractChange!
+
+  createInvoice(contractId: ID!, invoiceDate: String!, amountDue: Float!): Invoice!
+  approveInvoice(id: ID!, contractId: ID!): Invoice!
+
+  createWebhook(companyId: ID!, url: String!, events: [String!]!): Webhook!
+  deleteWebhook(id: ID!, companyId: ID!): Boolean!
+
+  uploadDocument(projectId: ID!, name: String!, folderId: ID): Document!
+  uploadPhoto(projectId: ID!, albumId: ID): Photo!
+}
