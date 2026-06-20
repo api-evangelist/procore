@@ -10,7 +10,7 @@ description: Procore is a leading construction management platform that connects
 type: Index
 position: Consumer
 access: 3rd-Party
-image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
 - Construction
 - Project Management
@@ -31,7 +31,7 @@ apis:
     Marketplace for distributing integrations built on the platform.
   humanURL: https://www.procore.com/platform/procore-api
   baseURL: https://api.procore.com
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   tags:
   - Construction
   - Project Management
