@@ -43,7 +43,7 @@ apis:
     url: https://developers.procore.com/reference
   - type: Portal
     url: https://developers.procore.com
-  - type: SignUp
+  - type: Signup
     url: https://developers.procore.com/signup
   - type: Marketplace
     url: https://marketplace.procore.com
