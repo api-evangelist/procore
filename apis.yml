@@ -73,12 +73,18 @@ commonProperties:
 - type: PrivacyPolicy
   url: https://www.procore.com/legal/privacy
 common:
+- type: TrustCenter
+  url: security/procore-trust-center.yml
+- type: DomainSecurity
+  url: security/procore-domain-security.yml
 - type: GitHubOrganization
   url: https://github.com/procore
 - type: LinkedIn
   url: https://www.linkedin.com/company/procore-technologies
 - type: Integrations
   url: https://www.procore.com/partners
+- url: https://procore.com/blog
+  type: Blog
 integrations:
 - name: Orange hexagon
 - name: Company logo for Sage
