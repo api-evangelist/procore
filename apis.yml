@@ -96,6 +96,8 @@ commonProperties:
 - type: PrivacyPolicy
   url: https://www.procore.com/legal/privacy
 common:
+- type: Website
+  url: https://www.procore.com/
 - type: TrustCenter
   url: security/procore-trust-center.yml
 - type: DomainSecurity
