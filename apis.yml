@@ -80,8 +80,6 @@ apis:
     url: https://www.procore.com/legal/terms-of-service
   - type: PrivacyPolicy
     url: https://www.procore.com/legal/privacy
-  - url: graphql/procore-graphql.md
-    type: GraphQL
 commonProperties:
 - type: Website
   url: https://www.procore.com
