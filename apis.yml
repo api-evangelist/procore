@@ -95,6 +95,12 @@ commonProperties:
 - type: PrivacyPolicy
   url: https://www.procore.com/legal/privacy
 common:
+- type: Plans
+  url: plans/procore-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/procore-rate-limits.yml
+- type: FinOps
+  url: finops/procore-finops.yml
 - type: Website
   url: https://www.procore.com/
 - type: TrustCenter
