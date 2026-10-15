@@ -4681,7 +4681,7 @@
     app_slug: procore
     beta: false
     builder: unknown (not in the directory record)
-  status: pending-partner-spec
+  status: not-a-workflow
   arazzo: null
 - slug: procore-pipedream
   label: Pipedream
@@ -4707,5 +4707,5 @@
     actions: true
     sources: true
     builder: Pipedream repo (component)
-  status: pending-partner-spec
+  status: not-a-workflow
   arazzo: null
