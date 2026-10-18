@@ -4733,7 +4733,7 @@
     - connectors/applications/procore
     vendor_link: https://www.procore.com/
     builder: Fivetran
-  status: pending-partner-spec
+  status: not-a-workflow
   arazzo: null
 - slug: procore-meltano
   label: Meltano
@@ -4762,7 +4762,7 @@
     quality:
     - gold
     builder: 'community (Meltano Hub variant maintainers: hotgluexyz)'
-  status: pending-partner-spec
+  status: not-a-workflow
   arazzo: null
 - slug: procore-zoom-own
   label: Zoom (own)
