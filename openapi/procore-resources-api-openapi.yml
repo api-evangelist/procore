@@ -1,0 +1,1907 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Resources API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Resources
+paths:
+  /rest/v1.0/resources:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: List Resources
+      description: Return a list of all resources in a specified Project
+      tags:
+      - Resources
+      parameters:
+      - name: project_id
+        in: query
+        required: true
+        description: Unique identifier for the project.
+        schema:
+          type: integer
+      - name: page
+        in: query
+        description: Page
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: Elements per page
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            Per-Page:
+              description: Number of items retrieved per page
+              schema:
+                type: integer
+            Total:
+              description: Total number of items to be retrieved
+              schema:
+                type: integer
+            Link:
+              description: Link headers for the first, prev, next, and last link
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  title: Resource
+                  properties:
+                    id:
+                      type: integer
+                      description: Unique identifier for this resource.
+                      example: 1359235
+                    name:
+                      type: string
+                      description: Resource name
+                      example: INTERIOR
+                    source_uid:
+                      type: string
+                      description: The unique identifier for this resource from the external system which owns the schedule data.
+                      example: 0687b2f6-dc92-40c7-a8c8-a3c1f3ac9305
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/resources',\n  qs: {\n    project_id: 'SOME_INTEGER_VALUE',\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.0/resources?project_id=SOME_INTEGER_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.0/resources?project_id=SOME_INTEGER_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/resources?project_id=SOME_INTEGER_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: listResources
+    post:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Create resource
+      description: Create a new Resource associated with the specified Project.
+      tags:
+      - Resources
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Body
+              type: object
+              required:
+              - project_id
+              - resource
+              properties:
+                project_id:
+                  type: integer
+                  description: The ID of the Project the Resource belongs to
+                resource:
+                  title: Resource
+                  type: object
+                  description: Resource object
+                  properties:
+                    name:
+                      type: string
+                      description: The Name of the Resource
+                    source_uid:
+                      type: string
+                      description: The unique identifier for this resource from the external system which owns the schedule data.
+              example:
+                project_id: 1
+                resource:
+                  name: resource
+                  source_uid: abc123
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Resource
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier for this resource.
+                    example: 1359235
+                  name:
+                    type: string
+                    description: Resource name
+                    example: INTERIOR
+                  source_uid:
+                    type: string
+                    description: The unique identifier for this resource from the external system which owns the schedule data.
+                    example: 0687b2f6-dc92-40c7-a8c8-a3c1f3ac9305
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v1.0/resources',\n  headers: {'content-type': 'application/json'},\n  body: {project_id: 1, resource: {name: 'resource', source_uid: 'abc123'}},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"project_id\":1,\"resource\":{\"name\":\"resource\",\"source_uid\":\"abc123\"}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v1.0/resources", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url https://api.procore.com/rest/v1.0/resources \\\n  --header 'content-type: application/json' \\\n  --data '{\"project_id\":1,\"resource\":{\"name\":\"resource\",\"source_uid\":\"abc123\"}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/resources\"),\n    Content = new StringContent(\"{\\\"project_id\\\":1,\\\"resource\\\":{\\\"name\\\":\\\"resource\\\",\\\"source_uid\\\":\\\"abc123\\\"}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: createResource
+  /rest/v1.0/resources/{id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      description: ID of the resource
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Show resource
+      description: Show detail on the specified Resource.
+      tags:
+      - Resources
+      parameters:
+      - name: project_id
+        in: query
+        required: true
+        description: Unique identifier for the project.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Resource
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier for this resource.
+                    example: 1359235
+                  name:
+                    type: string
+                    description: Resource name
+                    example: INTERIOR
+                  source_uid:
+                    type: string
+                    description: The unique identifier for this resource from the external system which owns the schedule data.
+                    example: 0687b2f6-dc92-40c7-a8c8-a3c1f3ac9305
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/resources/%7Bid%7D',\n  qs: {project_id: 'SOME_INTEGER_VALUE'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.0/resources/%7Bid%7D?project_id=SOME_INTEGER_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.0/resources/%7Bid%7D?project_id=SOME_INTEGER_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/resources/%7Bid%7D?project_id=SOME_INTEGER_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: showResource
+    patch:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Update resource
+      description: Update the specified Resource.
+      tags:
+      - Resources
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Body
+              type: object
+              required:
+              - project_id
+              - resource
+              properties:
+                project_id:
+                  type: integer
+                  description: The ID of the Project the Resource belongs to
+                resource:
+                  title: Resource
+                  type: object
+                  description: Resource object
+                  properties:
+                    name:
+                      type: string
+                      description: The Name of the Resource
+                    source_uid:
+                      type: string
+                      description: The unique identifier for this resource from the external system which owns the schedule data.
+              example:
+                project_id: 1
+                resource:
+                  name: resource
+                  source_uid: abc123
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Resource
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier for this resource.
+                    example: 1359235
+                  name:
+                    type: string
+                    description: Resource name
+                    example: INTERIOR
+                  source_uid:
+                    type: string
+                    description: The unique identifier for this resource from the external system which owns the schedule data.
+                    example: 0687b2f6-dc92-40c7-a8c8-a3c1f3ac9305
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.0/resources/%7Bid%7D',\n  headers: {'content-type': 'application/json'},\n  body: {project_id: 1, resource: {name: 'resource', source_uid: 'abc123'}},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"project_id\":1,\"resource\":{\"name\":\"resource\",\"source_uid\":\"abc123\"}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("PATCH", "/rest/v1.0/resources/%7Bid%7D", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url https://api.procore.com/rest/v1.0/resources/%7Bid%7D \\\n  --header 'content-type: application/json' \\\n  --data '{\"project_id\":1,\"resource\":{\"name\":\"resource\",\"source_uid\":\"abc123\"}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/resources/%7Bid%7D\"),\n    Content = new StringContent(\"{\\\"project_id\\\":1,\\\"resource\\\":{\\\"name\\\":\\\"resource\\\",\\\"source_uid\\\":\\\"abc123\\\"}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: updateResource
+    delete:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Delete resource
+      description: Delete the specified Resource. Note that when a resource is deleted, any assignments to tasks will also be removed.
+      tags:
+      - Resources
+      parameters:
+      - name: project_id
+        in: query
+        required: true
+        description: Unique identifier for the project.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'DELETE',\n  url: 'https://api.procore.com/rest/v1.0/resources/%7Bid%7D',\n  qs: {project_id: 'SOME_INTEGER_VALUE'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("DELETE", "/rest/v1.0/resources/%7Bid%7D?project_id=SOME_INTEGER_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request DELETE \\\n  --url 'https://api.procore.com/rest/v1.0/resources/%7Bid%7D?project_id=SOME_INTEGER_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Delete,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/resources/%7Bid%7D?project_id=SOME_INTEGER_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: deleteResource
+  /rest/v1.1/projects/{project_id}/schedule/resources:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: List Resources
+      description: Return a list of all resources in a specified Project
+      tags:
+      - Resources
+      parameters:
+      - name: page
+        in: query
+        description: Page
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: Elements per page
+        schema:
+          type: integer
+      - name: filters[query]
+        in: query
+        description: Return item(s) containing search query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          headers:
+            Per-Page:
+              description: Number of items retrieved per page
+              schema:
+                type: integer
+            Total:
+              description: Total number of items to be retrieved
+              schema:
+                type: integer
+            Link:
+              description: Link headers for the first, prev, next, and last link
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  title: Resource
+                  properties:
+                    id:
+                      type: integer
+                      description: Unique identifier for this resource.
+                      example: 1359235
+                    company_id:
+                      type: integer
+                      description: ID of the company that owns this resource.
+                      example: 87765
+                    deleted_at:
+                      type:
+                      - string
+                      - 'null'
+                      format: date-time
+                      description: Timestamp when the resource was deleted. Null if the resource has not been deleted.
+                      example: '2018-09-20T21:39:40Z'
+                    name:
+                      type: string
+                      description: Resource name
+                      example: INTERIOR
+                    project_id:
+                      type: integer
+                      description: ID of the project this resource belongs to.
+                      example: 985384
+                    schedule_attributes:
+                      type: object
+                      description: When a schedule is imported from an external system, any attributes which are not otherwise represented in this object will appear as key-value pairs here. Note that the set of keys present in this object will depend on the application from which the schedule was obtained.
+                      additionalProperties:
+                        type: string
+                    source_uid:
+                      type: string
+                      description: The unique identifier for this resource from the external system which owns the schedule data.
+                      example: 0687b2f6-dc92-40c7-a8c8-a3c1f3ac9305
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.1/projects/%7Bproject_id%7D/schedule/resources',\n  qs: {\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE',\n    'filters[query]': 'SOME_STRING_VALUE'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.1/projects/%7Bproject_id%7D/schedule/resources?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&filters%5Bquery%5D=SOME_STRING_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.1/projects/%7Bproject_id%7D/schedule/resources?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&filters%5Bquery%5D=SOME_STRING_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.1/projects/%7Bproject_id%7D/schedule/resources?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&filters%5Bquery%5D=SOME_STRING_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added Rest v1.1 endpoint
+        description: Added Rest v1.1 endpoint with updated namespacing and path parameters
+        endpoint: GET /projects/{project_id}/schedule/resources
+        type: new
+        breaking: false
+        datestamp: '2021-06-30'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: schedule-resources?version=1.1#list-resources
+      - summary: Add schedule_attributes
+        description: Add schedule_attributes to response
+        endpoint: GET /projects/{project_id}/schedule/resources
+        type: feature
+        breaking: false
+        datestamp: '2022-03-29'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: schedule-resources?version=1.1#list-resources
+      - summary: Add filters[query] parameter
+        description: Add filters[query] parameter
+        endpoint: GET /projects/{project_id}/schedule/resources
+        type: feature
+        breaking: false
+        datestamp: '2023-10-10'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: schedule-resources?version=1.1#list-resources
+      operationId: listResources2
+    post:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Create resource
+      description: Create a new Resource associated with the specified Project.
+      tags:
+      - Resources
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Body
+              type: object
+              required:
+              - project_id
+              - resource
+              properties:
+                project_id:
+                  type: integer
+                  description: The ID of the Project the Resource belongs to
+                resource:
+                  title: Resource
+                  type: object
+                  description: Resource object
+                  properties:
+                    name:
+                      type: string
+                      description: The Name of the Resource
+                    source_uid:
+                      type: string
+                      description: The unique identifier for this resource from the external system which owns the schedule data.
+              example:
+                project_id: 1
+                resource:
+                  name: resource
+                  source_uid: abc123
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Resource
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier for this resource.
+                    example: 1359235
+                  company_id:
+                    type: integer
+                    description: ID of the company that owns this resource.
+                    example: 87765
+                  deleted_at:
+                    type:
+                    - string
+                    - 'null'
+                    format: date-time
+                    description: Timestamp when the resource was deleted. Null if the resource has not been deleted.
+                    example: '2018-09-20T21:39:40Z'
+                  name:
+                    type: string
+                    description: Resource name
+                    example: INTERIOR
+                  project_id:
+                    type: integer
+                    description: ID of the project this resource belongs to.
+                    example: 985384
+                  schedule_attributes:
+                    type: object
+                    description: When a schedule is imported from an external system, any attributes which are not otherwise represented in this object will appear as key-value pairs here. Note that the set of keys present in this object will depend on the application from which the schedule was obtained.
+                    additionalProperties:
+                      type: string
+                  source_uid:
+                    type: string
+                    description: The unique identifier for this resource from the external system which owns the schedule data.
+                    example: 0687b2f6-dc92-40c7-a8c8-a3c1f3ac9305
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v1.1/projects/%7Bproject_id%7D/schedule/resources',\n  headers: {'content-type': 'application/json'},\n  body: {project_id: 1, resource: {name: 'resource', source_uid: 'abc123'}},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"project_id\":1,\"resource\":{\"name\":\"resource\",\"source_uid\":\"abc123\"}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v1.1/projects/%7Bproject_id%7D/schedule/resources", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url https://api.procore.com/rest/v1.1/projects/%7Bproject_id%7D/schedule/resources \\\n  --header 'content-type: application/json' \\\n  --data '{\"project_id\":1,\"resource\":{\"name\":\"resource\",\"source_uid\":\"abc123\"}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.1/projects/%7Bproject_id%7D/schedule/resources\"),\n    Content = new StringContent(\"{\\\"project_id\\\":1,\\\"resource\\\":{\\\"name\\\":\\\"resource\\\",\\\"source_uid\\\":\\\"abc123\\\"}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added Rest v1.1 endpoint
+        description: Added Rest v1.1 endpoint with updated namespacing and path parameters
+        endpoint: POST /projects/{project_id}/schedule/resources
+        type: new
+        breaking: false
+        datestamp: '2021-06-30'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: schedule-resources?version=1.1#create-resource
+      operationId: createResource2
+  /rest/v1.1/projects/{project_id}/schedule/resources/{id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: integer
+    - name: id
+      in: path
+      description: ID of the resource
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Show resource
+      description: Show detail on the specified Resource.
+      tags:
+      - Resources
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Resource
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier for this resource.
+                    example: 1359235
+                  company_id:
+                    type: integer
+                    description: ID of the company that owns this resource.
+                    example: 87765
+                  deleted_at:
+                    type:
+                    - string
+                    - 'null'
+                    format: date-time
+                    description: Timestamp when the resource was deleted. Null if the resource has not been deleted.
+                    example: '2018-09-20T21:39:40Z'
+                  name:
+                    type: string
+                    description: Resource name
+                    example: INTERIOR
+                  project_id:
+                    type: integer
+                    description: ID of the project this resource belongs to.
+                    example: 985384
+                  schedule_attributes:
+                    type: object
+                    description: When a schedule is imported from an external system, any attributes which are not otherwise represented in this object will appear as key-value pairs here. Note that the set of keys present in this object will depend on the application from which the schedule was obtained.
+                    additionalProperties:
+                      type: string
+                  source_uid:
+                    type: string
+                    description: The unique identifier for this resource from the external system which owns the schedule data.
+                    example: 0687b2f6-dc92-40c7-a8c8-a3c1f3ac9305
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.1/projects/%7Bproject_id%7D/schedule/resources/%7Bid%7D'\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.1/projects/%7Bproject_id%7D/schedule/resources/%7Bid%7D")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url https://api.procore.com/rest/v1.1/projects/%7Bproject_id%7D/schedule/resources/%7Bid%7D"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.1/projects/%7Bproject_id%7D/schedule/resources/%7Bid%7D\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added Rest v1.1 endpoint
+        description: Added Rest v1.1 endpoint with updated namespacing and path parameters
+        endpoint: GET /projects/{project_id}/schedule/resources/{id}
+        type: new
+        breaking: false
+        datestamp: '2021-06-30'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: schedule-resources?version=1.1#show-resource
+      - summary: Add schedule_attributes
+        description: Add schedule_attributes to response
+        endpoint: GET /projects/{project_id}/schedule/resources/{id}
+        type: feature
+        breaking: false
+        datestamp: '2022-03-29'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: schedule-resources?version=1.1#show-resource
+      operationId: showResource2
+    patch:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Update resource
+      description: Update the specified Resource.
+      tags:
+      - Resources
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Body
+              type: object
+              required:
+              - project_id
+              - resource
+              properties:
+                project_id:
+                  type: integer
+                  description: The ID of the Project the Resource belongs to
+                resource:
+                  title: Resource
+                  type: object
+                  description: Resource object
+                  properties:
+                    name:
+                      type: string
+                      description: The Name of the Resource
+                    source_uid:
+                      type: string
+                      description: The unique identifier for this resource from the external system which owns the schedule data.
+              example:
+                project_id: 1
+                resource:
+                  name: resource
+                  source_uid: abc123
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Resource
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier for this resource.
+                    example: 1359235
+                  company_id:
+                    type: integer
+                    description: ID of the company that owns this resource.
+                    example: 87765
+                  deleted_at:
+                    type:
+                    - string
+                    - 'null'
+                    format: date-time
+                    description: Timestamp when the resource was deleted. Null if the resource has not been deleted.
+                    example: '2018-09-20T21:39:40Z'
+                  name:
+                    type: string
+                    description: Resource name
+                    example: INTERIOR
+                  project_id:
+                    type: integer
+                    description: ID of the project this resource belongs to.
+                    example: 985384
+                  schedule_attributes:
+                    type: object
+                    description: When a schedule is imported from an external system, any attributes which are not otherwise represented in this object will appear as key-value pairs here. Note that the set of keys present in this object will depend on the application from which the schedule was obtained.
+                    additionalProperties:
+                      type: string
+                  source_uid:
+                    type: string
+                    description: The unique identifier for this resource from the external system which owns the schedule data.
+                    example: 0687b2f6-dc92-40c7-a8c8-a3c1f3ac9305
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.1/projects/%7Bproject_id%7D/schedule/resources/%7Bid%7D',\n  headers: {'content-type': 'application/json'},\n  body: {project_id: 1, resource: {name: 'resource', source_uid: 'abc123'}},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"project_id\":1,\"resource\":{\"name\":\"resource\",\"source_uid\":\"abc123\"}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("PATCH", "/rest/v1.1/projects/%7Bproject_id%7D/schedule/resources/%7Bid%7D", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url https://api.procore.com/rest/v1.1/projects/%7Bproject_id%7D/schedule/resources/%7Bid%7D \\\n  --header 'content-type: application/json' \\\n  --data '{\"project_id\":1,\"resource\":{\"name\":\"resource\",\"source_uid\":\"abc123\"}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.1/projects/%7Bproject_id%7D/schedule/resources/%7Bid%7D\"),\n    Content = new StringContent(\"{\\\"project_id\\\":1,\\\"resource\\\":{\\\"name\\\":\\\"resource\\\",\\\"source_uid\\\":\\\"abc123\\\"}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added Rest v1.1 endpoint
+        description: Added Rest v1.1 endpoint with updated namespacing and path parameters
+        endpoint: PATCH /projects/{project_id}/schedule/resources/{id}
+        type: new
+        breaking: false
+        datestamp: '2021-06-30'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: schedule-resources?version=1.1#update-resource
+      operationId: updateResource2
+    delete:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Delete resource
+      description: Delete the specified Resource. Note that when a Resource is deleted, any assignments to Tasks will also be removed.
+      tags:
+      - Resources
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'DELETE',\n  url: 'https://api.procore.com/rest/v1.1/projects/%7Bproject_id%7D/schedule/resources/%7Bid%7D'\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("DELETE", "/rest/v1.1/projects/%7Bproject_id%7D/schedule/resources/%7Bid%7D")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request DELETE \\\n  --url https://api.procore.com/rest/v1.1/projects/%7Bproject_id%7D/schedule/resources/%7Bid%7D"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Delete,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.1/projects/%7Bproject_id%7D/schedule/resources/%7Bid%7D\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added Rest v1.1 endpoint
+        description: Added Rest v1.1 endpoint with updated namespacing and path parameters
+        endpoint: DELETE /projects/{project_id}/schedule/resources/{id}
+        type: new
+        breaking: false
+        datestamp: '2021-06-30'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: schedule-resources?version=1.1#delete-resource
+      operationId: deleteResource2
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

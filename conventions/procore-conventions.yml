@@ -1,0 +1,94 @@
+name: Procore conventions
+generated: '2026-10-20'
+method: derived
+source: openapi/procore-openapi.json (merged from https://developers.procore.com/api/v1/resource_groups)
+auth:
+  style: 'OAuth 2.0 bearer access token (Authorization: Bearer)'
+  docs: https://developers.procore.com/documentation/oauth-choose-grant-type
+  company_header: Procore-Company-Id (required on 0 of 3296 operations)
+idempotency:
+  coverage: partial
+  note: No Idempotency-Key header or equivalent replay protection is declared on any of 1667 write operations in the published contract.
+  scope:
+  - bulkCreateWorkflowInstancesCompanyPublic
+  - bulkCreateWorkflowInstancesProjectPublic
+  - clonesDailyLogsFromOneDateToAnotherDate
+  - createDrawingUpload
+  - createDrawingUpload2
+  - createProjectDistributionGroup
+  - respondToAWorkflowInstanceCompany
+  - respondToAWorkflowInstanceProject
+  - updateProjectDistributionGroup
+  header: Idempotency-Token
+  mechanism: request header / body token declared in the OpenAPI
+  evidence: Idempotency-Token on 9 of 1667 mutating operations
+  verified: derived
+pagination:
+  style: page-number
+  params:
+  - page
+  - per_page
+  operations_with_params: 757
+  docs: https://developers.procore.com/documentation/pagination
+filtering:
+  style: filters[<field>] query parameters plus sort
+  examples:
+  - filters[updated_at]
+  - filters[id]
+  - filters[created_at]
+  - filters[search]
+  docs: https://developers.procore.com/documentation/filtering-on-list-actions
+sparse_fields:
+  param: view
+  operations: 277
+versioning:
+  style: URL path version
+  versions:
+  - /rest/v1.0
+  - /rest/v1.1
+  - /rest/v2.0
+  docs: https://developers.procore.com/documentation/rest-api-lifecycle
+rate_limit_signaling:
+  status: 429
+  headers:
+  - X-Rate-Limit-Limit
+  - X-Rate-Limit-Remaining
+  - X-Rate-Limit-Reset
+  see: rate-limits/procore-rate-limits.yml
+errors:
+  envelope: JSON object with error/message fields
+  docs: https://developers.procore.com/documentation/error-reference
+reversibility:
+  status: documented
+  note: Recycle-bin restore operations reverse deletes for many tools; the contract states no restore window.
+  operations:
+  - restoreRecycledActionPlan
+  - retrieveRecycledAction
+  - retrieveRecycledAction2
+  - restoreChangeEvent
+  - restoreDeletedChecklistInspection
+  - restoreDeletedChecklistInspection2
+  - restoreRecycledCompanyActionPlanTemplate
+  - restoreRecycledCompanyActionPlanTemplate2
+  - restoreARecycledCompanyChecklistTemplate
+  - restoreCoordinationIssue
+  - restoreEnvironmental
+  - restoreListOfEquipment
+  - restoreCompanyFormTemplate
+  - restoreProjectForm
+  - retrieveRecycledIncident
+  - retrieveRecycledInjury
+  - retrieveRecycledLink
+  - retrieveEquipment
+  - restoringAnEquipment
+  - retrieveRecycledNearMiss
+  - retrieveRecycledObservation
+  - restoreRecycledChecklistTemplate
+  - restoreRecycledChecklistTemplate2
+  - retrievePropertyDamage
+  - restoreATimeAndMaterialEntry
+  - retrieveRecycledWitnessStatement
+  - retrieveRecycledWitnessStatement2
+  window: null
+dry_run:
+  coverage: none

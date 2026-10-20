@@ -1,0 +1,24 @@
+generated: '2026-10-20'
+method: searched
+source: openapi/procore-openapi.json
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  sources:
+  - openapi/procore-openapi.json
+docs: https://developers.procore.com/documentation/oauth-choose-grant-type
+oauth2:
+  grants:
+  - authorization_code
+  - client_credentials
+  authorization_host: https://login.procore.com
+  docs:
+  - https://developers.procore.com/documentation/oauth-auth-grant-flow
+  - https://developers.procore.com/documentation/oauth-client-credentials
+  - https://developers.procore.com/documentation/oauth-endpoints
+  - https://developers.procore.com/documentation/developer-managed-service-accounts
+  note: Grant types from the Procore docs index titles; the contract declares only http bearer.

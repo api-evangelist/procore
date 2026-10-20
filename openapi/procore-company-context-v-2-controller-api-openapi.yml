@@ -1,0 +1,940 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Company Context V 2 Controller API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: company-context-v-2-controller
+paths:
+  /rest/v2.0/companies/{company_id}/contexts/{context_id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      tags:
+      - company-context-v-2-controller
+      summary: Get company-level context by ID
+      description: Retrieve a specific company-level context by its internal ID
+      operationId: getContext_1
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier of the company
+        required: true
+        schema:
+          type: string
+      - name: context_id
+        in: path
+        description: Unique identifier of the context
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      context_type:
+                        type: string
+                        enum:
+                        - document_revision
+                        - document_container
+                        - FileVersion
+                        - folders_attachments
+                        - specification_section_revision
+                        - drawing_revision
+                      context_type_id:
+                        type: string
+                      sub_context_type:
+                        type: string
+                        enum:
+                        - NONE
+                        - PIN
+                      sub_context_type_id:
+                        type: string
+                      company_id:
+                        type: string
+                      project_id:
+                        type: string
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+                      created_by_id:
+                        type: string
+                      deleted:
+                        type: boolean
+                      settings:
+                        type: object
+                        additionalProperties: {}
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/contexts/%7Bcontext_id%7D'\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v2.0/companies/%7Bcompany_id%7D/contexts/%7Bcontext_id%7D")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/contexts/%7Bcontext_id%7D"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/contexts/%7Bcontext_id%7D\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+    put:
+      tags:
+      - company-context-v-2-controller
+      summary: Update company-level context
+      description: Update an existing company-level context
+      operationId: updateContext_1
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier of the company
+        required: true
+        schema:
+          type: string
+      - name: context_id
+        in: path
+        description: Unique identifier of the context
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                settings:
+                  type: object
+                  additionalProperties: {}
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      context_type:
+                        type: string
+                        enum:
+                        - document_revision
+                        - document_container
+                        - FileVersion
+                        - folders_attachments
+                        - specification_section_revision
+                        - drawing_revision
+                      context_type_id:
+                        type: string
+                      sub_context_type:
+                        type: string
+                        enum:
+                        - NONE
+                        - PIN
+                      sub_context_type_id:
+                        type: string
+                      company_id:
+                        type: string
+                      project_id:
+                        type: string
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+                      created_by_id:
+                        type: string
+                      deleted:
+                        type: boolean
+                      settings:
+                        type: object
+                        additionalProperties: {}
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PUT',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/contexts/%7Bcontext_id%7D',\n  headers: {'content-type': 'application/json'},\n  body: {name: 'string', settings: {property1: null, property2: null}},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"name\":\"string\",\"settings\":{\"property1\":null,\"property2\":null}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("PUT", "/rest/v2.0/companies/%7Bcompany_id%7D/contexts/%7Bcontext_id%7D", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PUT \\\n  --url https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/contexts/%7Bcontext_id%7D \\\n  --header 'content-type: application/json' \\\n  --data '{\"name\":\"string\",\"settings\":{\"property1\":null,\"property2\":null}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Put,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/contexts/%7Bcontext_id%7D\"),\n    Content = new StringContent(\"{\\\"name\\\":\\\"string\\\",\\\"settings\\\":{\\\"property1\\\":null,\\\"property2\\\":null}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+    delete:
+      tags:
+      - company-context-v-2-controller
+      summary: Delete company-level context by ID
+      description: Delete a company-level context and all its associated layers, groups, and markups.
+      operationId: deleteContext_1
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier of the company
+        required: true
+        schema:
+          type: string
+      - name: context_id
+        in: path
+        description: Unique identifier of the context
+        required: true
+        schema:
+          type: string
+      - name: skip_resource_deletion
+        in: query
+        description: When true, skip deletion of associated resources (markups)
+        required: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '204':
+          description: No Content
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'DELETE',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/contexts/%7Bcontext_id%7D',\n  qs: {skip_resource_deletion: 'SOME_BOOLEAN_VALUE'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("DELETE", "/rest/v2.0/companies/%7Bcompany_id%7D/contexts/%7Bcontext_id%7D?skip_resource_deletion=SOME_BOOLEAN_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request DELETE \\\n  --url 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/contexts/%7Bcontext_id%7D?skip_resource_deletion=SOME_BOOLEAN_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Delete,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/contexts/%7Bcontext_id%7D?skip_resource_deletion=SOME_BOOLEAN_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+  /rest/v2.0/companies/{company_id}/layer_structure:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    post:
+      tags:
+      - company-context-v-2-controller
+      summary: Get company-level layer structure
+      description: Retrieve or create the complete hierarchy (contexts -> layers -> groups) for a company-level document.
+      operationId: getLayerStructure_1
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier of the company
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                context_type:
+                  type: string
+                  enum:
+                  - document_revision
+                  - document_container
+                  - FileVersion
+                  - folders_attachments
+                  - specification_section_revision
+                  - drawing_revision
+                context_type_id:
+                  type: string
+                  minLength: 1
+                sub_context_type:
+                  type: string
+                  enum:
+                  - NONE
+                  - PIN
+                sub_context_type_id:
+                  type: string
+                include_groups:
+                  type: boolean
+              required:
+              - context_type
+              - context_type_id
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      context:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          context_type:
+                            type: string
+                            enum:
+                            - document_revision
+                            - document_container
+                            - FileVersion
+                            - folders_attachments
+                            - specification_section_revision
+                            - drawing_revision
+                          context_type_id:
+                            type: string
+                          sub_context_type:
+                            type: string
+                            enum:
+                            - NONE
+                            - PIN
+                          sub_context_type_id:
+                            type: string
+                          company_id:
+                            type: string
+                          project_id:
+                            type: string
+                          created_at:
+                            type: string
+                            format: date-time
+                          updated_at:
+                            type: string
+                            format: date-time
+                          created_by_id:
+                            type: string
+                          deleted:
+                            type: boolean
+                          settings:
+                            type: object
+                            additionalProperties: {}
+                          layers:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                name:
+                                  type: string
+                                type:
+                                  type: string
+                                  enum:
+                                  - PRIVATE
+                                  - PUBLIC
+                                context_id:
+                                  type: string
+                                company_id:
+                                  type: string
+                                project_id:
+                                  type: string
+                                created_at:
+                                  type: string
+                                  format: date-time
+                                updated_at:
+                                  type: string
+                                  format: date-time
+                                created_by_id:
+                                  type: string
+                                deleted:
+                                  type: boolean
+                                visibility:
+                                  type: boolean
+                                order_index:
+                                  type: number
+                                settings:
+                                  type: object
+                                  additionalProperties: {}
+                                groups:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      id:
+                                        type: string
+                                      name:
+                                        type: string
+                                      layer_id:
+                                        type: string
+                                      company_id:
+                                        type: string
+                                      project_id:
+                                        type: string
+                                      created_at:
+                                        type: string
+                                        format: date-time
+                                      updated_at:
+                                        type: string
+                                        format: date-time
+                                      created_by_id:
+                                        type: string
+                                      deleted:
+                                        type: boolean
+                                      visibility:
+                                        type: boolean
+                                      order_index:
+                                        type: number
+                                      color:
+                                        type: string
+                                      settings:
+                                        type: object
+                                        additionalProperties: {}
+                                      editable:
+                                        type: boolean
+                                      allow_delete:
+                                        type: boolean
+                                      system_generated_read_only:
+                                        type: boolean
+                                      layer_type:
+                                        type: string
+                                        enum:
+                                        - PRIVATE
+                                        - PUBLIC
+                                      sub_context_type_id:
+                                        type: string
+                                editable:
+                                  type: boolean
+                      created:
+                        type: boolean
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/layer_structure',\n  headers: {'content-type': 'application/json'},\n  body: {\n    context_type: 'document_revision',\n    context_type_id: 'string',\n    sub_context_type: 'NONE',\n    sub_context_type_id: 'string',\n    include_groups: true\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"context_type\":\"document_revision\",\"context_type_id\":\"string\",\"sub_context_type\":\"NONE\",\"sub_context_type_id\":\"string\",\"include_groups\":true}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v2.0/companies/%7Bcompany_id%7D/layer_structure", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/layer_structure \\\n  --header 'content-type: application/json' \\\n  --data '{\"context_type\":\"document_revision\",\"context_type_id\":\"string\",\"sub_context_type\":\"NONE\",\"sub_context_type_id\":\"string\",\"include_groups\":true}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/layer_structure\"),\n    Content = new StringContent(\"{\\\"context_type\\\":\\\"document_revision\\\",\\\"context_type_id\\\":\\\"string\\\",\\\"sub_context_type\\\":\\\"NONE\\\",\\\"sub_context_type_id\\\":\\\"string\\\",\\\"include_groups\\\":true}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+  /rest/v2.0/companies/{company_id}/contexts:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    post:
+      tags:
+      - company-context-v-2-controller
+      summary: Create a new company-level context
+      description: Create a new context for organizing layers within a company-level document
+      operationId: createContext_1
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier of the company
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                context_type:
+                  type: string
+                  enum:
+                  - document_revision
+                  - document_container
+                  - FileVersion
+                  - folders_attachments
+                  - specification_section_revision
+                  - drawing_revision
+                context_type_id:
+                  type: string
+                  minLength: 1
+                sub_context_type:
+                  type: string
+                  enum:
+                  - NONE
+                  - PIN
+                sub_context_type_id:
+                  type: string
+                settings:
+                  type: object
+                  additionalProperties: {}
+              required:
+              - context_type
+              - context_type_id
+              - name
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      context_type:
+                        type: string
+                        enum:
+                        - document_revision
+                        - document_container
+                        - FileVersion
+                        - folders_attachments
+                        - specification_section_revision
+                        - drawing_revision
+                      context_type_id:
+                        type: string
+                      sub_context_type:
+                        type: string
+                        enum:
+                        - NONE
+                        - PIN
+                      sub_context_type_id:
+                        type: string
+                      company_id:
+                        type: string
+                      project_id:
+                        type: string
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+                      created_by_id:
+                        type: string
+                      deleted:
+                        type: boolean
+                      settings:
+                        type: object
+                        additionalProperties: {}
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/contexts',\n  headers: {'content-type': 'application/json'},\n  body: {\n    name: 'string',\n    context_type: 'document_revision',\n    context_type_id: 'string',\n    sub_context_type: 'NONE',\n    sub_context_type_id: 'string',\n    settings: {property1: null, property2: null}\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"name\":\"string\",\"context_type\":\"document_revision\",\"context_type_id\":\"string\",\"sub_context_type\":\"NONE\",\"sub_context_type_id\":\"string\",\"settings\":{\"property1\":null,\"property2\":null}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v2.0/companies/%7Bcompany_id%7D/contexts", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/contexts \\\n  --header 'content-type: application/json' \\\n  --data '{\"name\":\"string\",\"context_type\":\"document_revision\",\"context_type_id\":\"string\",\"sub_context_type\":\"NONE\",\"sub_context_type_id\":\"string\",\"settings\":{\"property1\":null,\"property2\":null}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/contexts\"),\n    Content = new StringContent(\"{\\\"name\\\":\\\"string\\\",\\\"context_type\\\":\\\"document_revision\\\",\\\"context_type_id\\\":\\\"string\\\",\\\"sub_context_type\\\":\\\"NONE\\\",\\\"sub_context_type_id\\\":\\\"string\\\",\\\"settings\\\":{\\\"property1\\\":null,\\\"property2\\\":null}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+  /rest/v2.0/companies/{company_id}/contexts/get_or_create:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    post:
+      tags:
+      - company-context-v-2-controller
+      summary: Get or create company-level context with hierarchy
+      description: Get existing company-level context hierarchy or create a new one with default layers.
+      operationId: getOrCreateContextHierarchy_1
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier of the company
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                context_type:
+                  type: string
+                  enum:
+                  - document_revision
+                  - document_container
+                  - FileVersion
+                  - folders_attachments
+                  - specification_section_revision
+                  - drawing_revision
+                context_type_id:
+                  type: string
+                  minLength: 1
+                sub_context_type:
+                  type: string
+                  enum:
+                  - NONE
+                  - PIN
+                sub_context_type_id:
+                  type: string
+                settings:
+                  type: object
+                  additionalProperties: {}
+              required:
+              - context_type
+              - context_type_id
+              - name
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      context:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          context_type:
+                            type: string
+                            enum:
+                            - document_revision
+                            - document_container
+                            - FileVersion
+                            - folders_attachments
+                            - specification_section_revision
+                            - drawing_revision
+                          context_type_id:
+                            type: string
+                          sub_context_type:
+                            type: string
+                            enum:
+                            - NONE
+                            - PIN
+                          sub_context_type_id:
+                            type: string
+                          company_id:
+                            type: string
+                          project_id:
+                            type: string
+                          created_at:
+                            type: string
+                            format: date-time
+                          updated_at:
+                            type: string
+                            format: date-time
+                          created_by_id:
+                            type: string
+                          deleted:
+                            type: boolean
+                          settings:
+                            type: object
+                            additionalProperties: {}
+                          layers:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                name:
+                                  type: string
+                                type:
+                                  type: string
+                                  enum:
+                                  - PRIVATE
+                                  - PUBLIC
+                                context_id:
+                                  type: string
+                                company_id:
+                                  type: string
+                                project_id:
+                                  type: string
+                                created_at:
+                                  type: string
+                                  format: date-time
+                                updated_at:
+                                  type: string
+                                  format: date-time
+                                created_by_id:
+                                  type: string
+                                deleted:
+                                  type: boolean
+                                visibility:
+                                  type: boolean
+                                order_index:
+                                  type: number
+                                settings:
+                                  type: object
+                                  additionalProperties: {}
+                                groups:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      id:
+                                        type: string
+                                      name:
+                                        type: string
+                                      layer_id:
+                                        type: string
+                                      company_id:
+                                        type: string
+                                      project_id:
+                                        type: string
+                                      created_at:
+                                        type: string
+                                        format: date-time
+                                      updated_at:
+                                        type: string
+                                        format: date-time
+                                      created_by_id:
+                                        type: string
+                                      deleted:
+                                        type: boolean
+                                      visibility:
+                                        type: boolean
+                                      order_index:
+                                        type: number
+                                      color:
+                                        type: string
+                                      settings:
+                                        type: object
+                                        additionalProperties: {}
+                                      editable:
+                                        type: boolean
+                                      allow_delete:
+                                        type: boolean
+                                      system_generated_read_only:
+                                        type: boolean
+                                      layer_type:
+                                        type: string
+                                        enum:
+                                        - PRIVATE
+                                        - PUBLIC
+                                      sub_context_type_id:
+                                        type: string
+                                editable:
+                                  type: boolean
+                      created:
+                        type: boolean
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/contexts/get_or_create',\n  headers: {'content-type': 'application/json'},\n  body: {\n    name: 'string',\n    context_type: 'document_revision',\n    context_type_id: 'string',\n    sub_context_type: 'NONE',\n    sub_context_type_id: 'string',\n    settings: {property1: null, property2: null}\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"name\":\"string\",\"context_type\":\"document_revision\",\"context_type_id\":\"string\",\"sub_context_type\":\"NONE\",\"sub_context_type_id\":\"string\",\"settings\":{\"property1\":null,\"property2\":null}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v2.0/companies/%7Bcompany_id%7D/contexts/get_or_create", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/contexts/get_or_create \\\n  --header 'content-type: application/json' \\\n  --data '{\"name\":\"string\",\"context_type\":\"document_revision\",\"context_type_id\":\"string\",\"sub_context_type\":\"NONE\",\"sub_context_type_id\":\"string\",\"settings\":{\"property1\":null,\"property2\":null}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/contexts/get_or_create\"),\n    Content = new StringContent(\"{\\\"name\\\":\\\"string\\\",\\\"context_type\\\":\\\"document_revision\\\",\\\"context_type_id\\\":\\\"string\\\",\\\"sub_context_type\\\":\\\"NONE\\\",\\\"sub_context_type_id\\\":\\\"string\\\",\\\"settings\\\":{\\\"property1\\\":null,\\\"property2\\\":null}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

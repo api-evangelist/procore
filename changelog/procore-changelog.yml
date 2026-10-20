@@ -1,0 +1,351 @@
+name: Procore changelog
+generated: '2026-10-20'
+method: searched
+source: https://developers.procore.com/changelog
+scheme: dated entries (YYYY-MM) per endpoint, tagged by API version (1.0+/2.0+) and type (New, Feature, Fix, Refinement, Deprecated, Sunset, Breaking)
+entry_total_stated: 1-50 of 4,284
+current_versions:
+- v1.0
+- v2.0
+entries:
+- version: 1.0+
+  date: 2026-10
+  type: refinement
+  breaking: false
+  highlights:
+  - Split Direct Cost sync tax_breakdown details by tax rate
+  endpoint: PATCH /projects/{project_id}/direct_costs/sync
+- version: 1.0+
+  date: 2026-10
+  type: refinement
+  breaking: false
+  highlights:
+  - Split Direct Cost detail tax_breakdown details by tax rate
+  endpoint: GET /projects/{project_id}/direct_costs/{id}
+- version: 1.0+
+  date: 2026-10
+  type: refinement
+  breaking: false
+  highlights:
+  - Split Direct Cost list tax_breakdown details by tax rate
+  endpoint: GET /projects/{project_id}/direct_costs
+- version: 2.0+
+  date: 2026-10
+  type: new
+  breaking: false
+  highlights:
+  - Added endpoint to copy Model Manager viewpoint snapshots into Prostore
+  endpoint: POST /companies/{company_id}/projects/{project_id}/coordination_issues/{coordination_issue_id}/viewpoints/snapshot_files
+- version: 1.0+
+  date: 2026-10
+  type: feature
+  breaking: false
+  highlights:
+  - Added renumber option to Retrieve Recycled Incident
+  endpoint: PATCH /projects/{project_id}/recycle_bin/incidents/{id}/restore
+- version: 1.0+
+  date: 2026-10
+  type: feature
+  breaking: false
+  highlights:
+  - Added vendor to created_by in Recycle Bin Observation Item responses
+  endpoint: PATCH /projects/{project_id}/recycle_bin/observations/items/{id}/restore
+- version: 1.0+
+  date: 2026-10
+  type: feature
+  breaking: false
+  highlights:
+  - Added vendor to created_by in Recycle Bin Observation Item responses
+  endpoint: GET /projects/{project_id}/recycle_bin/observations/items/{id}
+- version: 1.0+
+  date: 2026-10
+  type: feature
+  breaking: false
+  highlights:
+  - Added vendor to created_by in Recycle Bin Observation Item responses
+  endpoint: GET /projects/{project_id}/recycle_bin/observations/items
+- version: 1.0+
+  date: 2026-10
+  type: feature
+  breaking: false
+  highlights:
+  - Added vendor to created_by in Observation Item responses
+  endpoint: POST /observations/items/send_unsent
+- version: 1.0+
+  date: 2026-10
+  type: feature
+  breaking: false
+  highlights:
+  - Added vendor to created_by in Observation Item responses
+  endpoint: GET /observations/items
+- version: 1.0+
+  date: 2026-10
+  type: fix
+  breaking: false
+  highlights:
+  - Accept custom_status_id inside the response log body
+  endpoint: POST /observations/items/{item_id}/response_logs
+- version: 2.0+
+  date: 2026-10
+  type: refinement
+  breaking: false
+  highlights:
+  - Point upload show download_url at the v2 download route
+  endpoint: GET /companies/{company_id}/projects/{project_id}/document_management/document_uploads/{document_upload_id}
+- version: 2.0+
+  date: 2026-10
+  type: refinement
+  breaking: false
+  highlights:
+  - Point upload list download_url at the v2 download route
+  endpoint: GET /companies/{company_id}/projects/{project_id}/document_management/document_uploads
+- version: 2.0+
+  date: 2026-10
+  type: refinement
+  breaking: false
+  highlights:
+  - Point selected upload download_url at the v2 download route
+  endpoint: POST /companies/{company_id}/projects/{project_id}/document_management/document_uploads/selected_uploads
+- version: 2.0+
+  date: 2026-10
+  type: refinement
+  breaking: false
+  highlights:
+  - filters[name] matches project numbers
+  endpoint: GET /companies/{company_id}/project_tools/{engine_name}
+- version: 1.0+
+  date: 2026-10
+  type: feature
+  breaking: false
+  highlights:
+  - Filter List Checklists (Inspections) by failed async operation items
+  endpoint: GET /projects/{project_id}/checklist/lists
+- version: 2.0+
+  date: 2026-10
+  type: feature
+  breaking: false
+  highlights:
+  - List Workflow Presets - template tool_subtype (company)
+  endpoint: GET /companies/{company_id}/workflows/presets
+- version: 2.0+
+  date: 2026-10
+  type: feature
+  breaking: false
+  highlights:
+  - List Workflow Presets - template tool_subtype
+  endpoint: GET /companies/{company_id}/projects/{project_id}/workflows/presets
+- version: 2.0+
+  date: 2026-10
+  type: new
+  breaking: false
+  highlights:
+  - Made v2.0 Import Direct Entry Column public beta
+  endpoint: POST /companies/{company_id}/projects/{project_id}/import_direct_entry_column
+- version: 2.0+
+  date: 2026-10
+  type: new
+  breaking: false
+  highlights:
+  - Made v2.0 Download Direct Entry Import Template public beta
+  endpoint: GET /companies/{company_id}/projects/{project_id}/download_direct_entry_import_template
+- version: 2.0+
+  date: 2026-10
+  type: new
+  breaking: false
+  highlights:
+  - Made v2.0 Direct Entries public beta
+  endpoint: PUT /companies/{company_id}/projects/{project_id}/budget_columns/{budget_column_id}/direct_entries/{wbs_code_id}
+- version: 2.0+
+  date: 2026-10
+  type: fix
+  breaking: false
+  highlights:
+  - Decoupled (PCN) bidders now return Business Registry vendor data
+  endpoint: GET /companies/{company_id}/projects/{project_id}/bids
+- version: 1.0+
+  date: 2026-10
+  type: feature
+  breaking: false
+  highlights:
+  - Accept Time-category units of measure when updating a Budgeted Production Quantity
+  endpoint: PATCH /projects/{project_id}/budgeted_production_quantities/{id}
+- version: 1.0+
+  date: 2026-10
+  type: feature
+  breaking: false
+  highlights:
+  - Accept Time-category units of measure when creating a Budgeted Production Quantity
+  endpoint: POST /projects/{project_id}/budgeted_production_quantities
+- version: 1.0+
+  date: 2026-10
+  type: feature
+  breaking: false
+  highlights:
+  - Return the assigned Portfolio Program name on the extended projects view
+  endpoint: GET /projects
+- version: 2.0+
+  date: 2026-10
+  type: feature
+  breaking: false
+  highlights:
+  - v2.0 coordination issues create rejects unavailable templates
+  endpoint: POST /companies/{company_id}/projects/{project_id}/coordination_issues
+- version: 1.1+
+  date: 2026-10
+  type: feature
+  breaking: false
+  highlights:
+  - Added medium and sub_medium params for analytics attribution
+  endpoint: POST /projects/{project_id}/bid_packages/{bid_package_id}/bid_forms/bulk_create
+- version: 2.0+
+  date: 2026-10
+  type: feature
+  breaking: false
+  highlights:
+  - Added the is_tracked filter to the rest v2.0 project Folder index endpoint
+  endpoint: GET /companies/{company_id}/projects/{project_id}/folders
+- version: 2.0+
+  date: 2026-10
+  type: feature
+  breaking: false
+  highlights:
+  - Added the is_tracked filter to the rest v2.0 project Folder show endpoint
+  endpoint: GET /companies/{company_id}/projects/{project_id}/folders/{id}
+- version: 2.0+
+  date: 2026-10
+  type: feature
+  breaking: false
+  highlights:
+  - Added the is_tracked filter to the rest v2.0 company Folder index endpoint
+  endpoint: GET /companies/{company_id}/folders
+- version: 2.0+
+  date: 2026-10
+  type: feature
+  breaking: false
+  highlights:
+  - Added the is_tracked filter to the rest v2.0 company Folder show endpoint
+  endpoint: GET /companies/{company_id}/folders/{id}
+- version: 2.0+
+  date: 2026-10
+  type: fix
+  breaking: false
+  highlights:
+  - Default financial_tools.direct_costs to disabled
+- version: 1.0+
+  date: 2026-10
+  type: feature
+  breaking: false
+  highlights:
+  - Search and ID filters for potential assignees
+  endpoint: GET /coordination_issues/assignees
+- version: 1.0+
+  date: 2026-10
+  type: fix
+  breaking: false
+  highlights:
+  - Allow read-only WBS users to create line items on existing WBS Codes
+  endpoint: POST /projects/{project_id}/direct_costs/{direct_cost_id}/line_items
+- version: 1.0+
+  date: 2026-10
+  type: feature
+  breaking: false
+  highlights:
+  - Added viewer_experience to the web index drawing revisions response and filter
+  endpoint: GET /projects/{project_id}/drawing_revisions
+- version: 1.0+
+  date: 2026-10
+  type: refinement
+  breaking: false
+  highlights:
+  - Added `amber` to the item response `status` values
+- version: 1.0+
+  date: 2026-10
+  type: refinement
+  breaking: false
+  highlights:
+  - Made endpoint documentation public
+  endpoint: PATCH /projects/{project_id}/inspection_templates/{project_inspection_template_id}/items/{id}
+- version: 2.0+
+  date: 2026-09
+  type: feature
+  breaking: false
+  highlights:
+  - Add email_sent_at to submittal approvers in the V2 submittals list
+  endpoint: GET /companies/{company_id}/projects/{project_id}/submittals
+- version: 1.0+
+  date: 2026-09
+  type: refinement
+  breaking: false
+  highlights:
+  - Added `amber` to the item response `status` values
+- version: 1.0+
+  date: 2026-09
+  type: refinement
+  breaking: false
+  highlights:
+  - Added `amber` to the item response `status` values
+- version: 1.0+
+  date: 2026-09
+  type: refinement
+  breaking: false
+  highlights:
+  - Added `amber` to the item response `status` values
+- version: 1.0+
+  date: 2026-09
+  type: refinement
+  breaking: false
+  highlights:
+  - Added `amber` to the item response `status` values
+- version: 1.0+
+  date: 2026-09
+  type: refinement
+  breaking: false
+  highlights:
+  - Documented `amber_item_count` in Checklist responses
+- version: 1.0+
+  date: 2026-09
+  type: refinement
+  breaking: false
+  highlights:
+  - Documented `amber_item_count` in Checklist responses
+- version: 1.0+
+  date: 2026-09
+  type: refinement
+  breaking: false
+  highlights:
+  - Documented `amber_item_count` in Checklist responses
+- version: 1.0+
+  date: 2026-09
+  type: refinement
+  breaking: false
+  highlights:
+  - Documented `amber_item_count` in Checklist responses
+  endpoint: GET /checklist/lists
+- version: 1.0+
+  date: 2026-09
+  type: refinement
+  breaking: false
+  highlights:
+  - Documented `amber_item_count` in Checklist responses
+  endpoint: GET /projects/{project_id}/recycle_bin/checklist/lists/grouped_index
+- version: 1.0+
+  date: 2026-09
+  type: refinement
+  breaking: false
+  highlights:
+  - Documented `amber_item_count` in Checklist responses
+  endpoint: GET /projects/{project_id}/recycle_bin/checklist/lists/{id}
+- version: 1.0+
+  date: 2026-09
+  type: refinement
+  breaking: false
+  highlights:
+  - Documented `amber_item_count` in Checklist responses
+  endpoint: GET /projects/{project_id}/recycle_bin/checklist/lists
+- version: 1.0+
+  date: 2026-09
+  type: refinement
+  breaking: false
+  highlights:
+  - Documented `amber_item_count` in Checklist responses
+  endpoint: PATCH /projects/{project_id}/checklist/lists/{id}/reopen

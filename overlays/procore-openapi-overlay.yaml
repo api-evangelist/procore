@@ -1,0 +1,17 @@
+overlay: 1.0.0
+info:
+  title: Procore REST API - API Evangelist enhancements
+  version: 1.0.0
+extends: ../openapi/_original/procore-openapi.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-source: https://developers.procore.com/api/v1/resource_groups
+    x-apievangelist-generated: '2026-10-20'
+- target: $.info
+  update:
+    x-rate-limit-headers:
+    - X-Rate-Limit-Limit
+    - X-Rate-Limit-Remaining
+    - X-Rate-Limit-Reset
+    x-company-header: Procore-Company-Id

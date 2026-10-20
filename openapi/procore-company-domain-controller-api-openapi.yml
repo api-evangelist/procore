@@ -1,0 +1,347 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Company Domain Controller API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: company-domain-controller
+paths:
+  /rest/v1.0/companies/{company_id}/domains/contexts:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      tags:
+      - company-domain-controller
+      summary: Get company-level Contexts
+      description: Returns all markup contexts for a specific company with pagination and filtering support.
+      operationId: getContexts_1
+      parameters:
+      - name: company_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 500
+      - name: view
+        in: query
+        required: false
+        schema:
+          type: string
+          default: default
+      - name: filters[created_before]
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: filters[updated_at]
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: filters[id]
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: filters[context_type_id]
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: filters[subcontext_type_id]
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/domains/contexts',\n  qs: {\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE',\n    view: 'SOME_STRING_VALUE',\n    'filters[created_before]': 'SOME_STRING_VALUE',\n    'filters[updated_at]': 'SOME_STRING_VALUE',\n    'filters[id]': 'SOME_STRING_VALUE',\n    'filters[context_type_id]': 'SOME_STRING_VALUE',\n    'filters[subcontext_type_id]': 'SOME_STRING_VALUE'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.0/companies/%7Bcompany_id%7D/domains/contexts?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&view=SOME_STRING_VALUE&filters%5Bcreated_before%5D=SOME_STRING_VALUE&filters%5Bupdated_at%5D=SOME_STRING_VALUE&filters%5Bid%5D=SOME_STRING_VALUE&filters%5Bcontext_type_id%5D=SOME_STRING_VALUE&filters%5Bsubcontext_type_id%5D=SOME_STRING_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/domains/contexts?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&view=SOME_STRING_VALUE&filters%5Bcreated_before%5D=SOME_STRING_VALUE&filters%5Bupdated_at%5D=SOME_STRING_VALUE&filters%5Bid%5D=SOME_STRING_VALUE&filters%5Bcontext_type_id%5D=SOME_STRING_VALUE&filters%5Bsubcontext_type_id%5D=SOME_STRING_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/domains/contexts?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&view=SOME_STRING_VALUE&filters%5Bcreated_before%5D=SOME_STRING_VALUE&filters%5Bupdated_at%5D=SOME_STRING_VALUE&filters%5Bid%5D=SOME_STRING_VALUE&filters%5Bcontext_type_id%5D=SOME_STRING_VALUE&filters%5Bsubcontext_type_id%5D=SOME_STRING_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+  /rest/v1.0/companies/{company_id}/domains/groups:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      tags:
+      - company-domain-controller
+      summary: Get company-level Groups
+      description: Returns all accessible markup groups for a specific company with pagination and filtering support.
+      operationId: getGroups_1
+      parameters:
+      - name: company_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 500
+      - name: view
+        in: query
+        required: false
+        schema:
+          type: string
+          default: default
+      - name: filters[created_before]
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: filters[updated_at]
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: filters[id]
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: filters[context_id]
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: filters[context_type_id]
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: filters[subcontext_type_id]
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/domains/groups',\n  qs: {\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE',\n    view: 'SOME_STRING_VALUE',\n    'filters[created_before]': 'SOME_STRING_VALUE',\n    'filters[updated_at]': 'SOME_STRING_VALUE',\n    'filters[id]': 'SOME_STRING_VALUE',\n    'filters[context_id]': 'SOME_STRING_VALUE',\n    'filters[context_type_id]': 'SOME_STRING_VALUE',\n    'filters[subcontext_type_id]': 'SOME_STRING_VALUE'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.0/companies/%7Bcompany_id%7D/domains/groups?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&view=SOME_STRING_VALUE&filters%5Bcreated_before%5D=SOME_STRING_VALUE&filters%5Bupdated_at%5D=SOME_STRING_VALUE&filters%5Bid%5D=SOME_STRING_VALUE&filters%5Bcontext_id%5D=SOME_STRING_VALUE&filters%5Bcontext_type_id%5D=SOME_STRING_VALUE&filters%5Bsubcontext_type_id%5D=SOME_STRING_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/domains/groups?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&view=SOME_STRING_VALUE&filters%5Bcreated_before%5D=SOME_STRING_VALUE&filters%5Bupdated_at%5D=SOME_STRING_VALUE&filters%5Bid%5D=SOME_STRING_VALUE&filters%5Bcontext_id%5D=SOME_STRING_VALUE&filters%5Bcontext_type_id%5D=SOME_STRING_VALUE&filters%5Bsubcontext_type_id%5D=SOME_STRING_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/domains/groups?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&view=SOME_STRING_VALUE&filters%5Bcreated_before%5D=SOME_STRING_VALUE&filters%5Bupdated_at%5D=SOME_STRING_VALUE&filters%5Bid%5D=SOME_STRING_VALUE&filters%5Bcontext_id%5D=SOME_STRING_VALUE&filters%5Bcontext_type_id%5D=SOME_STRING_VALUE&filters%5Bsubcontext_type_id%5D=SOME_STRING_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+  /rest/v1.0/companies/{company_id}/domains/layers:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      tags:
+      - company-domain-controller
+      summary: Get company-level Layers
+      description: Returns all accessible markup layers for a specific company with pagination and filtering support.
+      operationId: getLayers_1
+      parameters:
+      - name: company_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 500
+      - name: view
+        in: query
+        required: false
+        schema:
+          type: string
+          default: default
+      - name: filters[created_before]
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: filters[updated_at]
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: filters[id]
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: filters[context_id]
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: filters[context_type_id]
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: filters[subcontext_type_id]
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/domains/layers',\n  qs: {\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE',\n    view: 'SOME_STRING_VALUE',\n    'filters[created_before]': 'SOME_STRING_VALUE',\n    'filters[updated_at]': 'SOME_STRING_VALUE',\n    'filters[id]': 'SOME_STRING_VALUE',\n    'filters[context_id]': 'SOME_STRING_VALUE',\n    'filters[context_type_id]': 'SOME_STRING_VALUE',\n    'filters[subcontext_type_id]': 'SOME_STRING_VALUE'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.0/companies/%7Bcompany_id%7D/domains/layers?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&view=SOME_STRING_VALUE&filters%5Bcreated_before%5D=SOME_STRING_VALUE&filters%5Bupdated_at%5D=SOME_STRING_VALUE&filters%5Bid%5D=SOME_STRING_VALUE&filters%5Bcontext_id%5D=SOME_STRING_VALUE&filters%5Bcontext_type_id%5D=SOME_STRING_VALUE&filters%5Bsubcontext_type_id%5D=SOME_STRING_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/domains/layers?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&view=SOME_STRING_VALUE&filters%5Bcreated_before%5D=SOME_STRING_VALUE&filters%5Bupdated_at%5D=SOME_STRING_VALUE&filters%5Bid%5D=SOME_STRING_VALUE&filters%5Bcontext_id%5D=SOME_STRING_VALUE&filters%5Bcontext_type_id%5D=SOME_STRING_VALUE&filters%5Bsubcontext_type_id%5D=SOME_STRING_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/domains/layers?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&view=SOME_STRING_VALUE&filters%5Bcreated_before%5D=SOME_STRING_VALUE&filters%5Bupdated_at%5D=SOME_STRING_VALUE&filters%5Bid%5D=SOME_STRING_VALUE&filters%5Bcontext_id%5D=SOME_STRING_VALUE&filters%5Bcontext_type_id%5D=SOME_STRING_VALUE&filters%5Bsubcontext_type_id%5D=SOME_STRING_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

@@ -1,0 +1,843 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Workflow Possible Assignees API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Workflow Possible Assignees
+paths:
+  /rest/v2.0/companies/{company_id}/projects/{project_id}/workflows/possible_assignees:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: company_id
+      in: path
+      description: Unique identifier for the company.
+      required: true
+      schema:
+        type: string
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: string
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: List Possible Assignees (Project)
+      description: Returns a list of all workflows possible assignees for a given project and tool.
+      tags:
+      - Workflow Possible Assignees
+      parameters:
+      - name: tool_type
+        in: query
+        description: Return workflow possible assignees for the associated tool.
+        required: true
+        schema:
+          type: string
+      - name: tool_subtype
+        in: query
+        description: Return workflow possible assignees for the associated tool_subtype. Required when tool_type is 'correspondence'.
+        required: false
+        schema:
+          type: integer
+      - name: step_occurrence_id
+        in: query
+        description: Optional current workflow step occurrence. When supplied, users already assigned to that step are excluded before pagination. The step must belong to this project and match the requested tool.
+        required: false
+        schema:
+          type: string
+      - name: filters[search]
+        in: query
+        description: Case-insensitive substring matched against formatted assignee names before pagination.
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Page
+        required: false
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: Elements per page
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      responses:
+        '200':
+          description: OK
+          headers:
+            Per-Page:
+              description: Number of items retrieved per page
+              schema:
+                type: integer
+            Total:
+              description: Total number of items to be retrieved
+              schema:
+                type: integer
+            Link:
+              description: Link headers for the first, prev, next, and last link
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Workflow Possible Assignees (Index)
+                properties:
+                  data:
+                    type: array
+                    description: List of possible assignees
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Unique identifier for the assignee
+                          example: '161072'
+                        login:
+                          type: string
+                          description: Assignee login
+                          example: carl.contractor@example.com
+                        name:
+                          type: string
+                          description: Name of the assignee
+                          example: Carl the Contractor
+                        company:
+                          type:
+                          - object
+                          - 'null'
+                          description: Vendor company for the assignee when one is associated in the requested company context
+                          properties:
+                            name:
+                              type: string
+                              description: Vendor display name
+                              example: Brickworks
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '422':
+          description: Unprocessable Entity. The supplied step occurrence is no longer the current step or does not match the requested tool.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/workflows/possible_assignees',\n  qs: {\n    tool_type: 'SOME_STRING_VALUE',\n    tool_subtype: 'SOME_INTEGER_VALUE',\n    step_occurrence_id: 'SOME_STRING_VALUE',\n    'filters[search]': 'SOME_STRING_VALUE',\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/workflows/possible_assignees?tool_type=SOME_STRING_VALUE&tool_subtype=SOME_INTEGER_VALUE&step_occurrence_id=SOME_STRING_VALUE&filters%5Bsearch%5D=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/workflows/possible_assignees?tool_type=SOME_STRING_VALUE&tool_subtype=SOME_INTEGER_VALUE&step_occurrence_id=SOME_STRING_VALUE&filters%5Bsearch%5D=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/workflows/possible_assignees?tool_type=SOME_STRING_VALUE&tool_subtype=SOME_INTEGER_VALUE&step_occurrence_id=SOME_STRING_VALUE&filters%5Bsearch%5D=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Reject company-level tool_type values
+        description: This endpoint now returns 400 Bad Request when tool_type is a company-level tool. Use the company-level endpoint for those tools.
+        endpoint: GET /companies/{company_id}/projects/{project_id}/workflows/possible_assignees
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-23'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: workflow-possible-assignees?version=2.0#list-possible-assignees-project
+      - summary: Search possible assignees by name
+        description: Supply filters[search] to match formatted assignee names by case-insensitive substring before pagination.
+        endpoint: GET /companies/{company_id}/projects/{project_id}/workflows/possible_assignees
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-07'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: workflow-possible-assignees?version=2.0#list-possible-assignees-project
+      - summary: Optionally exclude current-step assignees
+        description: Supply step_occurrence_id to exclude users already assigned to the provider-scoped current workflow step before pagination.
+        endpoint: GET /companies/{company_id}/projects/{project_id}/workflows/possible_assignees
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-02'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: workflow-possible-assignees?version=2.0#list-possible-assignees-project
+      - summary: Return 400 Bad Request instead of 500 for an unrecognized tool_type
+        description: This endpoint now returns 400 Bad Request when the tool_type parameter does not resolve to a tool enabled for the company, instead of returning an unhandled 500 Internal Server Error.
+        endpoint: GET /companies/{company_id}/projects/{project_id}/workflows/possible_assignees
+        type: fix
+        breaking: false
+        datestamp: '2026-07-29'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: workflow-possible-assignees?version=2.0#list-possible-assignees-project
+      - summary: Possible assignees include company name
+        description: List responses now include a company object with name when a vendor is present.
+        endpoint: GET /companies/{company_id}/projects/{project_id}/workflows/possible_assignees
+        type: refinement
+        breaking: false
+        datestamp: '2026-04-06'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: workflow-possible-assignees?version=2.0#list-possible-assignees-project
+      - summary: V2 API Release
+        description: Part of our new batch of V2 APIs for Workflows.
+        endpoint: GET /companies/{company_id}/projects/{project_id}/workflows/possible_assignees
+        type: new
+        breaking: false
+        datestamp: '2025-01-23'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: workflow-possible-assignees?version=2.0#list-possible-assignees-project
+      operationId: listPossibleAssigneesProject
+  /rest/v2.0/companies/{company_id}/workflows/possible_assignees:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: company_id
+      in: path
+      description: Unique identifier for the company.
+      required: true
+      schema:
+        type: string
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: List Possible Assignees (Company)
+      description: Returns a list of all workflows possible assignees for a given company and tool.
+      tags:
+      - Workflow Possible Assignees
+      parameters:
+      - name: tool_type
+        in: query
+        description: Return workflow possible assignees for the associated tool.
+        required: true
+        schema:
+          type: string
+      - name: tool_subtype
+        in: query
+        description: Return workflow possible assignees for the associated tool_subtype.
+        required: false
+        schema:
+          type: integer
+      - name: step_occurrence_id
+        in: query
+        description: Optional current workflow step occurrence. When supplied, users already assigned to that step are excluded before pagination. The step must belong to a company-scoped instance and match the requested tool.
+        required: false
+        schema:
+          type: string
+      - name: filters[search]
+        in: query
+        description: Case-insensitive substring matched against formatted assignee names before pagination.
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Page
+        required: false
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: Elements per page
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      responses:
+        '200':
+          description: OK
+          headers:
+            Per-Page:
+              description: Number of items retrieved per page
+              schema:
+                type: integer
+            Total:
+              description: Total number of items to be retrieved
+              schema:
+                type: integer
+            Link:
+              description: Link headers for the first, prev, next, and last link
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Workflow Possible Assignees (Index)
+                properties:
+                  data:
+                    type: array
+                    description: List of possible assignees
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Unique identifier for the assignee
+                          example: '161072'
+                        login:
+                          type: string
+                          description: Assignee login
+                          example: carl.contractor@example.com
+                        name:
+                          type: string
+                          description: Name of the assignee
+                          example: Carl the Contractor
+                        company:
+                          type:
+                          - object
+                          - 'null'
+                          description: Vendor company for the assignee when one is associated in the requested company context
+                          properties:
+                            name:
+                              type: string
+                              description: Vendor display name
+                              example: Brickworks
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '422':
+          description: Unprocessable Entity. The supplied step occurrence is no longer the current step or does not match the requested tool.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/workflows/possible_assignees',\n  qs: {\n    tool_type: 'SOME_STRING_VALUE',\n    tool_subtype: 'SOME_INTEGER_VALUE',\n    step_occurrence_id: 'SOME_STRING_VALUE',\n    'filters[search]': 'SOME_STRING_VALUE',\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v2.0/companies/%7Bcompany_id%7D/workflows/possible_assignees?tool_type=SOME_STRING_VALUE&tool_subtype=SOME_INTEGER_VALUE&step_occurrence_id=SOME_STRING_VALUE&filters%5Bsearch%5D=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/workflows/possible_assignees?tool_type=SOME_STRING_VALUE&tool_subtype=SOME_INTEGER_VALUE&step_occurrence_id=SOME_STRING_VALUE&filters%5Bsearch%5D=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/workflows/possible_assignees?tool_type=SOME_STRING_VALUE&tool_subtype=SOME_INTEGER_VALUE&step_occurrence_id=SOME_STRING_VALUE&filters%5Bsearch%5D=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Reject project-level tool_type values
+        description: This endpoint now returns 400 Bad Request when tool_type is a project-level tool, such as correspondence. Use the project-level endpoint for those tools.
+        endpoint: GET /companies/{company_id}/workflows/possible_assignees
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-23'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: workflow-possible-assignees?version=2.0#list-possible-assignees-company
+      - summary: Search possible assignees by name
+        description: Supply filters[search] to match formatted assignee names by case-insensitive substring before pagination.
+        endpoint: GET /companies/{company_id}/workflows/possible_assignees
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-07'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: workflow-possible-assignees?version=2.0#list-possible-assignees-company
+      - summary: Optionally exclude current-step assignees
+        description: Supply step_occurrence_id to exclude users already assigned to the current company-scoped workflow step before pagination.
+        endpoint: GET /companies/{company_id}/workflows/possible_assignees
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-02'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: workflow-possible-assignees?version=2.0#list-possible-assignees-company
+      - summary: Return 400 Bad Request instead of 500 for an unrecognized tool_type
+        description: This endpoint now returns 400 Bad Request when the tool_type parameter does not resolve to a tool enabled for the company, instead of returning an unhandled 500 Internal Server Error.
+        endpoint: GET /companies/{company_id}/workflows/possible_assignees
+        type: fix
+        breaking: false
+        datestamp: '2026-07-29'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: workflow-possible-assignees?version=2.0#list-possible-assignees-company
+      - summary: Possible assignees include company name
+        description: List responses now include a company object with name when a vendor is present.
+        endpoint: GET /companies/{company_id}/workflows/possible_assignees
+        type: refinement
+        breaking: false
+        datestamp: '2026-04-06'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: workflow-possible-assignees?version=2.0#list-possible-assignees-company
+      - summary: V2 API Release
+        description: Part of our new batch of V2 APIs for Workflows.
+        endpoint: GET /companies/{company_id}/workflows/possible_assignees
+        type: new
+        breaking: false
+        datestamp: '2025-01-23'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: workflow-possible-assignees?version=2.0#list-possible-assignees-company
+      operationId: listPossibleAssigneesCompany
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

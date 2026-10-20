@@ -1,0 +1,248 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Markup Stamp Controller API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: markup-stamp-controller
+paths:
+  /rest/v1.0/companies/{company_id}/projects/{project_id}/viewer_documents/stamps:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      tags:
+      - markup-stamp-controller
+      summary: Get Stamps
+      description: Returns Stamps for the user , company and project
+      operationId: getStamps_2
+      parameters:
+      - name: company_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stamps:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        stamp:
+                          type: string
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'http://localhost:8080/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/stamps'\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPConnection("localhost:8080")
+
+
+          conn.request("GET", "/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/stamps")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url http://localhost:8080/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/stamps"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"http://localhost:8080/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/stamps\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+    post:
+      tags:
+      - markup-stamp-controller
+      summary: Save Stamp
+      description: Saves new stamp for a specific company, project, and document.
+      operationId: saveStamp_2
+      parameters:
+      - name: company_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stamp:
+                  type: string
+                  minLength: 1
+              required:
+              - stamp
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'http://localhost:8080/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/stamps',\n  headers: {'content-type': 'application/json'},\n  body: {stamp: 'string'},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPConnection("localhost:8080")
+
+
+          payload = "{\"stamp\":\"string\"}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/stamps", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url http://localhost:8080/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/stamps \\\n  --header 'content-type: application/json' \\\n  --data '{\"stamp\":\"string\"}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"http://localhost:8080/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/stamps\"),\n    Content = new StringContent(\"{\\\"stamp\\\":\\\"string\\\"}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+  /rest/v1.0/companies/{company_id}/projects/{project_id}/viewer_documents/stamps/{stamp_id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    delete:
+      tags:
+      - markup-stamp-controller
+      summary: Delete Stamp
+      description: Deletes markups for a specific company, project, and document.
+      operationId: deleteStamp_2
+      parameters:
+      - name: company_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: stamp_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'DELETE',\n  url: 'http://localhost:8080/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/stamps/%7Bstamp_id%7D'\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPConnection("localhost:8080")
+
+
+          conn.request("DELETE", "/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/stamps/%7Bstamp_id%7D")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request DELETE \\\n  --url http://localhost:8080/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/stamps/%7Bstamp_id%7D"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Delete,\n    RequestUri = new Uri(\"http://localhost:8080/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/stamps/%7Bstamp_id%7D\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

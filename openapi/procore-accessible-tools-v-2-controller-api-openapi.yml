@@ -1,0 +1,100 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Accessible Tools V 2 Controller API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: accessible-tools-v-2-controller
+paths:
+  /rest/v2.0/companies/{company_id}/projects/{project_id}/viewer_documents/accessible_tools:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      tags:
+      - accessible-tools-v-2-controller
+      summary: Accessible Tools
+      description: Returns the set of Procore item types (tools) the current user is permitted to act on for the given company and project.
+      operationId: getAccessibleTools
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier of the company
+        required: true
+        schema:
+          type: string
+      - name: project_id
+        in: path
+        description: Unique identifier of the project
+        required: true
+        schema:
+          type: string
+      - name: item_type
+        in: query
+        description: Viewer document type used to choose the Related Items pin holder (e.g. specification_section_revision, FileVersion).
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      accessible_tools:
+                        type: array
+                        items:
+                          type: string
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/accessible_tools',\n  qs: {item_type: 'SOME_STRING_VALUE'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPConnection("localhost:8080")
+
+
+          conn.request("GET", "/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/accessible_tools?item_type=SOME_STRING_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/accessible_tools?item_type=SOME_STRING_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/accessible_tools?item_type=SOME_STRING_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

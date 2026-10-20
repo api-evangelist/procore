@@ -1,0 +1,265 @@
+generated: '2026-10-20'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 22
+  own: 20
+  other_domain: 0
+  platform: 2
+  roles:
+  - api
+  - community
+  - identity
+  - other
+  - partner
+  - portal
+  - source
+  - support
+  - website
+hosts:
+- host: api.procore.com
+  found_by:
+  - apis[]
+  - probed
+  - contract-discovery
+  - well-known
+  types: []
+  serves:
+  - api
+  registrable_domain: procore.com
+  role: api
+  relation: own
+- host: app.procore.com
+  found_by:
+  - probed
+  - site-links
+  - contract-discovery
+  - well-known
+  types: []
+  serves: []
+  registrable_domain: procore.com
+  role: other
+  relation: own
+- host: careers.procore.com
+  found_by:
+  - probed
+  - site-links
+  - contract-discovery
+  - well-known
+  types: []
+  serves: []
+  registrable_domain: procore.com
+  role: other
+  relation: own
+- host: community.procore.com
+  found_by:
+  - probed
+  - site-links
+  - well-known
+  types: []
+  serves: []
+  registrable_domain: procore.com
+  role: community
+  relation: own
+- host: de.support.procore.com
+  found_by:
+  - probed
+  - site-links
+  - well-known
+  types: []
+  serves: []
+  registrable_domain: procore.com
+  role: support
+  relation: own
+- host: developers.cdn.procore.com
+  found_by:
+  - probed
+  - site-links
+  types: []
+  serves: []
+  registrable_domain: procore.com
+  role: portal
+  relation: own
+- host: developers.procore.com
+  found_by:
+  - pointer
+  - probed
+  - site-links
+  - docs-index
+  - well-known
+  - vendor-detect
+  types:
+  - Deprecation
+  - DeveloperPortal
+  - Documentation
+  - APIReference
+  - GettingStarted
+  - SignUp
+  serves:
+  - docs
+  - cdn
+  vendor: cloudflare
+  registrable_domain: procore.com
+  role: portal
+  relation: own
+- host: en-au.support.procore.com
+  found_by:
+  - probed
+  - site-links
+  types: []
+  serves: []
+  registrable_domain: procore.com
+  role: support
+  relation: own
+- host: en-ca.support.procore.com
+  found_by:
+  - probed
+  - site-links
+  types: []
+  serves: []
+  registrable_domain: procore.com
+  role: support
+  relation: own
+- host: en-gb.support.procore.com
+  found_by:
+  - probed
+  - site-links
+  types: []
+  serves: []
+  registrable_domain: procore.com
+  role: support
+  relation: own
+- host: es-es.support.procore.com
+  found_by:
+  - probed
+  - site-links
+  types: []
+  serves: []
+  registrable_domain: procore.com
+  role: support
+  relation: own
+- host: es.support.procore.com
+  found_by:
+  - probed
+  - site-links
+  types: []
+  serves: []
+  registrable_domain: procore.com
+  role: support
+  relation: own
+- host: fr-ca.support.procore.com
+  found_by:
+  - probed
+  - site-links
+  types: []
+  serves: []
+  registrable_domain: procore.com
+  role: support
+  relation: own
+- host: fr.support.procore.com
+  found_by:
+  - probed
+  - site-links
+  types: []
+  serves: []
+  registrable_domain: procore.com
+  role: support
+  relation: own
+- host: github.com
+  found_by:
+  - pointer
+  types:
+  - GitHubOrganization
+  serves: []
+  registrable_domain: github.com
+  role: source
+  relation: platform
+- host: login.procore.com
+  found_by:
+  - pointer
+  - probed
+  - site-links
+  types:
+  - Login
+  serves: []
+  registrable_domain: procore.com
+  role: identity
+  relation: own
+- host: partners.procore.com
+  found_by:
+  - probed
+  - site-links
+  - namespace-probe
+  types: []
+  serves: []
+  title: Procore Partner Directory
+  status: 200
+  registrable_domain: procore.com
+  role: partner
+  relation: own
+- host: procore.com
+  found_by:
+  - probed
+  - contract-discovery
+  - well-known
+  types: []
+  serves: []
+  registrable_domain: procore.com
+  role: other
+  relation: own
+- host: support.procore.com
+  found_by:
+  - pointer
+  - vendor-detect
+  types:
+  - Support
+  serves:
+  - cdn
+  vendor: cloudfront
+  registrable_domain: procore.com
+  role: support
+  relation: own
+- host: trust.procore.com
+  found_by:
+  - pointer
+  - well-known
+  types:
+  - Compliance
+  serves: []
+  platform: app.safebase.io
+  registrable_domain: procore.com
+  role: other
+  relation: own
+- host: www.linkedin.com
+  found_by:
+  - pointer
+  types:
+  - LinkedIn
+  serves: []
+  registrable_domain: linkedin.com
+  role: other
+  relation: platform
+- host: www.procore.com
+  found_by:
+  - pointer
+  - apis[]
+  - probed
+  - contract-discovery
+  - well-known
+  - vendor-detect
+  types:
+  - Newsroom
+  - Website
+  - Integrations
+  - Blog
+  - Pricing
+  - TermsOfService
+  - PrivacyPolicy
+  serves:
+  - docs
+  - hosting
+  vendor: vercel
+  registrable_domain: procore.com
+  role: website
+  relation: own

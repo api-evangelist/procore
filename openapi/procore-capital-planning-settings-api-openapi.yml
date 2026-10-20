@@ -1,0 +1,449 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Capital Planning — Settings API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Capital Planning — Settings
+paths:
+  /rest/v1.0/companies/{company_id}/capital_planning/settings:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: partial
+    get:
+      description: Returns company-level Capital Planning settings (fiscal_year_start).
+      operationId: SettingsController_getSettings_rest/v1.0
+      parameters:
+      - name: company_id
+        required: true
+        in: path
+        description: Procore company identifier
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Capital Planning settings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fiscal_year_start:
+                    type: string
+                    enum:
+                    - january
+                    - february
+                    - march
+                    - april
+                    - may
+                    - june
+                    - july
+                    - august
+                    - september
+                    - october
+                    - november
+                    - december
+                    example: october
+                required:
+                - fiscal_year_start
+        '403':
+          description: Access denied — `TOOL_NOT_ACTIVATED`, `INSUFFICIENT_PERMISSIONS`, `READONLY_ACCESS`, or `ADMIN_ACCESS_REQUIRED`
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '404':
+          description: Company not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '503':
+          description: The permission check could not be completed (`AUTHORIZATION_UNAVAILABLE`) — safe to retry
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+      summary: Get Capital Planning settings
+      tags:
+      - Capital Planning — Settings
+      x-doc:
+        visibility: public
+        stage: beta
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/settings',\n  headers: {'Procore-Company-Id': 'SOME_STRING_VALUE'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          headers = { ''Procore-Company-Id'': "SOME_STRING_VALUE" }
+
+
+          conn.request("GET", "/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/settings", headers=headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/settings \\\n  --header 'Procore-Company-Id: SOME_STRING_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/settings\"),\n    Headers =\n    {\n        { \"Procore-Company-Id\", \"SOME_STRING_VALUE\" },\n    },\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+    patch:
+      description: Updates company-level Capital Planning settings (fiscal_year_start). Capital Planning Admin only.
+      operationId: SettingsController_updateSettings_rest/v1.0
+      parameters:
+      - name: company_id
+        required: true
+        in: path
+        description: Procore company identifier
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fiscal_year_start:
+                  type: string
+                  enum:
+                  - january
+                  - february
+                  - march
+                  - april
+                  - may
+                  - june
+                  - july
+                  - august
+                  - september
+                  - october
+                  - november
+                  - december
+                  example: october
+                  description: Company fiscal year start month (one of the twelve lowercase month names).
+              required:
+              - fiscal_year_start
+      responses:
+        '200':
+          description: Updated Capital Planning settings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fiscal_year_start:
+                    type: string
+                    enum:
+                    - january
+                    - february
+                    - march
+                    - april
+                    - may
+                    - june
+                    - july
+                    - august
+                    - september
+                    - october
+                    - november
+                    - december
+                    example: october
+                required:
+                - fiscal_year_start
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '403':
+          description: Access denied — `TOOL_NOT_ACTIVATED`, `INSUFFICIENT_PERMISSIONS`, `READONLY_ACCESS`, or `ADMIN_ACCESS_REQUIRED`
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '404':
+          description: Company not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '503':
+          description: The permission check could not be completed (`AUTHORIZATION_UNAVAILABLE`) — safe to retry
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+      summary: Update Capital Planning settings
+      tags:
+      - Capital Planning — Settings
+      x-doc:
+        visibility: public
+        stage: beta
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/settings',\n  headers: {'Procore-Company-Id': 'SOME_STRING_VALUE', 'content-type': 'application/json'},\n  body: {fiscal_year_start: 'october'},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: "import http.client\n\nconn = http.client.HTTPSConnection(\"api.procore.com\")\n\npayload = \"{\\\"fiscal_year_start\\\":\\\"october\\\"}\"\n\nheaders = {\n    'Procore-Company-Id': \"SOME_STRING_VALUE\",\n    'content-type': \"application/json\"\n    }\n\nconn.request(\"PATCH\", \"/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/settings\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/settings \\\n  --header 'Procore-Company-Id: SOME_STRING_VALUE' \\\n  --header 'content-type: application/json' \\\n  --data '{\"fiscal_year_start\":\"october\"}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/settings\"),\n    Headers =\n    {\n        { \"Procore-Company-Id\", \"SOME_STRING_VALUE\" },\n    },\n    Content = new StringContent(\"{\\\"fiscal_year_start\\\":\\\"october\\\"}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

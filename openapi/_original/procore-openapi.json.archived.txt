@@ -1,0 +1,2 @@
+# x-archived-from: procore-openapi.json
+# x-archived-on: 2026-10-20

@@ -1,0 +1,136 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Markup Retrieval V 2 Controller API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: markup-retrieval-v-2-controller
+paths:
+  /rest/v2.0/companies/{company_id}/projects/{project_id}/viewer_documents/markups/by_groups:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    post:
+      tags:
+      - markup-retrieval-v-2-controller
+      summary: Get Markups by Groups
+      description: Retrieves markups associated with specific group IDs.
+      operationId: getMarkupsByGroups
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier of the company
+        required: true
+        schema:
+          type: string
+      - name: project_id
+        in: path
+        description: Unique identifier of the project
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Page number for pagination (1-based)
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: per_page
+        in: query
+        description: Number of items per page (max 100)
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request body with group IDs
+              properties:
+                group_ids:
+                  type: array
+                  items:
+                    type: string
+                  maxItems: 100
+                  minItems: 1
+                item_id:
+                  type: string
+                  minLength: 1
+                item_type:
+                  type: string
+                  minLength: 1
+              required:
+              - group_ids
+              - item_id
+              - item_type
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/markups/by_groups',\n  qs: {page: 'SOME_INTEGER_VALUE', per_page: 'SOME_INTEGER_VALUE'},\n  headers: {'content-type': 'application/json'},\n  body: {group_ids: ['string'], item_id: 'string', item_type: 'string'},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPConnection("localhost:8080")
+
+
+          payload = "{\"group_ids\":[\"string\"],\"item_id\":\"string\",\"item_type\":\"string\"}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/markups/by_groups?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url 'http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/markups/by_groups?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE' \\\n  --header 'content-type: application/json' \\\n  --data '{\"group_ids\":[\"string\"],\"item_id\":\"string\",\"item_type\":\"string\"}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/markups/by_groups?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE\"),\n    Content = new StringContent(\"{\\\"group_ids\\\":[\\\"string\\\"],\\\"item_id\\\":\\\"string\\\",\\\"item_type\\\":\\\"string\\\"}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

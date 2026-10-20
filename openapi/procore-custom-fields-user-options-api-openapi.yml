@@ -1,0 +1,456 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Custom Fields User Options API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Custom Fields User Options
+paths:
+  /rest/v1.0/projects/{project_id}/custom_fields/{tool_name}/user_options:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: List Custom Fields User options
+      description: Returns login informations that have access to the specified tool.
+      tags:
+      - Custom Fields User Options
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        description: Unique identifier for the project.
+        schema:
+          type: integer
+      - name: tool_name
+        in: path
+        description: Tool name identifier
+        required: true
+        schema:
+          type: string
+          enum:
+          - submittal_log
+          - drawing_log
+          - specification_sections
+          - document_service
+      - name: filters[search]
+        in: query
+        description: filters results by the search query
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Page
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: Elements per page
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            Per-Page:
+              description: Number of items retrieved per page
+              schema:
+                type: integer
+            Total:
+              description: Total number of items to be retrieved
+              schema:
+                type: integer
+            Link:
+              description: Link headers for the first, prev, next, and last link
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                description: Array of users with access to tool for custom fields
+                items:
+                  allOf:
+                  - type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: Unique integer identifier for this user. Use as a value in the `user_ids` array when updating the default distribution list.
+                        example: 160586
+                      login:
+                        type: string
+                        description: Email address used to log in to Procore. Uniquely identifies the account.
+                        example: carl.contractor@example.com
+                      name:
+                        type: string
+                        description: Full display name of the user.
+                        example: Carl the Contractor
+                  - type: object
+                    properties:
+                      locale:
+                        type:
+                        - string
+                        - 'null'
+                        description: Locale preference of this user (e.g. `en`, `fr`). Null if the user has not set a locale preference.
+                        example: en
+                      company_name:
+                        type: string
+                        description: Display name of the company this user is associated with.
+                        example: Company ABC
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/custom_fields/%7Btool_name%7D/user_options',\n  qs: {\n    'filters[search]': 'SOME_STRING_VALUE',\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.0/projects/%7Bproject_id%7D/custom_fields/%7Btool_name%7D/user_options?filters%5Bsearch%5D=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/custom_fields/%7Btool_name%7D/user_options?filters%5Bsearch%5D=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/custom_fields/%7Btool_name%7D/user_options?filters%5Bsearch%5D=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added search support for List Custom Fields User options
+        description: Add functionality to the field set List Custom Fields User options endpoint to accept search query
+        endpoint: GET /projects/{project_id}/custom_fields/{tool_name}/user_options
+        type: feature
+        breaking: false
+        datestamp: '2025-08-21'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: configurable-field-sets?version=1.0#list-custom-fields-user-options
+      operationId: listCustomFieldsUserOptions
+  /rest/v2.0/companies/{company_id}/projects/{project_id}/custom_fields/{tool_name}/user_options:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: List Custom Fields User options
+      description: Returns login informations that have access to the specified tool.
+      tags:
+      - Custom Fields User Options
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier for the company.
+        required: true
+        schema:
+          type: string
+      - name: project_id
+        in: path
+        required: true
+        description: Unique identifier for the project.
+        schema:
+          type: string
+      - name: tool_name
+        in: path
+        description: Tool name identifier
+        required: true
+        schema:
+          type: string
+          enum:
+          - submittal_log
+          - drawing_log
+          - specification_sections
+          - document_service
+      - name: filters[search]
+        in: query
+        description: filters results by the search query
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Page
+        required: false
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: Elements per page
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      responses:
+        '200':
+          description: OK
+          headers:
+            Per-Page:
+              description: Number of items retrieved per page
+              schema:
+                type: integer
+            Total:
+              description: Total number of items to be retrieved
+              schema:
+                type: integer
+            Link:
+              description: Link headers for the first, prev, next, and last link
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    description: Array of users with access to tool for custom fields
+                    items:
+                      allOf:
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            description: The unique identifier of the user.
+                            example: '160586'
+                          login:
+                            type: string
+                            description: The email address of the user that is used to log in.
+                            example: carl.contractor@example.com
+                          name:
+                            type: string
+                            description: The name of the user.
+                            example: Carl the Contractor
+                      - type: object
+                        properties:
+                          company_name:
+                            type: string
+                            description: User's Company Name
+                            example: Company ABC
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/custom_fields/%7Btool_name%7D/user_options',\n  qs: {\n    'filters[search]': 'SOME_STRING_VALUE',\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/custom_fields/%7Btool_name%7D/user_options?filters%5Bsearch%5D=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/custom_fields/%7Btool_name%7D/user_options?filters%5Bsearch%5D=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/custom_fields/%7Btool_name%7D/user_options?filters%5Bsearch%5D=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added search support for List Custom Fields User options
+        description: Add functionality to the field set List Custom Fields User options endpoint to accept search query
+        endpoint: GET /companies/{company_id}/projects/{project_id}/custom_fields/{tool_name}/user_options
+        type: feature
+        breaking: false
+        datestamp: '2025-08-21'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: configurable-field-sets?version=2.0#list-custom-fields-user-options
+      - summary: Notice of General Availability
+        description: 'This endpoint was previously private and in pilot, and is now publicly
+
+          available and generally available (GA). No changes were made to the API
+
+          contract, only visibility and stage updates.'
+        endpoint: GET /companies/{company_id}/projects/{project_id}/custom_fields/{tool_name}/user_options
+        type: refinement
+        breaking: false
+        datestamp: '2026-08-11'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: configurable-field-sets?version=2.0#list-custom-fields-user-options
+      operationId: listCustomFieldsUserOptions2
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

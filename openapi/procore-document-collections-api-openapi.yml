@@ -1,0 +1,736 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Document Collections API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Document Collections
+paths:
+  /rest/v2.0/companies/{company_id}/projects/{project_id}/document_management/document_collections:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: partial
+    get:
+      description: 'Returns the Document Collections for a Project, including the "All Documents" collection tagged `PDM:collection.all_documents`.
+
+
+        Supported filters: `id`, `ids`, `updated_at`.
+
+
+        Pass `view=ids_only` to receive an array of Document Collection ids instead of full objects.'
+      operationId: DocumentCollectionsV2Controller_getDocumentCollectionsListV2_0
+      parameters:
+      - name: company_id
+        required: true
+        in: path
+        description: Company ID
+        schema:
+          type: string
+      - name: project_id
+        required: true
+        in: path
+        description: Project ID
+        schema:
+          type: string
+      - name: view
+        required: false
+        in: query
+        description: Optional response view. Omit or pass `default` for full Document Collection objects. `ids_only` returns an array of ids and raises the `per_page` ceiling from 100 to 5000. The published `per_page` maximum reflects the default view.
+        schema:
+          enum:
+          - default
+          - ids_only
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: Page
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - name: per_page
+        required: false
+        in: query
+        description: Elements per page
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      - name: locale
+        required: false
+        in: query
+        description: Language for the response to be translated into
+        schema:
+          type: string
+          enum:
+          - de-DE
+          - en-AE
+          - en-AU
+          - en-CA
+          - en-GB
+          - en-SG
+          - en
+          - es-ES
+          - es
+          - fr-CA
+          - fr-FR
+          - is-IS
+          - ja-JP
+          - pl-PL
+          - pseudo
+          - pt-BR
+          - th-TH
+          - zh-SG
+          - zh-TW
+          - nb-NO
+          - pt-PT
+          - it-IT
+      - name: filters
+        required: false
+        in: query
+        description: 'Filter which Document Collections are returned. `id` and `ids` match collection ids and are combined when both are sent. `updated_at` is an inclusive ISO-8601 range `start...end`.
+
+          Valid filterable fields are:
+
+          id,
+
+          ids,
+
+          updated_at'
+        schema:
+          type: object
+          properties:
+            id:
+              oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            ids:
+              oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            updated_at:
+              oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+      responses:
+        '200':
+          description: Returns Project Document Collections. The default view returns Document Collection objects; `view=ids_only` returns an array of Document Collection ids instead.
+          headers:
+            Per-Page:
+              description: Number of items retrieved per page
+              schema:
+                type: number
+            Total:
+              description: Total number of items to be retrieved
+              schema:
+                type: number
+            Link:
+              description: Link headers for the first, prev, next and last link
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Document Collection objects by default. When `view=ids_only` is passed, an array of Document Collection ids instead.
+                    oneOf:
+                    - type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: 01G3F39BRDKDK04FV9BARK6YTS
+                          name:
+                            type: string
+                            example: Construction
+                          description:
+                            type: string
+                            example: Description
+                          default_index_type:
+                            type: string
+                            example: all_revisions
+                            enum:
+                            - latest_revisions
+                            - all_revisions
+                          icon:
+                            type: string
+                            example: ChartLine
+                            format: string
+                            enum:
+                            - ListGrouped
+                            - Building
+                            - Presentation
+                            - Ruler
+                            - ShieldStar
+                            - Star
+                            - Toolbox
+                            - Video
+                            - WrenchHammer
+                            - Blueprint
+                            - PeopleGroup
+                            - ListCurrencyUSA
+                            - Lock
+                            - Location
+                            - Lightning
+                            - Plug
+                            - Key
+                            - Home
+                            - GlobalNetwork
+                            - Earth
+                            - Workflow
+                            - Fire
+                            - Excavator
+                            - Envelope
+                            - Education
+                            - Folder
+                            - ChartLine
+                            - Check
+                            - Camera
+                            - Archive
+                            - Cone
+                            - PushpinOff
+                            - ClipboardBulletedChecks
+                            - FileList
+                            - PencilRuler
+                            - Clock
+                            - Person
+                            - ArrowsConverge
+                            - Book
+                            - PencilSignature
+                            - Binoculars
+                            - Payments
+                            - Paperclip
+                            - Siren
+                            - Warning
+                            - Gantt
+                            - Stamp
+                            - PlaceholderDefault
+                          position:
+                            type: string
+                            example: '3'
+                          tags:
+                            type: array
+                            description: System-collection markers. Empty for custom collections. Identify the All Documents collection by `PDM:collection.all_documents`; do not use `name`, which is localized and user-editable. Other tags identify the In Review and Published collections.
+                            items:
+                              type: string
+                              enum:
+                              - PDM:collection.all_documents
+                              - PDM:collection.in_review
+                              - PDM:collection.published
+                            example:
+                            - PDM:collection.all_documents
+                          filters:
+                            description: Saved field filters on the collection, including `field.active` and `acceptable_values[].active` / `acceptable_values[].tags`.
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                field:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                      example: 01G3F39BRDKDK04FV9BARK6YTS
+                                    name:
+                                      type: string
+                                      enum:
+                                      - original_filename
+                                      - file_format
+                                      - format
+                                      - type
+                                      - name
+                                      - description
+                                      - revision
+                                      - status
+                                      - classification
+                                      - project_stage
+                                      - project
+                                      - originator
+                                      - volume
+                                      - location
+                                      - discipline
+                                      - number
+                                      - created_at
+                                      - created_by
+                                      - date_authored
+                                      - authored_by
+                                      - updated_at
+                                      - updated_by
+                                      - uploaded_at
+                                      - uploaded_by
+                                      - file_size
+                                      - project_new
+                                      - assigned_workflow
+                                      - assigned_workflow_template
+                                      - workflow_assignees
+                                      - workflow_current_step_assignees
+                                      - workflow_current_step
+                                      - workflow_step_due_date
+                                      - workflow_manager
+                                      - workflow_status
+                                      - workflow_template_version
+                                      - workflow_pending_assignees
+                                      - workflow_current_step_roles
+                                      - version
+                                      - in_active_workflow
+                                      - workflow_completion_date
+                                      - submitted_into_drawings
+                                      - custom_field_id
+                                      - submitted_into_drawings_by
+                                      - submitted_into_drawings_at
+                                      - cf_lov_entries
+                                      - recycled_by
+                                      - recycled_at
+                                      - recycled_reason
+                                      - action_required
+                                      - document_stage
+                                      - item_content
+                                      - placeholder_assignee
+                                      - placeholder_due_date
+                                      - placeholder_created_by
+                                      - package
+                                    type:
+                                      type: string
+                                      enum:
+                                      - string
+                                      - reference
+                                      - lov_entry
+                                      - lov_entries
+                                      - rich_text
+                                      - timestamp
+                                      - numeric
+                                    label:
+                                      type: string
+                                      example: Label
+                                    description:
+                                      type: string
+                                      example: Description
+                                    active:
+                                      type: boolean
+                                      description: Whether the field is active on the project
+                                    custom_field_definition_id:
+                                      type: string
+                                      example: 01G3F39BRDKDK04FV9BARK6YTS
+                                    variant:
+                                      type: string
+                                  required:
+                                  - id
+                                  - name
+                                  - type
+                                  - label
+                                  - description
+                                acceptable_values:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      id:
+                                        type: string
+                                        example: 01G3F39BRDKDK04FV9BARK6YTS
+                                      code:
+                                        type: string
+                                        example: S3
+                                      label:
+                                        type: string
+                                        example: Label
+                                      active:
+                                        type: boolean
+                                      tags:
+                                        type: array
+                                        items:
+                                          type: string
+                                          enum:
+                                          - ML:auto-detect.type.drawing
+                                          - ML:auto-detect.type.specification
+                                          - WF:default_workflow
+                                          - PDM:status.pending_file
+                                    required:
+                                    - label
+                              required:
+                              - field
+                              - acceptable_values
+                          latest_document_collection_event_id:
+                            type: string
+                            example: 01G3F39BRDKDK04FV9BARK6YTS
+                          index:
+                            type: object
+                            properties:
+                              status:
+                                type: string
+                                enum:
+                                - indexing
+                                - ready
+                                - pending_update
+                                - needs_cleaning
+                                - cleaning
+                                - needs_indexing
+                            required:
+                            - status
+                          created_at:
+                            type: string
+                            example: '2012-04-23T18:25:43Z'
+                            format: date-time
+                          updated_at:
+                            type: string
+                            example: '2012-04-23T18:25:43Z'
+                            format: date-time
+                        required:
+                        - id
+                        - name
+                        - description
+                        - default_index_type
+                        - icon
+                        - position
+                        - tags
+                        - filters
+                        - latest_document_collection_event_id
+                        - index
+                        - created_at
+                        - updated_at
+                    - type: array
+                      items:
+                        type: string
+                required:
+                - data
+        '400':
+          description: 'Bad Request
+
+
+            Possible reason codes:
+
+            - MISSING_REQUIRED_PROPERTY
+
+            - INVALID_PROPERTY'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Top level HTTP error code
+                        enum:
+                        - BAD_REQUEST
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - GONE
+                        - METHOD_NOT_ALLOWED
+                        - NOT_ACCEPTABLE
+                        - CONFLICT
+                        - UNPROCESSABLE_ENTITY
+                        - TOO_MANY_REQUESTS
+                        - PAYLOAD_TOO_LARGE
+                        - INTERNAL_SERVER_ERROR
+                        example: BAD_REQUEST
+                      message:
+                        type: string
+                        description: Human readable message describing the HTTP error code
+                        example: Bad Request
+                      details:
+                        type: array
+                        description: Specific information to convey the nature and source of the error(s)
+                        items:
+                          type: object
+                          properties:
+                            reason_code:
+                              type: string
+                              description: 'Specific code representing the details of an error.
+
+
+                                Possible reason codes:
+
+                                - ACCESS_DENIED
+
+                                - MISSING_REQUIRED_PROPERTY
+
+                                - INVALID_PROPERTY
+
+                                - INVALID_BODY
+
+                                - INVALID_TOKEN
+
+                                - INVALID_URL
+
+                                - INTERNAL_ERROR
+
+                                - NOT_FOUND
+
+                                - GONE
+
+                                - ENDPOINT_DEPRECATED
+
+                                - EXCEEDS_LIMIT
+
+                                - ALREADY_EXISTS
+
+                                - RESOURCE_IN_USE'
+                              example: MISSING_REQUIRED_PROPERTY
+                            source:
+                              type: string
+                              description: Specific field or domain identifying where this error occurred
+                              example: first_name
+                            message:
+                              type: string
+                              description: Human readable message describing the specific error
+                              example: First name is a required property
+                          required:
+                          - reason_code
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '401':
+          description: 'Unauthorized
+
+
+            Possible reason codes:
+
+            - INVALID_TOKEN'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Top level HTTP error code
+                        enum:
+                        - BAD_REQUEST
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - GONE
+                        - METHOD_NOT_ALLOWED
+                        - NOT_ACCEPTABLE
+                        - CONFLICT
+                        - UNPROCESSABLE_ENTITY
+                        - TOO_MANY_REQUESTS
+                        - PAYLOAD_TOO_LARGE
+                        - INTERNAL_SERVER_ERROR
+                        example: BAD_REQUEST
+                      message:
+                        type: string
+                        description: Human readable message describing the HTTP error code
+                        example: Bad Request
+                      details:
+                        type: array
+                        description: Specific information to convey the nature and source of the error(s)
+                        items:
+                          type: object
+                          properties:
+                            reason_code:
+                              type: string
+                              description: 'Specific code representing the details of an error.
+
+
+                                Possible reason codes:
+
+                                - ACCESS_DENIED
+
+                                - MISSING_REQUIRED_PROPERTY
+
+                                - INVALID_PROPERTY
+
+                                - INVALID_BODY
+
+                                - INVALID_TOKEN
+
+                                - INVALID_URL
+
+                                - INTERNAL_ERROR
+
+                                - NOT_FOUND
+
+                                - GONE
+
+                                - ENDPOINT_DEPRECATED
+
+                                - EXCEEDS_LIMIT
+
+                                - ALREADY_EXISTS
+
+                                - RESOURCE_IN_USE'
+                              example: MISSING_REQUIRED_PROPERTY
+                            source:
+                              type: string
+                              description: Specific field or domain identifying where this error occurred
+                              example: first_name
+                            message:
+                              type: string
+                              description: Human readable message describing the specific error
+                              example: First name is a required property
+                          required:
+                          - reason_code
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '403':
+          description: 'Forbidden
+
+
+            Possible reason codes:
+
+            - ACCESS_DENIED'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Top level HTTP error code
+                        enum:
+                        - BAD_REQUEST
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - GONE
+                        - METHOD_NOT_ALLOWED
+                        - NOT_ACCEPTABLE
+                        - CONFLICT
+                        - UNPROCESSABLE_ENTITY
+                        - TOO_MANY_REQUESTS
+                        - PAYLOAD_TOO_LARGE
+                        - INTERNAL_SERVER_ERROR
+                        example: BAD_REQUEST
+                      message:
+                        type: string
+                        description: Human readable message describing the HTTP error code
+                        example: Bad Request
+                      details:
+                        type: array
+                        description: Specific information to convey the nature and source of the error(s)
+                        items:
+                          type: object
+                          properties:
+                            reason_code:
+                              type: string
+                              description: 'Specific code representing the details of an error.
+
+
+                                Possible reason codes:
+
+                                - ACCESS_DENIED
+
+                                - MISSING_REQUIRED_PROPERTY
+
+                                - INVALID_PROPERTY
+
+                                - INVALID_BODY
+
+                                - INVALID_TOKEN
+
+                                - INVALID_URL
+
+                                - INTERNAL_ERROR
+
+                                - NOT_FOUND
+
+                                - GONE
+
+                                - ENDPOINT_DEPRECATED
+
+                                - EXCEEDS_LIMIT
+
+                                - ALREADY_EXISTS
+
+                                - RESOURCE_IN_USE'
+                              example: MISSING_REQUIRED_PROPERTY
+                            source:
+                              type: string
+                              description: Specific field or domain identifying where this error occurred
+                              example: first_name
+                            message:
+                              type: string
+                              description: Human readable message describing the specific error
+                              example: First name is a required property
+                          required:
+                          - reason_code
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+      summary: List Document Collections
+      tags:
+      - Document Collections
+      x-doc:
+        visibility: public
+        stage: beta
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/document_management/document_collections',\n  qs: {\n    view: 'SOME_STRING_VALUE',\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE',\n    locale: 'SOME_STRING_VALUE',\n    filters: 'SOME_OBJECT_VALUE'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/document_management/document_collections?view=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&locale=SOME_STRING_VALUE&filters=SOME_OBJECT_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/document_management/document_collections?view=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&locale=SOME_STRING_VALUE&filters=SOME_OBJECT_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/document_management/document_collections?view=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&locale=SOME_STRING_VALUE&filters=SOME_OBJECT_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

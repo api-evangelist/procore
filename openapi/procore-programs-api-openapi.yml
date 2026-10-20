@@ -1,0 +1,1082 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Programs API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Programs
+paths:
+  /rest/v1.0/companies/{company_id}/programs:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: company_id
+      in: path
+      description: Unique identifier for the company.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: List programs
+      description: Return a list of programs for a company.
+      tags:
+      - Programs
+      parameters:
+      - name: page
+        in: query
+        description: Page
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: Elements per page
+        schema:
+          type: integer
+      - name: view
+        in: query
+        required: false
+        description: Response field set to return. Defaults to normal.
+        schema:
+          type: string
+          enum:
+          - normal
+          - name
+          default: normal
+      responses:
+        '200':
+          description: OK
+          headers:
+            Per-Page:
+              description: Number of items retrieved per page
+              schema:
+                type: integer
+            Total:
+              description: Total number of items to be retrieved
+              schema:
+                type: integer
+            Link:
+              description: Link headers for the first, prev, next, and last link
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                description: Array of programs.
+                items:
+                  title: Program
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: Unique identifier for this program.
+                      example: 1
+                    name:
+                      type: string
+                      description: Display name of the program.
+                      example: NW USA
+                    address_freeform:
+                      type:
+                      - string
+                      - 'null'
+                      description: Freeform address of the program.
+                      example: Seattle
+                    website:
+                      type:
+                      - string
+                      - 'null'
+                      description: Website URL for the program.
+                      example: http://nwexampleprogram.com
+                    photo_prostore_file_id:
+                      type:
+                      - integer
+                      - 'null'
+                      description: ID of the Prostore file used as the program photo.
+                      example: 1001
+                    logo_prostore_file_id:
+                      type:
+                      - integer
+                      - 'null'
+                      description: ID of the Prostore file used as the program logo.
+                      example: 1002
+                    photo_prostore_file_url:
+                      type:
+                      - string
+                      - 'null'
+                      description: URL of the program photo.
+                      example: https://storage.procore.com/programs/photo.jpg
+                    logo_prostore_file_url:
+                      type:
+                      - string
+                      - 'null'
+                      description: URL of the program logo.
+                      example: https://storage.procore.com/programs/logo.jpg
+                    project_count:
+                      type: integer
+                      description: Number of projects associated with the program.
+                      example: 3
+                  example:
+                    id: 1
+                    name: NW USA
+                    address_freeform: Seattle
+                    website: http://nwexampleprogram.com
+                    photo_prostore_file_id: 1001
+                    logo_prostore_file_id: 1002
+                    photo_prostore_file_url: https://storage.procore.com/programs/photo.jpg
+                    logo_prostore_file_url: https://storage.procore.com/programs/logo.jpg
+                    project_count: 3
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/programs',\n  qs: {\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE',\n    view: 'SOME_STRING_VALUE'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.0/companies/%7Bcompany_id%7D/programs?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&view=SOME_STRING_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/programs?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&view=SOME_STRING_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/programs?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&view=SOME_STRING_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Add project count and remove deletable from the response
+        description: Add project count and remove deletable from the response
+        endpoint: GET /companies/{company_id}/programs
+        type: refinement
+        breaking: true
+        datestamp: '2025-03-06'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: programs?version=1.0#list-programs
+      operationId: listPrograms
+    post:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Create program
+      description: Create a program for a company.
+      tags:
+      - Programs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Body
+              type: object
+              required:
+              - program
+              properties:
+                program:
+                  title: Program
+                  type: object
+                  required:
+                  - name
+                  properties:
+                    name:
+                      type: string
+                      description: Display name of the program.
+                      example: Program A
+                    address_freeform:
+                      type: string
+                      description: Freeform address of the program.
+                      example: 500 Construction Way, Santa Barbara
+                    website:
+                      type: string
+                      description: Website URL for the program.
+                      example: http://www.example.com
+                    zip:
+                      type: string
+                      description: Postal or ZIP code for the program.
+                      example: 91013
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                allOf:
+                - title: Program
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: Unique identifier for this program.
+                      example: 1
+                    name:
+                      type: string
+                      description: Display name of the program.
+                      example: NW USA
+                    address_freeform:
+                      type:
+                      - string
+                      - 'null'
+                      description: Freeform address of the program.
+                      example: Seattle
+                    website:
+                      type:
+                      - string
+                      - 'null'
+                      description: Website URL for the program.
+                      example: http://www.example.com
+                - type: object
+                  properties:
+                    zip:
+                      type:
+                      - string
+                      - 'null'
+                      description: Postal or ZIP code for the program.
+                      example: '91013'
+                    longitude:
+                      type:
+                      - string
+                      - 'null'
+                      description: Longitude coordinate of the program.
+                      example: -122.4194
+                    latitude:
+                      type:
+                      - string
+                      - 'null'
+                      description: Latitude coordinate of the program.
+                      example: 37.7749
+                    projects:
+                      type: array
+                      description: Projects associated with this program.
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            description: Unique identifier for the project.
+                            example: 46146
+                          name:
+                            type: string
+                            description: Display name of the project.
+                            example: 2014 Draft
+                          project_number:
+                            type:
+                            - string
+                            - 'null'
+                            description: Company-assigned project number.
+                            example: '1234'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/programs',\n  headers: {'content-type': 'application/json'},\n  body: {\n    program: {\n      name: 'Program A',\n      address_freeform: '500 Construction Way, Santa Barbara',\n      website: 'http://www.example.com',\n      zip: 91013\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"program\":{\"name\":\"Program A\",\"address_freeform\":\"500 Construction Way, Santa Barbara\",\"website\":\"http://www.example.com\",\"zip\":91013}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v1.0/companies/%7Bcompany_id%7D/programs", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/programs \\\n  --header 'content-type: application/json' \\\n  --data '{\"program\":{\"name\":\"Program A\",\"address_freeform\":\"500 Construction Way, Santa Barbara\",\"website\":\"http://www.example.com\",\"zip\":91013}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/programs\"),\n    Content = new StringContent(\"{\\\"program\\\":{\\\"name\\\":\\\"Program A\\\",\\\"address_freeform\\\":\\\"500 Construction Way, Santa Barbara\\\",\\\"website\\\":\\\"http://www.example.com\\\",\\\"zip\\\":91013}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: createProgram
+  /rest/v1.0/companies/{company_id}/programs/{id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: company_id
+      in: path
+      description: Unique identifier for the company.
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      description: ID of the program.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Show program
+      description: Return details for a specified program.
+      tags:
+      - Programs
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                - title: Program
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: Unique identifier for this program.
+                      example: 1
+                    name:
+                      type: string
+                      description: Display name of the program.
+                      example: NW USA
+                    address_freeform:
+                      type:
+                      - string
+                      - 'null'
+                      description: Freeform address of the program.
+                      example: Seattle
+                    website:
+                      type:
+                      - string
+                      - 'null'
+                      description: Website URL for the program.
+                      example: http://www.example.com
+                - type: object
+                  properties:
+                    zip:
+                      type:
+                      - string
+                      - 'null'
+                      description: Postal or ZIP code for the program.
+                      example: '91013'
+                    longitude:
+                      type:
+                      - string
+                      - 'null'
+                      description: Longitude coordinate of the program.
+                      example: -122.4194
+                    latitude:
+                      type:
+                      - string
+                      - 'null'
+                      description: Latitude coordinate of the program.
+                      example: 37.7749
+                    projects:
+                      type: array
+                      description: Projects associated with this program.
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            description: Unique identifier for the project.
+                            example: 46146
+                          name:
+                            type: string
+                            description: Display name of the project.
+                            example: 2014 Draft
+                          project_number:
+                            type:
+                            - string
+                            - 'null'
+                            description: Company-assigned project number.
+                            example: '1234'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/programs/%7Bid%7D'\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.0/companies/%7Bcompany_id%7D/programs/%7Bid%7D")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/programs/%7Bid%7D"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/programs/%7Bid%7D\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: showProgram
+    patch:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Update program
+      description: Update the specified program.
+      tags:
+      - Programs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Body
+              type: object
+              required:
+              - program
+              properties:
+                program:
+                  title: Program
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: Display name of the program.
+                      example: Program A
+                    address_freeform:
+                      type: string
+                      description: Freeform address of the program.
+                      example: 500 Construction Way, Santa Barbara
+                    website:
+                      type: string
+                      description: Website URL for the program.
+                      example: http://www.example.com
+                    zip:
+                      type: string
+                      description: Postal or ZIP code for the program.
+                      example: 91013
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                - title: Program
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: Unique identifier for this program.
+                      example: 1
+                    name:
+                      type: string
+                      description: Display name of the program.
+                      example: NW USA
+                    address_freeform:
+                      type:
+                      - string
+                      - 'null'
+                      description: Freeform address of the program.
+                      example: Seattle
+                    website:
+                      type:
+                      - string
+                      - 'null'
+                      description: Website URL for the program.
+                      example: http://www.example.com
+                - type: object
+                  properties:
+                    zip:
+                      type:
+                      - string
+                      - 'null'
+                      description: Postal or ZIP code for the program.
+                      example: '91013'
+                    longitude:
+                      type:
+                      - string
+                      - 'null'
+                      description: Longitude coordinate of the program.
+                      example: -122.4194
+                    latitude:
+                      type:
+                      - string
+                      - 'null'
+                      description: Latitude coordinate of the program.
+                      example: 37.7749
+                    projects:
+                      type: array
+                      description: Projects associated with this program.
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            description: Unique identifier for the project.
+                            example: 46146
+                          name:
+                            type: string
+                            description: Display name of the project.
+                            example: 2014 Draft
+                          project_number:
+                            type:
+                            - string
+                            - 'null'
+                            description: Company-assigned project number.
+                            example: '1234'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/programs/%7Bid%7D',\n  headers: {'content-type': 'application/json'},\n  body: {\n    program: {\n      name: 'Program A',\n      address_freeform: '500 Construction Way, Santa Barbara',\n      website: 'http://www.example.com',\n      zip: 91013\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"program\":{\"name\":\"Program A\",\"address_freeform\":\"500 Construction Way, Santa Barbara\",\"website\":\"http://www.example.com\",\"zip\":91013}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("PATCH", "/rest/v1.0/companies/%7Bcompany_id%7D/programs/%7Bid%7D", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/programs/%7Bid%7D \\\n  --header 'content-type: application/json' \\\n  --data '{\"program\":{\"name\":\"Program A\",\"address_freeform\":\"500 Construction Way, Santa Barbara\",\"website\":\"http://www.example.com\",\"zip\":91013}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/programs/%7Bid%7D\"),\n    Content = new StringContent(\"{\\\"program\\\":{\\\"name\\\":\\\"Program A\\\",\\\"address_freeform\\\":\\\"500 Construction Way, Santa Barbara\\\",\\\"website\\\":\\\"http://www.example.com\\\",\\\"zip\\\":91013}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: updateProgram
+    delete:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Delete program
+      description: Delete the specified program.
+      tags:
+      - Programs
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'DELETE',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/programs/%7Bid%7D'\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("DELETE", "/rest/v1.0/companies/%7Bcompany_id%7D/programs/%7Bid%7D")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request DELETE \\\n  --url https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/programs/%7Bid%7D"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Delete,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/programs/%7Bid%7D\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: deleteProgram
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

@@ -1,0 +1,2681 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Tax Codes API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Tax Codes
+paths:
+  /rest/v2.0/companies/{company_id}/tax/codes:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: partial
+    post:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-endpoint-type: mutation
+      summary: Create Tax Code
+      description: Create Tax Code for a given company
+      tags:
+      - Tax Codes
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier for the company.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Tax Code Create
+              type: object
+              required:
+              - code
+              - description
+              - rate
+              properties:
+                code:
+                  type: string
+                  description: Tax Code Name
+                  example: NEW-CODE-1
+                description:
+                  type: string
+                  description: Tax Code Description
+                  example: New Description 1
+                rate:
+                  type: object
+                  description: Tax Code Rate
+                  properties:
+                    rate:
+                      type: string
+                      description: Tax Code Rate Value
+                      example: '20.0'
+                    invoice_tax_application:
+                      type: string
+                      enum:
+                      - gross
+                      - net
+                      description: Tax Code Invoice Tax Application. GROSS is accepted only when the company is on the new tax experience. Omit or send NET for the legacy experience.
+                      example: gross
+                display_in_budget:
+                  type: boolean
+                  description: Whether the tax code should be displayed in budget views
+                  example: true
+                is_group:
+                  type: boolean
+                  description: Whether this tax code is a group. A group tax code aggregates multiple component tax codes. Requires the `financials.tax.enable_tax_groups` feature flag to be enabled.
+                  example: true
+                component_tax_code_ids:
+                  type: array
+                  description: IDs of the component tax codes that make up this group. Only valid when `is_group` is `true`. Requires the `financials.tax.enable_tax_groups` feature flag to be enabled.
+                  items:
+                    type: integer
+                  example:
+                  - 101
+                  - 102
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                title: Company Tax Code Create
+                type: object
+                properties:
+                  data:
+                    title: Company Tax Code
+                    description: Tax Code
+                    type: object
+                    allOf:
+                    - title: Common Tax Code Rate Properties
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Unique string identifier for this tax code. Use as the {id} path parameter in PATCH /rest/v2.0/companies/{company_id}/tax/codes/{id} to update this code.
+                          example: '12'
+                        code:
+                          type: string
+                          description: Short identifier string for the tax code (e.g., 'GST-10'). Must be unique within the company. Required on create.
+                          example: NEW-CODE-1
+                        description:
+                          type:
+                          - string
+                          - 'null'
+                          description: Human-readable description of the tax code's purpose (e.g., 'Goods and Services Tax'). Nullable.
+                          example: New Description 1
+                        archived:
+                          type: boolean
+                          description: Whether this tax code has been archived. Archived codes are excluded from active selection unless status=ARCHIVED is passed. true = archived, false = active.
+                          example: false
+                        display_in_budget:
+                          type: boolean
+                          description: Whether the tax code should be displayed in budget views
+                          example: true
+                        is_group:
+                          type: boolean
+                          description: Whether this tax code is a group that aggregates multiple component tax codes
+                          example: false
+                    - type: object
+                      properties:
+                        rate:
+                          title: Company Rate Code
+                          description: Tax Rate Create
+                          type: object
+                          allOf:
+                          - title: Common Tax Code Rate Properties
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                description: Tax Rate ID
+                                example: '12'
+                              tax_code_id:
+                                type: string
+                                description: Tax Code Id
+                                example: '13'
+                              rate:
+                                type: string
+                                description: Tax Code Rate Value
+                                example: '20.0'
+                              effective_start_date:
+                                type: string
+                                description: ISO 8601 date string for when this tax rate becomes effective (e.g., '2024-01-01'). The rate applies to transactions on or after this date.
+                                example: '2024-01-01'
+                              effective_end_date:
+                                type:
+                                - string
+                                - 'null'
+                                description: ISO 8601 date string for when this tax rate expires. Null if this is the current active rate with no scheduled successor.
+                                example: '2024-12-31'
+                              created_at:
+                                type: string
+                                description: ISO 8601 timestamp when this rate record was created.
+                                example: '2024-01-01T00:00:00Z'
+                              invoice_tax_application:
+                                type: string
+                                enum:
+                                - NET
+                                - GROSS
+                                - NONE
+                                description: 'Specifies how tax is applied on invoices. One of: ''NET'' (tax calculated on the net/pre-tax amount), ''GROSS'' (tax calculated on the gross/total amount), ''NONE'' (used for group tax codes — the effective rate is the aggregate of its component codes'' rates).'
+                          - type: object
+                            properties:
+                              created_by:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                    description: String ID of the user who created this tax rate. Use with the Users API to retrieve user details.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/tax/codes',\n  headers: {'content-type': 'application/json'},\n  body: {\n    code: 'NEW-CODE-1',\n    description: 'New Description 1',\n    rate: {rate: '20.0', invoice_tax_application: 'gross'},\n    display_in_budget: true,\n    is_group: true,\n    component_tax_code_ids: [101, 102]\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"code\":\"NEW-CODE-1\",\"description\":\"New Description 1\",\"rate\":{\"rate\":\"20.0\",\"invoice_tax_application\":\"gross\"},\"display_in_budget\":true,\"is_group\":true,\"component_tax_code_ids\":[101,102]}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v2.0/companies/%7Bcompany_id%7D/tax/codes", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/tax/codes \\\n  --header 'content-type: application/json' \\\n  --data '{\"code\":\"NEW-CODE-1\",\"description\":\"New Description 1\",\"rate\":{\"rate\":\"20.0\",\"invoice_tax_application\":\"gross\"},\"display_in_budget\":true,\"is_group\":true,\"component_tax_code_ids\":[101,102]}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/tax/codes\"),\n    Content = new StringContent(\"{\\\"code\\\":\\\"NEW-CODE-1\\\",\\\"description\\\":\\\"New Description 1\\\",\\\"rate\\\":{\\\"rate\\\":\\\"20.0\\\",\\\"invoice_tax_application\\\":\\\"gross\\\"},\\\"display_in_budget\\\":true,\\\"is_group\\\":true,\\\"component_tax_code_ids\\\":[101,102]}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Add Company Create Tax Code endpoint
+        description: Add Company Create Tax Code endpoint to create a tax code.
+        endpoint: POST /companies/{company_id}/tax/codes
+        type: new
+        breaking: false
+        datestamp: '2025-04-17'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#create-tax-code
+      - summary: Add display_in_budget field to Create Tax Code endpoint
+        description: 'Add display_in_budget field to Create Tax Code endpoint request body and response.
+
+          This field controls whether the tax code should be displayed in budget views.'
+        endpoint: POST /companies/{company_id}/tax/codes
+        type: feature
+        breaking: false
+        datestamp: '2026-02-02'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#create-tax-code
+      - summary: Add `is_group` and `component_tax_code_ids` fields to Create Tax Code endpoint
+        description: 'Add `is_group` boolean to designate a tax code as a group, and `component_tax_code_ids`
+
+          array to specify member tax codes when creating a group. Requires the
+
+          financials.tax.enable_tax_groups feature flag to be active.'
+        endpoint: POST /companies/{company_id}/tax/codes
+        type: feature
+        breaking: false
+        datestamp: '2026-03-10'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#create-tax-code
+      - summary: Notice of Open Beta
+        description: 'This endpoint was previously private and in pilot, and is now publicly
+
+          documented in open beta. No changes were made to the API contract, only
+
+          visibility and stage updates.'
+        endpoint: POST /companies/{company_id}/tax/codes
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-14'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#create-tax-code
+      - summary: Notice of General Availability
+        description: 'This endpoint has graduated from open beta to general availability (GA).
+
+          No changes were made to the API contract, only the stage update.'
+        endpoint: POST /companies/{company_id}/tax/codes
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-23'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#create-tax-code
+      operationId: createTaxCode2
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-endpoint-type: collection
+      summary: Get Tax Codes
+      description: Get Tax Codes for a given company
+      tags:
+      - Tax Codes
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier for the company.
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Page
+        required: false
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: Elements per page
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      - name: sort
+        in: query
+        required: false
+        description: Direction (asc/desc) can be controlled by the presence or absence of '-' before the sort parameter
+        schema:
+          type: string
+          enum:
+          - code
+          - -code
+          - id
+          - -id
+      - name: id
+        in: query
+        required: true
+        description: List of tax code ids
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: code
+        in: query
+        required: false
+        description: List of tax codes
+        schema:
+          type: array
+          items:
+            type: string
+      - name: status
+        in: query
+        required: false
+        description: include archived or active tax codes
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - ACTIVE
+            - ARCHIVED
+      - name: include_rate
+        in: query
+        required: false
+        description: Whether to include rate data
+        schema:
+          type: boolean
+      - name: erp_synced
+        in: query
+        required: false
+        description: 'Whether to filter results to only ERP-synced codes.
+
+          - `true`: Return **only ERP-synced** codes.
+
+          - `false`: Return **all** company codes.
+
+          '
+        schema:
+          type: boolean
+      - name: effective_as_of
+        in: query
+        required: false
+        description: ISO 8601 date string to filter tax codes effective on or after this date. For example, '2024-01-01' returns codes whose rate is valid from January 1, 2024 onward.
+        schema:
+          type: string
+      - name: query
+        in: query
+        required: false
+        description: Partial Search tax codes by code or description
+        schema:
+          type: string
+      - name: type
+        in: query
+        required: false
+        description: 'Filter by tax code type. Omit to return both.
+
+          - `code` — Return only tax codes (non-groups).
+
+          - `group` — Return only tax groups.
+
+          '
+        schema:
+          type: string
+          enum:
+          - code
+          - group
+      - name: exclude_untaxed
+        in: query
+        required: false
+        description: When true, exclude tax-exempt codes (where untaxed = true).
+        schema:
+          type: boolean
+      - name: include_components
+        in: query
+        required: false
+        description: When true, include component tax codes and their rates for group tax codes (components array in each group).
+        schema:
+          type: boolean
+      - name: include_group_membership
+        in: query
+        required: false
+        description: When true, include member_of_groups (groups this tax code is a component of) for each tax code.
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          headers:
+            Per-Page:
+              description: Number of items retrieved per page
+              schema:
+                type: integer
+            Total:
+              description: Total number of items to be retrieved
+              schema:
+                type: integer
+            Link:
+              description: Link headers for the first, prev, next, and last link
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                title: Company Tax Code Index
+                type: object
+                properties:
+                  data:
+                    description: Tax Code Index
+                    type: array
+                    items:
+                      title: Company Tax Code
+                      description: Tax Code
+                      type: object
+                      allOf:
+                      - title: Common Tax Code Rate Properties
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            description: Unique string identifier for this tax code. Use as the {id} path parameter in PATCH /rest/v2.0/companies/{company_id}/tax/codes/{id} to update this code.
+                            example: '12'
+                          code:
+                            type: string
+                            description: Short identifier string for the tax code (e.g., 'GST-10'). Must be unique within the company. Required on create.
+                            example: NEW-CODE-1
+                          description:
+                            type:
+                            - string
+                            - 'null'
+                            description: Human-readable description of the tax code's purpose (e.g., 'Goods and Services Tax'). Nullable.
+                            example: New Description 1
+                          archived:
+                            type: boolean
+                            description: Whether this tax code has been archived. Archived codes are excluded from active selection unless status=ARCHIVED is passed. true = archived, false = active.
+                            example: false
+                          display_in_budget:
+                            type: boolean
+                            description: Whether the tax code should be displayed in budget views
+                            example: true
+                          is_group:
+                            type: boolean
+                            description: Whether this tax code is a group that aggregates multiple component tax codes
+                            example: false
+                      - type: object
+                        properties:
+                          rate:
+                            title: Company Rate Code
+                            description: Tax Rate Create
+                            type: object
+                            allOf:
+                            - title: Common Tax Code Rate Properties
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  description: Tax Rate ID
+                                  example: '12'
+                                tax_code_id:
+                                  type: string
+                                  description: Tax Code Id
+                                  example: '13'
+                                rate:
+                                  type: string
+                                  description: Tax Code Rate Value
+                                  example: '20.0'
+                                effective_start_date:
+                                  type: string
+                                  description: ISO 8601 date string for when this tax rate becomes effective (e.g., '2024-01-01'). The rate applies to transactions on or after this date.
+                                  example: '2024-01-01'
+                                effective_end_date:
+                                  type:
+                                  - string
+                                  - 'null'
+                                  description: ISO 8601 date string for when this tax rate expires. Null if this is the current active rate with no scheduled successor.
+                                  example: '2024-12-31'
+                                created_at:
+                                  type: string
+                                  description: ISO 8601 timestamp when this rate record was created.
+                                  example: '2024-01-01T00:00:00Z'
+                                invoice_tax_application:
+                                  type: string
+                                  enum:
+                                  - NET
+                                  - GROSS
+                                  - NONE
+                                  description: 'Specifies how tax is applied on invoices. One of: ''NET'' (tax calculated on the net/pre-tax amount), ''GROSS'' (tax calculated on the gross/total amount), ''NONE'' (used for group tax codes — the effective rate is the aggregate of its component codes'' rates).'
+                            - type: object
+                              properties:
+                                created_by:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                      description: String ID of the user who created this tax rate. Use with the Users API to retrieve user details.
+                                    name:
+                                      type: string
+                                      description: Display name of the user who created this tax rate.
+                          components:
+                            description: Present when include_components=true; component tax codes and rates for group tax codes.
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  description: Component tax code ID
+                                  example: '456'
+                                code:
+                                  type: string
+                                  description: Short identifier string of this component tax code.
+                                rate:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                      description: Tax code rate ID
+                                      example: '1001'
+                                    rate:
+                                      type: number
+                                      description: Numeric tax rate percentage for this component (e.g., 10.0 = 10%).
+                                    invoice_tax_application:
+                                      type: string
+                                      enum:
+                                      - NET
+                                      - GROSS
+                                      - NONE
+                                      description: 'How tax is applied for this component on invoices. One of: ''NET'' (applied to the net amount), ''GROSS'' (applied to the gross amount), ''NONE'' (used for group tax codes where the effective rate is the aggregate of components).'
+                          member_of_groups:
+                            description: Present when include_group_membership=true; groups this tax code is a component of (same shape as components).
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  description: Group tax code ID
+                                  example: '123'
+                                code:
+                                  type: string
+                                  description: Short identifier string of this group tax code.
+                                rate:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                      description: Tax code rate ID
+                                      example: '1001'
+                                    rate:
+                                      type: number
+                                      description: Numeric effective rate for this group, which is the sum of its component rates.
+                                    invoice_tax_application:
+                                      type: string
+                                      enum:
+                                      - NET
+                                      - GROSS
+                                      - NONE
+                                      description: 'How tax is applied for this group on invoices. One of: ''NET'' (applied to the net amount), ''GROSS'' (applied to the gross amount), ''NONE'' (used for group tax codes where the effective rate is the aggregate of components).'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/tax/codes',\n  qs: {\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE',\n    sort: 'SOME_STRING_VALUE',\n    id: 'SOME_ARRAY_VALUE',\n    code: 'SOME_ARRAY_VALUE',\n    status: 'SOME_ARRAY_VALUE',\n    include_rate: 'SOME_BOOLEAN_VALUE',\n    erp_synced: 'SOME_BOOLEAN_VALUE',\n    effective_as_of: 'SOME_STRING_VALUE',\n    query: 'SOME_STRING_VALUE',\n    type: 'SOME_STRING_VALUE',\n    exclude_untaxed: 'SOME_BOOLEAN_VALUE',\n    include_components: 'SOME_BOOLEAN_VALUE',\n    include_group_membership: 'SOME_BOOLEAN_VALUE'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v2.0/companies/%7Bcompany_id%7D/tax/codes?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&sort=SOME_STRING_VALUE&id=SOME_ARRAY_VALUE&code=SOME_ARRAY_VALUE&status=SOME_ARRAY_VALUE&include_rate=SOME_BOOLEAN_VALUE&erp_synced=SOME_BOOLEAN_VALUE&effective_as_of=SOME_STRING_VALUE&query=SOME_STRING_VALUE&type=SOME_STRING_VALUE&exclude_untaxed=SOME_BOOLEAN_VALUE&include_components=SOME_BOOLEAN_VALUE&include_group_membership=SOME_BOOLEAN_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/tax/codes?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&sort=SOME_STRING_VALUE&id=SOME_ARRAY_VALUE&code=SOME_ARRAY_VALUE&status=SOME_ARRAY_VALUE&include_rate=SOME_BOOLEAN_VALUE&erp_synced=SOME_BOOLEAN_VALUE&effective_as_of=SOME_STRING_VALUE&query=SOME_STRING_VALUE&type=SOME_STRING_VALUE&exclude_untaxed=SOME_BOOLEAN_VALUE&include_components=SOME_BOOLEAN_VALUE&include_group_membership=SOME_BOOLEAN_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/tax/codes?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&sort=SOME_STRING_VALUE&id=SOME_ARRAY_VALUE&code=SOME_ARRAY_VALUE&status=SOME_ARRAY_VALUE&include_rate=SOME_BOOLEAN_VALUE&erp_synced=SOME_BOOLEAN_VALUE&effective_as_of=SOME_STRING_VALUE&query=SOME_STRING_VALUE&type=SOME_STRING_VALUE&exclude_untaxed=SOME_BOOLEAN_VALUE&include_components=SOME_BOOLEAN_VALUE&include_group_membership=SOME_BOOLEAN_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Add Company List Tax Codes endpoint
+        description: Add Company List Tax Codes endpoint to list tax codes.
+        endpoint: GET /companies/{company_id}/tax/codes
+        type: new
+        breaking: false
+        datestamp: '2025-04-22'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#get-tax-codes
+      - summary: Add `query` parameter to Company List Tax Codes endpoint
+        description: Add `query` parameter to Company List Tax Codes endpoint to do partial search on tax codes.
+        endpoint: GET /companies/{company_id}/tax/codes
+        type: feature
+        breaking: false
+        datestamp: '2025-04-22'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#get-tax-codes
+      - summary: Add `type`, `exclude_untaxed`, `include_components`, and `include_group_membership` parameters to Company List Tax Codes
+        description: 'Add optional filters and options to the Company List Tax Codes endpoint:
+
+          - `type` — Filter by kind: "code" (non-groups) or "group".
+
+          - `exclude_untaxed` — When true, exclude untaxed (zero-rate) codes.
+
+          - `include_components` — When true, include component tax codes and their rates for group codes.
+
+          - `include_group_membership` — When true, include parent groups for each component code.'
+        endpoint: GET /companies/{company_id}/tax/codes
+        type: feature
+        breaking: false
+        datestamp: '2026-03-10'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#get-tax-codes
+      - summary: Notice of Open Beta
+        description: 'This endpoint was previously private and in pilot, and is now publicly
+
+          documented in open beta. No changes were made to the API contract, only
+
+          visibility and stage updates.'
+        endpoint: GET /companies/{company_id}/tax/codes
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-14'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#get-tax-codes
+      - summary: Notice of General Availability
+        description: 'This endpoint has graduated from open beta to general availability (GA).
+
+          No changes were made to the API contract, only the stage update.'
+        endpoint: GET /companies/{company_id}/tax/codes
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-23'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#get-tax-codes
+      operationId: getTaxCodes
+  /rest/v2.0/companies/{company_id}/tax/codes/bulk_create:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: partial
+    post:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-endpoint-type: bulk
+      summary: Bulk Create Tax Codes
+      description: Bulk Create Tax Codes for a given company
+      tags:
+      - Tax Codes
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier for the company.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Tax Code Bulk Create
+              type: array
+              items:
+                type: object
+                required:
+                - unique_id
+                - tax_code
+                properties:
+                  unique_id:
+                    type: string
+                    description: 'Origin ID of external ERP integrated company, will not be persisted in tax code but will be used
+
+                      to build responses and construct relation with outside system'
+                    example: 1VT-33778-013
+                  tax_code:
+                    type: object
+                    description: Tax Code fields
+                    required:
+                    - code
+                    properties:
+                      code:
+                        type: string
+                        description: Tax Code Name
+                        example: NEW-CODE-1
+                      description:
+                        type: string
+                        description: Tax Code Description
+                        example: New Description 1
+                      rate:
+                        type: object
+                        description: 'Tax code rate. Required for non-group codes. Optional for tax groups
+
+                          (`is_group: true`): when omitted, the group rate is the sum of its
+
+                          component rates. When provided, it must equal that sum or the item is rejected.'
+                        required:
+                        - rate
+                        properties:
+                          rate:
+                            type: string
+                            description: Tax Code Rate Value
+                            example: '20.0'
+                          invoice_tax_application:
+                            type: string
+                            enum:
+                            - NET
+                            - GROSS
+                            - NONE
+                            description: 'Tax Code Invoice Tax Application. Must be NET or GROSS for plain codes
+
+                              and NONE for group tax codes. GROSS and NONE are accepted only when the
+
+                              company is on the new tax experience. When omitted, defaults to NET for
+
+                              plain codes and NONE for groups. Legacy companies must omit this field
+
+                              or send NET.'
+                            example: GROSS
+                            default: NET
+                      is_group:
+                        type: boolean
+                        description: 'When true, designates this tax code as a group whose effective rate is the sum of its
+
+                          component tax codes. Rate may be omitted (it is derived from those components) or
+
+                          provided if it equals that sum. Requires the tax groups feature flag to be enabled.
+
+                          Must be accompanied by component_unique_ids.'
+                        example: true
+                      component_unique_ids:
+                        type: array
+                        description: 'ERP origin IDs of the component tax codes that make up this group. Each ID is resolved
+
+                          to a Procore tax code via the external_data table or, for codes created in the same
+
+                          request, via the unique_id of a sibling item. Required when is_group is true.
+
+                          Only valid when is_group is true.'
+                        items:
+                          type: string
+                        example:
+                        - ERP_TAX_001
+                        - ERP_TAX_002
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                title: Company Tax Code Bulk Create Response
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      succeeded:
+                        type: array
+                        description: Successfully created tax codes
+                        items:
+                          type: object
+                          properties:
+                            unique_id:
+                              type: string
+                              description: Origin ID of external ERP integrated company
+                              example: 1VT-33778-013
+                            id:
+                              type: string
+                              description: Created Tax Code ID
+                              example: '12'
+                      failed:
+                        type: array
+                        description: Tax codes that failed creation
+                        items:
+                          type: object
+                          properties:
+                            unique_id:
+                              type: string
+                              description: Origin ID of external ERP integrated company
+                              example: 1VT-33778-014
+                            reason:
+                              type: object
+                              description: Validation or processing errors
+                              properties:
+                                details:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      reason_code:
+                                        type: string
+                                      message:
+                                        type: string
+                                      source:
+                                        type: string
+                                message:
+                                  type: string
+                                code:
+                                  type: string
+                    required:
+                    - succeeded
+                    - failed
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/tax/codes/bulk_create',\n  headers: {'content-type': 'application/json'},\n  body: [\n    {\n      unique_id: '1VT-33778-013',\n      tax_code: {\n        code: 'NEW-CODE-1',\n        description: 'New Description 1',\n        rate: {rate: '20.0', invoice_tax_application: 'GROSS'},\n        is_group: true,\n        component_unique_ids: ['ERP_TAX_001', 'ERP_TAX_002']\n      }\n    }\n  ],\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "[{\"unique_id\":\"1VT-33778-013\",\"tax_code\":{\"code\":\"NEW-CODE-1\",\"description\":\"New Description 1\",\"rate\":{\"rate\":\"20.0\",\"invoice_tax_application\":\"GROSS\"},\"is_group\":true,\"component_unique_ids\":[\"ERP_TAX_001\",\"ERP_TAX_002\"]}}]"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v2.0/companies/%7Bcompany_id%7D/tax/codes/bulk_create", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/tax/codes/bulk_create \\\n  --header 'content-type: application/json' \\\n  --data '[{\"unique_id\":\"1VT-33778-013\",\"tax_code\":{\"code\":\"NEW-CODE-1\",\"description\":\"New Description 1\",\"rate\":{\"rate\":\"20.0\",\"invoice_tax_application\":\"GROSS\"},\"is_group\":true,\"component_unique_ids\":[\"ERP_TAX_001\",\"ERP_TAX_002\"]}}]'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/tax/codes/bulk_create\"),\n    Content = new StringContent(\"[{\\\"unique_id\\\":\\\"1VT-33778-013\\\",\\\"tax_code\\\":{\\\"code\\\":\\\"NEW-CODE-1\\\",\\\"description\\\":\\\"New Description 1\\\",\\\"rate\\\":{\\\"rate\\\":\\\"20.0\\\",\\\"invoice_tax_application\\\":\\\"GROSS\\\"},\\\"is_group\\\":true,\\\"component_unique_ids\\\":[\\\"ERP_TAX_001\\\",\\\"ERP_TAX_002\\\"]}}]\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Add Company Bulk Create Tax Codes endpoint
+        description: "Add Company Bulk Create Tax Codes endpoint to create multiple tax codes \nfor a given company with origin ID for external ERP integrated company."
+        endpoint: POST /companies/{company_id}/tax/codes/bulk_create
+        type: new
+        breaking: false
+        datestamp: '2025-01-21'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#bulk-create-tax-codes
+      - summary: Add `is_group` and `component_unique_ids` fields to Bulk Create Tax Codes endpoint
+        description: "Add support for creating tax group codes via the bulk create endpoint.\n- `is_group` — Boolean flag to designate the tax code as a group. Requires the\n  financials.tax.enable_tax_groups feature flag to be active.\n- `component_unique_ids` — Array of ERP origin IDs identifying the component tax codes\n  that make up the group. Each ID is resolved to a Procore tax code via the external_data\n  table or, for codes created in the same request, via the unique_id of a sibling item.\n  Required when is_group is true; invalid on non-group items."
+        endpoint: POST /companies/{company_id}/tax/codes/bulk_create
+        type: feature
+        breaking: false
+        datestamp: '2026-03-18'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#bulk-create-tax-codes
+      - summary: Make tax group rate optional on Bulk Create Tax Codes
+        description: 'For tax groups (`is_group: true`), `rate` is no longer required.
+
+          When omitted, the group rate is set to the sum of its component rates
+
+          (same-request component rates preferred over existing rates). When
+
+          provided, it must equal that sum or the item is rejected.
+
+          Non-group codes still require a rate.'
+        endpoint: POST /companies/{company_id}/tax/codes/bulk_create
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-06'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#bulk-create-tax-codes
+      - summary: Notice of Open Beta
+        description: 'This endpoint was previously private and in pilot, and is now publicly
+
+          documented in open beta. No changes were made to the API contract, only
+
+          visibility and stage updates.'
+        endpoint: POST /companies/{company_id}/tax/codes/bulk_create
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-14'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#bulk-create-tax-codes
+      - summary: Notice of General Availability
+        description: 'This endpoint has graduated from open beta to general availability (GA).
+
+          No changes were made to the API contract, only the stage update.'
+        endpoint: POST /companies/{company_id}/tax/codes/bulk_create
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-23'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#bulk-create-tax-codes
+      operationId: bulkCreateTaxCodes
+  /rest/v2.0/companies/{company_id}/tax/codes/bulk_update:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: partial
+    patch:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-endpoint-type: bulk
+      summary: Bulk Update Tax Codes
+      description: Bulk Update Tax Codes for a given company
+      tags:
+      - Tax Codes
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier for the company.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Tax Codes Bulk Update
+              type: array
+              items:
+                type: object
+                properties:
+                  tax_code:
+                    type: object
+                    description: Tax Code fields
+                    required:
+                    - id
+                    properties:
+                      id:
+                        type: string
+                        description: Tax Code ID
+                        example: '12'
+                      code:
+                        type: string
+                        description: Tax Code Name
+                        example: NEW-CODE-1
+                      description:
+                        type: string
+                        description: Tax Code Description
+                        example: New Description 1
+                      archived:
+                        type: boolean
+                        description: Tax Code Archived
+                        example: false
+                      rate:
+                        type: object
+                        description: 'Tax code rate. Optional for tax groups: when omitted on a composition
+
+                          update or conversion, the group rate is set to the sum of its component
+
+                          rates. When provided, it must equal that sum or the item is rejected.
+
+                          A component rate change without the parent group in the request updates
+
+                          the parent group rate to the new component sum.'
+                        properties:
+                          rate:
+                            type: string
+                            description: Tax Code Rate Value
+                            example: '20.0'
+                          invoice_tax_application:
+                            type: string
+                            enum:
+                            - NET
+                            - GROSS
+                            - NONE
+                            description: 'Tax Code Invoice Tax Application. Must be NET or GROSS for plain codes
+
+                              and NONE for group tax codes. GROSS and NONE are accepted only when the
+
+                              company is on the new tax experience. When omitted on a rate write, defaults
+
+                              to NET for plain codes and NONE for groups. Legacy companies must omit this
+
+                              field or send NET.'
+                            example: GROSS
+                          effective_start_date:
+                            type: string
+                            format: date-time
+                            description: Optional ISO 8601 datetime when this new rate becomes effective (e.g. '2023-01-01T00:00:00Z'). Omit to apply the rate immediately. When set, the current rate stays in effect until this datetime. Requires the `financials.tax.support_rate_schedule` feature flag to be enabled. Not valid for group tax codes — future rates cannot be created directly on groups.
+                            example: '2023-01-01T00:00:00Z'
+                      is_group:
+                        type: boolean
+                        description: 'When true on a plain code, converts it to a group. Must be accompanied by
+
+                          component_tax_code_ids. Requires the tax groups feature flag to be enabled.
+
+                          Omit or set to false for regular code updates.'
+                        example: true
+                      component_tax_code_ids:
+                        type: array
+                        description: 'Procore tax code IDs of the component tax codes that make up this group.
+
+                          On an existing group, providing this field updates the composition (expires
+
+                          the current version and creates a new one). Rate is optional; when omitted
+
+                          the group rate is derived as the sum of the new component rates.
+
+                          When sent for a non-group without is_group: true, silently ignored.'
+                        items:
+                          type: integer
+                        example:
+                        - 456
+                        - 789
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                title: Company Tax Code Bulk Update Response
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      succeeded:
+                        type: array
+                        description: Successfully updated tax codes ids
+                        items:
+                          type: string
+                      failed:
+                        type: array
+                        description: Tax codes that failed update
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              description: Updated Tax Code ID
+                              example: '12'
+                            reason:
+                              type: object
+                              description: Validation or processing errors
+                              properties:
+                                details:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      reason_code:
+                                        type: string
+                                      message:
+                                        type: string
+                                      source:
+                                        type: string
+                                message:
+                                  type: string
+                                code:
+                                  type: string
+                    required:
+                    - succeeded
+                    - failed
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/tax/codes/bulk_update',\n  headers: {'content-type': 'application/json'},\n  body: [\n    {\n      tax_code: {\n        id: '12',\n        code: 'NEW-CODE-1',\n        description: 'New Description 1',\n        archived: false,\n        rate: {\n          rate: '20.0',\n          invoice_tax_application: 'GROSS',\n          effective_start_date: '2023-01-01T00:00:00Z'\n        },\n        is_group: true,\n        component_tax_code_ids: [456, 789]\n      }\n    }\n  ],\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "[{\"tax_code\":{\"id\":\"12\",\"code\":\"NEW-CODE-1\",\"description\":\"New Description 1\",\"archived\":false,\"rate\":{\"rate\":\"20.0\",\"invoice_tax_application\":\"GROSS\",\"effective_start_date\":\"2023-01-01T00:00:00Z\"},\"is_group\":true,\"component_tax_code_ids\":[456,789]}}]"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("PATCH", "/rest/v2.0/companies/%7Bcompany_id%7D/tax/codes/bulk_update", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/tax/codes/bulk_update \\\n  --header 'content-type: application/json' \\\n  --data '[{\"tax_code\":{\"id\":\"12\",\"code\":\"NEW-CODE-1\",\"description\":\"New Description 1\",\"archived\":false,\"rate\":{\"rate\":\"20.0\",\"invoice_tax_application\":\"GROSS\",\"effective_start_date\":\"2023-01-01T00:00:00Z\"},\"is_group\":true,\"component_tax_code_ids\":[456,789]}}]'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/tax/codes/bulk_update\"),\n    Content = new StringContent(\"[{\\\"tax_code\\\":{\\\"id\\\":\\\"12\\\",\\\"code\\\":\\\"NEW-CODE-1\\\",\\\"description\\\":\\\"New Description 1\\\",\\\"archived\\\":false,\\\"rate\\\":{\\\"rate\\\":\\\"20.0\\\",\\\"invoice_tax_application\\\":\\\"GROSS\\\",\\\"effective_start_date\\\":\\\"2023-01-01T00:00:00Z\\\"},\\\"is_group\\\":true,\\\"component_tax_code_ids\\\":[456,789]}}]\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Add Company Bulk Update Tax Codes endpoint
+        description: Add Company Bulk Update Tax Codes endpoint to update multiple tax codes.
+        endpoint: PATCH /companies/{company_id}/tax/codes/bulk_update
+        type: new
+        breaking: false
+        datestamp: '2025-01-21'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#bulk-update-tax-codes
+      - summary: Add `is_group` and `component_tax_code_ids` fields to Bulk Update Tax Codes endpoint
+        description: "Add support for tax group operations via the bulk update endpoint.\n- `is_group` — When true on a plain code, converts it to a group (requires\n  component_tax_code_ids and the financials.tax.enable_tax_groups feature flag).\n- `component_tax_code_ids` — Array of Procore tax code IDs specifying the group's\n  components. On an existing group, updates the composition (expires the current\n  version and creates a new one); requires rate to be provided alongside.\n  When sent for a non-group without is_group: true, silently ignored (keep-as-code).\nNon-group items (component rate updates) are processed before group items in the\nsame request to ensure component rates are committed before composition validation."
+        endpoint: PATCH /companies/{company_id}/tax/codes/bulk_update
+        type: feature
+        breaking: false
+        datestamp: '2026-03-18'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#bulk-update-tax-codes
+      - summary: Add `rate.effective_start_date` field to Bulk Update Tax Codes endpoint
+        description: 'Add optional `rate.effective_start_date` (ISO 8601 datetime) on the Bulk Update Tax Codes
+
+          request body to schedule a future rate. Omit the field to apply the new rate immediately.
+
+          Requires the financials.tax.support_rate_schedule feature flag to be active.
+
+          Not valid for group tax codes — future rates cannot be created directly on groups.
+
+          Timeline placement, locking, and duplicate-rate idempotency match the tax rates create path.'
+        endpoint: PATCH /companies/{company_id}/tax/codes/bulk_update
+        type: feature
+        breaking: false
+        datestamp: '2026-09-01'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#bulk-update-tax-codes
+      - summary: Derive tax group rates and cascade component rate changes on Bulk Update Tax Codes
+        description: 'For tax groups, `rate` is no longer required when converting a code to a
+
+          group or when updating `component_tax_code_ids`. When omitted, the group
+
+          rate is set to the sum of its component rates. When provided, it must
+
+          equal that sum or the item is rejected.
+
+          Updating a component''s rate no longer fails the item with
+
+          `component_rate_update_invalidates_group`. The parent group''s rate is
+
+          updated to the new component sum, including when the parent group is not
+
+          in the request.       Non-group items are still processed before group items
+
+          in the same request.'
+        endpoint: PATCH /companies/{company_id}/tax/codes/bulk_update
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-06'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#bulk-update-tax-codes
+      - summary: Notice of Open Beta
+        description: 'This endpoint was previously private and in pilot, and is now publicly
+
+          documented in open beta. No changes were made to the API contract, only
+
+          visibility and stage updates.'
+        endpoint: PATCH /companies/{company_id}/tax/codes/bulk_update
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-14'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#bulk-update-tax-codes
+      - summary: Notice of General Availability
+        description: 'This endpoint has graduated from open beta to general availability (GA).
+
+          No changes were made to the API contract, only the stage update.'
+        endpoint: PATCH /companies/{company_id}/tax/codes/bulk_update
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-23'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#bulk-update-tax-codes
+      operationId: bulkUpdateTaxCodes
+  /rest/v2.0/companies/{company_id}/tax/codes/{id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: partial
+    patch:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-endpoint-type: mutation
+      summary: Update Tax Code
+      description: Update Tax Code for a given company
+      tags:
+      - Tax Codes
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier for the company.
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: Unique identifier for Tax Code.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Tax Code Update
+              type: object
+              properties:
+                code:
+                  type: string
+                  description: Tax Code Name
+                  example: NEW-CODE-1
+                description:
+                  type: string
+                  description: Tax Code Description
+                  example: New Description 1
+                archived:
+                  type: boolean
+                  description: Tax Code Archived
+                  example: false
+                rate:
+                  type: object
+                  description: Tax Code Rate
+                  properties:
+                    rate:
+                      type: string
+                      description: Tax Code Rate Value
+                      example: '20.0'
+                    invoice_tax_application:
+                      type: string
+                      enum:
+                      - NET
+                      - GROSS
+                      - NONE
+                      description: 'Tax Code Invoice Tax Application. Must be NET or GROSS for plain codes
+
+                        and NONE for group tax codes. GROSS and NONE are accepted only when the
+
+                        company is on the new tax experience. When omitted on a rate write, defaults to
+
+                        NET for plain codes and NONE for groups. Legacy companies must omit this
+
+                        field or send NET.'
+                      example: GROSS
+                    effective_start_date:
+                      type: string
+                      format: date-time
+                      description: Optional ISO 8601 datetime when this new rate becomes effective (e.g. '2023-01-01T00:00:00Z'). Omit to apply the rate immediately. When set, the current rate stays in effect until this datetime. Requires the `financials.tax.support_rate_schedule` feature flag to be enabled. Not valid for group tax codes — future rates cannot be created directly on groups.
+                      example: '2023-01-01T00:00:00Z'
+                display_in_budget:
+                  type: boolean
+                  description: Whether the tax code should be displayed in budget views. This field can be updated even if the tax code is currently in use.
+                  example: true
+                component_tax_code_ids:
+                  type: array
+                  description: IDs of the component tax codes that make up this group. Replaces the existing composition. Only valid for group tax codes. Requires the `financials.tax.enable_tax_groups` feature flag to be enabled.
+                  items:
+                    type: integer
+                  example:
+                  - 101
+                  - 102
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/tax/codes/%7Bid%7D',\n  headers: {'content-type': 'application/json'},\n  body: {\n    code: 'NEW-CODE-1',\n    description: 'New Description 1',\n    archived: false,\n    rate: {\n      rate: '20.0',\n      invoice_tax_application: 'GROSS',\n      effective_start_date: '2023-01-01T00:00:00Z'\n    },\n    display_in_budget: true,\n    is_group: true,\n    component_tax_code_ids: [101, 102]\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"code\":\"NEW-CODE-1\",\"description\":\"New Description 1\",\"archived\":false,\"rate\":{\"rate\":\"20.0\",\"invoice_tax_application\":\"GROSS\",\"effective_start_date\":\"2023-01-01T00:00:00Z\"},\"display_in_budget\":true,\"is_group\":true,\"component_tax_code_ids\":[101,102]}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("PATCH", "/rest/v2.0/companies/%7Bcompany_id%7D/tax/codes/%7Bid%7D", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/tax/codes/%7Bid%7D \\\n  --header 'content-type: application/json' \\\n  --data '{\"code\":\"NEW-CODE-1\",\"description\":\"New Description 1\",\"archived\":false,\"rate\":{\"rate\":\"20.0\",\"invoice_tax_application\":\"GROSS\",\"effective_start_date\":\"2023-01-01T00:00:00Z\"},\"display_in_budget\":true,\"is_group\":true,\"component_tax_code_ids\":[101,102]}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/tax/codes/%7Bid%7D\"),\n    Content = new StringContent(\"{\\\"code\\\":\\\"NEW-CODE-1\\\",\\\"description\\\":\\\"New Description 1\\\",\\\"archived\\\":false,\\\"rate\\\":{\\\"rate\\\":\\\"20.0\\\",\\\"invoice_tax_application\\\":\\\"GROSS\\\",\\\"effective_start_date\\\":\\\"2023-01-01T00:00:00Z\\\"},\\\"display_in_budget\\\":true,\\\"is_group\\\":true,\\\"component_tax_code_ids\\\":[101,102]}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Add Company Update Tax Code endpoint
+        description: Add Company Update Tax Code endpoint to update a tax code.
+        endpoint: PATCH /companies/{company_id}/tax/codes/{id}
+        type: new
+        breaking: false
+        datestamp: '2025-04-17'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#update-tax-code
+      - summary: Add display_in_budget field to Update Tax Code endpoint
+        description: 'Add display_in_budget field to Update Tax Code endpoint request body and response.
+
+          This field controls whether the tax code should be displayed in budget views.
+
+          The field can be updated even if the tax code is currently in use.'
+        endpoint: PATCH /companies/{company_id}/tax/codes/{id}
+        type: feature
+        breaking: false
+        datestamp: '2026-02-02'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#update-tax-code
+      - summary: Add `component_tax_code_ids` field to Update Tax Code endpoint
+        description: 'Add `component_tax_code_ids` array to update the member tax codes of an existing group.
+
+          Requires the financials.tax.enable_tax_groups feature flag to be active.'
+        endpoint: PATCH /companies/{company_id}/tax/codes/{id}
+        type: feature
+        breaking: false
+        datestamp: '2026-03-10'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#update-tax-code
+      - summary: Add `rate.effective_start_date` field to Update Tax Code endpoint
+        description: 'Add optional `rate.effective_start_date` (ISO 8601 datetime) on the Update Tax Code
+
+          request body to schedule a future rate. Omit the field to apply the new rate immediately.
+
+          Requires the financials.tax.support_rate_schedule feature flag to be active.
+
+          Not valid for group tax codes — future rates cannot be created directly on groups.'
+        endpoint: PATCH /companies/{company_id}/tax/codes/{id}
+        type: feature
+        breaking: false
+        datestamp: '2026-09-01'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#update-tax-code
+      - summary: Notice of Open Beta
+        description: 'This endpoint was previously private and in pilot, and is now publicly
+
+          documented in open beta. No changes were made to the API contract, only
+
+          visibility and stage updates.'
+        endpoint: PATCH /companies/{company_id}/tax/codes/{id}
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-14'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#update-tax-code
+      - summary: Notice of General Availability
+        description: 'This endpoint has graduated from open beta to general availability (GA).
+
+          No changes were made to the API contract, only the stage update.'
+        endpoint: PATCH /companies/{company_id}/tax/codes/{id}
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-23'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: tax-codes?version=2.0#update-tax-code
+      operationId: updateTaxCode2
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

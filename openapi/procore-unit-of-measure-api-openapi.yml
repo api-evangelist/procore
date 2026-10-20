@@ -1,0 +1,225 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Unit of Measure API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Unit of Measure
+paths:
+  /rest/v2.0/companies/{company_id}/uoms/configuration:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: company_id
+      in: path
+      description: Unique identifier for the company.
+      required: true
+      schema:
+        type: string
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Get Configuration for Uom Master List
+      description: Returns configuration constraints for the company's UOM master list, derived from the company's connected ERP integration (when present). Includes the maximum allowed length of UOM names on commitment line items (`character_limit`, null when no integration is connected or no limit is configured) and the integration's short display name (`erp_integration_name`, empty string when no integration is connected).
+      tags:
+      - Unit of Measure
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Configuration constraints applied to the company's UOM master list, derived from the company's connected ERP integration. Empty/null values indicate that no integration is connected or that the integration imposes no constraint.
+                properties:
+                  data:
+                    type: object
+                    description: Configuration payload for the UOM master list.
+                    properties:
+                      character_limit:
+                        type:
+                        - string
+                        - 'null'
+                        description: Maximum number of characters allowed for a UOM name when used on commitment line items, expressed as a numeric string (e.g., `"32"`). Null when the ERP integration imposes no character limit, or when no integration is connected.
+                        example: '32'
+                      erp_integration_name:
+                        type: string
+                        description: Short display name of the company's connected ERP integration (e.g., `Sage 300 CRE`). Empty string when no ERP integration is connected.
+                        example: Sage 300 CRE
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/uoms/configuration',\n  headers: {Authorization: 'Bearer REPLACE_BEARER_TOKEN'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          headers = { ''Authorization'': "Bearer REPLACE_BEARER_TOKEN" }
+
+
+          conn.request("GET", "/rest/v2.0/companies/%7Bcompany_id%7D/uoms/configuration", headers=headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/uoms/configuration \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/uoms/configuration\"),\n    Headers =\n    {\n        { \"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\" },\n    },\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Get Uom Master List Configuration
+        description: Get Uom Master List Configuration
+        endpoint: GET /companies/{company_id}/uoms/configuration
+        type: new
+        breaking: false
+        datestamp: '2024-10-18'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: units-of-measure?version=2.0#get-configuration-for-uom-master-list
+      operationId: getConfigurationForUomMasterList
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

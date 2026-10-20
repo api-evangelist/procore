@@ -1,0 +1,606 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Budget View API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Budget View
+paths:
+  /rest/v2.0/companies/{company_id}/budget_views/{budget_view_id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: company_id
+      in: path
+      description: Unique identifier for the company.
+      required: true
+      schema:
+        type: string
+    - name: budget_view_id
+      in: path
+      description: Unique identifier for the Budget View (also known as Budget Template).
+      required: true
+      schema:
+        type: string
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: beta
+        exposure: public
+      summary: Get a Budget View
+      description: 'Get data for a budget view, including its `columns` array. Each column''s `attribute` is the key used for that column''s value in every row returned by the Detail Rows and Summary Rows v2.0 endpoints for this budget view.
+
+        Pass `source_snapshot_id` to read the budget view as of a snapshot instead of live. Only the contents of `columns` change between live and snapshot responses — the response shape is otherwise identical.'
+      tags:
+      - Budget View
+      parameters:
+      - name: source_snapshot_id
+        in: query
+        description: 'Unique identifier for a budget snapshot.
+
+          If provided, the response reflects that snapshot instead of the live budget.
+
+          If omitted, the response reflects the live budget.
+
+
+          This single query parameter is shared across the Budget View, Detail Rows, and
+
+          Summary Rows v2.0 endpoints.'
+        required: false
+        schema:
+          type: string
+      - name: project_id
+        in: query
+        required: false
+        description: Unique identifier for the project. Must be provided to return a snapshot's budget view.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    description: Budget View
+                    properties:
+                      id:
+                        type: string
+                        description: Unique identifier for the budget view. Use as the {budget_view_id} path parameter in budget view requests.
+                        example: '1111'
+                      name:
+                        type: string
+                        description: Name of the budget view.
+                        example: Budget View 1
+                      description:
+                        type: string
+                        description: Description of the budget view.
+                        example: A comprehensive budget view
+                      role:
+                        type: string
+                        description: Role of the budget view, indicating whether it is used for budgeting or forecasting.
+                        enum:
+                        - budgeting
+                        - forecasting
+                        example: budgeting
+                      created_by:
+                        type:
+                        - string
+                        - 'null'
+                        description: Name of the user who created the budget view, formatted for the company. Null if the creator cannot be resolved.
+                        example: Doe, John
+                      assignment_level:
+                        type: string
+                        description: Level at which the budget view is assigned. `company` applies to all projects, `project` to a specific set, and the `*_integrated_projects` values scope the assignment to ERP-integrated or non-ERP-integrated projects.
+                        enum:
+                        - company
+                        - project
+                        - erp_integrated_projects
+                        - non_erp_integrated_projects
+                        example: company
+                      assigned_projects_count:
+                        type: integer
+                        description: Number of projects assigned to this budget view. Returns 0 when the assignment level is not `project`.
+                        example: 15
+                      total_projects_count:
+                        type: integer
+                        description: Total number of projects available in the company.
+                        example: 100
+                      date_created:
+                        type: string
+                        description: Formatted date and time when the budget view was created, localized to the company's timezone.
+                        example: 03/04/25 at 07:28 pm PST
+                      columns:
+                        type: array
+                        description: Columns included in the budget view, in display order. Present only on the show response.
+                        items:
+                          type: object
+                          description: Visible columns for a budget view
+                          properties:
+                            id:
+                              type: string
+                              description: ID of the column
+                              example: '12'
+                            alias:
+                              type: string
+                              description: Alias of the column. Applicable only for 2.0 columns.
+                              example: Approved Budget Changes
+                            label:
+                              type: string
+                              description: Name of the column
+                              example: Approved Budget Changes
+                            position:
+                              type: number
+                              description: Position of the column
+                              example: 1
+                            type:
+                              type: string
+                              description: Type of the column
+                              example: standard
+                            aggregatable:
+                              type: boolean
+                              description: Whether the column is aggregatable
+                              example: true
+                            format:
+                              type: string
+                              description: Format of the column
+                              example: currency
+                            attribute:
+                              type: string
+                              description: 'Key used to identify this column in the search filters and query params of other Budget endpoints. This is also the exact key used for this column''s value in each row object returned by the Detail Rows and Summary Rows v2.0 endpoints — fetch this Budget View''s `columns` array to resolve those row keys to column metadata (`label`, `type`, `format`, `display_rules`).
+
+                                The shape of this key depends on the column''s `type`. For a standard column (`type: standard`), it''s a fixed semantic name, e.g. `approved_budget_changes`. For a source or formula column (`type: source` or `type: formula` — a user-configured Column 2.0 column), there is no semantic name; it''s always `column_{id}`, e.g. `column_4521` for the column with `id: "4521"`.'
+                              example: approved_budget_changes
+                            definition:
+                              type: object
+                              description: Contains fields that define the budget column based on type
+                              oneOf:
+                              - type: object
+                                description: Source definition for a budget view column
+                                properties:
+                                  sources:
+                                    type: array
+                                    description: Array of source objects that define the column
+                                    items:
+                                      type: object
+                                      properties:
+                                        id:
+                                          type: string
+                                          description: ID of the source
+                                          example: '123'
+                                        type:
+                                          type: string
+                                          description: Type of the source
+                                          example: prime_contract
+                                        label:
+                                          type: string
+                                          description: Label of the source
+                                          example: Prime Contract
+                                        filters:
+                                          type: array
+                                          description: Array of filters applied to the source
+                                          items:
+                                            type: object
+                                            properties:
+                                              type:
+                                                type: string
+                                                description: Type of the filter
+                                                example: holder_status_filter
+                                              label:
+                                                type: string
+                                                description: Label of the filter
+                                                example: Status
+                                              values:
+                                                type: array
+                                                description: Array of values used by the filter
+                                                items:
+                                                  type: object
+                                                  properties:
+                                                    label:
+                                                      type: string
+                                                      description: Label of the filter value
+                                                      example: Approved
+                                                    value:
+                                                      type: string
+                                                      description: Value of the filter
+                                                      example: approved
+                              - type: object
+                                description: Standard definition for a budget view column
+                                properties:
+                                  original_label:
+                                    type: string
+                                    description: Original label of the standard column
+                                    example: Original Budget
+                              - type: object
+                                description: Formula definition for a budget view column
+                                properties:
+                                  formatted_list:
+                                    type: array
+                                    description: The formula expression used in the budget column, alternating column labels and operations
+                                    items:
+                                      type: string
+                                    example:
+                                    - Original Budget
+                                    - +
+                                    - Approved Changes
+                                    - /
+                                    - Current Budget
+                            editable:
+                              type:
+                              - boolean
+                              - 'null'
+                              description: Whether the column is editable
+                              example: false
+                            show_cell_details:
+                              type:
+                              - boolean
+                              - 'null'
+                              description: Whether the column shows cell details
+                              example: true
+                            spreadable:
+                              type:
+                              - boolean
+                              - 'null'
+                              description: Whether the column is spreadable
+                              example: true
+                            actuals:
+                              type:
+                              - boolean
+                              - 'null'
+                              description: Whether the column is the actuals column for forecasting
+                              example: false
+                            enable_lump_sum_manual_entries:
+                              type:
+                              - boolean
+                              - 'null'
+                              description: Whether the column can have lump sum manual entries applied. Only returned when Budget Columns 2.0 is enabled.
+                              example: true
+                            importable:
+                              type:
+                              - boolean
+                              - 'null'
+                              description: Whether the column is importable. Only returned when Budget Columns 2.0 is enabled.
+                              example: true
+                            display_rules:
+                              type:
+                              - object
+                              - 'null'
+                              description: Display rules configuration for the column. Only returned when Budget Columns 2.0 is enabled and display rules are configured.
+                              properties:
+                                scope:
+                                  type: string
+                                  description: Whether to include or exclude rows matching the segment items
+                                  enum:
+                                  - include
+                                  - exclude
+                                  example: include
+                                segment_id:
+                                  type: string
+                                  description: ID of the WBS segment definition
+                                  example: '10'
+                                segment_type:
+                                  type: string
+                                  description: Type of the WBS segment
+                                  example: line_item_type
+                                segment_items:
+                                  type: array
+                                  description: List of segment items in the rule set
+                                  items:
+                                    type: object
+                                    properties:
+                                      id:
+                                        type: string
+                                        description: ID of the segment item
+                                        example: '501'
+                                      name:
+                                        type:
+                                        - string
+                                        - 'null'
+                                        description: Name of the segment item
+                                        example: Labor
+                        example:
+                        - id: '12'
+                          alias: Approved Budget Changes
+                          label: Approved Budget Changes
+                          position: 1
+                          type: standard
+                          aggregatable: true
+                          format: currency
+                          attribute: approved_budget_changes
+                          definition:
+                            original_label: Original Budget
+                          editable: false
+                          show_cell_details: true
+                          spreadable: false
+                          actuals: false
+                          enable_lump_sum_manual_entries: false
+                          importable: false
+                          display_rules: null
+                        - id: '3312'
+                          alias: Committed Costs
+                          label: Committed Costs
+                          position: 4
+                          type: source
+                          aggregatable: true
+                          format: currency
+                          attribute: column_3312
+                          definition:
+                            sources:
+                            - id: '123'
+                              type: prime_contract
+                              label: Prime Contract
+                              filters:
+                              - type: holder_status_filter
+                                label: Status
+                                values:
+                                - label: Approved
+                                  value: approved
+                          editable: false
+                          show_cell_details: true
+                          spreadable: false
+                          actuals: false
+                          enable_lump_sum_manual_entries: false
+                          importable: true
+                          display_rules: null
+                      groupings:
+                        type: array
+                        description: Row groupings applied to the budget view, ordered from outermost to innermost tier. Present only when the view is resolved in a project context.
+                        items:
+                          type: object
+                          properties:
+                            tier:
+                              type: integer
+                              description: Nesting level of the grouping, starting at 0 for the outermost group.
+                              example: 0
+                            type:
+                              type: string
+                              description: Kind of grouping. Typically 'segment' for WBS segment-based groupings.
+                              example: segment
+                            value:
+                              type: string
+                              description: ID of the WBS segment the rows are grouped by.
+                              example: '10'
+                            label:
+                              type: string
+                              description: Display label shown for the grouping.
+                              example: Cost Code
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/budget_views/%7Bbudget_view_id%7D',\n  qs: {source_snapshot_id: 'SOME_STRING_VALUE', project_id: 'SOME_STRING_VALUE'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v2.0/companies/%7Bcompany_id%7D/budget_views/%7Bbudget_view_id%7D?source_snapshot_id=SOME_STRING_VALUE&project_id=SOME_STRING_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/budget_views/%7Bbudget_view_id%7D?source_snapshot_id=SOME_STRING_VALUE&project_id=SOME_STRING_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/budget_views/%7Bbudget_view_id%7D?source_snapshot_id=SOME_STRING_VALUE&project_id=SOME_STRING_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Introducing v2.0 Get Budget Views
+        description: Introduction of API endpoint for Budget Views
+        endpoint: GET /companies/{company_id}/budget_views/{budget_view_id}
+        type: new
+        breaking: false
+        datestamp: '2024-10-22'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: beta
+          exposure: public
+        link: budget-view?version=2.0#get-a-budget-view
+      - summary: Added new attributes to budget column response shape
+        description: Updated the Budget Views endpoint to include budget column label, aggregatable, format, and attribute.
+        endpoint: GET /companies/{company_id}/budget_views/{budget_view_id}
+        type: refinement
+        breaking: false
+        datestamp: '2025-02-25'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: beta
+          exposure: public
+        link: budget-view?version=2.0#get-a-budget-view
+      - summary: Include all budget columns in budget view response, remove name attribute from budget column response shape
+        description: Updated the Budget Views endpoint to remove budget column name (replaced with label) and include all budget columns in budget view response.
+        endpoint: GET /companies/{company_id}/budget_views/{budget_view_id}
+        type: refinement
+        breaking: true
+        datestamp: '2025-02-28'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: beta
+          exposure: public
+        link: budget-view?version=2.0#get-a-budget-view
+      - summary: Added descending sorting for created_at field for GET endpoint for the list of budget templates.
+        description: Added descending sorting for created_at field for GET endpoint for the list of budget templates.
+        endpoint: GET /companies/{company_id}/budget_views/{budget_view_id}
+        type: refinement
+        breaking: false
+        datestamp: '2025-09-23'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: beta
+          exposure: public
+        link: budget-view?version=2.0#get-a-budget-view
+      - summary: Added actuals field to budget view column responses
+        description: Budget view column responses now include an `actuals` boolean field, indicating whether a column is designated as the actuals column for forecasting.
+        endpoint: GET /companies/{company_id}/budget_views/{budget_view_id}
+        type: refinement
+        breaking: false
+        datestamp: '2026-04-22'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: beta
+          exposure: public
+        link: budget-view?version=2.0#get-a-budget-view
+      - summary: Made v2.0 Get a Budget View public
+        description: This endpoint is now publicly available. Clarified in the description and the `attribute` field of budget column responses that `columns[].attribute` is the key used for that column's value in Detail Rows and Summary Rows v2.0 responses, and that `source_snapshot_id` changes only the contents of `columns` (not the response shape) when reading a snapshot.
+        endpoint: GET /companies/{company_id}/budget_views/{budget_view_id}
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-21'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: beta
+          exposure: public
+        link: budget-view?version=2.0#get-a-budget-view
+      operationId: getABudgetView
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

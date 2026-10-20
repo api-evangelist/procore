@@ -1,0 +1,716 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Crew API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Crew
+paths:
+  /rest/v1.0/projects/{project_id}/crews:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    post:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Create a new Crew
+      description: Create a new Crew associated with the specified Project.
+      tags:
+      - Crew
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        description: Unique identifier for the project.
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Crew Body
+              type: object
+              required:
+              - crew
+              properties:
+                crew:
+                  title: Crew
+                  type: object
+                  description: Crew Object
+                  properties:
+                    lead_party_id:
+                      type: integer
+                      description: Party Id of crew leader
+                      example: 1
+                    name:
+                      type: string
+                      description: Crew Name
+                      example: ADL Crew
+                    party_ids:
+                      type: array
+                      items:
+                        type: integer
+                        description: Party Ids of crew members
+                    equipment_ids:
+                      type: array
+                      items:
+                        type: integer
+                        description: Equipment Ids of equipment on crew
+      responses:
+        '201':
+          description: Crew Created Succesfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  project_id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  employees:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: ID
+                          example: 160586
+                        login:
+                          type: string
+                          description: Email
+                          example: carl.contractor@example.com
+                        name:
+                          type: string
+                          description: Name
+                          example: Carl Contractor
+                  created_by:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: ID
+                        example: 160586
+                      login:
+                        type: string
+                        description: Email
+                        example: carl.contractor@example.com
+                      name:
+                        type: string
+                        description: Name
+                        example: Carl Contractor
+                  lead:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: ID
+                        example: 160586
+                      login:
+                        type: string
+                        description: Email
+                        example: carl.contractor@example.com
+                      name:
+                        type: string
+                        description: Name
+                        example: Carl Contractor
+                  lead_party:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: ID
+                        example: 160586
+                      first_name:
+                        type: string
+                        description: First Name
+                        example: Carl
+                      last_name:
+                        type: string
+                        description: Surname
+                        example: Contractor
+                      is_employee:
+                        type: boolean
+                        description: Is an Employee?
+                        example: true
+                      employee_id:
+                        type: string
+                        description: Employee ID if an employee
+                        example: 1234
+                      user_id:
+                        type: integer
+                        description: User ID if a user
+                        example: 123
+                      is_active:
+                        type: boolean
+                        description: Is active party?
+                        example: true
+                  members:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: ID
+                          example: 160586
+                        first_name:
+                          type: string
+                          description: First Name
+                          example: Carl
+                        last_name:
+                          type: string
+                          description: Surname
+                          example: Contractor
+                        is_employee:
+                          type: boolean
+                          description: Is an Employee?
+                          example: true
+                        employee_id:
+                          type: string
+                          description: Employee ID if an employee
+                          example: 1234
+                        user_id:
+                          type: integer
+                          description: User ID if a user
+                          example: 123
+                        is_active:
+                          type: boolean
+                          description: Is active party?
+                          example: true
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Created at
+                    example: '2015-05-15T00:00:00Z'
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: Created at
+                    example: '2015-05-15T00:00:00Z'
+        '422':
+          description: Error creating a Crew
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/crews',\n  headers: {'content-type': 'application/json'},\n  body: {crew: {lead_party_id: 1, name: 'ADL Crew', party_ids: [0], equipment_ids: [0]}},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"crew\":{\"lead_party_id\":1,\"name\":\"ADL Crew\",\"party_ids\":[0],\"equipment_ids\":[0]}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v1.0/projects/%7Bproject_id%7D/crews", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/crews \\\n  --header 'content-type: application/json' \\\n  --data '{\"crew\":{\"lead_party_id\":1,\"name\":\"ADL Crew\",\"party_ids\":[0],\"equipment_ids\":[0]}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/crews\"),\n    Content = new StringContent(\"{\\\"crew\\\":{\\\"lead_party_id\\\":1,\\\"name\\\":\\\"ADL Crew\\\",\\\"party_ids\\\":[0],\\\"equipment_ids\\\":[0]}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added support for equipment_ids parameter in crew creation
+        description: Added support for equipment_ids parameter when creating crews.  You can now specify equipment register IDs to assign equipment to a crew during creation.
+        endpoint: POST /projects/{project_id}/crews
+        type: feature
+        breaking: false
+        datestamp: '2025-01-27'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: crews?version=1.0#create-a-new-crew
+      operationId: createANewCrew
+  /rest/v1.0/projects/{project_id}/crews/{id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    patch:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Update a Crew
+      description: Updating a Crew associated with the specified Project.
+      tags:
+      - Crew
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        description: Unique identifier for the project.
+        schema:
+          type: integer
+      - name: id
+        in: path
+        description: Id of the Crew
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Crew Body
+              type: object
+              required:
+              - crew
+              properties:
+                crew:
+                  title: Crew
+                  type: object
+                  description: Crew Object
+                  properties:
+                    lead_party_id:
+                      type: integer
+                      description: Party Id of crew leader
+                      example: 1
+                    name:
+                      type: string
+                      description: Crew Name
+                      example: ADL Crew
+                    party_ids:
+                      type: array
+                      items:
+                        type: integer
+                        description: Party Ids of crew members
+                    equipment_ids:
+                      type: array
+                      items:
+                        type: integer
+                        description: Equipment Ids of equipment on crew
+      responses:
+        '200':
+          description: Crew Updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  project_id:
+                    type: integer
+                  company_id:
+                    type: integer
+                  employees:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: ID
+                          example: 160586
+                        login:
+                          type: string
+                          description: Email
+                          example: carl.contractor@example.com
+                        name:
+                          type: string
+                          description: Name
+                          example: Carl Contractor
+                  created_by:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: ID
+                        example: 160586
+                      login:
+                        type: string
+                        description: Email
+                        example: carl.contractor@example.com
+                      name:
+                        type: string
+                        description: Name
+                        example: Carl Contractor
+                  lead:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: ID
+                        example: 160586
+                      login:
+                        type: string
+                        description: Email
+                        example: carl.contractor@example.com
+                      name:
+                        type: string
+                        description: Name
+                        example: Carl Contractor
+                  lead_party:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: ID
+                        example: 160586
+                      first_name:
+                        type: string
+                        description: First Name
+                        example: Carl
+                      last_name:
+                        type: string
+                        description: Surname
+                        example: Contractor
+                      is_employee:
+                        type: boolean
+                        description: Is an Employee?
+                        example: true
+                      employee_id:
+                        type: string
+                        description: Employee ID if an employee
+                        example: 1234
+                      user_id:
+                        type: integer
+                        description: User ID if a user
+                        example: 123
+                      is_active:
+                        type: boolean
+                        description: Is active party?
+                        example: true
+                  members:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: ID
+                          example: 160586
+                        first_name:
+                          type: string
+                          description: First Name
+                          example: Carl
+                        last_name:
+                          type: string
+                          description: Surname
+                          example: Contractor
+                        is_employee:
+                          type: boolean
+                          description: Is an Employee?
+                          example: true
+                        employee_id:
+                          type: string
+                          description: Employee ID if an employee
+                          example: 1234
+                        user_id:
+                          type: integer
+                          description: User ID if a user
+                          example: 123
+                        is_active:
+                          type: boolean
+                          description: Is active party?
+                          example: true
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Created at
+                    example: '2015-05-15T00:00:00Z'
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: Created at
+                    example: '2015-05-15T00:00:00Z'
+        '422':
+          description: Error creating a Crew
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/crews/%7Bid%7D',\n  headers: {'content-type': 'application/json'},\n  body: {crew: {lead_party_id: 1, name: 'ADL Crew', party_ids: [0], equipment_ids: [0]}},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"crew\":{\"lead_party_id\":1,\"name\":\"ADL Crew\",\"party_ids\":[0],\"equipment_ids\":[0]}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("PATCH", "/rest/v1.0/projects/%7Bproject_id%7D/crews/%7Bid%7D", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/crews/%7Bid%7D \\\n  --header 'content-type: application/json' \\\n  --data '{\"crew\":{\"lead_party_id\":1,\"name\":\"ADL Crew\",\"party_ids\":[0],\"equipment_ids\":[0]}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/crews/%7Bid%7D\"),\n    Content = new StringContent(\"{\\\"crew\\\":{\\\"lead_party_id\\\":1,\\\"name\\\":\\\"ADL Crew\\\",\\\"party_ids\\\":[0],\\\"equipment_ids\\\":[0]}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added support for equipment_ids parameter in crew updates
+        description: Added support for equipment_ids parameter when updating crews.  You can now add, remove, or modify equipment assignments on existing crews.  Sending an empty array removes all equipment from the crew.
+        endpoint: PATCH /projects/{project_id}/crews/{id}
+        type: feature
+        breaking: false
+        datestamp: '2025-01-27'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: crews?version=1.0#update-a-crew
+      operationId: updateACrew
+    delete:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Delete a Crew
+      description: Deleting a Crew associated with the specified Project.
+      tags:
+      - Crew
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        description: Unique identifier for the project.
+        schema:
+          type: integer
+      - name: id
+        in: path
+        description: Id of the Crew
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Crew Body
+              type: object
+              required:
+              - crew
+              properties:
+                crew:
+                  title: Crew
+                  type: object
+                  description: Crew Object
+                  properties:
+                    lead_party_id:
+                      type: integer
+                      description: Party Id of crew leader
+                      example: 1
+                    name:
+                      type: string
+                      description: Crew Name
+                      example: ADL Crew
+                    party_ids:
+                      type: array
+                      items:
+                        type: integer
+                        description: Party Ids of crew members
+                    equipment_ids:
+                      type: array
+                      items:
+                        type: integer
+                        description: Equipment Ids of equipment on crew
+      responses:
+        '200':
+          description: Crew Deleted
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'DELETE',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/crews/%7Bid%7D',\n  headers: {'content-type': 'application/json'},\n  body: {crew: {lead_party_id: 1, name: 'ADL Crew', party_ids: [0], equipment_ids: [0]}},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"crew\":{\"lead_party_id\":1,\"name\":\"ADL Crew\",\"party_ids\":[0],\"equipment_ids\":[0]}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("DELETE", "/rest/v1.0/projects/%7Bproject_id%7D/crews/%7Bid%7D", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request DELETE \\\n  --url https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/crews/%7Bid%7D \\\n  --header 'content-type: application/json' \\\n  --data '{\"crew\":{\"lead_party_id\":1,\"name\":\"ADL Crew\",\"party_ids\":[0],\"equipment_ids\":[0]}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Delete,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/crews/%7Bid%7D\"),\n    Content = new StringContent(\"{\\\"crew\\\":{\\\"lead_party_id\\\":1,\\\"name\\\":\\\"ADL Crew\\\",\\\"party_ids\\\":[0],\\\"equipment_ids\\\":[0]}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: deleteACrew
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

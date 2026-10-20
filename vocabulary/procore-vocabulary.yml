@@ -1,0 +1,483 @@
+generated: '2026-10-20'
+method: derived
+generator: derive-vocabulary.py
+source: openapi/procore-openapi.json
+vocabulary:
+  name: Procore Domain Vocabulary
+  description: 'Terms declared by Procore''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions.
+    Derived, not authored.'
+  version: '2026-10-20'
+  terms:
+  - term: Accident Logs
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/accident_logs: Returns all Accident Logs for
+      the current date.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Incidents
+    definition: 'Resource group in the contract; its operation POST /rest/v1.0/projects/{project_id}/incidents/actions/{action_id}/attachments:
+      Uploads a file attachment to the specified incident action.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Action Plan Approver Signature
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/action_plans/plan_approvers/{plan_approver_id}/signature:
+      Get the details of an Action Plan Approver Signature'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Action Plan Signatures
+    definition: 'Resource group in the contract; its operation POST /rest/v1.0/projects/{project_id}/action_plans/plan_approvers/{plan_approver_id}/signature:
+      Create a single Action Plan Approver Signature.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Action Plan Approvers
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/action_plans/plan_approvers: Returns all Action
+      Plan Approvers for a given Project'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Action Plans
+    definition: 'Resource group in the contract; its operation GET /rest/v2.0/companies/{company_id}/projects/{project_id}/action_plans/plans/{plan_id}/change_history_events:
+      List oF Change History Events for an Action Plan'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Action Plan Item Assignee Signatures
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/action_plans/plan_item_assignees/{plan_item_assignee_id}/signature:
+      Get the details of an Action Plan Item Assignee Signature'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Action Plan Item Assignees
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/action_plans/plan_item_assignees: List of
+      all Action Plan Item Assignees'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Action Plan Items
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/action_plans/plan_items: Returns all Action
+      Plan Items for a given Project.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Action Plan Parties
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/action_plans/parties: List of all project
+      Action Plan Parties'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Action Plan Receivers
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/action_plans/plan_receivers: Returns all Action
+      Plan Receivers for a given Project'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Action Plan References
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/action_plans/plan_references: List of all
+      Action Plan References'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Action Plan Reference
+    definition: 'Resource group in the contract; its operation POST /rest/v1.0/projects/{project_id}/action_plans/plan_references: Create an Action
+      Plan Reference'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Action Plan Sections
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/action_plans/plan_sections: Returns all Action
+      Plan Sections for a given Project.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Action Plan Test Record Requests
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/action_plans/plan_test_record_requests: List
+      of all Action Plan Test Record Requests'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Action Plan Test Records
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/action_plans/plan_test_records: List of all
+      Action Plan Test Records'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Action Plan Verification Methods
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/companies/{company_id}/action_plans/verification_methods: List of
+      all company Action Plan Verification Methods'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Recycled Action Plans
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/recycle_bin/action_plans/plans: Returns a
+      list of Recycled Action Plans for a given project.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Action Types
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/companies/{company_id}/incidents/action_types: Returns a paginated
+      list of all incident action types configured for the specified company.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Action Type
+    definition: 'Resource group in the contract; its operation DELETE /rest/v1.0/companies/{company_id}/incidents/action_types/{id}: Deletes an
+      Incident Action Type.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: activities-controller
+    definition: 'Resource group in the contract; its operation GET /rest/v2.0/companies/{company_id}/projects/{project_id}/schedules/{schedule_id}/activities:
+      List all activities in a schedule.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: activity-links-controller
+    definition: 'Resource group in the contract; its operation GET /rest/v2.0/companies/{company_id}/projects/{project_id}/schedules/{schedule_id}/activity_links:
+      List all activity links in a schedule'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Actual Production Quantity
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/actual_production_quantities: Return a list
+      of all Actual Production Quantities for a specified Project.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Actual Production Quantities
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/actual_production_quantities/{id}: Return
+      Actual Production Quantity detailed information.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Adjustments
+    definition: 'Resource group in the contract; its operation POST /rest/v2.0/companies/{company_id}/projects/{project_id}/materials_mgmt/adjustments:
+      The adjustment document is created in Draft status.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Admin Equipment
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/equipment: Return a list of all Project Equipment.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Admin Equipment Logs
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/equipment_logs: Returns all Equipment Logs
+      for the current date.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: RFIs
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/rfis/{id}/advanced_exports: Get the available
+      export options for an existing RFI.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Advanced forecasting
+    definition: 'Resource group in the contract; its operation GET /rest/v2.0/companies/{company_id}/projects/{project_id}/advanced_forecastings/rows:
+      Get Advanced forecasting rows.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Budget
+    definition: 'Resource group in the contract; its operation GET /rest/v2.0/companies/{company_id}/projects/{project_id}/advanced_forecastings/rows:
+      Get Advanced forecasting rows.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Forecasting
+    definition: 'Resource group in the contract; its operation GET /rest/v2.0/companies/{company_id}/projects/{project_id}/advanced_forecastings/rows:
+      Get Advanced forecasting rows.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Affliction Types
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/companies/{company_id}/incidents/affliction_types: Returns a paginated
+      list of all affliction types configured for the specified company.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Affliction Type
+    definition: 'Resource group in the contract; its operation DELETE /rest/v1.0/companies/{company_id}/incidents/affliction_types/{id}: Deletes
+      an Affliction Type.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Alert Recipients
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/companies/{company_id}/incidents/severity_levels/{severity_level_id}/alert_recipients:
+      Return a list of all Incident Alert Recipients associated with the specified Company and Incident Severity Level.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Alert Recipient
+    definition: 'Resource group in the contract; its operation DELETE /rest/v1.0/companies/{company_id}/incidents/severity_levels/{severity_level_id}/alert_recipients/{id}:
+      Deletes an Incident Alert Recipient.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Alerts
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/incidents/alerts: Returns a paginated list
+      of all incident alerts for the specified project.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Checklists (Inspections)
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/companies/{company_id}/checklist/alternative_response_sets: Lists
+      Alternative Response Sets for a specified Company.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: App Configurations
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/companies/{company_id}/app_configurations: Returns a list of app
+      configurations on a given company or project'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: App Installations
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/app_installations: Returns a list of app installations on a given
+      company or project'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Resource Planning
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/workforce-planning/v2/companies/{company_id}/assignments: Returns
+      all of the Resource Planning Assignment data for the given company'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Attachment
+    definition: 'Resource group in the contract; its operation POST /rest/v2.0/companies/{company_id}/projects/{project_id}/equipment_register/{equipment_id}/attachment:
+      Create equipment attachment (Project)'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Wbs Attribute Items
+    definition: 'Resource group in the contract; its operation GET /rest/v2.0/companies/{company_id}/projects/{project_id}/wbs/attribute_items:
+      List Wbs Attributes items for a given project'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Wbs Attributes
+    definition: 'Resource group in the contract; its operation GET /rest/v2.0/companies/{company_id}/projects/{project_id}/wbs/attributes: List
+      Wbs Attributes for a given project'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Authentication
+    definition: 'Resource group in the contract; its operation GET /oauth/authorize: Creates and returns a temporary authorization code with 10
+      minute expiration.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Available Punch Item Managers
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/available_punch_item_managers: Returns login
+      informations that the current User can assign to Punch Items as Punch Manager.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: LayerGroup
+    definition: 'Resource group in the contract; its operation GET /rest/v2.0/companies/{company_id}/estimating/bid_board_projects/{bid_board_project_id}/proposals/{proposal_id}/line_item_groups/{line_item_group_id}:
+      Retrieve a line item group by Id'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Layer
+    definition: 'Resource group in the contract; its operation GET /rest/v2.0/companies/{company_id}/estimating/bid_board_projects/{bid_board_project_id}/proposals/{proposal_id}/line_items:
+      Retrieve all line items of a proposal'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Note
+    definition: 'Resource group in the contract; its operation POST /rest/v2.0/companies/{company_id}/estimating/bid_board_projects/{bid_board_project_id}/notes:
+      Create a note in the project'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: ProjectTask
+    definition: 'Resource group in the contract; its operation GET /rest/v2.0/companies/{company_id}/estimating/bid_board_projects/{bid_board_project_id}/tasks:
+      Get project tasks'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Proposal
+    definition: 'Resource group in the contract; its operation GET /rest/v2.0/companies/{company_id}/estimating/bid_board_projects/{bid_board_project_id}/proposals/{proposal_id}:
+      Retrieve a project proposal by Id'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Project
+    definition: 'Resource group in the contract; its operation GET /rest/v2.0/companies/{company_id}/estimating/bid_board_projects/{bid_board_project_id}:
+      Get Bid Board project by id'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Bids
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/bid_contacts: Get a list of all the contacts
+      of a company or contacts of a perticular vendor of the company (with vendor_id as a parameter).'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Bid Form Items
+    definition: 'Resource group in the contract; its operation DELETE /rest/v1.0/projects/{project_id}/bid_packages/{bid_package_id}/bid_form_items/{bid_form_item_id}:
+      Delete single Bid Form Item.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Bid Form Sections
+    definition: 'Resource group in the contract; its operation DELETE /rest/v1.0/projects/{project_id}/bid_packages/{bid_package_id}/bid_form_sections/{bid_form_section_id}:
+      Delete single Bid Form Section.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Bid Forms
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/bid_packages/{bid_package_id}/bid_forms: Fetches
+      a list of Bid Forms for a Bid Package'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Export
+    definition: 'Resource group in the contract; its operation GET /rest/v1.1/projects/{project_id}/bid_packages/{bid_package_id}/bid_forms/export_forms:
+      Download a summary of all Bid Forms and their Bids in the Bid Package.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Bid Uploads
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/companies/{company_id}/bids/{bid_id}/uploads: Fetches a list of
+      Bid Uploads for a Bid'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Billing Periods
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/billing_periods: Return a list of all Billing
+      Periods of a specified Project.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Billing Period
+    definition: 'Resource group in the contract; its operation POST /rest/v1.0/projects/{project_id}/billing_periods: Create a Billing Period'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: BIM Files
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/bim_files: Lists BIM Files associated with the specified Project.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: BIM File
+    definition: 'Resource group in the contract; its operation DELETE /rest/v1.0/bim_files/{id}: Delete a BIM File from the system.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: BIM Geometry Files
+    definition: 'Resource group in the contract; its operation POST /rest/v1.0/bim_geometry_file_bundles: Create a BIM Geometry File Bundle in
+      a Project'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: BIM Models
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/bim_geometry_file_bundles/{id}: Return BIM Geometry File Bundle
+      details.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: BIM Levels
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/bim_levels: Lists BIM Levels associated with the specified Project.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: BIM Model Revision Objects
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/bim_model_revisions/{id}/objects: Lists objects for a specific BIM
+      Model Revision.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: BIM Model Revision Plans
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/bim_model_revision_plans: Lists BIM Model Revision Plans associated
+      with the specified Project.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: BIM Model Revision Planss
+    definition: 'Resource group in the contract; its operation POST /rest/v1.0/bim_model_revision_plans: Create a relationship between a BIM Model
+      Revision and a BIM Plan.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: BIM Model Properties
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/bim_model_revisions/{id}/properties: Lists properties for a specific
+      BIM Model Revision.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: BIM Model Revision Viewpoints
+    definition: 'Resource group in the contract; its operation DELETE /rest/v1.0/bim_model_revision_viewpoints/bulk_delete: Delete multiple BIM
+      Model Revision Viewpoint associations in a single request.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: BIM Viewpoints
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/bim_model_revision_viewpoints: List BIM Model Revision Viewpoints
+      associated to a BIM model revision'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: BIM Model Revisions
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/bim_model_revisions: Lists BIM Model Revisions associated with the
+      specified Project.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: BIM Plans
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/bim_plans: Lists BIM Plans associated with the specified Project.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: BIM Planss
+    definition: 'Resource group in the contract; its operation POST /rest/v1.0/bim_plans: Create a BIM Plan in a Project'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: BIM Property File Objects
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/bim_property_files/{id}/objects: Lists objects from a specific BIM
+      Property File.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: BIM Property File Properties
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/bim_property_files/{id}/properties: Lists properties from a specific
+      BIM Property File.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: BIM View Folders
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/bim_view_folders: Lists BIM View Folders associated with the specified
+      Project.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Body Parts
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/companies/{company_id}/incidents/body_parts: Returns a paginated
+      list of all body parts available for associating with incident injuries.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Budget Change
+    definition: 'Resource group in the contract; its operation GET /rest/v1.0/projects/{project_id}/budget_changes: Return a list of budget change
+      summary rows.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Budget Change Adjustment
+    definition: 'Resource group in the contract; its operation GET /rest/v2.0/companies/{company_id}/projects/{project_id}/budget_changes/adjustment_line_items:
+      Get Adjustment and Adjustment Line Items of a Project.'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json
+  - term: Budget Change History
+    definition: 'Resource group in the contract; its operation GET /rest/v2.0/companies/{company_id}/projects/{project_id}/budget_change_history:
+      Returns the list of Budget Change Histories for a given project'
+    tags:
+    - Resource Group
+    source: openapi/procore-openapi.json

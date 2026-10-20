@@ -1,0 +1,414 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Company Project Tools API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Company Project Tools
+paths:
+  /rest/v2.0/companies/{company_id}/project_tools/{engine_name}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: company_id
+      in: path
+      description: Unique identifier for the company.
+      required: true
+      schema:
+        type: string
+    - name: engine_name
+      in: path
+      required: true
+      description: 'Tool engine name (e.g. `assets`, `rfi`). Matches `Tool.engine_name`
+
+        for `provider_type` Project.'
+      schema:
+        type: string
+      example: assets
+    x-compliance-level: partial
+    get:
+      x-doc:
+        visibility: public
+        stage: beta
+        exposure: public
+      summary: List project tools
+      description: 'Returns projects under a company that have a project-scoped Tool record
+
+        for the given `engine_name`, along with each project''s active state and
+
+        whether the tool is active on that project.
+
+
+        Without filters all projects are returned regardless of status. Use
+
+        `filters[tool_active]` and `filters[project_active]` to narrow results,
+
+        or `filters[name]` to search by project name.
+
+
+        A tool is considered active when both `is_active` and `is_available` are
+
+        true, matching the criteria used by `Project#has_active_tool?`.
+
+
+        `name` is the project''s display name: it''s prefixed with the project
+
+        number (e.g. `"1234 - Downtown Renovation"`) when the company has
+
+        `prepend_project_number` enabled and the project has a number,
+
+        matching the format used by `GET /rest/v1.0/navigation`''s
+
+        `available_projects`. `filters[name]` and `sort=name` both take the
+
+        project number into account in that case.
+
+
+        Results are ordered by ascending project id by default. Use `sort` to
+
+        order by `name`, `project_active`, or `tool_active` instead.'
+      tags:
+      - Company Project Tools
+      parameters:
+      - name: page
+        in: query
+        description: Page
+        required: false
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: Elements per page
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      - name: filters[tool_active]
+        in: query
+        required: false
+        description: 'Filter by tool activation status. `true` — tool active (`is_active`
+
+          and `is_available` both true). `false` — tool inactive.
+
+          Omit to return all records regardless of tool status.'
+        schema:
+          type: boolean
+      - name: filters[project_active]
+        in: query
+        required: false
+        description: 'Filter by project active state. `true` — active projects only.
+
+          `false` — inactive projects only.
+
+          Omit to return all records regardless of project status.'
+        schema:
+          type: boolean
+      - name: filters[name]
+        in: query
+        required: false
+        description: 'Search by project name. Matches projects whose `name` (as returned
+
+          in the response) contains the given value, case-insensitively — so
+
+          when project numbers are prepended, `4521`, `harbor`, and
+
+          `4521 - harbor` all match `"4521 - Harbor Tower"`.'
+        schema:
+          type: string
+        example: renovation
+      - name: sort
+        in: query
+        required: false
+        description: 'Comma-separated list of fields to sort by, applied in order.
+
+          Prefix a field with `-` to sort it descending. For example,
+
+          `sort=-project_active,name` returns active projects first, then
+
+          inactive ones, alphabetically by name within each group.
+
+          Defaults to ascending project id when omitted. Supported fields:
+
+          `name`, `project_active`, `tool_active`.'
+        schema:
+          type: string
+        example: -project_active,name
+      responses:
+        '200':
+          description: OK
+          headers:
+            Per-Page:
+              description: Number of items retrieved per page
+              schema:
+                type: integer
+            Total:
+              description: Total number of items to be retrieved
+              schema:
+                type: integer
+            Link:
+              description: Link headers for the first, prev, next, and last link
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Project ID.
+                        name:
+                          type: string
+                          description: 'Project display name. Prefixed with the project
+
+                            number when the company has `prepend_project_number`
+
+                            enabled and the project has a number.'
+                        project_active:
+                          type: boolean
+                          description: Whether the project is active.
+                        tool_active:
+                          type: boolean
+                          description: 'Whether the tool is active on this project
+
+                            (`is_active` and `is_available` both true).'
+              examples:
+                response:
+                  value:
+                    data:
+                    - id: '100'
+                      name: 1234 - Project Alpha
+                      project_active: true
+                      tool_active: true
+                    - id: '101'
+                      name: Project Beta
+                      project_active: false
+                      tool_active: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/project_tools/assets',\n  qs: {\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE',\n    'filters[tool_active]': 'SOME_BOOLEAN_VALUE',\n    'filters[project_active]': 'SOME_BOOLEAN_VALUE',\n    'filters[name]': 'renovation',\n    sort: '-project_active,name'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v2.0/companies/%7Bcompany_id%7D/project_tools/assets?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&filters%5Btool_active%5D=SOME_BOOLEAN_VALUE&filters%5Bproject_active%5D=SOME_BOOLEAN_VALUE&filters%5Bname%5D=renovation&sort=-project_active%2Cname")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/project_tools/assets?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&filters%5Btool_active%5D=SOME_BOOLEAN_VALUE&filters%5Bproject_active%5D=SOME_BOOLEAN_VALUE&filters%5Bname%5D=renovation&sort=-project_active%2Cname'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/project_tools/assets?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&filters%5Btool_active%5D=SOME_BOOLEAN_VALUE&filters%5Bproject_active%5D=SOME_BOOLEAN_VALUE&filters%5Bname%5D=renovation&sort=-project_active%2Cname\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added Company Project Tools endpoint
+        description: Returns projects within a company that have a project-scoped tool for the given engine_name, including each project's display name, active state, and whether the tool is active (is_active and is_available both true, matching Project#has_active_tool?). The name is prefixed with the project number when the company has prepend_project_number enabled and the project has a number, matching GET /rest/v1.0/navigation's available_projects format. Without filters all records are returned. Optional filters[tool_active] and filters[project_active] boolean params narrow results by tool or project active state respectively, and filters[name] searches by the underlying project name (case-insensitive, partial match). Results are ordered by ascending project id by default; an optional sort param (e.g. sort=-project_active,name, for active projects first then inactive, alphabetically within each group) supports ordering by name, project_active, and/or tool_active, descending when prefixed with '-'; sort=name orders by the underlying project name.
+        endpoint: GET /companies/{company_id}/project_tools/{engine_name}
+        type: new
+        breaking: false
+        datestamp: '2026-09-15'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: beta
+          exposure: public
+        link: company-project-tools?version=2.0#list-project-tools
+      - summary: filters[name] matches project numbers
+        description: When the company has prepend_project_number enabled, filters[name] now matches against the returned "number - name" value, so searching by the project number, the name, or the full "number - name" string all work.
+        endpoint: GET /companies/{company_id}/project_tools/{engine_name}
+        type: refinement
+        breaking: false
+        datestamp: '2026-10-12'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: beta
+          exposure: public
+        link: company-project-tools?version=2.0#list-project-tools
+      operationId: listProjectTools
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

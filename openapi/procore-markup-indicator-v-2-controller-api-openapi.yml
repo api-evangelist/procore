@@ -1,0 +1,203 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Markup Indicator V 2 Controller API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: markup-indicator-v-2-controller
+paths:
+  /rest/v2.0/companies/{company_id}/viewer_documents/markup_indicator:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    post:
+      tags:
+      - markup-indicator-v-2-controller
+      summary: Company Markup Indicators by Items
+      description: Returns per-item markup indicators (e.g. has_public_markup) across a company. Items the caller cannot view, or whose classification could not be resolved, are silently omitted from data.items.
+      operationId: getCompanyMarkupIndicator
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier of the company
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                item_type:
+                  type: string
+                item_ids:
+                  type: array
+                  items:
+                    type: string
+                  maxItems: 100
+                  minItems: 0
+              required:
+              - item_ids
+              - item_type
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/viewer_documents/markup_indicator',\n  headers: {'content-type': 'application/json'},\n  body: {item_type: 'string', item_ids: ['string']},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPConnection("localhost:8080")
+
+
+          payload = "{\"item_type\":\"string\",\"item_ids\":[\"string\"]}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v2.0/companies/%7Bcompany_id%7D/viewer_documents/markup_indicator", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/viewer_documents/markup_indicator \\\n  --header 'content-type: application/json' \\\n  --data '{\"item_type\":\"string\",\"item_ids\":[\"string\"]}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/viewer_documents/markup_indicator\"),\n    Content = new StringContent(\"{\\\"item_type\\\":\\\"string\\\",\\\"item_ids\\\":[\\\"string\\\"]}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+  /rest/v2.0/companies/{company_id}/projects/{project_id}/viewer_documents/markup_indicator:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    post:
+      tags:
+      - markup-indicator-v-2-controller
+      summary: Project Markup Indicators by Items
+      description: Returns per-item markup indicators (e.g. has_public_markup) for a project, in a single batch call. Items the caller cannot view, or whose classification could not be resolved, are silently omitted from data.items.
+      operationId: getProjectMarkupIndicator
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier of the company
+        required: true
+        schema:
+          type: string
+      - name: project_id
+        in: path
+        description: Unique identifier of the project
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                item_type:
+                  type: string
+                item_ids:
+                  type: array
+                  items:
+                    type: string
+                  maxItems: 100
+                  minItems: 0
+              required:
+              - item_ids
+              - item_type
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/markup_indicator',\n  headers: {'content-type': 'application/json'},\n  body: {item_type: 'string', item_ids: ['string']},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPConnection("localhost:8080")
+
+
+          payload = "{\"item_type\":\"string\",\"item_ids\":[\"string\"]}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/markup_indicator", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/markup_indicator \\\n  --header 'content-type: application/json' \\\n  --data '{\"item_type\":\"string\",\"item_ids\":[\"string\"]}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/markup_indicator\"),\n    Content = new StringContent(\"{\\\"item_type\\\":\\\"string\\\",\\\"item_ids\\\":[\\\"string\\\"]}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

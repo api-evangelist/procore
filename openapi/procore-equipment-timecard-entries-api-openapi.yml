@@ -1,0 +1,669 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Equipment Timecard Entries API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Equipment Timecard Entries
+paths:
+  /rest/v2.0/companies/{company_id}/projects/{project_id}/equipment_timecard_entries/update_approval:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: company_id
+      in: path
+      description: Unique identifier for the company.
+      required: true
+      schema:
+        type: string
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: string
+    - name: serializer_view
+      in: query
+      description: Optional response blueprint view. Defaults to `default`.
+      required: false
+      schema:
+        type: string
+        enum:
+        - default
+        - compact
+        - mobile
+        example: default
+    x-compliance-level: full
+    patch:
+      x-doc:
+        visibility: public
+        stage: beta
+        exposure: public
+      summary: Update equipment timecard entry approval status
+      description: 'Update approval status of equipment timecard entries (pending, approved, reviewed, billed) for the given project. Supports bulk updates: pass an array of equipment timecard entry IDs and the desired approval_status. Billed entries cannot be changed to another status (except to keep as billed). Requires project timesheet approval permission.'
+      tags:
+      - Equipment Timecard Entries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - ids
+              - approval_status
+              properties:
+                ids:
+                  type: array
+                  description: Array of equipment timecard entry IDs to update
+                  items:
+                    type: integer
+                  example:
+                  - 123456789
+                  - 123456790
+                approval_status:
+                  type: string
+                  enum:
+                  - pending
+                  - approved
+                  - reviewed
+                  - billed
+                  description: The approval status to set for all specified entries
+                  example: approved
+      responses:
+        '200':
+          description: Equipment timecard entries approval status updated successfully. Returns the updated entries in the v2 data envelope.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Equipment timecard entries response envelope
+                required:
+                - data
+                properties:
+                  data:
+                    type: array
+                    description: Equipment timecard entry objects
+                    items:
+                      type: object
+                      description: Equipment timecard entry
+                      required:
+                      - id
+                      - company_id
+                      - project_id
+                      - date
+                      - equipment_id
+                      - quantity
+                      - idle_quantity
+                      - unit_of_measure
+                      - approval_status
+                      - created_at
+                      - updated_at
+                      properties:
+                        id:
+                          type: string
+                          description: Primary key (REST v2 serializes numeric identifiers as strings)
+                          example: '12345'
+                        approved_by_id:
+                          type:
+                          - string
+                          - 'null'
+                          description: Identifier of the user who approved this entry. Null when unapproved.
+                        approval_status:
+                          type: string
+                          enum:
+                          - pending
+                          - approved
+                          - reviewed
+                          - billed
+                          description: Approval workflow status for this entry.
+                        approval_status_updated_at:
+                          type:
+                          - string
+                          - 'null'
+                          format: date-time
+                          description: Timestamp when the approval status was last changed, in ISO 8601 format.
+                        company_id:
+                          type: string
+                          description: Identifier of the company this entry belongs to.
+                        client_local_id:
+                          type:
+                          - string
+                          - 'null'
+                          description: Client-provided local identifier echoed in API responses for request/response correlation.
+                        created_at:
+                          type: string
+                          format: date-time
+                          description: Timestamp when this entry was created, in ISO 8601 format.
+                        created_by_id:
+                          type:
+                          - string
+                          - 'null'
+                          description: Identifier of the user who created this entry.
+                        crew_id:
+                          type:
+                          - string
+                          - 'null'
+                          description: Identifier of the crew assigned to this entry. Null if unassigned.
+                        date:
+                          type: string
+                          format: date
+                          description: Date this equipment timecard entry applies to.
+                          example: '2026-01-07'
+                        equipment_id:
+                          type: string
+                          description: Equipment ULID (Equipment Register)
+                          example: 01KJX4Z277RJJNKQWKANZ74YB2
+                        equipment_name:
+                          type:
+                          - string
+                          - 'null'
+                          description: Display name from Equipment Register when available (company-scoped list).
+                        equipment_identification_number:
+                          type:
+                          - string
+                          - 'null'
+                          description: Identification number from Equipment Register when available (company-scoped list).
+                        idle_quantity:
+                          type: number
+                          description: Idle (non-operating) hours recorded for this entry.
+                          example: 0
+                        location_id:
+                          type:
+                          - string
+                          - 'null'
+                          description: Identifier of the location for this entry. Null if unassigned.
+                        party_id:
+                          type:
+                          - string
+                          - 'null'
+                          description: Identifier of the party (employee/contact) for this entry. Null if unassigned.
+                        project_id:
+                          type: string
+                          description: Identifier of the project this entry belongs to.
+                        project_name:
+                          type:
+                          - string
+                          - 'null'
+                          description: Display name of the project identified by project_id. Null when the associated project cannot be resolved. Use to label entries without a separate request to the projects endpoint.
+                          example: Downtown Office Tower
+                        quantity:
+                          type: number
+                          description: Operating hours recorded for this entry.
+                          example: 8
+                        timesheet_id:
+                          type:
+                          - string
+                          - 'null'
+                          description: Identifier of the timesheet this entry is linked to. Null if unlinked.
+                        unit_of_measure:
+                          type: integer
+                          description: Unit of measure for equipment hours (numeric enum).
+                          example: 0
+                        updated_at:
+                          type: string
+                          format: date-time
+                          description: Timestamp when this entry was last modified, in ISO 8601 format.
+                        updated_by_id:
+                          type:
+                          - string
+                          - 'null'
+                          description: Identifier of the user who last updated this entry.
+                        wbs_code_id:
+                          type:
+                          - string
+                          - 'null'
+                          description: Identifier of the WBS/task code assigned to this entry. Null if unassigned.
+                        origin_data:
+                          type:
+                          - string
+                          - 'null'
+                          description: Data payload from an external/ERP integration, if linked.
+                        origin_id:
+                          type:
+                          - string
+                          - 'null'
+                          description: Identifier from an external/ERP system, if linked.
+                        custom_fields:
+                          type: object
+                          properties:
+                            custom_field_%{custom_field_string_definition_id}:
+                              type: object
+                              properties:
+                                data_type:
+                                  type: string
+                                  description: The data type of the Custom Field Definition.
+                                  example: string
+                                value:
+                                  type: string
+                                  description: The value of the custom field.
+                                  example: custom field value
+                            custom_field_%{custom_field_decimal_definition_id}:
+                              type: object
+                              properties:
+                                data_type:
+                                  type: string
+                                  description: The data type of the Custom Field Definition.
+                                  example: decimal
+                                value:
+                                  type: number
+                                  description: The value of the custom field.
+                                  example: 2.2
+                            custom_field_%{custom_field_boolean_definition_id}:
+                              type: object
+                              properties:
+                                data_type:
+                                  type: string
+                                  description: The data type of the Custom Field Definition.
+                                  example: boolean
+                                value:
+                                  type: boolean
+                                  description: The value of the custom field.
+                                  example: true
+                            custom_field_%{custom_field_lov_entry_definition_id}:
+                              type: object
+                              properties:
+                                data_type:
+                                  type: string
+                                  description: The data type of the Custom Field Definition.
+                                  example: lov_entry
+                                value:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                      description: The unique identifier of the list of values (LOV) entry.
+                                      example: '1'
+                                    label:
+                                      type: string
+                                      description: Label of the list of values (LOV) entry.
+                                      example: Open
+                            custom_field_%{custom_field_lov_entries_definition_id}:
+                              type: object
+                              properties:
+                                data_type:
+                                  type: string
+                                  description: The data type of the Custom Field Definition.
+                                  example: lov_entries
+                                value:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      id:
+                                        type: string
+                                        description: The unique identifier of the list of values (LOV) entry.
+                                        example: '2'
+                                      label:
+                                        type: string
+                                        description: The label of the list of values (LOV) entry.
+                                        example: Open
+                        timesheet:
+                          type:
+                          - object
+                          - 'null'
+                          description: Present when serializer_view=mobile; nested timesheet (TimesheetBlueprint normal view). Null when the entry has no timesheet.
+                          properties:
+                            id:
+                              type: string
+                              description: Unique identifier of the timesheet.
+                            date:
+                              type: string
+                              format: date
+                              description: Date of the timesheet.
+                            name:
+                              type:
+                              - string
+                              - 'null'
+                              description: Display name of the timesheet.
+                            number:
+                              type:
+                              - string
+                              - 'null'
+                              description: Sequential number of the timesheet.
+                            created_at:
+                              type: string
+                              format: date-time
+                              description: Timestamp when the timesheet was created, in ISO 8601 format.
+                            updated_at:
+                              type: string
+                              format: date-time
+                              description: Timestamp when the timesheet was last modified, in ISO 8601 format.
+                            status:
+                              type: string
+                              enum:
+                              - pending
+                              - approved
+                              - reviewed
+                              description: Timesheet workflow status
+                            created_by:
+                              type:
+                              - object
+                              - 'null'
+                              description: User who created the timesheet.
+                              properties:
+                                id:
+                                  type: string
+                                  description: Unique identifier of the user.
+                                login:
+                                  type: string
+                                  description: Email address of the user.
+                                name:
+                                  type:
+                                  - string
+                                  - 'null'
+                                  description: Full name of the user.
+                        timesheet_status:
+                          type:
+                          - string
+                          - 'null'
+                          enum:
+                          - pending
+                          - approved
+                          - reviewed
+                          description: Present when serializer_view=mobile; same as timesheet.status when a timesheet is associated
+              example:
+                data:
+                - id: '123456789'
+                  company_id: '42'
+                  project_id: '987'
+                  date: '2026-06-10'
+                  equipment_id: 01KJX4Z277RJJNKQWKANZ74YB2
+                  quantity: 8
+                  idle_quantity: 0
+                  unit_of_measure: 0
+                  approval_status: approved
+                  created_at: '2026-06-10T12:30:45Z'
+                  updated_at: '2026-06-11T05:45:10Z'
+        '400':
+          description: Invalid approval_status value or empty ids array. Valid statuses are pending, approved, reviewed, billed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '403':
+          description: Forbidden. User does not have permission to approve equipment timecard entries.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '404':
+          description: One or more equipment timecard entries not found or do not belong to the project.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '422':
+          description: Unprocessable entity. For example, attempting to change billed entries to a different status.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/equipment_timecard_entries/update_approval',\n  qs: {serializer_view: 'default'},\n  headers: {'content-type': 'application/json'},\n  body: {ids: [123456789, 123456790], approval_status: 'approved'},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"ids\":[123456789,123456790],\"approval_status\":\"approved\"}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("PATCH", "/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/equipment_timecard_entries/update_approval?serializer_view=default", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/equipment_timecard_entries/update_approval?serializer_view=default' \\\n  --header 'content-type: application/json' \\\n  --data '{\"ids\":[123456789,123456790],\"approval_status\":\"approved\"}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/equipment_timecard_entries/update_approval?serializer_view=default\"),\n    Content = new StringContent(\"{\\\"ids\\\":[123456789,123456790],\\\"approval_status\\\":\\\"approved\\\"}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Introduce PATCH Equipment Timecard Entries Endpoint
+        description: Update approval status of equipment timecard entries (pending, approved, reviewed, billed) for the given project. Supports bulk updates by passing an array of entry IDs and the desired approval_status. Requires project timesheet approval permission.
+        endpoint: PATCH /companies/{company_id}/projects/{project_id}/equipment_timecard_entries/update_approval
+        type: new
+        breaking: false
+        datestamp: '2026-03-12'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: beta
+          exposure: public
+        link: equipment-timecard-entries?version=2.0#update-equipment-timecard-entry-approval-status
+      operationId: updateEquipmentTimecardEntryApprovalStatus
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

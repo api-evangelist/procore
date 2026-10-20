@@ -1,0 +1,214 @@
+generated: '2026-10-20'
+method: derived
+generator: derive-mcp-candidate.py
+source:
+- openapi/procore-openapi.json
+status: candidate
+deployment:
+  mode: none
+  auth: unknown
+  verified: probed
+note: No MCP server was found. The pre-flight posted tools/list to /mcp on api.procore.com, www.procore.com, procore.com, app.procore.com; verdict
+  absent. Candidate tools below are derived from the 3284 operation(s) in the provider's own OpenAPI (40 listed); they describe what a server
+  WOULD expose, not one that exists.
+tools:
+- name: list_accident_logs
+  operationId: listAccidentLogs
+  method: GET
+  path: /rest/v1.0/projects/{project_id}/accident_logs
+  description: List Accident Logs
+- name: create_accident_log
+  operationId: createAccidentLog
+  method: POST
+  path: /rest/v1.0/projects/{project_id}/accident_logs
+  description: Create Accident Log
+- name: show_accident_logs
+  operationId: showAccidentLogs
+  method: GET
+  path: /rest/v1.0/projects/{project_id}/accident_logs/{id}
+  description: Show Accident Logs
+- name: update_accident_log
+  operationId: updateAccidentLog
+  method: PATCH
+  path: /rest/v1.0/projects/{project_id}/accident_logs/{id}
+  description: Update Accident Log
+- name: delete_accident_log
+  operationId: deleteAccidentLog
+  method: DELETE
+  path: /rest/v1.0/projects/{project_id}/accident_logs/{id}
+  description: Delete Accident Log
+- name: create_attachment
+  operationId: createAttachment
+  method: POST
+  path: /rest/v1.0/projects/{project_id}/incidents/actions/{action_id}/attachments
+  description: Create Attachment
+- name: show_action_plan_approver_signature
+  operationId: showActionPlanApproverSignature
+  method: GET
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_approvers/{plan_approver_id}/signature
+  description: Show Action Plan Approver Signature
+- name: create_action_plan_approver_signature
+  operationId: createActionPlanApproverSignature
+  method: POST
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_approvers/{plan_approver_id}/signature
+  description: Create Action Plan Approver Signature
+- name: delete_action_plan_approver_signature
+  operationId: deleteActionPlanApproverSignature
+  method: DELETE
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_approvers/{plan_approver_id}/signature
+  description: Delete Action Plan Approver Signature
+- name: list_action_plan_approvers
+  operationId: listActionPlanApprovers
+  method: GET
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_approvers
+  description: List Action Plan Approvers
+- name: list_of_change_history_events_for_an_action_plan
+  operationId: listOfChangeHistoryEventsForAnActionPlan
+  method: GET
+  path: /rest/v2.0/companies/{company_id}/projects/{project_id}/action_plans/plans/{plan_id}/change_history_events
+  description: List of Change History Events for an Action Plan
+- name: show_action_plan_item_assignee_signature
+  operationId: showActionPlanItemAssigneeSignature
+  method: GET
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_item_assignees/{plan_item_assignee_id}/signature
+  description: Show Action Plan Item Assignee Signature
+- name: create_action_plan_item_assignee_signature
+  operationId: createActionPlanItemAssigneeSignature
+  method: POST
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_item_assignees/{plan_item_assignee_id}/signature
+  description: Create Action Plan Item Assignee Signature
+- name: delete_action_plan_item_assignee_signature
+  operationId: deleteActionPlanItemAssigneeSignature
+  method: DELETE
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_item_assignees/{plan_item_assignee_id}/signature
+  description: Delete Action Plan Item Assignee Signature
+- name: list_action_plan_item_assignees
+  operationId: listActionPlanItemAssignees
+  method: GET
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_item_assignees
+  description: List Action Plan Item Assignees
+- name: create_action_plan_item_assignee
+  operationId: createActionPlanItemAssignee
+  method: POST
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_item_assignees
+  description: Create Action Plan Item Assignee
+- name: show_action_plan_item_assignee
+  operationId: showActionPlanItemAssignee
+  method: GET
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_item_assignees/{id}
+  description: Show Action Plan Item Assignee
+- name: update_action_plan_item_assignee
+  operationId: updateActionPlanItemAssignee
+  method: PATCH
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_item_assignees/{id}
+  description: Update Action Plan Item Assignee
+- name: delete_action_plan_item_assignee
+  operationId: deleteActionPlanItemAssignee
+  method: DELETE
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_item_assignees/{id}
+  description: Delete Action Plan Item Assignee
+- name: list_recycled_action_plan_item_assignees
+  operationId: listRecycledActionPlanItemAssignees
+  method: GET
+  path: /rest/v1.0/projects/{project_id}/recycle_bin/action_plans/plan_item_assignees
+  description: List Recycled Action Plan Item Assignees
+- name: show_recycled_action_plan_item_assignee
+  operationId: showRecycledActionPlanItemAssignee
+  method: GET
+  path: /rest/v1.0/projects/{project_id}/recycle_bin/action_plans/plan_item_assignees/{id}
+  description: Show Recycled Action Plan Item Assignee
+- name: bulk_update_action_plan_item_assignees
+  operationId: bulkUpdateActionPlanItemAssignees
+  method: PATCH
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_item_assignees/bulk_update
+  description: Bulk Update Action Plan Item Assignees
+- name: bulk_create_action_plan_item_assignees
+  operationId: bulkCreateActionPlanItemAssignees
+  method: POST
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_item_assignees/bulk_create
+  description: Bulk Create Action Plan Item Assignees
+- name: list_action_plan_items
+  operationId: listActionPlanItems
+  method: GET
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_items
+  description: List Action Plan Items
+- name: create_action_plan_item
+  operationId: createActionPlanItem
+  method: POST
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_items
+  description: Create Action Plan Item
+- name: show_action_plan_item
+  operationId: showActionPlanItem
+  method: GET
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_items/{id}
+  description: Show Action Plan Item
+- name: update_action_plan_item
+  operationId: updateActionPlanItem
+  method: PATCH
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_items/{id}
+  description: Update Action Plan Item
+- name: delete_action_plan_item
+  operationId: deleteActionPlanItem
+  method: DELETE
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_items/{id}
+  description: Delete Action Plan Item
+- name: bulk_update_action_plan_item
+  operationId: bulkUpdateActionPlanItem
+  method: PATCH
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_items/bulk_update
+  description: Bulk Update Action Plan Item
+- name: move_action_plan_item_within_or_across_sections
+  operationId: moveActionPlanItemWithinOrAcrossSections
+  method: POST
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_items/{id}/move
+  description: Move Action Plan Item within or across Sections
+- name: create_acopy_of_the_action_plan_item_in_the_item_ssection
+  operationId: createACopyOfTheActionPlanItemInTheItemSSection
+  method: POST
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_items/create_from_item
+  description: Create a copy of the Action Plan Item in the Item's Section.
+- name: list_recycled_action_plan_items
+  operationId: listRecycledActionPlanItems
+  method: GET
+  path: /rest/v1.0/projects/{project_id}/recycle_bin/action_plans/plan_items
+  description: List Recycled Action Plan Items
+- name: show_recycled_action_plan_item
+  operationId: showRecycledActionPlanItem
+  method: GET
+  path: /rest/v1.0/projects/{project_id}/recycle_bin/action_plans/plan_items/{id}
+  description: Show Recycled Action Plan Item
+- name: list_action_plan_items2
+  operationId: listActionPlanItems2
+  method: GET
+  path: /rest/v2.0/companies/{company_id}/projects/{project_id}/action_plans/plan_items
+  description: List Action Plan Items
+- name: update_action_plan_item2
+  operationId: updateActionPlanItem2
+  method: PATCH
+  path: /rest/v2.0/companies/{company_id}/projects/{project_id}/action_plans/plan_items/{id}
+  description: Update Action Plan Item
+- name: list_action_plan_parties
+  operationId: listActionPlanParties
+  method: GET
+  path: /rest/v1.0/projects/{project_id}/action_plans/parties
+  description: List Action Plan Parties
+- name: show_action_plan_receiver_signature
+  operationId: showActionPlanReceiverSignature
+  method: GET
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_receivers/{plan_receiver_id}/signature
+  description: Show Action Plan Receiver Signature
+- name: create_action_plan_receiver_signature
+  operationId: createActionPlanReceiverSignature
+  method: POST
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_receivers/{plan_receiver_id}/signature
+  description: Create Action Plan Receiver Signature
+- name: delete_action_plan_receiver_signature
+  operationId: deleteActionPlanReceiverSignature
+  method: DELETE
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_receivers/{plan_receiver_id}/signature
+  description: Delete Action Plan Receiver Signature
+- name: list_action_plan_receivers
+  operationId: listActionPlanReceivers
+  method: GET
+  path: /rest/v1.0/projects/{project_id}/action_plans/plan_receivers
+  description: List Action Plan Receivers

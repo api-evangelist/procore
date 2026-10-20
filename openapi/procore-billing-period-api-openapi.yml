@@ -1,0 +1,733 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Billing Period API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Billing Period
+paths:
+  /rest/v1.0/projects/{project_id}/billing_periods:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    post:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Create billing period
+      description: Create a Billing Period
+      tags:
+      - Billing Period
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        description: Unique identifier for the project.
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Body
+              type: object
+              required:
+              - billing_period
+              properties:
+                billing_period:
+                  title: Billing Period
+                  type: object
+                  required:
+                  - due_date
+                  - start_date
+                  - end_date
+                  - status
+                  description: The Billing Period object
+                  properties:
+                    due_date:
+                      type: string
+                      format: date
+                      description: Due date
+                      example: '2012-10-25'
+                    start_date:
+                      type: string
+                      format: date
+                      description: Start date
+                      example: '2012-10-01'
+                    end_date:
+                      type: string
+                      format: date
+                      description: End date
+                      example: '2012-10-31'
+                    status:
+                      type: string
+                      description: Status
+                      enum:
+                      - open
+                      - closed
+                      example: open
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Billing Period
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier for the Billing Period. Use as the {id} path parameter to show, update, or delete this billing period.
+                    example: 1
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Date/time the Billing Period was created
+                    example: '2012-10-01T21:00:00Z'
+                  due_date:
+                    type: string
+                    format: date
+                    description: Due date for the Billing Period
+                    example: '2012-10-25'
+                  end_date:
+                    type: string
+                    format: date
+                    description: End date for the Billing Period
+                    example: '2012-10-31'
+                  position:
+                    type: integer
+                    description: Position of the Billing Period
+                    example: 2
+                  project_id:
+                    type: integer
+                    description: Project ID for the Billing Period
+                    example: 1
+                  start_date:
+                    type: string
+                    format: date
+                    description: Start date for the Billing Period
+                    example: '2012-10-31'
+                  status:
+                    type: string
+                    description: Lifecycle state of the billing period. Only one period per project can be open at a time.
+                    enum:
+                    - open
+                    - closed
+                    example: open
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: Date/time the Billing Period was last updated
+                    example: '2012-10-02T21:00:00Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/billing_periods',\n  headers: {'content-type': 'application/json'},\n  body: {\n    billing_period: {\n      due_date: '2012-10-25',\n      start_date: '2012-10-01',\n      end_date: '2012-10-31',\n      status: 'open'\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"billing_period\":{\"due_date\":\"2012-10-25\",\"start_date\":\"2012-10-01\",\"end_date\":\"2012-10-31\",\"status\":\"open\"}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v1.0/projects/%7Bproject_id%7D/billing_periods", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/billing_periods \\\n  --header 'content-type: application/json' \\\n  --data '{\"billing_period\":{\"due_date\":\"2012-10-25\",\"start_date\":\"2012-10-01\",\"end_date\":\"2012-10-31\",\"status\":\"open\"}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/billing_periods\"),\n    Content = new StringContent(\"{\\\"billing_period\\\":{\\\"due_date\\\":\\\"2012-10-25\\\",\\\"start_date\\\":\\\"2012-10-01\\\",\\\"end_date\\\":\\\"2012-10-31\\\",\\\"status\\\":\\\"open\\\"}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: createBillingPeriod
+  /rest/v1.0/projects/{project_id}/billing_periods/{id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: integer
+    - name: id
+      in: path
+      description: Billing Period ID
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    patch:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Update billing period
+      description: Update a specified Billing Period
+      tags:
+      - Billing Period
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Body
+              type: object
+              required:
+              - billing_period
+              properties:
+                billing_period:
+                  title: Billing Period
+                  type: object
+                  required:
+                  - due_date
+                  - start_date
+                  - end_date
+                  - status
+                  description: The Billing Period object
+                  properties:
+                    due_date:
+                      type: string
+                      format: date
+                      description: Due date
+                      example: '2012-10-25'
+                    start_date:
+                      type: string
+                      format: date
+                      description: Start date
+                      example: '2012-10-01'
+                    end_date:
+                      type: string
+                      format: date
+                      description: End date
+                      example: '2012-10-31'
+                    status:
+                      type: string
+                      description: Status
+                      enum:
+                      - open
+                      - closed
+                      example: open
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Billing Period
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier for the Billing Period. Use as the {id} path parameter to show, update, or delete this billing period.
+                    example: 1
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Date/time the Billing Period was created
+                    example: '2012-10-01T21:00:00Z'
+                  due_date:
+                    type: string
+                    format: date
+                    description: Due date for the Billing Period
+                    example: '2012-10-25'
+                  end_date:
+                    type: string
+                    format: date
+                    description: End date for the Billing Period
+                    example: '2012-10-31'
+                  position:
+                    type: integer
+                    description: Position of the Billing Period
+                    example: 2
+                  project_id:
+                    type: integer
+                    description: Project ID for the Billing Period
+                    example: 1
+                  start_date:
+                    type: string
+                    format: date
+                    description: Start date for the Billing Period
+                    example: '2012-10-31'
+                  status:
+                    type: string
+                    description: Lifecycle state of the billing period. Only one period per project can be open at a time.
+                    enum:
+                    - open
+                    - closed
+                    example: open
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: Date/time the Billing Period was last updated
+                    example: '2012-10-02T21:00:00Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  exception:
+                    type: string
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/billing_periods/%7Bid%7D',\n  headers: {'content-type': 'application/json'},\n  body: {\n    billing_period: {\n      due_date: '2012-10-25',\n      start_date: '2012-10-01',\n      end_date: '2012-10-31',\n      status: 'open'\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"billing_period\":{\"due_date\":\"2012-10-25\",\"start_date\":\"2012-10-01\",\"end_date\":\"2012-10-31\",\"status\":\"open\"}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("PATCH", "/rest/v1.0/projects/%7Bproject_id%7D/billing_periods/%7Bid%7D", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/billing_periods/%7Bid%7D \\\n  --header 'content-type: application/json' \\\n  --data '{\"billing_period\":{\"due_date\":\"2012-10-25\",\"start_date\":\"2012-10-01\",\"end_date\":\"2012-10-31\",\"status\":\"open\"}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/billing_periods/%7Bid%7D\"),\n    Content = new StringContent(\"{\\\"billing_period\\\":{\\\"due_date\\\":\\\"2012-10-25\\\",\\\"start_date\\\":\\\"2012-10-01\\\",\\\"end_date\\\":\\\"2012-10-31\\\",\\\"status\\\":\\\"open\\\"}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: updateBillingPeriod
+    delete:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Delete billing period
+      description: Delete a specified Billing Period
+      tags:
+      - Billing Period
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  exception:
+                    type: string
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'DELETE',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/billing_periods/%7Bid%7D'\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("DELETE", "/rest/v1.0/projects/%7Bproject_id%7D/billing_periods/%7Bid%7D")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request DELETE \\\n  --url https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/billing_periods/%7Bid%7D"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Delete,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/billing_periods/%7Bid%7D\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: deleteBillingPeriod
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

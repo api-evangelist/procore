@@ -1,0 +1,420 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Work Activity API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Work Activity
+paths:
+  /rest/v1.0/companies/{company_id}/incidents/work_activities/{id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: company_id
+      in: path
+      description: Unique identifier for the company.
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      description: Work Activity ID
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    delete:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Delete Work Activity
+      description: Deletes a Work Activity. Note that Procore provided Work Activities cannot be deleted.
+      tags:
+      - Work Activity
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'DELETE',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/incidents/work_activities/%7Bid%7D',\n  headers: {Authorization: 'Bearer REPLACE_BEARER_TOKEN'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          headers = { ''Authorization'': "Bearer REPLACE_BEARER_TOKEN" }
+
+
+          conn.request("DELETE", "/rest/v1.0/companies/%7Bcompany_id%7D/incidents/work_activities/%7Bid%7D", headers=headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request DELETE \\\n  --url https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/incidents/work_activities/%7Bid%7D \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Delete,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/incidents/work_activities/%7Bid%7D\"),\n    Headers =\n    {\n        { \"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\" },\n    },\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: deleteWorkActivity
+  /rest/v1.0/companies/{company_id}/incidents/work_activities/bulk_update:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: company_id
+      in: path
+      description: Unique identifier for the company.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    patch:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Bulk Update Work Activities
+      description: Update multiple Work Activities with one request.
+      tags:
+      - Work Activity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - work_activity
+              properties:
+                work_activity:
+                  type: object
+                  description: IDs of all Work Activities specified for bulk update
+                  properties:
+                    ids:
+                      type: array
+                      items:
+                        type: integer
+                        description: ID
+                        example: 435
+                    active:
+                      type: boolean
+                      description: Flag that denotes if the Work Activities are available for use
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  title: Work Activity
+                  properties:
+                    id:
+                      type: integer
+                      description: Work Activity ID
+                      example: 999
+                    name:
+                      type: string
+                      description: Work Activity Name
+                      example: Earthwork
+                    active:
+                      type: boolean
+                      description: Represents whether a Work Activity is available for use.
+                      example: true
+                    global:
+                      type: boolean
+                      description: Represents whether a Work Activity has been provided by Procore.
+                      example: true
+                    created_at:
+                      type: string
+                      description: Timestamp of creation
+                      format: date-time
+                      example: '2016-10-25T17:53:35Z'
+                    updated_at:
+                      type: string
+                      format: date-time
+                      description: Date the work activity was updated
+                      example: '2015-11-12T21:26:28Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/incidents/work_activities/bulk_update',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN',\n    'content-type': 'application/json'\n  },\n  body: {work_activity: {ids: [435], active: true}},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: "import http.client\n\nconn = http.client.HTTPSConnection(\"api.procore.com\")\n\npayload = \"{\\\"work_activity\\\":{\\\"ids\\\":[435],\\\"active\\\":true}}\"\n\nheaders = {\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\",\n    'content-type': \"application/json\"\n    }\n\nconn.request(\"PATCH\", \"/rest/v1.0/companies/%7Bcompany_id%7D/incidents/work_activities/bulk_update\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/incidents/work_activities/bulk_update \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"work_activity\":{\"ids\":[435],\"active\":true}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/incidents/work_activities/bulk_update\"),\n    Headers =\n    {\n        { \"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\" },\n    },\n    Content = new StringContent(\"{\\\"work_activity\\\":{\\\"ids\\\":[435],\\\"active\\\":true}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: bulkUpdateWorkActivities
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

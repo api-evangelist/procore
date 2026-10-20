@@ -1,0 +1,7 @@
+name: Procore agent skills
+generated: '2026-10-20'
+method: generated
+skills:
+- {name: procore-manage-rfis, file: skills/procore-manage-rfis.md}
+- {name: procore-submit-submittals, file: skills/procore-submit-submittals.md}
+- {name: procore-log-observations, file: skills/procore-log-observations.md}

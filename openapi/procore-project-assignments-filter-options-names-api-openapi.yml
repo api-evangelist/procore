@@ -1,0 +1,174 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Project Assignments Filter Options - Names API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Project Assignments Filter Options - Names
+paths:
+  /rest/v1.0/companies/{company_id}/users/{user_id}/project_assignments/filter_options/names:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: company_id
+      in: path
+      description: Unique identifier for the company.
+      required: true
+      schema:
+        type: integer
+    - name: user_id
+      in: path
+      description: User ID
+      required: true
+      schema:
+        type: integer
+    - name: scope
+      in: query
+      required: false
+      description: 'The scope to use when getting the filter options for project assignments.
+
+        The user scope returns only filter options for projects that the user is currently assigned to.
+
+        The company scope returns all filter options for all projects in the company.
+
+        The user scope is the default.'
+      schema:
+        type: string
+        enum:
+        - user
+        - company
+    x-compliance-level: partial
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: List Project Names for a Company User
+      description: This endpoint returns the list of Project Names for the specified User.
+      tags:
+      - Project Assignments Filter Options - Names
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: Array of project names
+                items:
+                  type: object
+                  properties:
+                    filter_value:
+                      type: string
+                      description: Project name
+                      example: Project Alpha
+                    label:
+                      type: string
+                      description: Project name
+                      example: Project Alpha
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/users/%7Buser_id%7D/project_assignments/filter_options/names',\n  qs: {scope: 'SOME_STRING_VALUE'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.0/companies/%7Bcompany_id%7D/users/%7Buser_id%7D/project_assignments/filter_options/names?scope=SOME_STRING_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/users/%7Buser_id%7D/project_assignments/filter_options/names?scope=SOME_STRING_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/users/%7Buser_id%7D/project_assignments/filter_options/names?scope=SOME_STRING_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added Project Assignments Filter Options endpoint
+        description: List the names of projects for a given user project assignments list.
+        endpoint: GET /companies/{company_id}/users/{user_id}/project_assignments/filter_options/names
+        type: new
+        breaking: false
+        datestamp: '2024-10-10'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-assignments-filter-options?version=1.0#list-project-names-for-a-company-user
+      operationId: listProjectNamesForACompanyUser
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

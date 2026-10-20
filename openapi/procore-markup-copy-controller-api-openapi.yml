@@ -1,0 +1,203 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Markup Copy Controller API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: markup-copy-controller
+paths:
+  /rest/v2.0/companies/{company_id}/projects/{project_id}/markups/copy:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    post:
+      tags:
+      - markup-copy-controller
+      summary: Copy Markups
+      description: Copies all public WORKSPACE markups from a source document to a target document. The caller must hold ROLE_EDIT_PUBLIC_LAYERS and ROLE_EDIT_SHARED_MARKUP on the source document. By default the same roles are also required on the target document; this check is gated by the mms.markup-copy.target-permission-check-enabled flag and can be disabled per environment. The operation is atomic.
+      operationId: copyMarkups
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier of the company
+        required: true
+        schema:
+          type: string
+      - name: project_id
+        in: path
+        description: Unique identifier of the project
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                source_item_id:
+                  type: string
+                  minLength: 1
+                target_item_id:
+                  type: string
+                  minLength: 1
+                item_type:
+                  type: string
+                  enum:
+                  - document_revision
+                  - document_upload
+                  - submittal_log
+                  - submittal_log_approver
+                  - FileVersion
+                  - specification_section_revision
+                  - drawing_revision
+              required:
+              - item_type
+              - source_item_id
+              - target_item_id
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      source_viewer_doc_id:
+                        type: string
+                      target_viewer_doc_id:
+                        type: string
+                      copied_count:
+                        type: integer
+                        format: int32
+                      markups:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            xfdf_id:
+                              type: string
+                            markup_type:
+                              type: string
+                            viewer_doc_id:
+                              type: string
+                            created_at:
+                              type: string
+                              format: date-time
+                            updated_at:
+                              type: string
+                              format: date-time
+                            created_by_id:
+                              type: string
+                            updated_by_id:
+                              type: string
+                            company_id:
+                              type: string
+                            project_id:
+                              type: string
+                            deleted:
+                              type: boolean
+                            editable:
+                              type: boolean
+                            xfdf:
+                              type: string
+                            created_by_name:
+                              type: string
+                            updated_by_name:
+                              type: string
+                            created_by_vendor_id:
+                              type: string
+                            created_by_vendor_name:
+                              type: string
+                            page_number:
+                              type: integer
+                              format: int32
+                            audit_transaction_timestamp:
+                              type: string
+                              format: date-time
+                            markup_context:
+                              type: string
+                              enum:
+                              - WORKFLOW
+                              - WORKSPACE
+                              - PIN
+                              - NO_CONTEXT
+                            group_id:
+                              type: string
+                            pin_id:
+                              type: string
+                            comment_id:
+                              type: string
+                            document:
+                              type: object
+                              properties:
+                                external_document_id:
+                                  type: string
+                                document_type:
+                                  type: string
+                            markup_source:
+                              type: string
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/markups/copy',\n  headers: {'content-type': 'application/json'},\n  body: {\n    source_item_id: 'string',\n    target_item_id: 'string',\n    item_type: 'document_revision'\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPConnection("localhost:8080")
+
+
+          payload = "{\"source_item_id\":\"string\",\"target_item_id\":\"string\",\"item_type\":\"document_revision\"}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/markups/copy", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/markups/copy \\\n  --header 'content-type: application/json' \\\n  --data '{\"source_item_id\":\"string\",\"target_item_id\":\"string\",\"item_type\":\"document_revision\"}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/markups/copy\"),\n    Content = new StringContent(\"{\\\"source_item_id\\\":\\\"string\\\",\\\"target_item_id\\\":\\\"string\\\",\\\"item_type\\\":\\\"document_revision\\\"}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

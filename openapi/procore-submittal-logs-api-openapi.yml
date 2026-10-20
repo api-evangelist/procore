@@ -1,0 +1,1378 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Submittal Logs API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: submittal_logs
+paths:
+  /rest/v1.0/projects/{project_id}/submittal_logs/{id}/close_and_distribute:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    patch:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Close and Distribute a Submittal Log
+      description: Closes the specified Submittal Log (transitioning it to the Closed status supplied in the request body) and distributes the selected approver responses and attachments to the chosen recipients. Returns the created distributed submittal record.
+      tags:
+      - submittal_logs
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        description: Unique identifier for the project.
+        schema:
+          type: integer
+      - name: id
+        in: path
+        description: Submittal ID
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                submittal_log_status_id:
+                  type: integer
+                  description: The ID of a Submittal Status (from `GET /rest/v1.0/companies/{company_id}/submittal_statuses`) whose `status` is `Closed`. The Submittal Log will be transitioned to this status as part of the call.
+                  example: 1
+                submittal_description:
+                  type: string
+                  example: Submittal Description
+                message:
+                  type: string
+                  example: Message Content
+                prostore_file_ids:
+                  type: array
+                  description: Prostore File IDs to attach directly to the distribution (e.g., new files uploaded as part of the distribution message).
+                  items:
+                    type: integer
+                    example: 1
+                submittal_attachment_ids:
+                  type: array
+                  description: SubmittalAssociatedAttachment IDs to include in the distribution. IDs are resolved by `SubmittalAssociatedAttachment.id`. Available from `GET /rest/v1.0/projects/{project_id}/submittal_logs/{id}`.
+                  items:
+                    type: integer
+                    example: 300
+                recipient_ids:
+                  type: array
+                  description: LoginInformation IDs of users to be notified of the distribution. Available from `GET /rest/v1.0/projects/{project_id}/users`.
+                  items:
+                    type: integer
+                    example: 1
+                selected_approvers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: SubmittalLogApprover ID belonging to this Submittal Log. Available from the `approvers` array on `GET /rest/v1.0/projects/{project_id}/submittal_logs/{id}`.
+                        example: 100
+                      include_comment:
+                        type: boolean
+                        example: true
+                      attachment_ids:
+                        type: array
+                        description: SubmittalAssociatedAttachment IDs (NOT Prostore File IDs) to include for this approver. IDs are resolved by `SubmittalAssociatedAttachment.id`. Available from `GET /rest/v1.0/projects/{project_id}/submittal_logs/{id}`.
+                        items:
+                          type: integer
+                          example: 200
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 122765
+                  message:
+                    type: string
+                    example: ''
+                  submittal_description:
+                    type: string
+                    example: ''
+                  sent_at:
+                    type: string
+                    format: date-time
+                    example: '2014-04-20T20:08:09Z'
+                  distributed_by:
+                    allOf:
+                    - type: object
+                      properties:
+                        login:
+                          type: string
+                          description: Email
+                          example: carl.contractor@example.com
+                    - type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Login Information ID of the User
+                          example: 161072
+                        name:
+                          type: string
+                          example: Carl the Contractor
+                  distributed_to:
+                    type: array
+                    items:
+                      allOf:
+                      - type: object
+                        properties:
+                          login:
+                            type: string
+                            description: Email
+                            example: carl.contractor@example.com
+                      - type: object
+                        properties:
+                          id:
+                            type: integer
+                            description: Login Information ID of the User
+                            example: 161072
+                          name:
+                            type: string
+                            example: Carl the Contractor
+                  distributed_attachments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique identifier for the attachment.
+                          example: 5324
+                        url:
+                          type: string
+                          description: URL of the attachment.
+                          example: http://www.example.com/
+                        filename:
+                          type: string
+                          description: Filename of the attachment.
+                          example: january_receipt_copy.jpg
+                  download_all_attachments_url:
+                    type: string
+                    example: url-to-download
+                  submittal_distributed_attachments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique identifier for the attachment.
+                          example: 5324
+                        url:
+                          type: string
+                          description: URL of the attachment.
+                          example: http://www.example.com/
+                        filename:
+                          type: string
+                          description: Filename of the attachment.
+                          example: january_receipt_copy.jpg
+                  download_all_submittal_distributed_attachments_url:
+                    type: string
+                    example: url-to-download
+                  message_distributed_attachments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique identifier for the attachment.
+                          example: 5324
+                        url:
+                          type: string
+                          description: URL of the attachment.
+                          example: http://www.example.com/
+                        filename:
+                          type: string
+                          description: Filename of the attachment.
+                          example: january_receipt_copy.jpg
+                  download_all_message_distributed_attachments_url:
+                    type: string
+                    example: url-to-download
+                  distributed_responses:
+                    type: array
+                    description: List of submittal responses selected to be distributed
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 161072
+                        comment:
+                          type: string
+                          example: I approve this
+                        distributed_attachments:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                description: ID
+                                example: 5324
+                              url:
+                                type: string
+                                description: URL
+                                example: http://www.example.com/
+                              filename:
+                                type: string
+                                description: Filename
+                                example: january_receipt_copy.jpg
+                        response_name:
+                          type: string
+                          example: Approved
+                        submittal_response:
+                          allOf:
+                          - type: object
+                            properties:
+                              name:
+                                type: string
+                                description: Name of Submittal Response
+                                example: Pending
+                              considered:
+                                type: string
+                                description: Mapping of the Submittal Response
+                                example: pending
+                          - type: object
+                            properties:
+                              id:
+                                type: integer
+                                description: ID
+                                example: 161789
+                        submittal_response_id:
+                          type: integer
+                          example: 161072
+                        submittal_approver_id:
+                          type: integer
+                          example: 161072
+                        user_id:
+                          type: integer
+                          example: 161072
+                        user:
+                          allOf:
+                          - type: object
+                            properties:
+                              login:
+                                type: string
+                                description: Email
+                                example: carl.contractor@example.com
+                          - type: object
+                            properties:
+                              id:
+                                type: integer
+                                description: Login Information ID of the User
+                                example: 161072
+                              name:
+                                type: string
+                                example: Carl the Contractor
+        '403':
+          description: User does not have right permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/submittal_logs/%7Bid%7D/close_and_distribute',\n  headers: {'content-type': 'application/json'},\n  body: {\n    submittal_log_status_id: 1,\n    submittal_description: 'Submittal Description',\n    message: 'Message Content',\n    prostore_file_ids: [1],\n    submittal_attachment_ids: [300],\n    recipient_ids: [1],\n    selected_approvers: [{id: 100, include_comment: true, attachment_ids: [200]}]\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"submittal_log_status_id\":1,\"submittal_description\":\"Submittal Description\",\"message\":\"Message Content\",\"prostore_file_ids\":[1],\"submittal_attachment_ids\":[300],\"recipient_ids\":[1],\"selected_approvers\":[{\"id\":100,\"include_comment\":true,\"attachment_ids\":[200]}]}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("PATCH", "/rest/v1.0/projects/%7Bproject_id%7D/submittal_logs/%7Bid%7D/close_and_distribute", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/submittal_logs/%7Bid%7D/close_and_distribute \\\n  --header 'content-type: application/json' \\\n  --data '{\"submittal_log_status_id\":1,\"submittal_description\":\"Submittal Description\",\"message\":\"Message Content\",\"prostore_file_ids\":[1],\"submittal_attachment_ids\":[300],\"recipient_ids\":[1],\"selected_approvers\":[{\"id\":100,\"include_comment\":true,\"attachment_ids\":[200]}]}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/submittal_logs/%7Bid%7D/close_and_distribute\"),\n    Content = new StringContent(\"{\\\"submittal_log_status_id\\\":1,\\\"submittal_description\\\":\\\"Submittal Description\\\",\\\"message\\\":\\\"Message Content\\\",\\\"prostore_file_ids\\\":[1],\\\"submittal_attachment_ids\\\":[300],\\\"recipient_ids\\\":[1],\\\"selected_approvers\\\":[{\\\"id\\\":100,\\\"include_comment\\\":true,\\\"attachment_ids\\\":[200]}]}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added Close and Distribute Submittal v1.0 endpoint
+        description: Close and Distribute Submittal
+        endpoint: PATCH /projects/{project_id}/submittal_logs/{id}/close_and_distribute
+        type: new
+        breaking: false
+        datestamp: '2022-07-14'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: distributed-submittals?version=1.0#close-and-distribute-a-submittal-log
+      - summary: Adding flexibility to the Close and Distribute Submittal v1.0 endpoint.
+        description: Allows users to select Submittal attachments, responses, and specific attachments from responses to be distributed.
+        endpoint: PATCH /projects/{project_id}/submittal_logs/{id}/close_and_distribute
+        type: feature
+        breaking: false
+        datestamp: '2022-08-24'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: distributed-submittals?version=1.0#close-and-distribute-a-submittal-log
+      - summary: Adding ability to include Submittal Description when distributing a Submittal.
+        description: Allows users to select Submittal Description to be distributed or not.
+        endpoint: PATCH /projects/{project_id}/submittal_logs/{id}/close_and_distribute
+        type: feature
+        breaking: false
+        datestamp: '2022-08-31'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: distributed-submittals?version=1.0#close-and-distribute-a-submittal-log
+      - summary: Added new fields to the close_and_distribute response
+        description: 'Return additional fields like submittal_distribution_attachments, download_all_submittal_distributed_attachments_url,
+
+          message_distribution_attachments and download_all_message_distributed_attachments_url.'
+        endpoint: PATCH /projects/{project_id}/submittal_logs/{id}/close_and_distribute
+        type: refinement
+        breaking: false
+        datestamp: '2023-03-15'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: distributed-submittals?version=1.0#close-and-distribute-a-submittal-log
+      operationId: closeAndDistributeASubmittalLog
+  /rest/v1.0/submittal_logs:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: List Submittals
+      description: 'This is a deprecated endpoint. Please use /submittals endpoint.
+
+
+        See Filtering on List Actions for information on using the filtering capabilities provided by this endpoint.'
+      x-deprecated-at: '2017-11-17'
+      deprecated: true
+      tags:
+      - submittal_logs
+      parameters:
+      - name: project_id
+        in: query
+        required: true
+        description: Unique identifier for the project.
+        schema:
+          type: integer
+      - name: filters[approved_id]
+        in: query
+        schema:
+          type: string
+      - name: filters[ball_in_court]
+        in: query
+        schema:
+          type: string
+      - name: filters[date_range]
+        in: query
+        schema:
+          type: string
+      - name: filters[due_by]
+        in: query
+        schema:
+          type: string
+          format: date
+      - name: filters[end_date]
+        in: query
+        schema:
+          type: string
+          format: date
+      - name: filters[include_sublocations]
+        in: query
+        description: 'Use together with `filters[location_id]`
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - name: filters[location_id]
+        in: query
+        description: Location ID. Returns item(s) with the specified Location ID or a range of Location IDs.
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+            example: 45
+      - name: filters[only_current_revision]
+        in: query
+        schema:
+          type: integer
+          enum:
+          - 1
+      - name: filters[query]
+        in: query
+        description: Return item(s) containing search query
+        schema:
+          type: string
+      - name: filters[received_from_id]
+        in: query
+        description: Received From ID
+        schema:
+          type: integer
+      - name: filters[response]
+        in: query
+        schema:
+          type: string
+      - name: filters[responsible_contractor_id]
+        in: query
+        description: Array of Responsible Contractor IDs. A single Responsible Contractor ID is also accepted.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: filters[spec_division]
+        in: query
+        schema:
+          type: string
+      - name: filters[spec_section_id]
+        in: query
+        schema:
+          type: string
+      - name: filters[start_date]
+        in: query
+        schema:
+          type: string
+          format: date
+      - name: filters[status]
+        in: query
+        description: Returns item(s) matching the specified status value.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: filters[submittal_type]
+        in: query
+        schema:
+          type: string
+      - name: filters[submittal_package_id]
+        in: query
+        description: Array of Submittal Package IDs. Returns item(s) associated with the specified Submittal Package IDs. A single integer value is also accepted.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: page
+        in: query
+        description: Page
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: Elements per page
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            Per-Page:
+              description: Number of items retrieved per page
+              schema:
+                type: integer
+            Total:
+              description: Total number of items to be retrieved
+              schema:
+                type: integer
+            Link:
+              description: Link headers for the first, prev, next, and last link
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                  - id
+                  - number
+                  - status
+                  properties:
+                    id:
+                      type: integer
+                      description: Unique identifier of the Submittal Log. Use as the `{id}` path parameter to retrieve a single Submittal Log.
+                      example: 252579
+                    title:
+                      type: string
+                      description: Title of the Submittal Log.
+                      example: Steel D8 Beam
+                    number:
+                      type: string
+                      description: User-facing Submittal Log number (may be alphanumeric).
+                      example: '49'
+                    revision:
+                      type: string
+                      description: Revision label of the Submittal Log.
+                      example: '0'
+                    due_date:
+                      type: string
+                      format: date
+                      description: Date the Submittal Log response is due, in ISO 8601 (YYYY-MM-DD) format.
+                      example: '2013-04-15'
+                    attachment_count:
+                      type: integer
+                      description: Number of files attached to the Submittal Log.
+                      example: 1
+                    status:
+                      type: string
+                      description: Current status label of the Submittal Log (for example, Open or Closed).
+                      example: Closed
+                    closed:
+                      type: boolean
+                      description: True when the Submittal Log is in a closed status.
+                      example: true
+                    specification_section:
+                      type: object
+                      description: Specification section the Submittal Log belongs to. Omitted when the log is not associated with a section.
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique identifier of the specification section.
+                          example: 212630
+                        description:
+                          type: string
+                          description: Description of the specification section.
+                          example: Metal Fabrications
+                        section:
+                          type: string
+                          description: Specification section number.
+                          example: '55000'
+                    package:
+                      type: object
+                      description: Submittal Package the log belongs to. Omitted when the log is not part of a package.
+                      properties:
+                        id:
+                          type: string
+                          description: Unique identifier of the Submittal Package.
+                          example: 90210
+                        title:
+                          type: string
+                          description: Title of the Submittal Package.
+                          example: Somebody's Package
+                    ball_in_court:
+                      type: array
+                      description: Users currently responsible for acting on the Submittal Log (the "ball in court").
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            description: Unique identifier of the user.
+                            example: 160586
+                          login:
+                            type: string
+                            description: Email address of the user.
+                            example: carl.contractor@example.com
+                          name:
+                            type: string
+                            description: Display name of the user.
+                            example: Carl Contractor
+                    responses:
+                      type: array
+                      description: Distributed responses recorded for the Submittal Log. Present only when the log is closed and has a distributed submittal.
+                      items:
+                        type: object
+                        properties:
+                          response:
+                            type: string
+                            description: Localized response label.
+                            example: Closed Submittal Response
+                    location:
+                      type: object
+                      title: Location
+                      description: Physical location associated with the Submittal Log. Omitted when no location is set.
+                      properties:
+                        id:
+                          type: integer
+                          description: Location ID
+                          example: 15504
+                        name:
+                          type: string
+                          description: Full location name, including parent locations.
+                          example: 1space>1 space
+                        node_name:
+                          type: string
+                          description: Name of this location node, without parent locations.
+                          example: 1 space
+                        parent_id:
+                          type: integer
+                          description: ID of the parent location, if any.
+                          example: 788866
+                        created_at:
+                          type: string
+                          format: date-time
+                          description: Timestamp of Location creation
+                          example: '2016-08-01T23:33:54Z'
+                        updated_at:
+                          type: string
+                          format: date-time
+                          description: Timestamp of last update to Location
+                          example: '2016-08-01T23:33:54Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: User does not have right permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/submittal_logs',\n  qs: {\n    project_id: 'SOME_INTEGER_VALUE',\n    'filters[approved_id]': 'SOME_STRING_VALUE',\n    'filters[ball_in_court]': 'SOME_STRING_VALUE',\n    'filters[date_range]': 'SOME_STRING_VALUE',\n    'filters[due_by]': 'SOME_STRING_VALUE',\n    'filters[end_date]': 'SOME_STRING_VALUE',\n    'filters[include_sublocations]': 'SOME_BOOLEAN_VALUE',\n    'filters[location_id]': 'SOME_ARRAY_VALUE',\n    'filters[only_current_revision]': 'SOME_INTEGER_VALUE',\n    'filters[query]': 'SOME_STRING_VALUE',\n    'filters[received_from_id]': 'SOME_INTEGER_VALUE',\n    'filters[response]': 'SOME_STRING_VALUE',\n    'filters[responsible_contractor_id]': 'SOME_ARRAY_VALUE',\n    'filters[spec_division]': 'SOME_STRING_VALUE',\n    'filters[spec_section_id]': 'SOME_STRING_VALUE',\n    'filters[start_date]': 'SOME_STRING_VALUE',\n    'filters[status]': 'SOME_ARRAY_VALUE',\n    'filters[submittal_type]': 'SOME_STRING_VALUE',\n    'filters[submittal_package_id]': 'SOME_ARRAY_VALUE',\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.0/submittal_logs?project_id=SOME_INTEGER_VALUE&filters%5Bapproved_id%5D=SOME_STRING_VALUE&filters%5Bball_in_court%5D=SOME_STRING_VALUE&filters%5Bdate_range%5D=SOME_STRING_VALUE&filters%5Bdue_by%5D=SOME_STRING_VALUE&filters%5Bend_date%5D=SOME_STRING_VALUE&filters%5Binclude_sublocations%5D=SOME_BOOLEAN_VALUE&filters%5Blocation_id%5D=SOME_ARRAY_VALUE&filters%5Bonly_current_revision%5D=SOME_INTEGER_VALUE&filters%5Bquery%5D=SOME_STRING_VALUE&filters%5Breceived_from_id%5D=SOME_INTEGER_VALUE&filters%5Bresponse%5D=SOME_STRING_VALUE&filters%5Bresponsible_contractor_id%5D=SOME_ARRAY_VALUE&filters%5Bspec_division%5D=SOME_STRING_VALUE&filters%5Bspec_section_id%5D=SOME_STRING_VALUE&filters%5Bstart_date%5D=SOME_STRING_VALUE&filters%5Bstatus%5D=SOME_ARRAY_VALUE&filters%5Bsubmittal_type%5D=SOME_STRING_VALUE&filters%5Bsubmittal_package_id%5D=SOME_ARRAY_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.0/submittal_logs?project_id=SOME_INTEGER_VALUE&filters%5Bapproved_id%5D=SOME_STRING_VALUE&filters%5Bball_in_court%5D=SOME_STRING_VALUE&filters%5Bdate_range%5D=SOME_STRING_VALUE&filters%5Bdue_by%5D=SOME_STRING_VALUE&filters%5Bend_date%5D=SOME_STRING_VALUE&filters%5Binclude_sublocations%5D=SOME_BOOLEAN_VALUE&filters%5Blocation_id%5D=SOME_ARRAY_VALUE&filters%5Bonly_current_revision%5D=SOME_INTEGER_VALUE&filters%5Bquery%5D=SOME_STRING_VALUE&filters%5Breceived_from_id%5D=SOME_INTEGER_VALUE&filters%5Bresponse%5D=SOME_STRING_VALUE&filters%5Bresponsible_contractor_id%5D=SOME_ARRAY_VALUE&filters%5Bspec_division%5D=SOME_STRING_VALUE&filters%5Bspec_section_id%5D=SOME_STRING_VALUE&filters%5Bstart_date%5D=SOME_STRING_VALUE&filters%5Bstatus%5D=SOME_ARRAY_VALUE&filters%5Bsubmittal_type%5D=SOME_STRING_VALUE&filters%5Bsubmittal_package_id%5D=SOME_ARRAY_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/submittal_logs?project_id=SOME_INTEGER_VALUE&filters%5Bapproved_id%5D=SOME_STRING_VALUE&filters%5Bball_in_court%5D=SOME_STRING_VALUE&filters%5Bdate_range%5D=SOME_STRING_VALUE&filters%5Bdue_by%5D=SOME_STRING_VALUE&filters%5Bend_date%5D=SOME_STRING_VALUE&filters%5Binclude_sublocations%5D=SOME_BOOLEAN_VALUE&filters%5Blocation_id%5D=SOME_ARRAY_VALUE&filters%5Bonly_current_revision%5D=SOME_INTEGER_VALUE&filters%5Bquery%5D=SOME_STRING_VALUE&filters%5Breceived_from_id%5D=SOME_INTEGER_VALUE&filters%5Bresponse%5D=SOME_STRING_VALUE&filters%5Bresponsible_contractor_id%5D=SOME_ARRAY_VALUE&filters%5Bspec_division%5D=SOME_STRING_VALUE&filters%5Bspec_section_id%5D=SOME_STRING_VALUE&filters%5Bstart_date%5D=SOME_STRING_VALUE&filters%5Bstatus%5D=SOME_ARRAY_VALUE&filters%5Bsubmittal_type%5D=SOME_STRING_VALUE&filters%5Bsubmittal_package_id%5D=SOME_ARRAY_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: List Submittals is Deprecated
+        description: This is a deprecated endpoint. Please use [/projects/{project_id}/submittals](/reference/rest/v1/submittals#list-submittals-on-a-project) endpoint.
+        endpoint: GET /submittal_logs
+        type: deprecated
+        breaking: false
+        datestamp: '2017-11-17'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: submittal-logs?version=1.0#list-submittals
+      operationId: listSubmittals
+  /rest/v1.0/submittal_logs/{id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Show Submittal
+      description: This is a deprecated endpoint. Please use /submittals/{id} endpoint.
+      x-deprecated-at: '2017-11-17'
+      deprecated: true
+      tags:
+      - submittal_logs
+      parameters:
+      - name: id
+        in: path
+        description: ID of Submittal
+        required: true
+        schema:
+          type: integer
+      - name: project_id
+        in: query
+        required: true
+        description: Unique identifier for the project.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier of the Submittal Log. Use as the `{id}` path parameter to retrieve this Submittal Log.
+                    example: 610071
+                  title:
+                    type: string
+                    description: Title of the Submittal Log.
+                    example: Smiths - Teardown & Assembly Bldg
+                  number:
+                    type: string
+                    description: User-facing Submittal Log number (may be alphanumeric).
+                    example: '118'
+                  formatted_number:
+                    type: string
+                    deprecated: true
+                    description: Deprecated. Combined specification-section and number label. No longer returned by this endpoint; use `number` instead.
+                    example: 55000-118
+                  revision:
+                    type: string
+                    description: Revision label of the Submittal Log.
+                    example: '0'
+                  private:
+                    type: boolean
+                    description: True when the Submittal Log is marked private.
+                    example: false
+                  received_date:
+                    type: string
+                    format: date
+                    description: Date the submittal was received, in ISO 8601 (YYYY-MM-DD) format.
+                    example: '2014-06-09'
+                  issue_date:
+                    type: string
+                    format: date
+                    description: Date the submittal was issued, in ISO 8601 (YYYY-MM-DD) format.
+                    example: '2014-06-02'
+                  submit_by:
+                    type: string
+                    format: date
+                    description: Date the submittal must be submitted by, in ISO 8601 (YYYY-MM-DD) format.
+                    example: '2014-06-11'
+                  due_date:
+                    type: string
+                    format: date
+                    description: Date the response is due, in ISO 8601 (YYYY-MM-DD) format.
+                    example: '2014-07-22'
+                  type:
+                    type: string
+                    description: Submittal type label (for example, Product Information).
+                    example: Product Information
+                  description:
+                    type: string
+                    description: Plain-text description of the Submittal Log (HTML markup removed).
+                    example: For your review and approval. Paul Revere 555-555-5555
+                  status:
+                    type: string
+                    description: Current status label of the Submittal Log.
+                    example: Open
+                  closed:
+                    type: boolean
+                    description: True when the Submittal Log is in a closed status.
+                    example: false
+                  created_by:
+                    type: object
+                    description: User who created the Submittal Log.
+                    properties:
+                      name:
+                        type: string
+                        description: Display name of the user.
+                        example: Paul Revere
+                      login:
+                        type: string
+                        format: email
+                        description: Email address of the user.
+                        example: paulrevere@example.com
+                      login_id:
+                        type: integer
+                        description: Unique identifier of the user.
+                        example: 39023
+                  received_from:
+                    type: object
+                    description: User the submittal was received from. Omitted when no sender is recorded.
+                    properties:
+                      name:
+                        type: string
+                        description: Display name of the user.
+                        example: Frank Sinatra
+                      login:
+                        type: string
+                        format: email
+                        description: Email address of the user.
+                        example: frankie@example.com
+                      login_id:
+                        type: integer
+                        description: Unique identifier of the user.
+                        example: 88402
+                  approvers:
+                    type: array
+                    description: Approvers assigned to the Submittal Log, including their response and any returned attachments.
+                    items:
+                      type: object
+                      properties:
+                        login_information:
+                          type: object
+                          description: The approver's user information.
+                          properties:
+                            id:
+                              type: integer
+                              description: Unique identifier of the user.
+                              example: 160586
+                            login:
+                              type: string
+                              description: Email address of the user.
+                              example: carl.contractor@example.com
+                            name:
+                              type: string
+                              description: Display name of the user.
+                              example: Carl Contractor
+                        id:
+                          type: integer
+                          description: Unique identifier of the approver record.
+                          example: 939302
+                        response:
+                          type: string
+                          description: The approver's response label.
+                          example: Approved as Noted
+                        sent_date:
+                          type: string
+                          format: date
+                          description: Date the submittal was sent to the approver, in ISO 8601 format.
+                          example: '2014-05-10'
+                        email_sent_at:
+                          description: The datetime when the notification email was dispatched to the approver, expressed in the project's timezone. Null for historical records or when no email was sent. Note sent_date may be present while this field is null, when the approver was sent the submittal without an email notification.
+                          type:
+                          - string
+                          - 'null'
+                          format: date-time
+                          example: '2024-03-15T14:32:17Z'
+                        returned_date:
+                          type: string
+                          format: date
+                          description: Date the approver returned the submittal, in ISO 8601 format.
+                          example: '2014-05-12'
+                        due_date:
+                          type: string
+                          format: date
+                          description: Date the approver's response is due, in ISO 8601 format.
+                          example: '2014-05-12'
+                        days_to_respond:
+                          type: integer
+                          description: Number of days allotted for the approver to respond.
+                          example: 2
+                        comment:
+                          type: string
+                          description: Comment left by the approver with their response.
+                          example: See attached drawing for wall dimensions.
+                        distributed:
+                          type: array
+                          description: IDs of users the approver's response was distributed to.
+                          items:
+                            type: integer
+                            example: 153532
+                        attachments:
+                          type: array
+                          description: Files returned by the approver with their response.
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                description: Unique identifier of the attachment.
+                                example: 5324
+                              url:
+                                type: string
+                                description: Download URL for the attachment.
+                                example: http://www.example.com/
+                              filename:
+                                type: string
+                                description: File name of the attachment.
+                                example: january_receipt_copy.jpg
+                  distribution_members:
+                    type: array
+                    description: Users on the Submittal Log's distribution list.
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique identifier of the user.
+                          example: 160586
+                        login:
+                          type: string
+                          description: Email address of the user.
+                          example: carl.contractor@example.com
+                        name:
+                          type: string
+                          description: Display name of the user.
+                          example: Carl Contractor
+                  ball_in_court:
+                    type: array
+                    description: Users currently responsible for acting on the Submittal Log (the "ball in court").
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique identifier of the user.
+                          example: 160586
+                        login:
+                          type: string
+                          description: Email address of the user.
+                          example: carl.contractor@example.com
+                        name:
+                          type: string
+                          description: Display name of the user.
+                          example: Carl Contractor
+                  location:
+                    type: object
+                    title: Location
+                    description: Physical location associated with the Submittal Log.
+                    properties:
+                      id:
+                        type: integer
+                        description: Location ID
+                        example: 15504
+                      name:
+                        type: string
+                        description: Full location name, including parent locations.
+                        example: 1space>1 space
+                      node_name:
+                        type: string
+                        description: Name of this location node, without parent locations.
+                        example: 1 space
+                      parent_id:
+                        type: integer
+                        description: ID of the parent location, if any.
+                        example: 788866
+                      created_at:
+                        type: string
+                        format: date-time
+                        description: Timestamp of Location creation
+                        example: '2016-08-01T23:33:54Z'
+                      updated_at:
+                        type: string
+                        format: date-time
+                        description: Timestamp of last update to Location
+                        example: '2016-08-01T23:33:54Z'
+                  specification_section:
+                    type: object
+                    description: Specification section the Submittal Log belongs to. Omitted when the log is not associated with a section.
+                    properties:
+                      id:
+                        type: integer
+                        description: Unique identifier of the specification section.
+                        example: 212630
+                      description:
+                        type: string
+                        description: Description of the specification section.
+                        example: Metal Fabrications
+                      section:
+                        type: string
+                        description: Specification section number.
+                        example: '55000'
+                      current_revision_id:
+                        type: integer
+                        description: Identifier of the specification section's current revision, if versioned.
+                        example: 445128
+                  attachments:
+                    type: array
+                    description: Files attached directly to the Submittal Log.
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique identifier of the attachment.
+                          example: 5324
+                        url:
+                          type: string
+                          description: Download URL for the attachment.
+                          example: http://www.example.com/
+                        filename:
+                          type: string
+                          description: File name of the attachment.
+                          example: january_receipt_copy.jpg
+                  distribution_info:
+                    type: object
+                    description: Details of the most recent distribution of the Submittal Log. Omitted when the log has not been distributed.
+                    properties:
+                      id:
+                        type: integer
+                        description: Unique identifier of the distribution record.
+                        example: 122765
+                      message:
+                        type: string
+                        description: Message included with the distribution.
+                        example: ''
+                      distributed_date:
+                        type: string
+                        format: date-time
+                        description: Timestamp when the submittal was distributed, in ISO 8601 format.
+                        example: '2014-04-20T20:08:09Z'
+                      distributed_by:
+                        type: object
+                        description: User who performed the distribution.
+                        properties:
+                          id:
+                            type: integer
+                            description: Unique identifier of the user.
+                            example: 160586
+                          login:
+                            type: string
+                            description: Email address of the user.
+                            example: carl.contractor@example.com
+                          name:
+                            type: string
+                            description: Display name of the user.
+                            example: Carl Contractor
+                      distributed_to:
+                        type: array
+                        description: Users the submittal was distributed to.
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              description: Unique identifier of the user.
+                              example: 160586
+                            login:
+                              type: string
+                              description: Email address of the user.
+                              example: carl.contractor@example.com
+                            name:
+                              type: string
+                              description: Display name of the user.
+                              example: Carl Contractor
+                      final_attachments:
+                        type: array
+                        description: Final attachments included with the distribution.
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              description: Unique identifier of the attachment.
+                              example: 5324
+                            url:
+                              type: string
+                              description: Download URL for the attachment.
+                              example: http://www.example.com/
+                            filename:
+                              type: string
+                              description: File name of the attachment.
+                              example: january_receipt_copy.jpg
+                  submittal_package:
+                    type: object
+                    description: Submittal Package the log belongs to. Omitted when the log is not part of a package.
+                    properties:
+                      id:
+                        type: integer
+                        description: Unique identifier of the Submittal Package.
+                        example: 90210
+                      title:
+                        type: string
+                        description: Title of the Submittal Package.
+                        example: Somebody's Package
+                      created_by:
+                        type: object
+                        description: User who created the Submittal Package.
+                        properties:
+                          id:
+                            type: integer
+                            description: Unique identifier of the user.
+                            example: 160586
+                          login:
+                            type: string
+                            description: Email address of the user.
+                            example: carl.contractor@example.com
+                          name:
+                            type: string
+                            description: Display name of the user.
+                            example: Carl Contractor
+                      description:
+                        type: string
+                        description: Plain-text description of the Submittal Package (HTML markup removed).
+                        example: ''
+                      attachments:
+                        type: array
+                        description: Files attached to the Submittal Package.
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              description: Unique identifier of the attachment.
+                              example: 5324
+                            url:
+                              type: string
+                              description: Download URL for the attachment.
+                              example: http://www.example.com/
+                            filename:
+                              type: string
+                              description: File name of the attachment.
+                              example: january_receipt_copy.jpg
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: User does not have right permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/submittal_logs/%7Bid%7D',\n  qs: {project_id: 'SOME_INTEGER_VALUE'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.0/submittal_logs/%7Bid%7D?project_id=SOME_INTEGER_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.0/submittal_logs/%7Bid%7D?project_id=SOME_INTEGER_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/submittal_logs/%7Bid%7D?project_id=SOME_INTEGER_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Show Submittal is Deprecated
+        description: This is a deprecated endpoint. Please use [/projects/{project_id}/submittals/{id}](/reference/rest/v1/submittals#show-submittal) endpoint.
+        endpoint: GET /submittal_logs/{id}
+        type: deprecated
+        breaking: false
+        datestamp: '2017-11-17'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: submittal-logs?version=1.0#show-submittal
+      operationId: showSubmittal
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

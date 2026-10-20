@@ -1,0 +1,10 @@
+name: Procore sandbox
+generated: '2026-10-20'
+method: searched
+source: https://developers.procore.com/documentation/search.json
+description: Procore documents developer sandbox environments ("Procore Sandboxes") and installing an app version into a sandbox before promoting it to production. Page bodies are client-rendered and could
+  not be read; no test values recorded.
+docs: https://developers.procore.com/documentation/development-environments
+related:
+- https://developers.procore.com/documentation/install-version-sandbox
+- https://developers.procore.com/documentation/building-apps-promote-manifest

@@ -1,0 +1,53 @@
+name: Procore packages
+generated: '2026-10-20'
+method: searched
+source: https://registry.npmjs.org/@procore%2Fjs-sdk
+packages:
+- name: '@procore/js-sdk'
+  registry: npm
+  url: https://www.npmjs.com/package/@procore/js-sdk
+  language: JavaScript/TypeScript
+  official: true
+  version: 4.3.0
+  published: '2025-04-23'
+  repository: https://github.com/procore-oss/js-sdk
+  ownership_audit: metadata names procore.com
+- name: procore
+  registry: rubygems
+  url: https://rubygems.org/gems/procore
+  language: Ruby
+  official: false
+  version: 1.3.1
+  published: '2024-01-10'
+  repository: https://github.com/procore/ruby-sdk
+  note: 'gem authors: Procore Engineering'
+  ownership_audit: 'registry metadata names neither the provider''s domain nor its GitHub org: official downgraded (harvest-packages.py --audit)'
+- name: omniauth-procore
+  registry: rubygems
+  url: https://rubygems.org/gems/omniauth-procore
+  language: Ruby
+  official: true
+  version: 0.7.0
+  published: '2021-03-05'
+  repository: https://github.com/procore-oss/omniauth-procore
+  note: 'OmniAuth OAuth2 strategy; gem authors: Procore Engineering'
+  ownership_audit: metadata names procore.com
+- name: '@procore/core-react'
+  registry: npm
+  url: https://www.npmjs.com/package/@procore/core-react
+  language: JavaScript
+  official: false
+  version: 12.54.0
+  published: '2026-10-02'
+  repository: https://github.com/procore/core
+  note: Procore design-system React components, not an API client
+  ownership_audit: 'registry has no such package: official downgraded (harvest-packages.py --audit)'
+- name: procore
+  registry: pypi
+  url: https://pypi.org/project/procore/
+  language: Python
+  official: false
+  version: 0.1.0
+  published: null
+  repository: https://github.com/fylein/procore-sdk-py
+  note: third-party (Fyle); not published by Procore

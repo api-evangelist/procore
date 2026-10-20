@@ -1,0 +1,436 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Document Controller API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: document-controller
+paths:
+  /rest/v1.0/companies/{company_id}/projects/{project_id}/viewer_documents/get_or_create:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    post:
+      tags:
+      - document-controller
+      summary: Get or create document info (V1.1)
+      description: Get or create a document and return only essential document information for UI purposes. This is a lightweight endpoint that doesn't fetch markups.
+      operationId: getOrCreateDocumentInfo_1
+      parameters:
+      - name: company_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                item_id:
+                  type: string
+                item_type:
+                  type: string
+                attachment_id:
+                  type: string
+                attachment_source:
+                  type: string
+                internal_pdm_tool_data:
+                  type: object
+                  properties:
+                    file_key:
+                      type: string
+                    file_format:
+                      type: string
+                    file_locked:
+                      type: boolean
+                    document_container_id:
+                      type: string
+                    position_within_container:
+                      type: string
+              required:
+              - item_id
+              - item_type
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  item_type:
+                    type: string
+                  item_id:
+                    type: string
+                  attachment_source:
+                    type: string
+                  attachment_id:
+                    type: string
+                  viewer_doc_id:
+                    type: string
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'http://localhost:8080/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/get_or_create',\n  headers: {'content-type': 'application/json'},\n  body: {\n    item_id: 'string',\n    item_type: 'string',\n    attachment_id: 'string',\n    attachment_source: 'string',\n    internal_pdm_tool_data: {\n      file_key: 'string',\n      file_format: 'string',\n      file_locked: true,\n      document_container_id: 'string',\n      position_within_container: 'string'\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPConnection("localhost:8080")
+
+
+          payload = "{\"item_id\":\"string\",\"item_type\":\"string\",\"attachment_id\":\"string\",\"attachment_source\":\"string\",\"internal_pdm_tool_data\":{\"file_key\":\"string\",\"file_format\":\"string\",\"file_locked\":true,\"document_container_id\":\"string\",\"position_within_container\":\"string\"}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/get_or_create", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url http://localhost:8080/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/get_or_create \\\n  --header 'content-type: application/json' \\\n  --data '{\"item_id\":\"string\",\"item_type\":\"string\",\"attachment_id\":\"string\",\"attachment_source\":\"string\",\"internal_pdm_tool_data\":{\"file_key\":\"string\",\"file_format\":\"string\",\"file_locked\":true,\"document_container_id\":\"string\",\"position_within_container\":\"string\"}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"http://localhost:8080/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/get_or_create\"),\n    Content = new StringContent(\"{\\\"item_id\\\":\\\"string\\\",\\\"item_type\\\":\\\"string\\\",\\\"attachment_id\\\":\\\"string\\\",\\\"attachment_source\\\":\\\"string\\\",\\\"internal_pdm_tool_data\\\":{\\\"file_key\\\":\\\"string\\\",\\\"file_format\\\":\\\"string\\\",\\\"file_locked\\\":true,\\\"document_container_id\\\":\\\"string\\\",\\\"position_within_container\\\":\\\"string\\\"}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+  /rest/v1.0/companies/{company_id}/projects/{project_id}/viewer_documents/{viewer_doc_id}/viewer_url:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      tags:
+      - document-controller
+      summary: Resolve document viewer URL
+      description: Resolve the absolute document-viewer URL for a viewer document and redirect to it. Classic tools (Documents, Specifications, Drawings) are resolved to their prostore file; Document Management revisions are addressed by revision id. The host comes from the configured viewer host. Pass redirect=false to receive the URL as JSON instead of a 302.
+      operationId: resolveViewerUrl_1
+      parameters:
+      - name: company_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: viewer_doc_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: redirect
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: true
+      - name: issue_id
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Resolved viewer URL (only when redirect=false)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  viewer_doc_id:
+                    type: string
+                  viewer_url:
+                    type: string
+                  item_type:
+                    type: string
+                  item_id:
+                    type: string
+                  attachment_source:
+                    type: string
+                  attachment_id:
+                    type: string
+                  file_type:
+                    type: string
+        '302':
+          description: Redirect to the viewer URL or the login page
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'http://localhost:8080/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/viewer_url',\n  qs: {redirect: 'SOME_BOOLEAN_VALUE', issue_id: 'SOME_STRING_VALUE'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPConnection("localhost:8080")
+
+
+          conn.request("GET", "/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/viewer_url?redirect=SOME_BOOLEAN_VALUE&issue_id=SOME_STRING_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'http://localhost:8080/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/viewer_url?redirect=SOME_BOOLEAN_VALUE&issue_id=SOME_STRING_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"http://localhost:8080/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/viewer_url?redirect=SOME_BOOLEAN_VALUE&issue_id=SOME_STRING_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+  /rest/v1.0/companies/{company_id}/projects/{project_id}/viewer_documents:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    post:
+      tags:
+      - document-controller
+      summary: Find or create an Annotated Document
+      description: Find or create an Annotated Document where markup may be added. Returns only WORKFLOW context markups for backward compatibility.
+      operationId: discoverOrCreateAnnotatedDocument_2
+      parameters:
+      - name: company_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: combined_xfdf
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                item_id:
+                  type: string
+                item_type:
+                  type: string
+                attachment_id:
+                  type: string
+                attachment_source:
+                  type: string
+                internal_pdm_tool_data:
+                  type: object
+                  properties:
+                    file_key:
+                      type: string
+                    file_format:
+                      type: string
+                    file_locked:
+                      type: boolean
+                    document_container_id:
+                      type: string
+                    position_within_container:
+                      type: string
+              required:
+              - item_id
+              - item_type
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  viewer_doc_id:
+                    type: string
+                  markups:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        xfdf_id:
+                          type: string
+                        markup_type:
+                          type: string
+                        viewer_doc_id:
+                          type: string
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
+                        created_by_id:
+                          type: string
+                        updated_by_id:
+                          type: string
+                        company_id:
+                          type: string
+                        project_id:
+                          type: string
+                        deleted:
+                          type: boolean
+                        editable:
+                          type: boolean
+                        xfdf:
+                          type: string
+                        created_by_name:
+                          type: string
+                        updated_by_name:
+                          type: string
+                        created_by_vendor_id:
+                          type: string
+                        created_by_vendor_name:
+                          type: string
+                        page_number:
+                          type: integer
+                          format: int32
+                        audit_transaction_timestamp:
+                          type: string
+                          format: date-time
+                        markup_context:
+                          type: string
+                          enum:
+                          - WORKFLOW
+                          - WORKSPACE
+                          - PIN
+                          - NO_CONTEXT
+                        group_id:
+                          type: string
+                        pin_id:
+                          type: string
+                        comment_id:
+                          type: string
+                        document:
+                          type: object
+                          properties:
+                            external_document_id:
+                              type: string
+                            document_type:
+                              type: string
+                        markup_source:
+                          type: string
+                  combined_xfdf:
+                    type: string
+                  permissions:
+                    type: object
+                    properties:
+                      file_locked:
+                        type: boolean
+                      allowed_actions:
+                        type: array
+                        items:
+                          type: string
+                  document:
+                    type: object
+                    properties:
+                      external_document_id:
+                        type: string
+                      document_type:
+                        type: string
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'http://localhost:8080/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents',\n  qs: {combined_xfdf: 'SOME_BOOLEAN_VALUE'},\n  headers: {'content-type': 'application/json'},\n  body: {\n    item_id: 'string',\n    item_type: 'string',\n    attachment_id: 'string',\n    attachment_source: 'string',\n    internal_pdm_tool_data: {\n      file_key: 'string',\n      file_format: 'string',\n      file_locked: true,\n      document_container_id: 'string',\n      position_within_container: 'string'\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPConnection("localhost:8080")
+
+
+          payload = "{\"item_id\":\"string\",\"item_type\":\"string\",\"attachment_id\":\"string\",\"attachment_source\":\"string\",\"internal_pdm_tool_data\":{\"file_key\":\"string\",\"file_format\":\"string\",\"file_locked\":true,\"document_container_id\":\"string\",\"position_within_container\":\"string\"}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents?combined_xfdf=SOME_BOOLEAN_VALUE", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url 'http://localhost:8080/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents?combined_xfdf=SOME_BOOLEAN_VALUE' \\\n  --header 'content-type: application/json' \\\n  --data '{\"item_id\":\"string\",\"item_type\":\"string\",\"attachment_id\":\"string\",\"attachment_source\":\"string\",\"internal_pdm_tool_data\":{\"file_key\":\"string\",\"file_format\":\"string\",\"file_locked\":true,\"document_container_id\":\"string\",\"position_within_container\":\"string\"}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"http://localhost:8080/rest/v1.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents?combined_xfdf=SOME_BOOLEAN_VALUE\"),\n    Content = new StringContent(\"{\\\"item_id\\\":\\\"string\\\",\\\"item_type\\\":\\\"string\\\",\\\"attachment_id\\\":\\\"string\\\",\\\"attachment_source\\\":\\\"string\\\",\\\"internal_pdm_tool_data\\\":{\\\"file_key\\\":\\\"string\\\",\\\"file_format\\\":\\\"string\\\",\\\"file_locked\\\":true,\\\"document_container_id\\\":\\\"string\\\",\\\"position_within_container\\\":\\\"string\\\"}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

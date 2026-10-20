@@ -1,5 +1,9 @@
-generated: '2026-10-13'
+generated: '2026-10-20'
 method: searched
+source:
+- docusign/integrations/docusign-integration-edges.yml
+- https://marketplace.procore.com/
+- https://zapier.com/apps/procore/integrations
 checked:
 - docusign/integrations/docusign-integration-edges.yml
 - https://aws.amazon.com/marketplace/
@@ -11,6 +15,11 @@ checked:
 - https://marketplace.procore.com/
 - https://zapier.com/api/v4/apps/
 - zoom/integrations/zoom-integration-edges.yml
+- https://composio.dev/toolkits/procore
+- https://monid.ai/tools/procore
+- https://n8n.io/integrations/procore/
+- https://zapier.com/apps/procore/integrations
+summary: null
 marketplace_apps:
 - marketplace: own
   channel: partner-built
@@ -19,6 +28,199 @@ marketplace_apps:
   app_count: 456
   adapter: sweep-construction.py:procore-search-data+listing-json
   listed: 454
+- marketplace: zapier
+  channel: ipaas-listing
+  app: procore
+  url: https://zapier.com/apps/procore/integrations
+  external_url: http://www.procore.com/
+  partner_tier: SILVER
+  triggers:
+  - key: change_event
+    label: New Change Event
+  - key: company_vendor
+    label: New Company Vendor
+  - key: coordination_issue
+    label: New Coordination Issue
+  - key: drawing
+    label: New Drawing
+  - key: dynamic_worker
+    label: New Worker
+  - key: form
+    label: New Form
+  - key: image
+    label: New Photo
+  - key: incident_created
+    label: New Incident
+  - key: inspection
+    label: New Inspection
+  - key: inspection_log
+    label: New Inspection Log
+  - key: instruction
+    label: New Instruction
+  - key: manpower_log
+    label: New Daily Log - Manpower Log
+  - key: meeting
+    label: New Meeting
+  - key: observation
+    label: New Observation
+  - key: prime_contract
+    label: New Prime Contract
+  - key: project_file
+    label: New Document - Project
+  - key: project_new
+    label: New Project
+  - key: project_update
+    label: Project Updated
+  - key: punch_item
+    label: New Punch Item
+  - key: requisition
+    label: New Requisition
+  - key: rfi
+    label: New RFI
+  - key: submittal
+    label: New Submittal
+  - key: submittal_update
+    label: Submittal Updated
+  - key: task
+    label: New Task
+  - key: timecard
+    label: New Timesheet Entry
+  - key: timesheet_approved
+    label: New Timesheet Approved
+  - key: timesheet_created
+    label: New Timesheet
+  - key: updated_rfi
+    label: RFI Updated
+  - key: updated_task
+    label: Task Updated
+  - key: work_order_contract
+    label: New Subcontract
+  actions:
+  - key: add_worker_company
+    label: Create Worker - Company
+  - key: add_worker_project
+    label: Create Worker - Project
+  - key: bid_board_project_create
+    label: Create Bid Board Project
+  - key: change_event
+    label: Create Change Event
+  - key: company_contact
+    label: Create Company Contact
+  - key: company_document_delete
+    label: Delete Company Document
+  - key: copy_cost_code
+    label: Create Project Cost Code List From Company List
+  - key: cost_code
+    label: Create Cost Code - Project
+  - key: create_budget_change
+    label: Create Budget Change
+  - key: create_budget_line_item
+    label: Create Budget Line Item
+  - key: create_catalog_item
+    label: Create Catalog Item
+  - key: create_direct_cost_item
+    label: Create Direct Cost Item
+  - key: create_direct_cost_line_item
+    label: Create Direct Cost Line Item
+  - key: create_form
+    label: Create Form
+  - key: create_prime_contract
+    label: Create Prime Contract
+  - key: create_prime_contract_line_item
+    label: Create Prime Contract Line Item
+  - key: create_purchase_order_contract_line_item
+    label: Create Purchase Order Contract Line Item
+  - key: create_subcontract_invoice
+    label: Create Subcontract Invoice
+  - key: daily_construction_report_log
+    label: Create a Daily Construction Report Log
+  - key: document
+    label: Create Document
+  - key: document_delete
+    label: Delete Document
+  - key: document_folder
+    label: Create Document Folder
+  - key: document_folder_delete
+    label: Delete Document Folder
+  - key: document_folder_delete_company
+    label: Delete Company Folder
+  - key: drawing
+    label: Create Drawing
+  - key: dynamic_add_incident
+    label: Create Incident
+  - key: dynamic_call_log
+    label: Create Call Log
+  - key: dynamic_company_vendor
+    label: Create Company Vendor
+  - key: dynamic_instruction
+    label: Create Instructions
+  - key: dynamic_manpower_log
+    label: Create Manpower Log
+  - key: dynamic_update_company_vendor
+    label: Update Company Vendor
+  - key: dynamic_update_incident
+    label: Update Incident
+  - key: dynamic_update_manpower_log
+    label: Update Manpower Log
+  - key: form_delete
+    label: Delete Form
+  - key: image
+    label: Create Photo
+  - key: inspection
+    label: Create Inspection
+  - key: observation
+    label: Create Observation
+  - key: prime_contract_invoice
+    label: Create Prime Contract Invoice
+  - key: project
+    label: Create Project
+  - key: punch_item
+    label: Create Punch Item
+  - key: purchase_order
+    label: Create Purchase Order
+  - key: rfi
+    label: Create RFI
+  - key: submittal
+    label: Create Submittal
+  - key: sub_job
+    label: Create Sub Job - Project
+  - key: task
+    label: Create Task
+  - key: timesheet_post
+    label: Create Timesheet
+  - key: update_meeting
+    label: Update Project Meeting
+  - key: update_purchase_order_contract
+    label: Update Purchase Order Contract
+  - key: update_purchase_order_contract_line_item
+    label: Update Purchase Order Contract Line Item
+  - key: update_submittal
+    label: Update Submittal
+  - key: update_work_order_contract
+    label: Update Subcontract
+  - key: wbs_code
+    label: Create WBS Code
+  - key: work_order_contract
+    label: Create Subcontract
+  searches:
+  - key: company_vendor
+    label: Find a Company Vendor
+  - key: get_project_details_by_id
+    label: Show Project
+  - key: incident_find
+    label: Find an Incident
+  - key: project_file_search
+    label: Find a Document - Project
+  - key: project_task_search
+    label: Find a Task
+  - key: scheduled_task_search
+    label: Find a Scheduled Task
+  - key: submittal_search
+    label: Find a Submittal
+  - key: timesheet_find
+    label: Find a Timesheet
+  - key: wbs_find
+    label: Find WBS Code
 edges:
 - partner_name: AWS Marketplace
   partner: amazon-web-services
@@ -8208,5 +8410,425 @@ edges:
     builder: Pipedream repo (component)
   detected_by: sweep-workflow-automation.py
   first_seen: '2026-10-15'
-source:
-- docusign/integrations/docusign-integration-edges.yml
+- partner_name: Zoho Creator
+  partner: zoho-creator
+  partner_match: domain+name-among-holders
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/zoho-creator
+  direction: third-party
+  category: App Builder
+  partner_url: https://www.zoho.com/creator?utm_source=zapier.com&utm_medium=isvmarketplace
+- partner_name: monday.com
+  partner: monday-com
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/monday
+  direction: third-party
+  category: Project Management
+  partner_url: https://monday.com/
+- partner_name: HubSpot
+  partner: hubspot
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/hubspot
+  direction: third-party
+  category: Marketing Automation
+  partner_url: http://www.hubspot.com/
+- partner_name: Microsoft Excel
+  partner: null
+  partner_match: null
+  partner_candidate: zapier
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/excel
+  direction: third-party
+  category: Microsoft
+  partner_url: https://zapier.com/office.com
+- partner_name: Microsoft Outlook
+  partner: microsoft-outlook
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/microsoft-outlook
+  direction: third-party
+  category: Calendar
+  partner_url: https://outlook.live.com/
+- partner_name: Asana
+  partner: asana
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/asana
+  direction: third-party
+  category: Project Management
+  partner_url: http://asana.com/
+- partner_name: Dropbox
+  partner: dropbox
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/dropbox
+  direction: third-party
+  category: File Management & Storage
+  partner_url: https://dropbox.com/
+- partner_name: Slack
+  partner: slack
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/slack
+  direction: third-party
+  category: Team Chat
+  partner_url: https://slack.com/
+- partner_name: Google Drive
+  partner: google-drive
+  partner_match: domain+name-among-holders
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/google-drive
+  direction: third-party
+  category: File Management & Storage
+  partner_url: https://www.google.com/drive/
+- partner_name: Microsoft To Do
+  partner: microsoft-to-do
+  partner_match: domain+name-among-holders
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/microsoft-todo
+  direction: third-party
+  category: Microsoft
+  partner_url: https://todo.microsoft.com/
+- partner_name: Notion
+  partner: notion
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/notion
+  direction: third-party
+  category: Task Management
+  partner_url: https://www.notion.so/
+- partner_name: Jotform
+  partner: jotform
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/jotform
+  direction: third-party
+  category: Forms & Surveys
+  partner_url: http://www.jotform.com/
+- partner_name: QuickBooks Online
+  partner: quickbooks
+  partner_match: domain+name-among-holders
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/quickbooks
+  direction: third-party
+  category: Accounting
+  partner_url: http://intuit.com/
+- partner_name: Smartsheet
+  partner: smartsheet
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/smartsheet
+  direction: third-party
+  category: Spreadsheets
+  partner_url: https://www.smartsheet.com/
+- partner_name: Airtable
+  partner: airtable
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/airtable
+  direction: third-party
+  category: Databases
+  partner_url: https://airtable.com/
+- partner_name: ClickUp
+  partner: clickup
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/clickup
+  direction: third-party
+  category: Project Management
+  partner_url: https://clickup.com/zapier
+- partner_name: Google Sheets
+  partner: google-sheets
+  partner_match: domain+name-among-holders
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/google-sheets
+  direction: third-party
+  category: Google
+  partner_url: http://sheets.google.com/
+- partner_name: Pipedrive
+  partner: pipedrive
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/pipedrive
+  direction: third-party
+  category: CRM (Customer Relationship Management)
+  partner_url: https://pipedrive.com/
+- partner_name: Todoist
+  partner: todoist
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/todoist
+  direction: third-party
+  category: Task Management
+  partner_url: https://todoist.com/
+- partner_name: Google Forms
+  partner: google-forms
+  partner_match: domain+name-among-holders
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/google-forms
+  direction: third-party
+  category: Forms & Surveys
+  partner_url: http://google.com/
+- partner_name: Google Calendar
+  partner: google-calendar
+  partner_match: domain+name-among-holders
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/google-calendar
+  direction: third-party
+  category: Calendar
+  partner_url: https://calendar.google.com/
+- partner_name: Egnyte
+  partner: egnyte
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/egnyte
+  direction: third-party
+  category: File Management & Storage
+  partner_url: https://zapier.com/egnyte.com
+- partner_name: Microsoft Teams
+  partner: microsoft-teams
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/microsoft-teams
+  direction: third-party
+  category: Microsoft
+  partner_url: https://products.office.com/en-us/microsoft-teams/group-chat-software
+- partner_name: Google Forms (Legacy)
+  partner: google-forms
+  partner_match: domain+name-among-holders
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/google-forms-legacy
+  direction: third-party
+  category: Forms & Surveys
+  partner_url: http://google.com/
+- partner_name: Docusign
+  partner: docusign
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/docusign
+  direction: third-party
+  category: AI Document Extraction
+  partner_url: https://go.docusign.com/trial/us-goog-trynow-display-zapier/
+- partner_name: OneDrive
+  partner: null
+  partner_match: null
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/onedrive
+  direction: third-party
+  category: File Management & Storage
+  partner_url: https://onedrive.live.com/
+- partner_name: Connecteam
+  partner: connecteam
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/connecteam
+  direction: third-party
+  category: Scheduling & Booking
+  partner_url: https://connecteam.com/?utm_source=zapier&utm_medium=partnerships&utm_content=marketplace
+- partner_name: Microsoft OneNote
+  partner: microsoft-onenote
+  partner_match: name-exact
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/microsoft-onenote
+  direction: third-party
+  category: Microsoft
+  partner_url: https://www.onenote.com/
+- partner_name: Simpro
+  partner: simpro
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/simpro
+  direction: third-party
+  category: Project Management
+  partner_url: https://simprogroup.com/zapier
+- partner_name: Read AI
+  partner: read-ai
+  partner_match: domain
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/procore/integrations/read-ai
+  direction: third-party
+  category: AI Meeting Assistants
+  partner_url: https://www.read.ai/?utm_source=zapier
+templates:
+- title: Create Google Sheets rows for new Procore RFI's
+  url: https://zapier.com/apps/google-sheets/integrations/procore/23515/create-google-sheets-rows-for-new-procore-rfis
+  apps:
+  - procore
+  - google-sheets
+- title: Send emails via Gmail for new manpower logs in Procore
+  url: https://zapier.com/apps/gmail/integrations/procore/255561571/send-emails-via-gmail-for-new-manpower-logs-in-procore
+  apps:
+  - procore
+  - gmail
+- title: Create new HubSpot companies from new Procore projects
+  url: https://zapier.com/apps/hubspot/integrations/procore/1663571/create-new-hubspot-companies-from-new-procore-projects
+  apps:
+  - procore
+  - hubspot
+- title: Create new Procore projects from updated deal stages in HubSpot
+  url: https://zapier.com/apps/hubspot/integrations/procore/1651661/create-new-procore-projects-from-updated-deal-stages-in-hubspot
+  apps:
+  - hubspot
+  - procore
+- title: Add new Procore punch items to Google Sheets as rows
+  url: https://zapier.com/apps/google-sheets/integrations/procore/1236289/add-new-procore-punch-items-to-google-sheets-as-rows
+  apps:
+  - procore
+  - google-sheets
+- title: Update rows in Microsoft Excel every time submittals update in Procore
+  url: https://zapier.com/apps/excel/integrations/procore/1750465/update-rows-in-microsoft-excel-every-time-submittals-update-in-procore
+  apps:
+  - procore
+  - excel
+- title: Receive a digest email for Procore RFI's
+  url: https://zapier.com/apps/email/integrations/procore/21648/receive-a-digest-email-for-procore-rfis
+  apps:
+  - procore
+  - email
+- title: Create tasks in Asana from new Procore RFI's
+  url: https://zapier.com/apps/asana/integrations/procore/21794/create-tasks-in-asana-from-new-procore-rfis
+  apps:
+  - procore
+  - asana
+- title: Send Slack channel message when new RFI's are created
+  url: https://zapier.com/apps/procore/integrations/slack/23443/send-slack-channel-message-when-new-rfis-are-created
+  apps:
+  - procore
+  - slack
+- title: Receive a text message when new RFIs are created in Procore
+  url: https://zapier.com/apps/procore/integrations/sms/23458/receive-a-text-message-when-new-rfis-are-created-in-procore
+  apps:
+  - procore
+  - sms
+- title: Create Trello cards when new RFIs are created in Procore
+  url: https://zapier.com/apps/procore/integrations/trello/23487/create-trello-cards-when-new-rfis-are-created-in-procore
+  apps:
+  - procore
+  - trello
+- title: Create documents in Procore from new files in OneDrive
+  url: https://zapier.com/apps/onedrive/integrations/procore/23489/create-documents-in-procore-from-new-files-in-onedrive
+  apps:
+  - onedrive
+  - procore
+template_total: 215

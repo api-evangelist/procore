@@ -1,0 +1,547 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Action Plan Reference API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Action Plan Reference
+paths:
+  /rest/v1.0/projects/{project_id}/action_plans/plan_references:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: integer
+    x-compliance-level: full
+    post:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Create Action Plan Reference
+      description: Create an Action Plan Reference
+      tags:
+      - Action Plan Reference
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - plan_reference
+              properties:
+                plan_reference:
+                  type: object
+                  required:
+                  - payload
+                  - plan_item_id
+                  - type
+                  properties:
+                    plan_item_id:
+                      type: integer
+                      description: Action Plan Item ID
+                      example: 54
+                    type:
+                      type: string
+                      description: Action Plan Reference Type
+                      enum:
+                      - attachment
+                      - drawing
+                      - document
+                      - document_management_document_reference
+                      - specification_section
+                      - submittal_log
+                      - generic_tool_item
+                      - form
+                      - meeting
+                      - observation_item
+                      example: specification_section
+                    payload:
+                      type: object
+                      description: One of attachment, drawing_revision_id, file_version_id, document_management_document_reference, specification_section_id, submittal_log_id, generic_tool_item_id, form_id, meeting_id, or observation_item_id is accepted depending on the type provided
+                      properties:
+                        drawing_revision_id:
+                          type: integer
+                          description: Drawing Revision ID
+                          example: 53
+                        file_version_id:
+                          type: integer
+                          description: File Version ID
+                          example: 54
+                        document_management_document_reference:
+                          type: object
+                          description: PDM (Product Document Management) document reference
+                          properties:
+                            collection_id:
+                              type: string
+                              format: uuid
+                              description: Document collection ID
+                              example: 123e4567-e89b-12d3-a456-426614174000
+                            container_id:
+                              type: string
+                              format: uuid
+                              description: Document container ID
+                              example: 123e4567-e89b-12d3-a456-426614174001
+                        specification_section_id:
+                          type: integer
+                          description: Specification Section ID
+                          example: 55
+                        submittal_log_id:
+                          type: integer
+                          description: Submittal Log ID
+                          example: 65
+                        generic_tool_item_id:
+                          type: integer
+                          description: Generic Tool Item (Correspondence) ID
+                          example: 56
+                        form_id:
+                          type: integer
+                          description: Form ID
+                          example: 57
+                        meeting_id:
+                          type: integer
+                          description: Meeting ID
+                          example: 58
+                        observation_item_id:
+                          type: integer
+                          description: Observation Item ID
+                          example: 59
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - plan_reference
+              properties:
+                plan_reference:
+                  type: object
+                  required:
+                  - payload
+                  - plan_item_id
+                  - type
+                  properties:
+                    plan_item_id:
+                      type: integer
+                      description: Action Plan Item ID
+                      example: 54
+                    type:
+                      type: string
+                      description: Action Plan Reference Type
+                      enum:
+                      - attachment
+                      - drawing
+                      - document
+                      - document_management_document_reference
+                      - specification_section
+                      - submittal_log
+                      - generic_tool_item
+                      - form
+                      - meeting
+                      - observation_item
+                      example: attachment
+                    payload:
+                      type: object
+                      description: One of attachment, drawing_revision_id, file_version_id, document_management_document_reference, specification_section_id, submittal_log_id, generic_tool_item_id, form_id, meeting_id, or observation_item_id is accepted depending on the type provided
+                      properties:
+                        drawing_revision_id:
+                          type: integer
+                          description: Drawing Revision ID
+                          example: 53
+                        file_version_id:
+                          type: integer
+                          description: File Version ID
+                          example: 54
+                        document_management_document_reference:
+                          type: object
+                          description: PDM (Product Document Management) document reference
+                          properties:
+                            collection_id:
+                              type: string
+                              format: uuid
+                              description: Document collection ID
+                              example: 123e4567-e89b-12d3-a456-426614174000
+                            container_id:
+                              type: string
+                              format: uuid
+                              description: Document container ID
+                              example: 123e4567-e89b-12d3-a456-426614174001
+                        specification_section_id:
+                          type: integer
+                          description: Specification Section ID
+                          example: 55
+                        submittal_log_id:
+                          type: integer
+                          description: Submittal Log ID
+                          example: 65
+                        attachment:
+                          type: string
+                          format: binary
+                          description: 'Reference Attachment.
+
+                            To upload an attachment you must upload the entire payload as `multipart/form-data` content-type
+
+                            with the `attachment` file.'
+                        generic_tool_item_id:
+                          type: integer
+                          description: Generic Tool Item (Correspondence) ID
+                          example: 56
+                        form_id:
+                          type: integer
+                          description: Form ID
+                          example: 57
+                        meeting_id:
+                          type: integer
+                          description: Meeting ID
+                          example: 58
+                        observation_item_id:
+                          type: integer
+                          description: Observation Item ID
+                          example: 59
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Action Plan Reference (Show)
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier for this Action Plan reference.
+                    example: 12
+                  plan_item_id:
+                    type: integer
+                    description: ID of the Action Plan item this reference is attached to.
+                    example: 54
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Timestamp in ISO 8601 format when this reference was created.
+                    example: '2018-09-20T21:39:40Z'
+                  payload:
+                    type: object
+                    description: Type-specific payload containing identifiers for the referenced resource. The fields present depend on the value of the type field.
+                    properties:
+                      attachment:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            description: ID
+                            example: 5324
+                          url:
+                            type: string
+                            description: Image URL
+                            example: http://www.example.com/
+                          thumbnail_url:
+                            type:
+                            - string
+                            - 'null'
+                            description: Image Thumbnail URL
+                            example: http://www.example.com/
+                          name:
+                            type: string
+                            description: File Name
+                            example: january_receipt_copy.jpg
+                          content_type:
+                            type: string
+                            description: Content Type
+                            example: image/jpg
+                      drawing_id:
+                        type: integer
+                        description: ID of the Drawing that contains the referenced revision.
+                      drawing_revision_id:
+                        type: integer
+                        description: ID of the current Drawing Revision for the referenced Drawing.
+                      file_version_id:
+                        type: integer
+                        description: ID of the current File Version for the referenced Document.
+                      folder_id:
+                        type: integer
+                        description: ID of the Folder containing the referenced Document.
+                      specification_section_id:
+                        type: integer
+                        description: ID of the referenced Specification Section.
+                        example: 55
+                      specification_section_current_revision_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: ID of the current revision of the referenced Specification Section. Null if no revision exists.
+                        example: 42
+                      submittal_log_id:
+                        type: integer
+                        description: ID of the referenced Submittal Log entry.
+                        example: 65
+                      generic_tool_item_id:
+                        type: integer
+                        description: ID of the referenced Generic Tool Item (Correspondence).
+                      generic_tool_id:
+                        type: integer
+                        description: ID of the Generic Tool (Correspondence tool) that the referenced item belongs to. Present when the reference type is generic_tool_item.
+                      form_id:
+                        type: integer
+                        description: ID of the referenced Form.
+                      meeting_id:
+                        type: integer
+                        description: ID of the referenced Meeting.
+                      observation_item_id:
+                        type: integer
+                        description: ID of the referenced Observation Item.
+                      image_id:
+                        type: integer
+                        description: ID of the referenced image. Present when the reference type is image.
+                      viewer_url:
+                        type: string
+                        description: URL to open the referenced item in the Procore web viewer. Present for attachment, form, image, and document management reference types.
+                      collection_id:
+                        type: string
+                        format: uuid
+                        description: Document collection ID for a document management reference.
+                      container_id:
+                        type: string
+                        format: uuid
+                        description: Document container ID for a document management reference.
+                      document_revision_id:
+                        type:
+                        - string
+                        - 'null'
+                        description: Document revision ID for a document management reference. Null for open items showing the latest revision.
+                      document_name:
+                        type: string
+                        description: Name of the referenced document management document.
+                  plan_id:
+                    type: integer
+                    description: ID of the Action Plan that owns the item this reference is attached to.
+                    example: 985
+                  type:
+                    type: string
+                    description: Type of resource this reference points to.
+                    enum:
+                    - attachment
+                    - drawing
+                    - specification_section
+                    - submittal_log
+                    - document
+                    - document_management_document_reference
+                    - generic_tool_item
+                    - form
+                    - meeting
+                    - observation_item
+                    - image
+                    example: specification_section
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: Timestamp in ISO 8601 format when this reference was last updated.
+                    example: '2018-09-20T21:39:40Z'
+                  deleted_at:
+                    type:
+                    - string
+                    - 'null'
+                    format: date-time
+                    description: Timestamp in ISO 8601 format when this reference was soft-deleted. Null if the reference is active.
+                    example: '2018-09-20T21:39:40Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/action_plans/plan_references',\n  headers: {'content-type': 'application/json'},\n  body: {\n    plan_reference: {\n      plan_item_id: 54,\n      type: 'specification_section',\n      payload: {\n        drawing_revision_id: 53,\n        file_version_id: 54,\n        document_management_document_reference: {\n          collection_id: '123e4567-e89b-12d3-a456-426614174000',\n          container_id: '123e4567-e89b-12d3-a456-426614174001'\n        },\n        specification_section_id: 55,\n        submittal_log_id: 65,\n        generic_tool_item_id: 56,\n        form_id: 57,\n        meeting_id: 58,\n        observation_item_id: 59\n      }\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"plan_reference\":{\"plan_item_id\":54,\"type\":\"specification_section\",\"payload\":{\"drawing_revision_id\":53,\"file_version_id\":54,\"document_management_document_reference\":{\"collection_id\":\"123e4567-e89b-12d3-a456-426614174000\",\"container_id\":\"123e4567-e89b-12d3-a456-426614174001\"},\"specification_section_id\":55,\"submittal_log_id\":65,\"generic_tool_item_id\":56,\"form_id\":57,\"meeting_id\":58,\"observation_item_id\":59}}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v1.0/projects/%7Bproject_id%7D/action_plans/plan_references", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/action_plans/plan_references \\\n  --header 'content-type: application/json' \\\n  --data '{\"plan_reference\":{\"plan_item_id\":54,\"type\":\"specification_section\",\"payload\":{\"drawing_revision_id\":53,\"file_version_id\":54,\"document_management_document_reference\":{\"collection_id\":\"123e4567-e89b-12d3-a456-426614174000\",\"container_id\":\"123e4567-e89b-12d3-a456-426614174001\"},\"specification_section_id\":55,\"submittal_log_id\":65,\"generic_tool_item_id\":56,\"form_id\":57,\"meeting_id\":58,\"observation_item_id\":59}}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/action_plans/plan_references\"),\n    Content = new StringContent(\"{\\\"plan_reference\\\":{\\\"plan_item_id\\\":54,\\\"type\\\":\\\"specification_section\\\",\\\"payload\\\":{\\\"drawing_revision_id\\\":53,\\\"file_version_id\\\":54,\\\"document_management_document_reference\\\":{\\\"collection_id\\\":\\\"123e4567-e89b-12d3-a456-426614174000\\\",\\\"container_id\\\":\\\"123e4567-e89b-12d3-a456-426614174001\\\"},\\\"specification_section_id\\\":55,\\\"submittal_log_id\\\":65,\\\"generic_tool_item_id\\\":56,\\\"form_id\\\":57,\\\"meeting_id\\\":58,\\\"observation_item_id\\\":59}}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      - id: node_request
+        mimeType: multipart/form-data
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/action_plans/plan_references',\n  headers: {'content-type': 'multipart/form-data; boundary=---011000010111000001101001'},\n  formData: {\n    plan_reference: '{\"plan_item_id\":54,\"type\":\"attachment\",\"payload\":{\"drawing_revision_id\":53,\"file_version_id\":54,\"document_management_document_reference\":{\"collection_id\":\"123e4567-e89b-12d3-a456-426614174000\",\"container_id\":\"123e4567-e89b-12d3-a456-426614174001\"},\"specification_section_id\":55,\"submittal_log_id\":65,\"attachment\":\"string\",\"generic_tool_item_id\":56,\"form_id\":57,\"meeting_id\":58,\"observation_item_id\":59}}'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: multipart/form-data
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"plan_reference\"\r\n\r\n{\"plan_item_id\":54,\"type\":\"attachment\",\"payload\":{\"drawing_revision_id\":53,\"file_version_id\":54,\"document_management_document_reference\":{\"collection_id\":\"123e4567-e89b-12d3-a456-426614174000\",\"container_id\":\"123e4567-e89b-12d3-a456-426614174001\"},\"specification_section_id\":55,\"submittal_log_id\":65,\"attachment\":\"string\",\"generic_tool_item_id\":56,\"form_id\":57,\"meeting_id\":58,\"observation_item_id\":59}}\r\n-----011000010111000001101001--\r\n"
+
+
+          headers = { ''content-type'': "multipart/form-data; boundary=---011000010111000001101001" }
+
+
+          conn.request("POST", "/rest/v1.0/projects/%7Bproject_id%7D/action_plans/plan_references", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: multipart/form-data
+        title: Curl
+        content: "curl --request POST \\\n  --url https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/action_plans/plan_references \\\n  --header 'content-type: multipart/form-data' \\\n  --form 'plan_reference={\"plan_item_id\":54,\"type\":\"attachment\",\"payload\":{\"drawing_revision_id\":53,\"file_version_id\":54,\"document_management_document_reference\":{\"collection_id\":\"123e4567-e89b-12d3-a456-426614174000\",\"container_id\":\"123e4567-e89b-12d3-a456-426614174001\"},\"specification_section_id\":55,\"submittal_log_id\":65,\"attachment\":\"string\",\"generic_tool_item_id\":56,\"form_id\":57,\"meeting_id\":58,\"observation_item_id\":59}}'"
+      - id: csharp_httpclient
+        mimeType: multipart/form-data
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/action_plans/plan_references\"),\n    Content = new MultipartFormDataContent\n    {\n        new StringContent(\"{\\\"plan_item_id\\\":54,\\\"type\\\":\\\"attachment\\\",\\\"payload\\\":{\\\"drawing_revision_id\\\":53,\\\"file_version_id\\\":54,\\\"document_management_document_reference\\\":{\\\"collection_id\\\":\\\"123e4567-e89b-12d3-a456-426614174000\\\",\\\"container_id\\\":\\\"123e4567-e89b-12d3-a456-426614174001\\\"},\\\"specification_section_id\\\":55,\\\"submittal_log_id\\\":65,\\\"attachment\\\":\\\"string\\\",\\\"generic_tool_item_id\\\":56,\\\"form_id\\\":57,\\\"meeting_id\\\":58,\\\"observation_item_id\\\":59}}\")\n        {\n            Headers =\n            {\n                ContentDisposition = new ContentDispositionHeaderValue(\"form-data\")\n                {\n                    Name = \"plan_reference\",\n                }\n            }\n        },\n    },\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added Action Plan References create endpoint
+        description: Create an Action Plan References for a given Project.
+        endpoint: POST /projects/{project_id}/action_plans/plan_references
+        type: new
+        breaking: false
+        datestamp: '2021-02-22'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: action-plan-references?version=1.0#create-action-plan-reference
+      operationId: createActionPlanReference
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

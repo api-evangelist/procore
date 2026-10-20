@@ -1,0 +1,424 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Affliction Type API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Affliction Type
+paths:
+  /rest/v1.0/companies/{company_id}/incidents/affliction_types/{id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: company_id
+      in: path
+      description: Unique identifier for the company.
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      description: Unique identifier of the affliction type.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    delete:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Delete Affliction Type
+      description: Deletes an Affliction Type. Note that Procore provided Affliction Types cannot be deleted.
+      tags:
+      - Affliction Type
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'DELETE',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/incidents/affliction_types/%7Bid%7D',\n  headers: {Authorization: 'Bearer REPLACE_BEARER_TOKEN'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          headers = { ''Authorization'': "Bearer REPLACE_BEARER_TOKEN" }
+
+
+          conn.request("DELETE", "/rest/v1.0/companies/%7Bcompany_id%7D/incidents/affliction_types/%7Bid%7D", headers=headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request DELETE \\\n  --url https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/incidents/affliction_types/%7Bid%7D \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Delete,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/incidents/affliction_types/%7Bid%7D\"),\n    Headers =\n    {\n        { \"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\" },\n    },\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: deleteAfflictionType
+  /rest/v1.0/companies/{company_id}/incidents/affliction_types/bulk_update:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: company_id
+      in: path
+      description: Unique identifier for the company.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    patch:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Bulk Update Affliction Types
+      description: Update multiple Affliction Types with one request.
+      tags:
+      - Affliction Type
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - affliction_type
+              properties:
+                affliction_type:
+                  type: object
+                  description: IDs of all Affliction Types specified for bulk update
+                  properties:
+                    ids:
+                      type: array
+                      items:
+                        type: integer
+                        description: Identifier of an affliction type to include in the bulk update.
+                        example: 435
+                    active:
+                      type: boolean
+                      description: Flag that denotes if the Affliction Types are available for use
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  title: Affliction Type
+                  properties:
+                    id:
+                      type: integer
+                      description: Unique identifier for this affliction type.
+                      example: 999
+                    name:
+                      type: string
+                      description: Display name of the affliction type, localized to the requester's language preference.
+                      example: Sprain
+                    name_key:
+                      type: string
+                      description: Untranslated key for the affliction type name. Use this value for programmatic comparisons rather than the localized name field.
+                      example: Sprain
+                    active:
+                      type: boolean
+                      description: Indicates whether this affliction type is available for selection when recording injuries. Inactive types are hidden from end users.
+                      example: true
+                    global:
+                      type: boolean
+                      description: Indicates whether this affliction type is a Procore-provided default. Global types cannot have their names changed.
+                      example: true
+                    created_at:
+                      type: string
+                      description: ISO 8601 timestamp of when this affliction type was created.
+                      format: date-time
+                      example: '2016-10-25T17:53:35Z'
+                    updated_at:
+                      type: string
+                      description: ISO 8601 timestamp of the most recent update to this affliction type.
+                      format: date-time
+                      example: '2016-10-25T17:53:35Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/incidents/affliction_types/bulk_update',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN',\n    'content-type': 'application/json'\n  },\n  body: {affliction_type: {ids: [435], active: true}},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: "import http.client\n\nconn = http.client.HTTPSConnection(\"api.procore.com\")\n\npayload = \"{\\\"affliction_type\\\":{\\\"ids\\\":[435],\\\"active\\\":true}}\"\n\nheaders = {\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\",\n    'content-type': \"application/json\"\n    }\n\nconn.request(\"PATCH\", \"/rest/v1.0/companies/%7Bcompany_id%7D/incidents/affliction_types/bulk_update\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/incidents/affliction_types/bulk_update \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"affliction_type\":{\"ids\":[435],\"active\":true}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/incidents/affliction_types/bulk_update\"),\n    Headers =\n    {\n        { \"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\" },\n    },\n    Content = new StringContent(\"{\\\"affliction_type\\\":{\\\"ids\\\":[435],\\\"active\\\":true}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: bulkUpdateAfflictionTypes
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

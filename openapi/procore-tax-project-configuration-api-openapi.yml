@@ -1,0 +1,831 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Tax Project Configuration API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Tax Project Configuration
+paths:
+  /rest/v2.0/companies/{company_id}/projects/{project_id}/tax/configuration:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: partial
+    get:
+      x-doc:
+        visibility: public
+        stage: beta
+        exposure: public
+      x-endpoint-type: collection
+      summary: Get Tax Project Configuration
+      description: Get Tax Project Configuration for a given project
+      tags:
+      - Tax Project Configuration
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier for the company.
+        required: true
+        schema:
+          type: string
+      - name: project_id
+        in: path
+        required: true
+        description: Unique identifier for the project.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: Tax Project Configuration Index
+                type: object
+                properties:
+                  data:
+                    description: Tax Project Configuration Index
+                    type: object
+                    properties:
+                      enabled:
+                        type: boolean
+                        description: Is Tax Project Configuration enabled
+                        example: false
+                      financial_tools:
+                        type: object
+                        description: Package Settings for each Financial Tool
+                        properties:
+                          prime_contract:
+                            type: boolean
+                            description: Is Tax enabled on Prime Contracts
+                            example: false
+                          purchase_order_contract:
+                            type: boolean
+                            description: Is Tax enabled on Purchase Order Contracts
+                            example: false
+                          work_order_contract:
+                            type: boolean
+                            description: Is Tax enabled on Work Order Contracts
+                            example: false
+                          direct_costs:
+                            type: boolean
+                            description: Is Tax enabled on Direct Costs. Defaults to false when no package setting is stored.
+                            example: false
+                      codes:
+                        type: object
+                        description: Allow List Data
+                        properties:
+                          allow_all:
+                            type: boolean
+                            description: When true, all company-level tax codes are available for this project. When false, only the tax codes listed in tax_codes are available.
+                            example: false
+                          tax_codes:
+                            type: array
+                            items:
+                              type: object
+                              required:
+                              - id
+                              - default
+                              properties:
+                                id:
+                                  type: string
+                                  description: Tax Code ID
+                                  example: '1234567890'
+                                default:
+                                  type: boolean
+                                  description: When true, this tax code is pre-selected as the default for new line items in this project.
+                                  example: true
+                      max_tax_codes_per_line:
+                        type: integer
+                        description: Maximum number of tax codes that can be applied to a single line item in this project. Determined by the company subscription. Read-only; cannot be set via the update endpoint.
+                        example: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/tax/configuration'\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/tax/configuration")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/tax/configuration"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/tax/configuration\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Default financial_tools.direct_costs to disabled
+        description: 'financial_tools.direct_costs now defaults to false when a project has no
+
+          stored Direct Costs package setting. Other financial tools still default
+
+          to enabled. PATCH with financial_tools.direct_costs true persists that
+
+          choice. Projects that already saved an explicit true or false value are
+
+          unchanged. Projects that never saved a Direct Costs setting, which
+
+          previously read as enabled, now read as disabled.'
+        endpoint: GET /companies/{company_id}/projects/{project_id}/tax/configuration
+        type: fix
+        breaking: true
+        datestamp: '2026-10-06'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: beta
+          exposure: public
+        link: tax-project-configuration?version=2.0#get-tax-project-configuration
+      - summary: Add direct_costs to Tax Project Configuration financial_tools
+        description: 'Add optional financial_tools.direct_costs boolean to Tax Project Configuration
+
+          so projects can enable or disable tax on Direct Costs. Defaults to enabled
+
+          when unset (same sparse-storage pattern as other financial tools).'
+        endpoint: GET /companies/{company_id}/projects/{project_id}/tax/configuration
+        type: feature
+        breaking: false
+        datestamp: '2026-08-09'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: beta
+          exposure: public
+        link: tax-project-configuration?version=2.0#get-tax-project-configuration
+      - summary: Add View Tax Project Configuration endpoint
+        description: Add Project View Configuration Endpoint to View Tax Project Configuration.
+        endpoint: GET /companies/{company_id}/projects/{project_id}/tax/configuration
+        type: new
+        breaking: false
+        datestamp: '2025-05-05'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: beta
+          exposure: public
+        link: tax-project-configuration?version=2.0#get-tax-project-configuration
+      - summary: Notice of Open Beta
+        description: 'This endpoint was previously private and in pilot, and is now publicly
+
+          documented in open beta. No changes were made to the API contract, only
+
+          visibility and stage updates.'
+        endpoint: GET /companies/{company_id}/projects/{project_id}/tax/configuration
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-14'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: beta
+          exposure: public
+        link: tax-project-configuration?version=2.0#get-tax-project-configuration
+      operationId: getTaxProjectConfiguration
+    patch:
+      x-doc:
+        visibility: public
+        stage: beta
+        exposure: public
+      x-endpoint-type: mutation
+      summary: Update Tax Project Configuration
+      description: Update Tax Project Configuration for a given project
+      tags:
+      - Tax Project Configuration
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier for the company.
+        required: true
+        schema:
+          type: string
+      - name: project_id
+        in: path
+        required: true
+        description: Unique identifier for the project.
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Tax Project Configuration Update
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+                  description: Whether tax is enabled for this project. When true, tax codes may be applied to line items in the project's financial tools.
+                  example: true
+                financial_tools:
+                  type: object
+                  description: Package Settings for each Financial Tool
+                  properties:
+                    prime_contract:
+                      type: boolean
+                      description: Set Tax enabled on Prime Contracts
+                      example: false
+                    purchase_order_contract:
+                      type: boolean
+                      description: Set Tax enabled on Purchase Order Contracts
+                      example: false
+                    work_order_contract:
+                      type: boolean
+                      description: Set Tax enabled on Work Order Contracts
+                      example: false
+                    direct_costs:
+                      type: boolean
+                      description: Set Tax enabled on Direct Costs
+                      example: false
+                codes:
+                  type: object
+                  description: Allow List Data
+                  properties:
+                    allow_all:
+                      type: boolean
+                      description: When true, all company-level tax codes are available for this project. When false, only codes listed in tax_codes are available.
+                      example: false
+                    tax_codes:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - default
+                        properties:
+                          id:
+                            type: string
+                            description: Tax Code ID
+                            example: '1234567890'
+                          default:
+                            type: boolean
+                            description: 'When true, this tax code is pre-selected as the default for new line items. At most one tax code in the array should have default: true.'
+                            example: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/tax/configuration',\n  headers: {'content-type': 'application/json'},\n  body: {\n    enabled: true,\n    financial_tools: {\n      prime_contract: false,\n      purchase_order_contract: false,\n      work_order_contract: false,\n      direct_costs: false\n    },\n    codes: {allow_all: false, tax_codes: [{id: '1234567890', default: true}]}\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"enabled\":true,\"financial_tools\":{\"prime_contract\":false,\"purchase_order_contract\":false,\"work_order_contract\":false,\"direct_costs\":false},\"codes\":{\"allow_all\":false,\"tax_codes\":[{\"id\":\"1234567890\",\"default\":true}]}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("PATCH", "/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/tax/configuration", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/tax/configuration \\\n  --header 'content-type: application/json' \\\n  --data '{\"enabled\":true,\"financial_tools\":{\"prime_contract\":false,\"purchase_order_contract\":false,\"work_order_contract\":false,\"direct_costs\":false},\"codes\":{\"allow_all\":false,\"tax_codes\":[{\"id\":\"1234567890\",\"default\":true}]}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/tax/configuration\"),\n    Content = new StringContent(\"{\\\"enabled\\\":true,\\\"financial_tools\\\":{\\\"prime_contract\\\":false,\\\"purchase_order_contract\\\":false,\\\"work_order_contract\\\":false,\\\"direct_costs\\\":false},\\\"codes\\\":{\\\"allow_all\\\":false,\\\"tax_codes\\\":[{\\\"id\\\":\\\"1234567890\\\",\\\"default\\\":true}]}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Add direct_costs to Tax Project Configuration update financial_tools
+        description: 'Allow PATCH of financial_tools.direct_costs on Tax Project Configuration to
+
+          enable or disable tax on Direct Costs for a project.'
+        endpoint: PATCH /companies/{company_id}/projects/{project_id}/tax/configuration
+        type: feature
+        breaking: false
+        datestamp: '2026-08-09'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: beta
+          exposure: public
+        link: tax-project-configuration?version=2.0#update-tax-project-configuration
+      - summary: Add Update Tax Project Configuration endpoint
+        description: Add Update Tax Project Configuration endpoint to Update Tax Project Configuration.
+        endpoint: PATCH /companies/{company_id}/projects/{project_id}/tax/configuration
+        type: new
+        breaking: false
+        datestamp: '2025-05-05'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: beta
+          exposure: public
+        link: tax-project-configuration?version=2.0#update-tax-project-configuration
+      - summary: Notice of Open Beta
+        description: 'This endpoint was previously private and in pilot, and is now publicly
+
+          documented in open beta. No changes were made to the API contract, only
+
+          visibility and stage updates.'
+        endpoint: PATCH /companies/{company_id}/projects/{project_id}/tax/configuration
+        type: refinement
+        breaking: false
+        datestamp: '2026-09-14'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: beta
+          exposure: public
+        link: tax-project-configuration?version=2.0#update-tax-project-configuration
+      operationId: updateTaxProjectConfiguration
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

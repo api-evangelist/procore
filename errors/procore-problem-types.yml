@@ -1,0 +1,126 @@
+generated: '2026-10-20'
+method: derived
+generator: derive-problem-types.py
+source:
+- openapi/procore-openapi.json
+format: custom
+envelope:
+  media_type: application/json
+  schema: null
+coverage:
+  operations: 3296
+  statuses_declared: 15
+problems:
+- status: 400
+  title: Bad Request
+  description: Bad Request
+  operations: 1731
+  media_types:
+  - application/json
+  schema: null
+- status: 401
+  title: Unauthorized
+  description: Unauthorized
+  operations: 2621
+  media_types:
+  - application/json
+  - application/octet-stream
+  - application/vnd.ms-project
+  schema: null
+- status: 403
+  title: Forbidden
+  description: Forbidden
+  operations: 2944
+  media_types:
+  - application/json
+  - application/octet-stream
+  - application/vnd.ms-project
+  schema: null
+- status: 404
+  title: Not Found
+  description: Not Found
+  operations: 1205
+  media_types:
+  - application/json
+  - application/octet-stream
+  - application/vnd.ms-project
+  schema: null
+- status: 406
+  title: Not Acceptable
+  description: Not Acceptable
+  operations: 24
+  media_types:
+  - application/json
+  schema: null
+- status: 408
+  title: Request Timeout
+  description: Request Timeout
+  operations: 1
+  media_types:
+  - application/json
+  schema: null
+- status: 409
+  title: Conflict
+  description: Conflict
+  operations: 86
+  media_types:
+  - application/json
+  schema: null
+- status: 410
+  title: Gone
+  description: Document metadata is present but the file data could not be found
+  operations: 11
+  media_types:
+  - application/json
+  schema: null
+- status: 413
+  title: Content Too Large
+  description: Payload Too Large
+  operations: 16
+  media_types:
+  - application/json
+  schema: null
+- status: 422
+  title: Unprocessable Content
+  description: Unprocessable Entity
+  operations: 747
+  media_types:
+  - application/json
+  schema: null
+- status: 429
+  title: Too Many Requests
+  description: Too Many Requests
+  operations: 1
+  media_types:
+  - application/json
+  schema: null
+- status: 500
+  title: Internal Server Error
+  description: Internal Server Error
+  operations: 261
+  media_types:
+  - application/json
+  schema: null
+- status: 502
+  title: Bad Gateway
+  description: Model Manager returned 5xx
+  operations: 7
+  media_types:
+  - application/json
+  schema: null
+- status: 503
+  title: Service Unavailable
+  description: The permission check could not be completed (`AUTHORIZATION_UNAVAILABLE`) — safe to retry
+  operations: 47
+  media_types:
+  - application/json
+  schema: null
+- status: default
+  title: null
+  description: Unexpected error
+  operations: 1105
+  media_types:
+  - application/json
+  - application/octet-stream
+  - application/vnd.ms-project
+  schema: null

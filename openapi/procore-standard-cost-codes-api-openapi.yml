@@ -1,0 +1,463 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Standard Cost Codes API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Standard Cost Codes
+paths:
+  /rest/v1.0/standard_cost_codes/{id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      description: Unique identifier for the Standard Cost Code. Use the ID returned from GET /rest/v1.0/standard_cost_codes.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    patch:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Update Standard Cost Code
+      description: Update a Standard Cost Code.
+      tags:
+      - Standard Cost Codes
+      parameters:
+      - name: view
+        in: query
+        description: 'The ''default'' view only returns id and standard_cost_code_list_id. The ''compact'' view also includes
+
+          origin_id. The ''extended'' view includes the more complete list of attributes shown below. The ''extended''
+
+          view is used when no value is passed in for this parameter.'
+        required: false
+        schema:
+          type: string
+          enum:
+          - default
+          - compact
+          - extended
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: Body
+              type: object
+              required:
+              - company_id
+              - standard_cost_code_list_id
+              - standard_cost_code
+              properties:
+                company_id:
+                  type: integer
+                  description: Company ID
+                  example: 12345
+                standard_cost_code_list_id:
+                  type: integer
+                  description: Standard Cost Code List ID
+                  example: 12345
+                standard_cost_code:
+                  title: Standard Cost Code
+                  type: object
+                  properties:
+                    parent_id:
+                      type: integer
+                      description: Parent ID (keeps the same Parent ID as before if not provided)
+                      example: 12345
+                    code:
+                      type: string
+                      description: Cost code, not including parent prefix
+                      example: '300'
+                    name:
+                      type: string
+                      description: Description
+                      example: Site Work
+                    origin_data:
+                      type: string
+                      description: Origin data
+                      example: OD-2398273424
+                    origin_id:
+                      type: string
+                      description: Origin ID
+                      example: ABC123
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: Standard Cost Code
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier for the Standard Cost Code. Use as the {id} path parameter in GET, PATCH, and DELETE /rest/v1.0/standard_cost_codes/{id}.
+                    example: 12345
+                  standard_cost_code_list_id:
+                    type: integer
+                    description: ID of the company-level standard cost code list this code belongs to. Use as the standard_cost_code_list_id query parameter when operating on this code. Always present.
+                    example: 12345
+                  parent_id:
+                    type:
+                    - integer
+                    - 'null'
+                    description: ID of the parent standard cost code in the hierarchy. Null for root-level codes. Only present in 'extended' view.
+                    example: 12345
+                  code:
+                    type: string
+                    description: Cost code segment, not including the parent prefix. For example, for full code "02-300", this field is "300". Only present in 'extended' view.
+                    example: '300'
+                  full_code:
+                    type: string
+                    description: Full cost code including all parent prefixes (e.g. "02-300"). Only present in 'extended' view.
+                    example: 02-300
+                  name:
+                    type: string
+                    description: Display name of the standard cost code. Only present in 'extended' view.
+                    example: Site Work
+                  origin_data:
+                    type: string
+                    description: Free-form third-party metadata string from the ERP system. Only present in 'extended' view.
+                    example: OD-2398273424
+                  origin_id:
+                    type: string
+                    description: ERP system identifier for this standard cost code. Used by sync operations to match records across systems. Present in 'compact' and 'extended' views.
+                    example: ABC123
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.0/standard_cost_codes/%7Bid%7D',\n  qs: {view: 'SOME_STRING_VALUE'},\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN',\n    'content-type': 'application/json'\n  },\n  body: {\n    company_id: 12345,\n    standard_cost_code_list_id: 12345,\n    standard_cost_code: {\n      parent_id: 12345,\n      code: '300',\n      name: 'Site Work',\n      origin_data: 'OD-2398273424',\n      origin_id: 'ABC123'\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: "import http.client\n\nconn = http.client.HTTPSConnection(\"api.procore.com\")\n\npayload = \"{\\\"company_id\\\":12345,\\\"standard_cost_code_list_id\\\":12345,\\\"standard_cost_code\\\":{\\\"parent_id\\\":12345,\\\"code\\\":\\\"300\\\",\\\"name\\\":\\\"Site Work\\\",\\\"origin_data\\\":\\\"OD-2398273424\\\",\\\"origin_id\\\":\\\"ABC123\\\"}}\"\n\nheaders = {\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\",\n    'content-type': \"application/json\"\n    }\n\nconn.request(\"PATCH\", \"/rest/v1.0/standard_cost_codes/%7Bid%7D?view=SOME_STRING_VALUE\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url 'https://api.procore.com/rest/v1.0/standard_cost_codes/%7Bid%7D?view=SOME_STRING_VALUE' \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"company_id\":12345,\"standard_cost_code_list_id\":12345,\"standard_cost_code\":{\"parent_id\":12345,\"code\":\"300\",\"name\":\"Site Work\",\"origin_data\":\"OD-2398273424\",\"origin_id\":\"ABC123\"}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/standard_cost_codes/%7Bid%7D?view=SOME_STRING_VALUE\"),\n    Headers =\n    {\n        { \"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\" },\n    },\n    Content = new StringContent(\"{\\\"company_id\\\":12345,\\\"standard_cost_code_list_id\\\":12345,\\\"standard_cost_code\\\":{\\\"parent_id\\\":12345,\\\"code\\\":\\\"300\\\",\\\"name\\\":\\\"Site Work\\\",\\\"origin_data\\\":\\\"OD-2398273424\\\",\\\"origin_id\\\":\\\"ABC123\\\"}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: updateStandardCostCode
+    delete:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-deprecated-at: '2022-03-31'
+      deprecated: true
+      summary: Delete Standard Cost Code
+      description: 'Delete a Standard Cost Code for ERP integrated companies and standard cost code lists.
+
+        Deprecation Note: Please find the replacement endpoint in the Work Breakdown Structure documents. This endpoint will be replaced with the Delete Company Segment Item Endpoint.'
+      tags:
+      - Standard Cost Codes
+      parameters:
+      - name: company_id
+        in: query
+        description: Unique identifier for the company.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: Standard Cost Code
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier for the Standard Cost Code. Use as the {id} path parameter in GET, PATCH, and DELETE /rest/v1.0/standard_cost_codes/{id}.
+                    example: 12345
+                  standard_cost_code_list_id:
+                    type: integer
+                    description: ID of the company-level standard cost code list this code belongs to. Use as the standard_cost_code_list_id query parameter when operating on this code. Always present.
+                    example: 12345
+                  parent_id:
+                    type:
+                    - integer
+                    - 'null'
+                    description: ID of the parent standard cost code in the hierarchy. Null for root-level codes. Only present in 'extended' view.
+                    example: 12345
+                  code:
+                    type: string
+                    description: Cost code segment, not including the parent prefix. For example, for full code "02-300", this field is "300". Only present in 'extended' view.
+                    example: '300'
+                  full_code:
+                    type: string
+                    description: Full cost code including all parent prefixes (e.g. "02-300"). Only present in 'extended' view.
+                    example: 02-300
+                  name:
+                    type: string
+                    description: Display name of the standard cost code. Only present in 'extended' view.
+                    example: Site Work
+                  origin_data:
+                    type: string
+                    description: Free-form third-party metadata string from the ERP system. Only present in 'extended' view.
+                    example: OD-2398273424
+                  origin_id:
+                    type: string
+                    description: ERP system identifier for this standard cost code. Used by sync operations to match records across systems. Present in 'compact' and 'extended' views.
+                    example: ABC123
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'DELETE',\n  url: 'https://api.procore.com/rest/v1.0/standard_cost_codes/%7Bid%7D',\n  qs: {company_id: 'SOME_INTEGER_VALUE'},\n  headers: {Authorization: 'Bearer REPLACE_BEARER_TOKEN'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          headers = { ''Authorization'': "Bearer REPLACE_BEARER_TOKEN" }
+
+
+          conn.request("DELETE", "/rest/v1.0/standard_cost_codes/%7Bid%7D?company_id=SOME_INTEGER_VALUE", headers=headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request DELETE \\\n  --url 'https://api.procore.com/rest/v1.0/standard_cost_codes/%7Bid%7D?company_id=SOME_INTEGER_VALUE' \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Delete,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/standard_cost_codes/%7Bid%7D?company_id=SOME_INTEGER_VALUE\"),\n    Headers =\n    {\n        { \"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\" },\n    },\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Deprecate Delete Standard Cost Code
+        description: 'This endpoint deprecated. `https://developers.procore.com/reference/rest/v1/segment-items?version=1.0#delete-company-segment-item`
+
+          can be used as a replacement.'
+        endpoint: DELETE /standard_cost_codes/{id}
+        type: deprecated
+        breaking: false
+        datestamp: '2022-03-15'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: cost-codes?version=1.0#delete-standard-cost-code
+      operationId: deleteStandardCostCode
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

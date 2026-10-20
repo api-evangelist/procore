@@ -1,0 +1,343 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Action Plan Template References API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Action Plan Template References
+paths:
+  /rest/v1.0/projects/{project_id}/action_plans/plan_template_references/bulk_create:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    post:
+      x-doc:
+        visibility: public
+        stage: beta
+        exposure: public
+      summary: Bulk Create Action Plan Template References
+      description: Creates multiple Action Plan Template References
+      tags:
+      - Action Plan Template References
+      parameters:
+      - name: completion_mode
+        in: query
+        description: Whether to update what can be or nothing if one can not be updated. Defaults to "all_or_nothing"
+        schema:
+          type: string
+          enum:
+          - all_or_nothing
+          - atomic
+      - name: project_id
+        in: path
+        required: true
+        description: Unique identifier for the project.
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - plan_template_references
+              properties:
+                plan_template_references:
+                  title: Action Plan Template References
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - plan_template_item_id
+                    - type
+                    - payload
+                    properties:
+                      plan_template_item_id:
+                        type: integer
+                        description: Action Plan Template Item ID
+                        example: 54
+                      type:
+                        type: string
+                        description: Action Plan Reference Type
+                        enum:
+                        - attachment
+                        - drawing
+                        - document
+                        - document_management_document_reference
+                        - specification_section
+                        - submittal_log
+                        - generic_tool_item
+                        - form
+                        - image
+                        - meeting
+                        - observation_item
+                        example: specification_section
+                      payload:
+                        type: object
+                        description: One of attachment, drawing_revision_id, file_version_id, document_management_document_reference, specification_section_id, submittal_log_id, generic_tool_item_id, form_id, image_id, meeting_id, or observation_item_id is accepted depending on the type provided
+                        properties:
+                          drawing_revision_id:
+                            type: integer
+                            description: Drawing Revision ID
+                            example: 53
+                          file_version_id:
+                            type: integer
+                            description: File Version ID
+                            example: 54
+                          document_management_document_reference:
+                            type: object
+                            description: PDM (Product Document Management) document reference
+                            properties:
+                              collection_id:
+                                type: string
+                                format: uuid
+                                description: Document collection ID
+                                example: 123e4567-e89b-12d3-a456-426614174000
+                              container_id:
+                                type: string
+                                format: uuid
+                                description: Document container ID
+                                example: 123e4567-e89b-12d3-a456-426614174001
+                          specification_section_id:
+                            type: integer
+                            description: Specification Section ID
+                            example: 55
+                          submittal_log_id:
+                            type: integer
+                            description: Submittal Log ID
+                            example: 65
+                          generic_tool_item_id:
+                            type: integer
+                            description: Generic Tool Item (Correspondence) ID
+                            example: 56
+                          form_id:
+                            type: integer
+                            description: Form ID
+                            example: 57
+                          image_id:
+                            type: integer
+                            description: Image ID
+                            example: 60
+                          meeting_id:
+                            type: integer
+                            description: Meeting ID
+                            example: 58
+                          observation_item_id:
+                            type: integer
+                            description: Observation Item ID
+                            example: 59
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                description: Array of update status
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: The ID of the Item
+                        example: 123
+                      status:
+                        type: string
+                        description: status of the update on that Item
+                        enum:
+                        - success
+                        - failure
+                        example: success
+                      errors:
+                        type: object
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/action_plans/plan_template_references/bulk_create',\n  qs: {completion_mode: 'SOME_STRING_VALUE'},\n  headers: {'content-type': 'application/json'},\n  body: {\n    plan_template_references: [\n      {\n        plan_template_item_id: 54,\n        type: 'specification_section',\n        payload: {\n          drawing_revision_id: 53,\n          file_version_id: 54,\n          document_management_document_reference: {\n            collection_id: '123e4567-e89b-12d3-a456-426614174000',\n            container_id: '123e4567-e89b-12d3-a456-426614174001'\n          },\n          specification_section_id: 55,\n          submittal_log_id: 65,\n          generic_tool_item_id: 56,\n          form_id: 57,\n          image_id: 60,\n          meeting_id: 58,\n          observation_item_id: 59\n        }\n      }\n    ]\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"plan_template_references\":[{\"plan_template_item_id\":54,\"type\":\"specification_section\",\"payload\":{\"drawing_revision_id\":53,\"file_version_id\":54,\"document_management_document_reference\":{\"collection_id\":\"123e4567-e89b-12d3-a456-426614174000\",\"container_id\":\"123e4567-e89b-12d3-a456-426614174001\"},\"specification_section_id\":55,\"submittal_log_id\":65,\"generic_tool_item_id\":56,\"form_id\":57,\"image_id\":60,\"meeting_id\":58,\"observation_item_id\":59}}]}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v1.0/projects/%7Bproject_id%7D/action_plans/plan_template_references/bulk_create?completion_mode=SOME_STRING_VALUE", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/action_plans/plan_template_references/bulk_create?completion_mode=SOME_STRING_VALUE' \\\n  --header 'content-type: application/json' \\\n  --data '{\"plan_template_references\":[{\"plan_template_item_id\":54,\"type\":\"specification_section\",\"payload\":{\"drawing_revision_id\":53,\"file_version_id\":54,\"document_management_document_reference\":{\"collection_id\":\"123e4567-e89b-12d3-a456-426614174000\",\"container_id\":\"123e4567-e89b-12d3-a456-426614174001\"},\"specification_section_id\":55,\"submittal_log_id\":65,\"generic_tool_item_id\":56,\"form_id\":57,\"image_id\":60,\"meeting_id\":58,\"observation_item_id\":59}}]}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/action_plans/plan_template_references/bulk_create?completion_mode=SOME_STRING_VALUE\"),\n    Content = new StringContent(\"{\\\"plan_template_references\\\":[{\\\"plan_template_item_id\\\":54,\\\"type\\\":\\\"specification_section\\\",\\\"payload\\\":{\\\"drawing_revision_id\\\":53,\\\"file_version_id\\\":54,\\\"document_management_document_reference\\\":{\\\"collection_id\\\":\\\"123e4567-e89b-12d3-a456-426614174000\\\",\\\"container_id\\\":\\\"123e4567-e89b-12d3-a456-426614174001\\\"},\\\"specification_section_id\\\":55,\\\"submittal_log_id\\\":65,\\\"generic_tool_item_id\\\":56,\\\"form_id\\\":57,\\\"image_id\\\":60,\\\"meeting_id\\\":58,\\\"observation_item_id\\\":59}}]}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added Project Action Plan Template Reference Bulk Create endpoint
+        description: Bulk create Project Action Plan Template References.
+        endpoint: POST /projects/{project_id}/action_plans/plan_template_references/bulk_create
+        type: new
+        breaking: false
+        datestamp: '2023-06-06'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: beta
+          exposure: public
+        link: project-action-plan-template-references?version=1.0#bulk-create-action-plan-template-references
+      - summary: Updated Project Action Plan Template Reference Bulk Create endpoint request
+        description: Added `image` reference type to Bulk create Project Action Plan Template References request.
+        endpoint: POST /projects/{project_id}/action_plans/plan_template_references/bulk_create
+        type: new
+        breaking: false
+        datestamp: '2024-07-31'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: beta
+          exposure: public
+        link: project-action-plan-template-references?version=1.0#bulk-create-action-plan-template-references
+      - summary: Updated Project Action Plan Template Reference Bulk Create endpoint request
+        description: Added `document_management_document_reference` reference type to Bulk create Project Action Plan Template References request.
+        endpoint: POST /projects/{project_id}/action_plans/plan_template_references/bulk_create
+        type: feature
+        breaking: false
+        datestamp: '2025-11-27'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: beta
+          exposure: public
+        link: project-action-plan-template-references?version=1.0#bulk-create-action-plan-template-references
+      operationId: bulkCreateActionPlanTemplateReferences
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

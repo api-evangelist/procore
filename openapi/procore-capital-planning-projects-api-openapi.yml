@@ -1,0 +1,1478 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Capital Planning — Projects API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Capital Planning — Projects
+paths:
+  /rest/v1.0/companies/{company_id}/capital_planning/projects:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: partial
+    get:
+      description: Returns cursor-paginated project rows for a program group with pagination metadata in response headers.
+      operationId: CapitalPlanProjectsController_listProjects_rest/v1.0
+      parameters:
+      - name: company_id
+        required: true
+        in: path
+        description: Procore company identifier
+        schema:
+          type: string
+      - name: group_by[]
+        required: false
+        in: query
+        description: Group projects by one or more fields (e.g. group_by[]=stage, group_by[]=priority, group_by[]=region, group_by[]=project_type, group_by[]=program). When present, returns a grouped response with per-group pagination.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: filters[planned_end_date][max]
+        required: false
+        in: query
+        description: Maximum planned end date (YYYY-MM-DD)
+        schema:
+          type: string
+      - name: filters[planned_end_date][min]
+        required: false
+        in: query
+        description: Minimum planned end date (YYYY-MM-DD)
+        schema:
+          type: string
+      - name: filters[planned_start_date][max]
+        required: false
+        in: query
+        description: Maximum planned start date (YYYY-MM-DD)
+        schema:
+          type: string
+      - name: filters[planned_start_date][min]
+        required: false
+        in: query
+        description: Minimum planned start date (YYYY-MM-DD)
+        schema:
+          type: string
+      - name: filters[forecast_to_complete][max]
+        required: false
+        in: query
+        description: Maximum forecast to complete
+        schema:
+          type: string
+      - name: filters[forecast_to_complete][min]
+        required: false
+        in: query
+        description: Minimum forecast to complete
+        schema:
+          type: string
+      - name: filters[job_to_date_costs][max]
+        required: false
+        in: query
+        description: Maximum job to date costs
+        schema:
+          type: string
+      - name: filters[job_to_date_costs][min]
+        required: false
+        in: query
+        description: Minimum job to date costs
+        schema:
+          type: string
+      - name: filters[revised_budget][max]
+        required: false
+        in: query
+        description: Maximum revised budget
+        schema:
+          type: string
+      - name: filters[revised_budget][min]
+        required: false
+        in: query
+        description: Minimum revised budget
+        schema:
+          type: string
+      - name: filters[original_budget][max]
+        required: false
+        in: query
+        description: Maximum original budget
+        schema:
+          type: string
+      - name: filters[original_budget][min]
+        required: false
+        in: query
+        description: Minimum original budget
+        schema:
+          type: string
+      - name: filters[planned_amount][max]
+        required: false
+        in: query
+        description: Maximum planned amount
+        schema:
+          type: string
+      - name: filters[planned_amount][min]
+        required: false
+        in: query
+        description: Minimum planned amount
+        schema:
+          type: string
+      - name: filters[in_plan][]
+        required: false
+        in: query
+        description: Filter by in-plan state. Accepts `true` or `false`; sending both, or omitting it, returns projects in either state.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - 'true'
+            - 'false'
+      - name: filters[portfolio_program][]
+        required: false
+        in: query
+        description: Filter by portfolio program node uuid (the project's own node, descendants excluded), or the sentinel `none` for projects with no node (or a node not yet synced). With snapshot_id, matches the assignment frozen in the snapshot.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: filters[program][]
+        required: false
+        in: query
+        description: Filter by legacy program. Send the program's procore_program_id, or the sentinel `none` for projects with no program.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: filters[departments][]
+        required: false
+        in: query
+        description: Filter by department (matches projects containing any listed department)
+        schema:
+          type: array
+          items:
+            type: string
+      - name: filters[project_type][]
+        required: false
+        in: query
+        description: Filter by project type
+        schema:
+          type: array
+          items:
+            type: string
+      - name: filters[region][]
+        required: false
+        in: query
+        description: Filter by region
+        schema:
+          type: array
+          items:
+            type: string
+      - name: filters[priority][]
+        required: false
+        in: query
+        description: Filter by priority (low, medium, high)
+        schema:
+          type: array
+          items:
+            type: string
+      - name: filters[stage][]
+        required: false
+        in: query
+        description: Filter by stage
+        schema:
+          type: array
+          items:
+            type: string
+      - name: sort
+        required: false
+        in: query
+        description: Sort field and direction (e.g. number:asc)
+        schema:
+          type: string
+      - name: snapshot_id
+        required: false
+        in: query
+        description: When set, returns the stored data from the given completed snapshot instead of the live plan. The response shape is identical to the live plan.
+        schema:
+          type: string
+      - name: cursor
+        required: false
+        in: query
+        description: Pagination cursor from Link header
+        schema:
+          type: string
+      - name: per_page
+        required: false
+        in: query
+        description: Page size (default 50, max 100)
+        schema:
+          type: number
+      - name: search
+        required: false
+        in: query
+        description: Case-insensitive substring match on project name or number
+        schema:
+          type: string
+      - name: portfolio_program_uuid
+        required: false
+        in: query
+        description: 'Hierarchy scope: the portfolio program node whose directly assigned projects to fetch (descendants excluded), or "none" for projects with no node (or a node not yet synced). With snapshot_id, scopes on the assignment frozen in the snapshot. Mutually exclusive with program_id and filters[portfolio_program].'
+        schema:
+          oneOf:
+          - type: string
+            format: uuid
+          - type: string
+            enum:
+            - none
+      - name: program_id
+        required: false
+        in: query
+        description: 'Legacy program scope: the procore program id to fetch projects for, or "none" for unassigned projects. Omit to list every project in the company (flat view). Mutually exclusive with portfolio_program_uuid.'
+        schema:
+          oneOf:
+          - type: string
+            pattern: ^\d+$
+            example: '456'
+          - type: string
+            enum:
+            - none
+      responses:
+        '200':
+          description: Paginated project rows
+          headers:
+            Per-Page:
+              description: Page size
+              schema:
+                type: integer
+            Total:
+              description: Total matching records
+              schema:
+                type: integer
+            Link:
+              description: Pagination link header (for backward compatibility)
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: array
+                    description: Array of data items
+                    items:
+                      type: object
+                      properties:
+                        procore_project_id:
+                          type: string
+                          example: '9988'
+                        procore_program_id:
+                          type:
+                          - string
+                          - 'null'
+                          example: '456'
+                        program_name:
+                          type:
+                          - string
+                          - 'null'
+                          example: Infrastructure
+                          description: Display name of the legacy Procore program the project belongs to (the flat-view Program column); null when unassigned.
+                        portfolio_program_uuid:
+                          type:
+                          - string
+                          - 'null'
+                          format: uuid
+                          example: 6f1d2c3e-4b5a-4c6d-8e7f-9a0b1c2d3e4f
+                          description: The portfolio-hierarchy node the project belongs to; null when unassigned. Always null on snapshot reads (not captured).
+                        name:
+                          type: string
+                          example: Tower A
+                        number:
+                          type:
+                          - string
+                          - 'null'
+                          example: P-001
+                        stage:
+                          type:
+                          - string
+                          - 'null'
+                          example: Concept
+                        priority:
+                          type:
+                          - string
+                          - 'null'
+                          example: high
+                        region:
+                          type:
+                          - string
+                          - 'null'
+                          example: EMEA
+                        project_type:
+                          type:
+                          - string
+                          - 'null'
+                          example: Healthcare
+                        departments:
+                          example:
+                          - Engineering
+                          - Finance
+                          type: array
+                          items:
+                            type: string
+                        budget_type:
+                          allOf:
+                          - type: string
+                            enum:
+                            - lump_sum
+                            - multiple_line_items
+                            - synced_original_budget
+                            - synced_revised_budget
+                        planned_amount:
+                          type:
+                          - string
+                          - 'null'
+                          example: '500000.00'
+                          description: Effective Planned Amount. When the stored column is null and budget_cleared is false, this is resolved from COALESCE(revised_budget, estimated_budget) and tracks later budget changes. A stored "0.00" is a cleared value and does not re-prefill.
+                        budget_cleared:
+                          type: boolean
+                          example: false
+                          description: True when the Planned Amount was explicitly emptied (null + no budget tracking). False for untouched (tracks budget), set, or cleared-to-zero ("0.00") cells.
+                        monthly_forecasts:
+                          type: object
+                          additionalProperties:
+                            type: string
+                          example:
+                            2026-01: '50000.00'
+                        original_budget:
+                          type:
+                          - string
+                          - 'null'
+                          example: '450000.00'
+                        revised_budget:
+                          type:
+                          - string
+                          - 'null'
+                          example: '475000.00'
+                        estimated_budget:
+                          type:
+                          - string
+                          - 'null'
+                          example: '300000.00'
+                        job_to_date_costs:
+                          type:
+                          - string
+                          - 'null'
+                          example: '120000.00'
+                        forecast_to_complete:
+                          type:
+                          - string
+                          - 'null'
+                          example: '70000.00'
+                        estimated_cost_at_completion:
+                          type:
+                          - string
+                          - 'null'
+                          example: '190000.00'
+                        remaining:
+                          type:
+                          - string
+                          - 'null'
+                          example: '380000.00'
+                        has_budget:
+                          type: boolean
+                          example: true
+                        budget_url:
+                          type:
+                          - string
+                          - 'null'
+                          example: https://app.procore.com/123456/project/budget
+                        currency_code:
+                          type:
+                          - string
+                          - 'null'
+                          example: USD
+                        planned_start_date:
+                          type:
+                          - string
+                          - 'null'
+                          example: '2027-03-01'
+                        planned_end_date:
+                          type:
+                          - string
+                          - 'null'
+                          example: '2029-06-30'
+                        curve_type:
+                          type:
+                          - string
+                          - 'null'
+                          enum:
+                          - front_loaded
+                          - back_loaded
+                          - bell
+                          - linear
+                          - manual
+                        in_plan:
+                          type: boolean
+                          example: true
+                          description: Whether the project counts toward the capital plan. A project with no capital_plan_projects row reads as true.
+                      required:
+                      - procore_project_id
+                      - procore_program_id
+                      - program_name
+                      - portfolio_program_uuid
+                      - name
+                      - number
+                      - stage
+                      - priority
+                      - region
+                      - project_type
+                      - departments
+                      - budget_type
+                      - planned_amount
+                      - budget_cleared
+                      - monthly_forecasts
+                      - original_budget
+                      - revised_budget
+                      - estimated_budget
+                      - job_to_date_costs
+                      - forecast_to_complete
+                      - estimated_cost_at_completion
+                      - remaining
+                      - has_budget
+                      - budget_url
+                      - currency_code
+                      - planned_start_date
+                      - planned_end_date
+                      - curve_type
+                      - in_plan
+                  pagination:
+                    type: object
+                    description: Pagination metadata for cursor-based navigation
+                    properties:
+                      next_cursor:
+                        type:
+                        - string
+                        - 'null'
+                        description: Cursor for the next page of results
+                        example: eyJpZCI6IjEwMDEi...
+                      has_more:
+                        type: boolean
+                        description: Whether there are more results available
+                        example: true
+                    required:
+                    - next_cursor
+                    - has_more
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '403':
+          description: Access denied — `TOOL_NOT_ACTIVATED`, `INSUFFICIENT_PERMISSIONS`, `READONLY_ACCESS`, or `ADMIN_ACCESS_REQUIRED`
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '503':
+          description: The permission check could not be completed (`AUTHORIZATION_UNAVAILABLE`) — safe to retry
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+      summary: List capital planning projects
+      tags:
+      - Capital Planning — Projects
+      x-doc:
+        visibility: public
+        stage: beta
+        exposure: public
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+  /rest/v1.0/companies/{company_id}/capital_planning/projects/bulk_update:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: partial
+    patch:
+      description: 'Applies one set of forecasting fields (planned start date, planned end date, curve) to many projects at once. Targets either an explicit list of project ids or every project matching a filter query minus exclusions. Partial success: projects failing validation are skipped and reported in the response rather than failing the request.'
+      operationId: CapitalPlanProjectsController_bulkUpdateProjects_rest/v1.0
+      parameters:
+      - name: company_id
+        required: true
+        in: path
+        description: Procore company identifier
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                selection:
+                  type: object
+                  properties:
+                    all:
+                      type: boolean
+                      example: false
+                      description: When true, target every project matching the query below, minus excluded_ids.
+                    ids:
+                      example:
+                      - '12345'
+                      - '12346'
+                      maxItems: 1000
+                      description: Procore project ids to update. Required unless `all` is true; ignored when `all` is true.
+                      type: array
+                      items:
+                        type: string
+                    excluded_ids:
+                      example:
+                      - '12399'
+                      maxItems: 1000
+                      description: Procore project ids to exclude. Only meaningful when `all` is true.
+                      type: array
+                      items:
+                        type: string
+                    program_ids:
+                      example:
+                      - '4567'
+                      - none
+                      maxItems: 1000
+                      description: Restrict the selection to these programs. Use "none" for projects with no program. Omit for company-wide. Only used when `all` is true.
+                      type: array
+                      items:
+                        type: string
+                    portfolio_program_uuid:
+                      type: string
+                      example: 0b6f4d1e-2c3a-4f5b-9d8e-7a6b5c4d3e2f
+                      description: Restrict the selection to projects directly under this portfolio program node (descendants excluded), as `GET /projects` `portfolio_program_uuid`. Use "none" for projects with no node (or a node not yet synced). Mutually exclusive with `program_ids` and `filters.portfolio_program`. Only used when `all` is true.
+                    search:
+                      type: string
+                      example: terminal
+                      description: Name/number search applied to the selection. Only used when `all` is true.
+                    filters:
+                      description: Narrows the selection. Only used when `all` is true.
+                      allOf:
+                      - type: object
+                        properties:
+                          stage:
+                            example:
+                            - Concept
+                            - Unassigned
+                            type: array
+                            items:
+                              type: string
+                          priority:
+                            example:
+                            - High
+                            type: array
+                            items:
+                              type: string
+                          region:
+                            example:
+                            - West
+                            type: array
+                            items:
+                              type: string
+                          project_type:
+                            example:
+                            - Renovation
+                            type: array
+                            items:
+                              type: string
+                          departments:
+                            example:
+                            - Facilities
+                            type: array
+                            items:
+                              type: string
+                          program:
+                            example:
+                            - '4567'
+                            - none
+                            description: 'Legacy program filter, as `GET /projects` `filters[program][]`: procore program ids, or `none` for projects with no program.'
+                            type: array
+                            items:
+                              type: string
+                          portfolio_program:
+                            example:
+                            - 0b6f4d1e-2c3a-4f5b-9d8e-7a6b5c4d3e2f
+                            - none
+                            description: 'Portfolio-hierarchy node filter, as `GET /projects` `filters[portfolio_program][]`: node uuids (the project''s own node), or `none` for projects with no node (or a node not yet synced).'
+                            type: array
+                            items:
+                              type: string
+                          in_plan:
+                            example:
+                            - 'true'
+                            description: In-plan filter, as `GET /projects` `filters[in_plan][]`.
+                            type: array
+                            items:
+                              type: string
+                          planned_amount:
+                            type: object
+                            properties:
+                              min:
+                                type: string
+                                example: '1000'
+                              max:
+                                type: string
+                                example: '5000000'
+                          original_budget:
+                            type: object
+                            properties:
+                              min:
+                                type: string
+                                example: '1000'
+                              max:
+                                type: string
+                                example: '5000000'
+                          revised_budget:
+                            type: object
+                            properties:
+                              min:
+                                type: string
+                                example: '1000'
+                              max:
+                                type: string
+                                example: '5000000'
+                          job_to_date_costs:
+                            type: object
+                            properties:
+                              min:
+                                type: string
+                                example: '1000'
+                              max:
+                                type: string
+                                example: '5000000'
+                          forecast_to_complete:
+                            type: object
+                            properties:
+                              min:
+                                type: string
+                                example: '1000'
+                              max:
+                                type: string
+                                example: '5000000'
+                          planned_start_date:
+                            description: Inclusive YYYY-MM-DD bounds.
+                            allOf:
+                            - type: object
+                              properties:
+                                min:
+                                  type: string
+                                  example: '1000'
+                                max:
+                                  type: string
+                                  example: '5000000'
+                          planned_end_date:
+                            description: Inclusive YYYY-MM-DD bounds.
+                            allOf:
+                            - type: object
+                              properties:
+                                min:
+                                  type: string
+                                  example: '1000'
+                                max:
+                                  type: string
+                                  example: '5000000'
+                updates:
+                  type: object
+                  properties:
+                    planned_start_date:
+                      type:
+                      - string
+                      - 'null'
+                      example: '2027-03-01'
+                    planned_end_date:
+                      type:
+                      - string
+                      - 'null'
+                      example: '2029-06-30'
+                    curve_type:
+                      allOf:
+                      - type: string
+                        enum:
+                        - front_loaded
+                        - back_loaded
+                        - bell
+                        - linear
+                        - manual
+              required:
+              - selection
+              - updates
+      responses:
+        '200':
+          description: Counts of updated projects plus per-project failures
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      updated_count:
+                        type: number
+                        example: 998
+                        description: Projects whose capital plan data was written.
+                      failed_count:
+                        type: number
+                        example: 2
+                        description: Projects skipped because they failed validation. See `failures`.
+                      concept_project_count:
+                        type: number
+                        example: 12
+                        description: Subset of `updated_count` that are concept-stage projects. Reported so the client can attribute bulk edits without a second read.
+                      failures:
+                        description: One entry per skipped project. Empty when every target succeeded.
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            procore_project_id:
+                              type: string
+                              example: '12399'
+                            message:
+                              type: string
+                              example: End Date cannot be before Start Date
+                          required:
+                          - procore_project_id
+                          - message
+                    required:
+                    - updated_count
+                    - failed_count
+                    - concept_project_count
+                    - failures
+                required:
+                - data
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '403':
+          description: Access denied — `TOOL_NOT_ACTIVATED`, `INSUFFICIENT_PERMISSIONS`, `READONLY_ACCESS`, or `ADMIN_ACCESS_REQUIRED`
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '404':
+          description: Company not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '422':
+          description: Selection exceeds the maximum number of projects per request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '503':
+          description: The permission check could not be completed (`AUTHORIZATION_UNAVAILABLE`) — safe to retry
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+      summary: Bulk update capital planning forecasting fields
+      tags:
+      - Capital Planning — Projects
+      x-doc:
+        visibility: public
+        stage: beta
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/projects/bulk_update',\n  headers: {'Procore-Company-Id': 'SOME_STRING_VALUE', 'content-type': 'application/json'},\n  body: {\n    selection: {\n      all: false,\n      ids: ['12345', '12346'],\n      excluded_ids: ['12399'],\n      program_ids: ['4567', 'none'],\n      portfolio_program_uuid: '0b6f4d1e-2c3a-4f5b-9d8e-7a6b5c4d3e2f',\n      search: 'terminal',\n      filters: {\n        stage: ['Concept', 'Unassigned'],\n        priority: ['High'],\n        region: ['West'],\n        project_type: ['Renovation'],\n        departments: ['Facilities'],\n        program: ['4567', 'none'],\n        portfolio_program: ['0b6f4d1e-2c3a-4f5b-9d8e-7a6b5c4d3e2f', 'none'],\n        in_plan: ['true'],\n        planned_amount: {min: '1000', max: '5000000'},\n        original_budget: {min: '1000', max: '5000000'},\n        revised_budget: {min: '1000', max: '5000000'},\n        job_to_date_costs: {min: '1000', max: '5000000'},\n        forecast_to_complete: {min: '1000', max: '5000000'},\n        planned_start_date: {min: '1000', max: '5000000'},\n        planned_end_date: {min: '1000', max: '5000000'}\n      }\n    },\n    updates: {\n      planned_start_date: '2027-03-01',\n      planned_end_date: '2029-06-30',\n      curve_type: 'front_loaded'\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: "import http.client\n\nconn = http.client.HTTPSConnection(\"api.procore.com\")\n\npayload = \"{\\\"selection\\\":{\\\"all\\\":false,\\\"ids\\\":[\\\"12345\\\",\\\"12346\\\"],\\\"excluded_ids\\\":[\\\"12399\\\"],\\\"program_ids\\\":[\\\"4567\\\",\\\"none\\\"],\\\"portfolio_program_uuid\\\":\\\"0b6f4d1e-2c3a-4f5b-9d8e-7a6b5c4d3e2f\\\",\\\"search\\\":\\\"terminal\\\",\\\"filters\\\":{\\\"stage\\\":[\\\"Concept\\\",\\\"Unassigned\\\"],\\\"priority\\\":[\\\"High\\\"],\\\"region\\\":[\\\"West\\\"],\\\"project_type\\\":[\\\"Renovation\\\"],\\\"departments\\\":[\\\"Facilities\\\"],\\\"program\\\":[\\\"4567\\\",\\\"none\\\"],\\\"portfolio_program\\\":[\\\"0b6f4d1e-2c3a-4f5b-9d8e-7a6b5c4d3e2f\\\",\\\"none\\\"],\\\"in_plan\\\":[\\\"true\\\"],\\\"planned_amount\\\":{\\\"min\\\":\\\"1000\\\",\\\"max\\\":\\\"5000000\\\"},\\\"original_budget\\\":{\\\"min\\\":\\\"1000\\\",\\\"max\\\":\\\"5000000\\\"},\\\"revised_budget\\\":{\\\"min\\\":\\\"1000\\\",\\\"max\\\":\\\"5000000\\\"},\\\"job_to_date_costs\\\":{\\\"min\\\":\\\"1000\\\",\\\"max\\\":\\\"5000000\\\"},\\\"forecast_to_complete\\\":{\\\"min\\\":\\\"1000\\\",\\\"max\\\":\\\"5000000\\\"},\\\"planned_start_date\\\":{\\\"min\\\":\\\"1000\\\",\\\"max\\\":\\\"5000000\\\"},\\\"planned_end_date\\\":{\\\"min\\\":\\\"1000\\\",\\\"max\\\":\\\"5000000\\\"}}},\\\"updates\\\":{\\\"planned_start_date\\\":\\\"2027-03-01\\\",\\\"planned_end_date\\\":\\\"2029-06-30\\\",\\\"curve_type\\\":\\\"front_loaded\\\"}}\"\n\nheaders = {\n    'Procore-Company-Id': \"SOME_STRING_VALUE\",\n    'content-type': \"application/json\"\n    }\n\nconn.request(\"PATCH\", \"/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/projects/bulk_update\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/projects/bulk_update \\\n  --header 'Procore-Company-Id: SOME_STRING_VALUE' \\\n  --header 'content-type: application/json' \\\n  --data '{\"selection\":{\"all\":false,\"ids\":[\"12345\",\"12346\"],\"excluded_ids\":[\"12399\"],\"program_ids\":[\"4567\",\"none\"],\"portfolio_program_uuid\":\"0b6f4d1e-2c3a-4f5b-9d8e-7a6b5c4d3e2f\",\"search\":\"terminal\",\"filters\":{\"stage\":[\"Concept\",\"Unassigned\"],\"priority\":[\"High\"],\"region\":[\"West\"],\"project_type\":[\"Renovation\"],\"departments\":[\"Facilities\"],\"program\":[\"4567\",\"none\"],\"portfolio_program\":[\"0b6f4d1e-2c3a-4f5b-9d8e-7a6b5c4d3e2f\",\"none\"],\"in_plan\":[\"true\"],\"planned_amount\":{\"min\":\"1000\",\"max\":\"5000000\"},\"original_budget\":{\"min\":\"1000\",\"max\":\"5000000\"},\"revised_budget\":{\"min\":\"1000\",\"max\":\"5000000\"},\"job_to_date_costs\":{\"min\":\"1000\",\"max\":\"5000000\"},\"forecast_to_complete\":{\"min\":\"1000\",\"max\":\"5000000\"},\"planned_start_date\":{\"min\":\"1000\",\"max\":\"5000000\"},\"planned_end_date\":{\"min\":\"1000\",\"max\":\"5000000\"}}},\"updates\":{\"planned_start_date\":\"2027-03-01\",\"planned_end_date\":\"2029-06-30\",\"curve_type\":\"front_loaded\"}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/projects/bulk_update\"),\n    Headers =\n    {\n        { \"Procore-Company-Id\", \"SOME_STRING_VALUE\" },\n    },\n    Content = new StringContent(\"{\\\"selection\\\":{\\\"all\\\":false,\\\"ids\\\":[\\\"12345\\\",\\\"12346\\\"],\\\"excluded_ids\\\":[\\\"12399\\\"],\\\"program_ids\\\":[\\\"4567\\\",\\\"none\\\"],\\\"portfolio_program_uuid\\\":\\\"0b6f4d1e-2c3a-4f5b-9d8e-7a6b5c4d3e2f\\\",\\\"search\\\":\\\"terminal\\\",\\\"filters\\\":{\\\"stage\\\":[\\\"Concept\\\",\\\"Unassigned\\\"],\\\"priority\\\":[\\\"High\\\"],\\\"region\\\":[\\\"West\\\"],\\\"project_type\\\":[\\\"Renovation\\\"],\\\"departments\\\":[\\\"Facilities\\\"],\\\"program\\\":[\\\"4567\\\",\\\"none\\\"],\\\"portfolio_program\\\":[\\\"0b6f4d1e-2c3a-4f5b-9d8e-7a6b5c4d3e2f\\\",\\\"none\\\"],\\\"in_plan\\\":[\\\"true\\\"],\\\"planned_amount\\\":{\\\"min\\\":\\\"1000\\\",\\\"max\\\":\\\"5000000\\\"},\\\"original_budget\\\":{\\\"min\\\":\\\"1000\\\",\\\"max\\\":\\\"5000000\\\"},\\\"revised_budget\\\":{\\\"min\\\":\\\"1000\\\",\\\"max\\\":\\\"5000000\\\"},\\\"job_to_date_costs\\\":{\\\"min\\\":\\\"1000\\\",\\\"max\\\":\\\"5000000\\\"},\\\"forecast_to_complete\\\":{\\\"min\\\":\\\"1000\\\",\\\"max\\\":\\\"5000000\\\"},\\\"planned_start_date\\\":{\\\"min\\\":\\\"1000\\\",\\\"max\\\":\\\"5000000\\\"},\\\"planned_end_date\\\":{\\\"min\\\":\\\"1000\\\",\\\"max\\\":\\\"5000000\\\"}}},\\\"updates\\\":{\\\"planned_start_date\\\":\\\"2027-03-01\\\",\\\"planned_end_date\\\":\\\"2029-06-30\\\",\\\"curve_type\\\":\\\"front_loaded\\\"}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+  /rest/v1.0/companies/{company_id}/capital_planning/projects/{procore_project_id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: partial
+    patch:
+      description: Upserts capital planning data for a project. Handles planned_amount auto-fill, monthly_forecast merge, and budget_type switching.
+      operationId: CapitalPlanProjectsController_updateProject_rest/v1.0
+      parameters:
+      - name: company_id
+        required: true
+        in: path
+        description: Procore company identifier
+        schema:
+          type: string
+      - name: procore_project_id
+        required: true
+        in: path
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                planned_amount:
+                  type:
+                  - string
+                  - 'null'
+                  example: '500000.00'
+                  description: 'Set a Planned Amount. Use "0.00" to clear and freeze at zero. null means never set — the response follows the live budget (COALESCE(revised_budget, estimated_budget)). To store blank with no tracking, send planned_amount: null with budget_cleared: true.'
+                budget_type:
+                  allOf:
+                  - type: string
+                    enum:
+                    - lump_sum
+                    - multiple_line_items
+                    - synced_original_budget
+                    - synced_revised_budget
+                budget_cleared:
+                  type: boolean
+                  example: false
+                  description: When true with a null planned_amount, the cell stays blank and does not track the budget. An explicit budget_cleared in the same request wins even alongside a non-null planned_amount.
+                in_plan:
+                  type: boolean
+                  example: true
+                planned_start_date:
+                  type:
+                  - string
+                  - 'null'
+                  example: '2027-03-01'
+                planned_end_date:
+                  type:
+                  - string
+                  - 'null'
+                  example: '2029-06-30'
+                curve_type:
+                  allOf:
+                  - type: string
+                    enum:
+                    - front_loaded
+                    - back_loaded
+                    - bell
+                    - linear
+                    - manual
+                monthly_forecasts:
+                  type: object
+                  additionalProperties:
+                    type:
+                    - string
+                    - 'null'
+                  description: Manual forecast values keyed by month (`YYYY-MM`); a null clears that month. At most 240 months in one request. Keys that are exactly one fiscal year (12 consecutive FY-aligned months) or one fiscal quarter (3 consecutive FY-aligned months) record a single `FY{year}` / `FQ{n} {year}` change-history row, not one row per month — that is the current FE year/quarter cell payload.
+                  example:
+                    2026-01: '50000.00'
+                    2026-02: null
+      responses:
+        '200':
+          description: Updated project row with meta
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      procore_project_id:
+                        type: string
+                        example: '9988'
+                      procore_program_id:
+                        type:
+                        - string
+                        - 'null'
+                        example: '456'
+                      program_name:
+                        type:
+                        - string
+                        - 'null'
+                        example: Infrastructure
+                        description: Display name of the legacy Procore program the project belongs to (the flat-view Program column); null when unassigned.
+                      portfolio_program_uuid:
+                        type:
+                        - string
+                        - 'null'
+                        format: uuid
+                        example: 6f1d2c3e-4b5a-4c6d-8e7f-9a0b1c2d3e4f
+                        description: The portfolio-hierarchy node the project belongs to; null when unassigned. Always null on snapshot reads (not captured).
+                      name:
+                        type: string
+                        example: Tower A
+                      number:
+                        type:
+                        - string
+                        - 'null'
+                        example: P-001
+                      stage:
+                        type:
+                        - string
+                        - 'null'
+                        example: Concept
+                      priority:
+                        type:
+                        - string
+                        - 'null'
+                        example: high
+                      region:
+                        type:
+                        - string
+                        - 'null'
+                        example: EMEA
+                      project_type:
+                        type:
+                        - string
+                        - 'null'
+                        example: Healthcare
+                      departments:
+                        example:
+                        - Engineering
+                        - Finance
+                        type: array
+                        items:
+                          type: string
+                      budget_type:
+                        allOf:
+                        - type: string
+                          enum:
+                          - lump_sum
+                          - multiple_line_items
+                          - synced_original_budget
+                          - synced_revised_budget
+                      planned_amount:
+                        type:
+                        - string
+                        - 'null'
+                        example: '500000.00'
+                        description: Effective Planned Amount. When the stored column is null and budget_cleared is false, this is resolved from COALESCE(revised_budget, estimated_budget) and tracks later budget changes. A stored "0.00" is a cleared value and does not re-prefill.
+                      budget_cleared:
+                        type: boolean
+                        example: false
+                        description: True when the Planned Amount was explicitly emptied (null + no budget tracking). False for untouched (tracks budget), set, or cleared-to-zero ("0.00") cells.
+                      monthly_forecasts:
+                        type: object
+                        additionalProperties:
+                          type: string
+                        example:
+                          2026-01: '50000.00'
+                      original_budget:
+                        type:
+                        - string
+                        - 'null'
+                        example: '450000.00'
+                      revised_budget:
+                        type:
+                        - string
+                        - 'null'
+                        example: '475000.00'
+                      estimated_budget:
+                        type:
+                        - string
+                        - 'null'
+                        example: '300000.00'
+                      job_to_date_costs:
+                        type:
+                        - string
+                        - 'null'
+                        example: '120000.00'
+                      forecast_to_complete:
+                        type:
+                        - string
+                        - 'null'
+                        example: '70000.00'
+                      estimated_cost_at_completion:
+                        type:
+                        - string
+                        - 'null'
+                        example: '190000.00'
+                      remaining:
+                        type:
+                        - string
+                        - 'null'
+                        example: '380000.00'
+                      has_budget:
+                        type: boolean
+                        example: true
+                      budget_url:
+                        type:
+                        - string
+                        - 'null'
+                        example: https://app.procore.com/123456/project/budget
+                      currency_code:
+                        type:
+                        - string
+                        - 'null'
+                        example: USD
+                      planned_start_date:
+                        type:
+                        - string
+                        - 'null'
+                        example: '2027-03-01'
+                      planned_end_date:
+                        type:
+                        - string
+                        - 'null'
+                        example: '2029-06-30'
+                      curve_type:
+                        type:
+                        - string
+                        - 'null'
+                        enum:
+                        - front_loaded
+                        - back_loaded
+                        - bell
+                        - linear
+                        - manual
+                      in_plan:
+                        type: boolean
+                        example: true
+                        description: Whether the project counts toward the capital plan. A project with no capital_plan_projects row reads as true.
+                    required:
+                    - procore_project_id
+                    - procore_program_id
+                    - program_name
+                    - portfolio_program_uuid
+                    - name
+                    - number
+                    - stage
+                    - priority
+                    - region
+                    - project_type
+                    - departments
+                    - budget_type
+                    - planned_amount
+                    - budget_cleared
+                    - monthly_forecasts
+                    - original_budget
+                    - revised_budget
+                    - estimated_budget
+                    - job_to_date_costs
+                    - forecast_to_complete
+                    - estimated_cost_at_completion
+                    - remaining
+                    - has_budget
+                    - budget_url
+                    - currency_code
+                    - planned_start_date
+                    - planned_end_date
+                    - curve_type
+                    - in_plan
+                  meta:
+                    type: object
+                    properties:
+                      line_items_deleted:
+                        type: boolean
+                        example: false
+                      deleted_line_item_count:
+                        type: number
+                        example: 0
+                    required:
+                    - line_items_deleted
+                    - deleted_line_item_count
+                required:
+                - data
+                - meta
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '403':
+          description: Access denied — `TOOL_NOT_ACTIVATED`, `INSUFFICIENT_PERMISSIONS`, `READONLY_ACCESS`, or `ADMIN_ACCESS_REQUIRED`
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '404':
+          description: Project not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '503':
+          description: The permission check could not be completed (`AUTHORIZATION_UNAVAILABLE`) — safe to retry
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+      summary: Update a capital planning project
+      tags:
+      - Capital Planning — Projects
+      x-doc:
+        visibility: public
+        stage: beta
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/projects/%7Bprocore_project_id%7D',\n  headers: {'Procore-Company-Id': 'SOME_STRING_VALUE', 'content-type': 'application/json'},\n  body: {\n    planned_amount: '500000.00',\n    budget_type: 'lump_sum',\n    budget_cleared: false,\n    in_plan: true,\n    planned_start_date: '2027-03-01',\n    planned_end_date: '2029-06-30',\n    curve_type: 'front_loaded',\n    monthly_forecasts: {'2026-01': '50000.00', '2026-02': null}\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: "import http.client\n\nconn = http.client.HTTPSConnection(\"api.procore.com\")\n\npayload = \"{\\\"planned_amount\\\":\\\"500000.00\\\",\\\"budget_type\\\":\\\"lump_sum\\\",\\\"budget_cleared\\\":false,\\\"in_plan\\\":true,\\\"planned_start_date\\\":\\\"2027-03-01\\\",\\\"planned_end_date\\\":\\\"2029-06-30\\\",\\\"curve_type\\\":\\\"front_loaded\\\",\\\"monthly_forecasts\\\":{\\\"2026-01\\\":\\\"50000.00\\\",\\\"2026-02\\\":null}}\"\n\nheaders = {\n    'Procore-Company-Id': \"SOME_STRING_VALUE\",\n    'content-type': \"application/json\"\n    }\n\nconn.request(\"PATCH\", \"/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/projects/%7Bprocore_project_id%7D\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/projects/%7Bprocore_project_id%7D \\\n  --header 'Procore-Company-Id: SOME_STRING_VALUE' \\\n  --header 'content-type: application/json' \\\n  --data '{\"planned_amount\":\"500000.00\",\"budget_type\":\"lump_sum\",\"budget_cleared\":false,\"in_plan\":true,\"planned_start_date\":\"2027-03-01\",\"planned_end_date\":\"2029-06-30\",\"curve_type\":\"front_loaded\",\"monthly_forecasts\":{\"2026-01\":\"50000.00\",\"2026-02\":null}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/projects/%7Bprocore_project_id%7D\"),\n    Headers =\n    {\n        { \"Procore-Company-Id\", \"SOME_STRING_VALUE\" },\n    },\n    Content = new StringContent(\"{\\\"planned_amount\\\":\\\"500000.00\\\",\\\"budget_type\\\":\\\"lump_sum\\\",\\\"budget_cleared\\\":false,\\\"in_plan\\\":true,\\\"planned_start_date\\\":\\\"2027-03-01\\\",\\\"planned_end_date\\\":\\\"2029-06-30\\\",\\\"curve_type\\\":\\\"front_loaded\\\",\\\"monthly_forecasts\\\":{\\\"2026-01\\\":\\\"50000.00\\\",\\\"2026-02\\\":null}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

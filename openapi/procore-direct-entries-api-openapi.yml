@@ -1,0 +1,226 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Direct Entries API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Direct Entries
+paths:
+  /rest/v2.0/companies/{company_id}/projects/{project_id}/budget_columns/{budget_column_id}/direct_entries/{wbs_code_id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: company_id
+      in: path
+      description: Unique identifier for the company.
+      required: true
+      schema:
+        type: string
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: string
+    - name: budget_column_id
+      in: path
+      required: true
+      description: ID of the budget column
+      schema:
+        type: string
+        example: '123'
+    - name: wbs_code_id
+      in: path
+      description: ID of the WBS code
+      required: true
+      schema:
+        type: string
+        example: '456'
+    x-compliance-level: full
+    put:
+      x-doc:
+        visibility: public
+        stage: beta
+        exposure: public
+      summary: Add or update a Direct Entry value for a Budget Column and WBS Code
+      description: Add or update a direct entry value for a specific budget column and WBS Code in a project.
+      tags:
+      - Direct Entries
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - value
+              properties:
+                value:
+                  type: string
+                  description: The direct entry amount to set for the given budget column and WBS code, as a decimal string. Replaces any existing direct entry value for that cell. Percent entries should be formatted as 10.0 for 10%. Quantity entries should always include the uom argument.
+                  example: '1500.00'
+                uom:
+                  type: string
+                  description: Unit of measure for quantity direct entries. Required when the target budget column uses quantity format.
+                  example: sf
+      responses:
+        '202':
+          description: Direct entry value added or updated was accepted.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    description: Receipt acknowledging that a direct (lump sum manual) entry was accepted for asynchronous processing.
+                    properties:
+                      receipt_id:
+                        type: string
+                        description: Unique string identifier for the accepted direct entry request. Use to correlate the asynchronous result of the upsert with this request.
+                        example: '456'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PUT',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/budget_columns/123/direct_entries/456',\n  headers: {'content-type': 'application/json'},\n  body: {value: '1500.00', uom: 'sf'},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"value\":\"1500.00\",\"uom\":\"sf\"}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("PUT", "/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/budget_columns/123/direct_entries/456", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PUT \\\n  --url https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/budget_columns/123/direct_entries/456 \\\n  --header 'content-type: application/json' \\\n  --data '{\"value\":\"1500.00\",\"uom\":\"sf\"}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Put,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/budget_columns/123/direct_entries/456\"),\n    Content = new StringContent(\"{\\\"value\\\":\\\"1500.00\\\",\\\"uom\\\":\\\"sf\\\"}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Made v2.0 Direct Entries public beta
+        description: 'Add or update a direct entry value for a budget column and WBS code.
+
+          This endpoint is now available as a public beta.'
+        endpoint: PUT /companies/{company_id}/projects/{project_id}/budget_columns/{budget_column_id}/direct_entries/{wbs_code_id}
+        type: new
+        breaking: false
+        datestamp: '2026-10-08'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: beta
+          exposure: public
+        link: direct-entries?version=2.0#add-or-update-a-direct-entry-value-for-a-budget-column-and-wbs-code
+      operationId: addOrUpdateADirectEntryValueForABudgetColumnAndWbsCode
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

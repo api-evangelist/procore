@@ -1,0 +1,1678 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Contract Payments API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Contract Payments
+paths:
+  /rest/v1.0/contract_payments:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: List Contract Payments
+      description: Return a list of Contract Payments.
+      tags:
+      - Contract Payments
+      parameters:
+      - name: project_id
+        in: query
+        required: true
+        description: Unique identifier for the project.
+        schema:
+          type: integer
+      - name: contract_id
+        in: query
+        description: ID of the Contract
+        required: true
+        schema:
+          type: integer
+      - name: page
+        in: query
+        description: Page
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: Elements per page
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            Per-Page:
+              description: Number of items retrieved per page
+              schema:
+                type: integer
+            Total:
+              description: Total number of items to be retrieved
+              schema:
+                type: integer
+            Link:
+              description: Link headers for the first, prev, next, and last link
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                description: Array of Contract Payments
+                items:
+                  type: object
+                  description: Contract Payment
+                  properties:
+                    id:
+                      type: integer
+                      description: Unique identifier for this contract payment.
+                      example: 1551516
+                    amount:
+                      type: string
+                      description: Payment amount, returned as a decimal-formatted string.
+                      example: '1000000.0'
+                    legacy_amount_in_cents:
+                      type:
+                      - integer
+                      - 'null'
+                      format: int64
+                      description: Legacy representation of the payment amount in cents. Null for payments that do not carry a legacy amount; prefer the `amount` field.
+                      example: 100000000
+                    bank_id:
+                      type:
+                      - string
+                      - 'null'
+                      description: Identifier of the bank associated with the payment. Null when no bank is assigned.
+                      example: '12345'
+                    check_number:
+                      type: string
+                      description: Check number recorded for the payment, when paid by check.
+                      example: ABC93759372
+                    contract_id:
+                      type: integer
+                      description: Contract ID associated with the payment
+                      example: 1630397
+                    created_at:
+                      type: string
+                      format: date-time
+                      description: Created at
+                      example: '2015-07-14T22:03:27Z'
+                    updated_at:
+                      type: string
+                      format: date-time
+                      description: Updated at
+                      example: '2015-07-14T22:03:27Z'
+                    deleted_at:
+                      type:
+                      - string
+                      - 'null'
+                      format: date-time
+                      description: Timestamp when the payment was soft-deleted. Only present for deleted payments; absent otherwise.
+                      example: '2015-08-01T22:03:27Z'
+                    date:
+                      type: string
+                      format: date
+                      description: Date the payment was made.
+                      example: '2015-07-15'
+                    invoice_date:
+                      type:
+                      - string
+                      - 'null'
+                      format: date
+                      description: Date of the invoice associated with this payment.
+                      example: '2015-07-10'
+                    date_payment_funded:
+                      type:
+                      - string
+                      - 'null'
+                      format: date-time
+                      description: Timestamp when the payment was funded. Populated for payments processed through Procore Pay; null otherwise.
+                      example: '2022-07-18T22:03:27Z'
+                    date_payment_settled:
+                      type: string
+                      format: date-time
+                      description: Date Payment settled
+                      example: '2022-07-18T22:03:27Z'
+                    date_payment_initiated:
+                      type: string
+                      format: date-time
+                      description: Date Payment Initiated
+                      example: '2022-07-18T22:03:27Z'
+                    draw_request_number:
+                      type: integer
+                      description: Payment number of a Draw Request, Owner Invoice, or Subcontractor Invoice
+                      example: 5
+                    external_payment_id:
+                      type: string
+                      description: Only payments made through Procore Pay have an external_payment_id
+                      example: 2169c3f0-5ee4-4eec-8e3c-9644db424550
+                    invoice_number:
+                      type: string
+                      description: Invoice number
+                      example: Invoice 123
+                    notes:
+                      type: string
+                      description: Associated notes
+                      example: January Payment
+                    payment_number:
+                      type: integer
+                      description: Payment number
+                      example: 5
+                    payment_method:
+                      type:
+                      - string
+                      - 'null'
+                      description: Method used to make the payment. Null when no method is recorded.
+                      enum:
+                      - check
+                      - credit_card
+                      - electronic
+                      - ach
+                      example: check
+                    attachments:
+                      type: array
+                      description: Files attached to the payment.
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            description: Unique identifier of the attached file.
+                            example: 5324
+                          url:
+                            type: string
+                            description: Download URL for the attached file.
+                            example: http://www.example.com/
+                          filename:
+                            type: string
+                            description: File name of the attachment.
+                            example: january_receipt_copy.jpg
+                          name:
+                            type: string
+                            description: Display name of the attachment.
+                            example: january_receipt_copy.jpg
+                    project_id:
+                      type: integer
+                      format: int64
+                      description: Integer ID for the associated Project
+                      example: 1232
+                    requisition_id:
+                      type: integer
+                      description: Subcontractor requisition ID
+                      example: 789
+                    origin_id:
+                      type: string
+                      description: Identifier for this payment in the external/third-party system it originated from.
+                      example: abc-123
+                    origin_code:
+                      type: string
+                      description: Code for this payment in the external/third-party system it originated from.
+                      example: code-1
+                    origin_data:
+                      type: string
+                      description: Additional third-party data captured with this payment.
+                      example: XYZ-0012
+                    status:
+                      type: string
+                      description: Current lifecycle status of the payment (for example, unpaid, in_review, approved, processing, paid, rejected, failed).
+                      example: in_review
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/contract_payments',\n  qs: {\n    project_id: 'SOME_INTEGER_VALUE',\n    contract_id: 'SOME_INTEGER_VALUE',\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.0/contract_payments?project_id=SOME_INTEGER_VALUE&contract_id=SOME_INTEGER_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.0/contract_payments?project_id=SOME_INTEGER_VALUE&contract_id=SOME_INTEGER_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/contract_payments?project_id=SOME_INTEGER_VALUE&contract_id=SOME_INTEGER_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Contract payments now have external_payment_id for Procore Payments
+        description: 'Procore Payments will have an external_payment_id associated with each payment. Payments made not through
+
+          Procore Pay will not have an external_payment_id'
+        endpoint: GET /contract_payments
+        type: refinement
+        breaking: false
+        datestamp: '2024-05-24'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: contract-payments?version=1.0#list-contract-payments
+      - summary: Contract payments now return the contract_id associated with each contract payment
+        description: Contract payments endpoints will return the contract_id saved from the creation / update of each contract payment.
+        endpoint: GET /contract_payments
+        type: refinement
+        breaking: false
+        datestamp: '2024-06-11'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: contract-payments?version=1.0#list-contract-payments
+      operationId: listContractPayments
+    post:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Create Contract Payment
+      description: Create a new Contract Payment.
+      tags:
+      - Contract Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Body
+              type: object
+              required:
+              - project_id
+              - contract_id
+              properties:
+                project_id:
+                  type: integer
+                  description: Unique identifier for the project.
+                  example: 66005
+                contract_id:
+                  type: integer
+                  description: Contract ID
+                  example: 85302
+                attachments:
+                  type: array
+                  description: 'Contract payment attachments.
+
+                    To upload attachments you must upload the entire payload as `multipart/form-data` content-type and
+
+                    specify each parameter as form-data together with `attachments[]` as files.'
+                  items:
+                    type: string
+                contract_payment:
+                  title: Contract Payment
+                  type: object
+                  description: Contract Payment object
+                  properties:
+                    date:
+                      type: string
+                      format: date
+                      description: Payment date
+                      example: '2015-09-29'
+                    invoice_number:
+                      type: string
+                      description: Invoice number
+                      example: Invoice 123
+                    check_number:
+                      type: string
+                      description: Check number
+                      example: ABC93759372
+                    invoice_date:
+                      type: string
+                      format: date
+                      description: Invoice date
+                      example: '2015-09-20'
+                    draw_request_number:
+                      type: integer
+                      description: Draw Request number
+                      example: 5
+                    notes:
+                      type: string
+                      description: Associated notes
+                      example: January Payment
+                    payment_number:
+                      type: integer
+                      description: Payment number
+                      example: 5
+                    payment_method:
+                      type: string
+                      description: Payment method
+                      example: credit_card
+                      enum:
+                      - check
+                      - credit_card
+                      - electronic
+                      - ach
+                    amount:
+                      type: string
+                      description: Payment amount
+                      example: '1000000.0'
+                    origin_id:
+                      type: string
+                      description: Contract payment third party ID
+                      example: abc-123
+                    origin_data:
+                      type: string
+                      description: Contract payment third party data
+                      example: XYZ-0012
+                    requisition_id:
+                      type: integer
+                      description: Subcontractor requisition ID
+                      example: 123
+                    prostore_file_ids:
+                      type: array
+                      description: Any prostore files to actualize contract payment's attachments. Mutually exclusive with the `attachments` property.
+                      items:
+                        type: integer
+                      example:
+                      - 1
+                      - 2
+                      - 3
+                      - 4
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Contract Payment
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier for this contract payment.
+                    example: 1551516
+                  amount:
+                    type: string
+                    description: Payment amount, returned as a decimal-formatted string.
+                    example: '1000000.0'
+                  legacy_amount_in_cents:
+                    type:
+                    - integer
+                    - 'null'
+                    format: int64
+                    description: Legacy representation of the payment amount in cents. Null for payments that do not carry a legacy amount; prefer the `amount` field.
+                    example: 100000000
+                  bank_id:
+                    type:
+                    - string
+                    - 'null'
+                    description: Identifier of the bank associated with the payment. Null when no bank is assigned.
+                    example: '12345'
+                  check_number:
+                    type: string
+                    description: Check number recorded for the payment, when paid by check.
+                    example: ABC93759372
+                  contract_id:
+                    type: integer
+                    description: Contract ID associated with the payment
+                    example: 1630397
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Created at
+                    example: '2015-07-14T22:03:27Z'
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: Updated at
+                    example: '2015-07-14T22:03:27Z'
+                  deleted_at:
+                    type:
+                    - string
+                    - 'null'
+                    format: date-time
+                    description: Timestamp when the payment was soft-deleted. Only present for deleted payments; absent otherwise.
+                    example: '2015-08-01T22:03:27Z'
+                  date:
+                    type: string
+                    format: date
+                    description: Date the payment was made.
+                    example: '2015-07-15'
+                  invoice_date:
+                    type:
+                    - string
+                    - 'null'
+                    format: date
+                    description: Date of the invoice associated with this payment.
+                    example: '2015-07-10'
+                  date_payment_funded:
+                    type:
+                    - string
+                    - 'null'
+                    format: date-time
+                    description: Timestamp when the payment was funded. Populated for payments processed through Procore Pay; null otherwise.
+                    example: '2022-07-18T22:03:27Z'
+                  date_payment_settled:
+                    type: string
+                    format: date-time
+                    description: Date Payment settled
+                    example: '2022-07-18T22:03:27Z'
+                  date_payment_initiated:
+                    type: string
+                    format: date-time
+                    description: Date Payment Initiated
+                    example: '2022-07-18T22:03:27Z'
+                  draw_request_number:
+                    type: integer
+                    description: Payment number of a Draw Request, Owner Invoice, or Subcontractor Invoice
+                    example: 5
+                  external_payment_id:
+                    type: string
+                    description: Only payments made through Procore Pay have an external_payment_id
+                    example: 2169c3f0-5ee4-4eec-8e3c-9644db424550
+                  invoice_number:
+                    type: string
+                    description: Invoice number
+                    example: Invoice 123
+                  notes:
+                    type: string
+                    description: Associated notes
+                    example: January Payment
+                  payment_number:
+                    type: integer
+                    description: Payment number
+                    example: 5
+                  payment_method:
+                    type:
+                    - string
+                    - 'null'
+                    description: Method used to make the payment. Null when no method is recorded.
+                    enum:
+                    - check
+                    - credit_card
+                    - electronic
+                    - ach
+                    example: check
+                  attachments:
+                    type: array
+                    description: Files attached to the payment.
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique identifier of the attached file.
+                          example: 5324
+                        url:
+                          type: string
+                          description: Download URL for the attached file.
+                          example: http://www.example.com/
+                        filename:
+                          type: string
+                          description: File name of the attachment.
+                          example: january_receipt_copy.jpg
+                        name:
+                          type: string
+                          description: Display name of the attachment.
+                          example: january_receipt_copy.jpg
+                  project_id:
+                    type: integer
+                    format: int64
+                    description: Integer ID for the associated Project
+                    example: 1232
+                  requisition_id:
+                    type: integer
+                    description: Subcontractor requisition ID
+                    example: 789
+                  origin_id:
+                    type: string
+                    description: Identifier for this payment in the external/third-party system it originated from.
+                    example: abc-123
+                  origin_code:
+                    type: string
+                    description: Code for this payment in the external/third-party system it originated from.
+                    example: code-1
+                  origin_data:
+                    type: string
+                    description: Additional third-party data captured with this payment.
+                    example: XYZ-0012
+                  status:
+                    type: string
+                    description: Current lifecycle status of the payment (for example, unpaid, in_review, approved, processing, paid, rejected, failed).
+                    example: in_review
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v1.0/contract_payments',\n  headers: {'content-type': 'application/json'},\n  body: {\n    project_id: 66005,\n    contract_id: 85302,\n    attachments: ['string'],\n    contract_payment: {\n      date: '2015-09-29',\n      invoice_number: 'Invoice 123',\n      check_number: 'ABC93759372',\n      invoice_date: '2015-09-20',\n      draw_request_number: 5,\n      notes: 'January Payment',\n      payment_number: 5,\n      payment_method: 'credit_card',\n      amount: '1000000.0',\n      origin_id: 'abc-123',\n      origin_data: 'XYZ-0012',\n      requisition_id: 123,\n      prostore_file_ids: [1, 2, 3, 4]\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"project_id\":66005,\"contract_id\":85302,\"attachments\":[\"string\"],\"contract_payment\":{\"date\":\"2015-09-29\",\"invoice_number\":\"Invoice 123\",\"check_number\":\"ABC93759372\",\"invoice_date\":\"2015-09-20\",\"draw_request_number\":5,\"notes\":\"January Payment\",\"payment_number\":5,\"payment_method\":\"credit_card\",\"amount\":\"1000000.0\",\"origin_id\":\"abc-123\",\"origin_data\":\"XYZ-0012\",\"requisition_id\":123,\"prostore_file_ids\":[1,2,3,4]}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v1.0/contract_payments", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url https://api.procore.com/rest/v1.0/contract_payments \\\n  --header 'content-type: application/json' \\\n  --data '{\"project_id\":66005,\"contract_id\":85302,\"attachments\":[\"string\"],\"contract_payment\":{\"date\":\"2015-09-29\",\"invoice_number\":\"Invoice 123\",\"check_number\":\"ABC93759372\",\"invoice_date\":\"2015-09-20\",\"draw_request_number\":5,\"notes\":\"January Payment\",\"payment_number\":5,\"payment_method\":\"credit_card\",\"amount\":\"1000000.0\",\"origin_id\":\"abc-123\",\"origin_data\":\"XYZ-0012\",\"requisition_id\":123,\"prostore_file_ids\":[1,2,3,4]}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/contract_payments\"),\n    Content = new StringContent(\"{\\\"project_id\\\":66005,\\\"contract_id\\\":85302,\\\"attachments\\\":[\\\"string\\\"],\\\"contract_payment\\\":{\\\"date\\\":\\\"2015-09-29\\\",\\\"invoice_number\\\":\\\"Invoice 123\\\",\\\"check_number\\\":\\\"ABC93759372\\\",\\\"invoice_date\\\":\\\"2015-09-20\\\",\\\"draw_request_number\\\":5,\\\"notes\\\":\\\"January Payment\\\",\\\"payment_number\\\":5,\\\"payment_method\\\":\\\"credit_card\\\",\\\"amount\\\":\\\"1000000.0\\\",\\\"origin_id\\\":\\\"abc-123\\\",\\\"origin_data\\\":\\\"XYZ-0012\\\",\\\"requisition_id\\\":123,\\\"prostore_file_ids\\\":[1,2,3,4]}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Contract payments now accepts requisition_id as a parameter for create.
+        description: Contract payments now accepts requisition_id as a parameter for create (and update).
+        endpoint: POST /contract_payments
+        type: refinement
+        breaking: false
+        datestamp: '2025-01-08'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: contract-payments?version=1.0#create-contract-payment
+      operationId: createContractPayment
+  /rest/v1.0/contract_payments/{id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      description: ID
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Show Contract Payment
+      description: Return detailed information on the specified Contract Payment.
+      tags:
+      - Contract Payments
+      parameters:
+      - name: project_id
+        in: query
+        required: true
+        description: Unique identifier for the project.
+        schema:
+          type: integer
+      - name: contract_id
+        in: query
+        description: ID of the Contract
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Contract Payment
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier for this contract payment.
+                    example: 1551516
+                  amount:
+                    type: string
+                    description: Payment amount, returned as a decimal-formatted string.
+                    example: '1000000.0'
+                  legacy_amount_in_cents:
+                    type:
+                    - integer
+                    - 'null'
+                    format: int64
+                    description: Legacy representation of the payment amount in cents. Null for payments that do not carry a legacy amount; prefer the `amount` field.
+                    example: 100000000
+                  bank_id:
+                    type:
+                    - string
+                    - 'null'
+                    description: Identifier of the bank associated with the payment. Null when no bank is assigned.
+                    example: '12345'
+                  check_number:
+                    type: string
+                    description: Check number recorded for the payment, when paid by check.
+                    example: ABC93759372
+                  contract_id:
+                    type: integer
+                    description: Contract ID associated with the payment
+                    example: 1630397
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Created at
+                    example: '2015-07-14T22:03:27Z'
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: Updated at
+                    example: '2015-07-14T22:03:27Z'
+                  deleted_at:
+                    type:
+                    - string
+                    - 'null'
+                    format: date-time
+                    description: Timestamp when the payment was soft-deleted. Only present for deleted payments; absent otherwise.
+                    example: '2015-08-01T22:03:27Z'
+                  date:
+                    type: string
+                    format: date
+                    description: Date the payment was made.
+                    example: '2015-07-15'
+                  invoice_date:
+                    type:
+                    - string
+                    - 'null'
+                    format: date
+                    description: Date of the invoice associated with this payment.
+                    example: '2015-07-10'
+                  date_payment_funded:
+                    type:
+                    - string
+                    - 'null'
+                    format: date-time
+                    description: Timestamp when the payment was funded. Populated for payments processed through Procore Pay; null otherwise.
+                    example: '2022-07-18T22:03:27Z'
+                  date_payment_settled:
+                    type: string
+                    format: date-time
+                    description: Date Payment settled
+                    example: '2022-07-18T22:03:27Z'
+                  date_payment_initiated:
+                    type: string
+                    format: date-time
+                    description: Date Payment Initiated
+                    example: '2022-07-18T22:03:27Z'
+                  draw_request_number:
+                    type: integer
+                    description: Payment number of a Draw Request, Owner Invoice, or Subcontractor Invoice
+                    example: 5
+                  external_payment_id:
+                    type: string
+                    description: Only payments made through Procore Pay have an external_payment_id
+                    example: 2169c3f0-5ee4-4eec-8e3c-9644db424550
+                  invoice_number:
+                    type: string
+                    description: Invoice number
+                    example: Invoice 123
+                  notes:
+                    type: string
+                    description: Associated notes
+                    example: January Payment
+                  payment_number:
+                    type: integer
+                    description: Payment number
+                    example: 5
+                  payment_method:
+                    type:
+                    - string
+                    - 'null'
+                    description: Method used to make the payment. Null when no method is recorded.
+                    enum:
+                    - check
+                    - credit_card
+                    - electronic
+                    - ach
+                    example: check
+                  attachments:
+                    type: array
+                    description: Files attached to the payment.
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique identifier of the attached file.
+                          example: 5324
+                        url:
+                          type: string
+                          description: Download URL for the attached file.
+                          example: http://www.example.com/
+                        filename:
+                          type: string
+                          description: File name of the attachment.
+                          example: january_receipt_copy.jpg
+                        name:
+                          type: string
+                          description: Display name of the attachment.
+                          example: january_receipt_copy.jpg
+                  project_id:
+                    type: integer
+                    format: int64
+                    description: Integer ID for the associated Project
+                    example: 1232
+                  requisition_id:
+                    type: integer
+                    description: Subcontractor requisition ID
+                    example: 789
+                  origin_id:
+                    type: string
+                    description: Identifier for this payment in the external/third-party system it originated from.
+                    example: abc-123
+                  origin_code:
+                    type: string
+                    description: Code for this payment in the external/third-party system it originated from.
+                    example: code-1
+                  origin_data:
+                    type: string
+                    description: Additional third-party data captured with this payment.
+                    example: XYZ-0012
+                  status:
+                    type: string
+                    description: Current lifecycle status of the payment (for example, unpaid, in_review, approved, processing, paid, rejected, failed).
+                    example: in_review
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/contract_payments/%7Bid%7D',\n  qs: {project_id: 'SOME_INTEGER_VALUE', contract_id: 'SOME_INTEGER_VALUE'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.0/contract_payments/%7Bid%7D?project_id=SOME_INTEGER_VALUE&contract_id=SOME_INTEGER_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.0/contract_payments/%7Bid%7D?project_id=SOME_INTEGER_VALUE&contract_id=SOME_INTEGER_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/contract_payments/%7Bid%7D?project_id=SOME_INTEGER_VALUE&contract_id=SOME_INTEGER_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: showContractPayment
+    patch:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Update Contract Payment
+      description: Update a Contract Payment. All attributes other than 'attachments', 'origin_id', and 'origin_data' will be locked if the contract payment is synced with an ERP system.
+      tags:
+      - Contract Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Body
+              type: object
+              required:
+              - project_id
+              - contract_id
+              properties:
+                project_id:
+                  type: integer
+                  description: Unique identifier for the project.
+                  example: 66005
+                contract_id:
+                  type: integer
+                  description: Contract ID
+                  example: 85302
+                attachments:
+                  type: array
+                  description: 'Contract payment attachments.
+
+                    To upload attachments you must upload the entire payload as `multipart/form-data` content-type and
+
+                    specify each parameter as form-data together with `attachments[]` as files.'
+                  items:
+                    type: string
+                contract_payment:
+                  title: Contract Payment
+                  type: object
+                  description: Contract Payment object
+                  properties:
+                    date:
+                      type: string
+                      format: date
+                      description: Payment date
+                      example: '2015-09-29'
+                    invoice_number:
+                      type: string
+                      description: Invoice number
+                      example: Invoice 123
+                    check_number:
+                      type: string
+                      description: Check number
+                      example: ABC93759372
+                    invoice_date:
+                      type: string
+                      format: date
+                      description: Invoice date
+                      example: '2015-09-20'
+                    draw_request_number:
+                      type: integer
+                      description: Draw Request number
+                      example: 5
+                    notes:
+                      type: string
+                      description: Associated notes
+                      example: January Payment
+                    payment_number:
+                      type: integer
+                      description: Payment number
+                      example: 5
+                    payment_method:
+                      type: string
+                      description: Payment method
+                      example: credit_card
+                      enum:
+                      - check
+                      - credit_card
+                      - electronic
+                      - ach
+                    amount:
+                      type: string
+                      description: Payment amount
+                      example: '1000000.0'
+                    origin_id:
+                      type: string
+                      description: Contract payment third party ID
+                      example: abc-123
+                    origin_data:
+                      type: string
+                      description: Contract payment third party data
+                      example: XYZ-0012
+                    requisition_id:
+                      type: integer
+                      description: Subcontractor requisition ID
+                      example: 123
+                    prostore_file_ids:
+                      type: array
+                      description: Any prostore files to actualize contract payment's attachments. Mutually exclusive with the `attachments` property.
+                      items:
+                        type: integer
+                      example:
+                      - 1
+                      - 2
+                      - 3
+                      - 4
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Contract Payment
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier for this contract payment.
+                    example: 1551516
+                  amount:
+                    type: string
+                    description: Payment amount, returned as a decimal-formatted string.
+                    example: '1000000.0'
+                  legacy_amount_in_cents:
+                    type:
+                    - integer
+                    - 'null'
+                    format: int64
+                    description: Legacy representation of the payment amount in cents. Null for payments that do not carry a legacy amount; prefer the `amount` field.
+                    example: 100000000
+                  bank_id:
+                    type:
+                    - string
+                    - 'null'
+                    description: Identifier of the bank associated with the payment. Null when no bank is assigned.
+                    example: '12345'
+                  check_number:
+                    type: string
+                    description: Check number recorded for the payment, when paid by check.
+                    example: ABC93759372
+                  contract_id:
+                    type: integer
+                    description: Contract ID associated with the payment
+                    example: 1630397
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Created at
+                    example: '2015-07-14T22:03:27Z'
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: Updated at
+                    example: '2015-07-14T22:03:27Z'
+                  deleted_at:
+                    type:
+                    - string
+                    - 'null'
+                    format: date-time
+                    description: Timestamp when the payment was soft-deleted. Only present for deleted payments; absent otherwise.
+                    example: '2015-08-01T22:03:27Z'
+                  date:
+                    type: string
+                    format: date
+                    description: Date the payment was made.
+                    example: '2015-07-15'
+                  invoice_date:
+                    type:
+                    - string
+                    - 'null'
+                    format: date
+                    description: Date of the invoice associated with this payment.
+                    example: '2015-07-10'
+                  date_payment_funded:
+                    type:
+                    - string
+                    - 'null'
+                    format: date-time
+                    description: Timestamp when the payment was funded. Populated for payments processed through Procore Pay; null otherwise.
+                    example: '2022-07-18T22:03:27Z'
+                  date_payment_settled:
+                    type: string
+                    format: date-time
+                    description: Date Payment settled
+                    example: '2022-07-18T22:03:27Z'
+                  date_payment_initiated:
+                    type: string
+                    format: date-time
+                    description: Date Payment Initiated
+                    example: '2022-07-18T22:03:27Z'
+                  draw_request_number:
+                    type: integer
+                    description: Payment number of a Draw Request, Owner Invoice, or Subcontractor Invoice
+                    example: 5
+                  external_payment_id:
+                    type: string
+                    description: Only payments made through Procore Pay have an external_payment_id
+                    example: 2169c3f0-5ee4-4eec-8e3c-9644db424550
+                  invoice_number:
+                    type: string
+                    description: Invoice number
+                    example: Invoice 123
+                  notes:
+                    type: string
+                    description: Associated notes
+                    example: January Payment
+                  payment_number:
+                    type: integer
+                    description: Payment number
+                    example: 5
+                  payment_method:
+                    type:
+                    - string
+                    - 'null'
+                    description: Method used to make the payment. Null when no method is recorded.
+                    enum:
+                    - check
+                    - credit_card
+                    - electronic
+                    - ach
+                    example: check
+                  attachments:
+                    type: array
+                    description: Files attached to the payment.
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique identifier of the attached file.
+                          example: 5324
+                        url:
+                          type: string
+                          description: Download URL for the attached file.
+                          example: http://www.example.com/
+                        filename:
+                          type: string
+                          description: File name of the attachment.
+                          example: january_receipt_copy.jpg
+                        name:
+                          type: string
+                          description: Display name of the attachment.
+                          example: january_receipt_copy.jpg
+                  project_id:
+                    type: integer
+                    format: int64
+                    description: Integer ID for the associated Project
+                    example: 1232
+                  requisition_id:
+                    type: integer
+                    description: Subcontractor requisition ID
+                    example: 789
+                  origin_id:
+                    type: string
+                    description: Identifier for this payment in the external/third-party system it originated from.
+                    example: abc-123
+                  origin_code:
+                    type: string
+                    description: Code for this payment in the external/third-party system it originated from.
+                    example: code-1
+                  origin_data:
+                    type: string
+                    description: Additional third-party data captured with this payment.
+                    example: XYZ-0012
+                  status:
+                    type: string
+                    description: Current lifecycle status of the payment (for example, unpaid, in_review, approved, processing, paid, rejected, failed).
+                    example: in_review
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.0/contract_payments/%7Bid%7D',\n  headers: {'content-type': 'application/json'},\n  body: {\n    project_id: 66005,\n    contract_id: 85302,\n    attachments: ['string'],\n    contract_payment: {\n      date: '2015-09-29',\n      invoice_number: 'Invoice 123',\n      check_number: 'ABC93759372',\n      invoice_date: '2015-09-20',\n      draw_request_number: 5,\n      notes: 'January Payment',\n      payment_number: 5,\n      payment_method: 'credit_card',\n      amount: '1000000.0',\n      origin_id: 'abc-123',\n      origin_data: 'XYZ-0012',\n      requisition_id: 123,\n      prostore_file_ids: [1, 2, 3, 4]\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"project_id\":66005,\"contract_id\":85302,\"attachments\":[\"string\"],\"contract_payment\":{\"date\":\"2015-09-29\",\"invoice_number\":\"Invoice 123\",\"check_number\":\"ABC93759372\",\"invoice_date\":\"2015-09-20\",\"draw_request_number\":5,\"notes\":\"January Payment\",\"payment_number\":5,\"payment_method\":\"credit_card\",\"amount\":\"1000000.0\",\"origin_id\":\"abc-123\",\"origin_data\":\"XYZ-0012\",\"requisition_id\":123,\"prostore_file_ids\":[1,2,3,4]}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("PATCH", "/rest/v1.0/contract_payments/%7Bid%7D", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url https://api.procore.com/rest/v1.0/contract_payments/%7Bid%7D \\\n  --header 'content-type: application/json' \\\n  --data '{\"project_id\":66005,\"contract_id\":85302,\"attachments\":[\"string\"],\"contract_payment\":{\"date\":\"2015-09-29\",\"invoice_number\":\"Invoice 123\",\"check_number\":\"ABC93759372\",\"invoice_date\":\"2015-09-20\",\"draw_request_number\":5,\"notes\":\"January Payment\",\"payment_number\":5,\"payment_method\":\"credit_card\",\"amount\":\"1000000.0\",\"origin_id\":\"abc-123\",\"origin_data\":\"XYZ-0012\",\"requisition_id\":123,\"prostore_file_ids\":[1,2,3,4]}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/contract_payments/%7Bid%7D\"),\n    Content = new StringContent(\"{\\\"project_id\\\":66005,\\\"contract_id\\\":85302,\\\"attachments\\\":[\\\"string\\\"],\\\"contract_payment\\\":{\\\"date\\\":\\\"2015-09-29\\\",\\\"invoice_number\\\":\\\"Invoice 123\\\",\\\"check_number\\\":\\\"ABC93759372\\\",\\\"invoice_date\\\":\\\"2015-09-20\\\",\\\"draw_request_number\\\":5,\\\"notes\\\":\\\"January Payment\\\",\\\"payment_number\\\":5,\\\"payment_method\\\":\\\"credit_card\\\",\\\"amount\\\":\\\"1000000.0\\\",\\\"origin_id\\\":\\\"abc-123\\\",\\\"origin_data\\\":\\\"XYZ-0012\\\",\\\"requisition_id\\\":123,\\\"prostore_file_ids\\\":[1,2,3,4]}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: updateContractPayment
+    delete:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Delete Contract Payment
+      description: Deletes a specified Contract Payment.
+      tags:
+      - Contract Payments
+      parameters:
+      - name: project_id
+        in: query
+        required: true
+        description: Unique identifier for the project.
+        schema:
+          type: integer
+      - name: contract_id
+        in: query
+        description: ID of the Contract
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'DELETE',\n  url: 'https://api.procore.com/rest/v1.0/contract_payments/%7Bid%7D',\n  qs: {project_id: 'SOME_INTEGER_VALUE', contract_id: 'SOME_INTEGER_VALUE'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("DELETE", "/rest/v1.0/contract_payments/%7Bid%7D?project_id=SOME_INTEGER_VALUE&contract_id=SOME_INTEGER_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request DELETE \\\n  --url 'https://api.procore.com/rest/v1.0/contract_payments/%7Bid%7D?project_id=SOME_INTEGER_VALUE&contract_id=SOME_INTEGER_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Delete,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/contract_payments/%7Bid%7D?project_id=SOME_INTEGER_VALUE&contract_id=SOME_INTEGER_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: deleteContractPayment
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

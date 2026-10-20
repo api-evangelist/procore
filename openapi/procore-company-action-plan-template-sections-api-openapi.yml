@@ -1,0 +1,501 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Company Action Plan Template Sections API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Company Action Plan Template Sections
+paths:
+  /rest/v1.0/companies/{company_id}/action_plans/plan_template_sections:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: company_id
+      in: path
+      description: Unique identifier for the company.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    post:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Create Company Action Plan Template Section
+      description: Creates a Company Action Plan Template Section for a given Company Action Plan Template.
+      tags:
+      - Company Action Plan Template Sections
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - plan_template_section
+              properties:
+                plan_template_section:
+                  type: object
+                  required:
+                  - plan_template_id
+                  - title
+                  properties:
+                    plan_template_id:
+                      type: integer
+                      description: ID of the Company Action Plan Template to be created under
+                      example: 42
+                    title:
+                      type: string
+                      description: Title
+                      example: A new Company Action Plan Template Section
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Company Action Plan Template Section (Show)
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier of the template section.
+                    example: 43584
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Timestamp when the section was created. ISO 8601 format.
+                    example: '2018-09-20T21:39:40Z'
+                  plan_template_id:
+                    type: integer
+                    description: Unique identifier of the parent Action Plan Template.
+                    example: 57
+                  position:
+                    type: integer
+                    description: Ordinal position of this section within the template. Use to determine display order.
+                    example: 3
+                  title:
+                    type: string
+                    description: Title of the template section.
+                    example: A New ITP Company Plan Template Section
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: Timestamp when the section was last modified. ISO 8601 format.
+                    example: '2018-09-20T21:39:40Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/action_plans/plan_template_sections',\n  headers: {'content-type': 'application/json'},\n  body: {\n    plan_template_section: {plan_template_id: 42, title: 'A new Company Action Plan Template Section'}\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"plan_template_section\":{\"plan_template_id\":42,\"title\":\"A new Company Action Plan Template Section\"}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v1.0/companies/%7Bcompany_id%7D/action_plans/plan_template_sections", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/action_plans/plan_template_sections \\\n  --header 'content-type: application/json' \\\n  --data '{\"plan_template_section\":{\"plan_template_id\":42,\"title\":\"A new Company Action Plan Template Section\"}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/action_plans/plan_template_sections\"),\n    Content = new StringContent(\"{\\\"plan_template_section\\\":{\\\"plan_template_id\\\":42,\\\"title\\\":\\\"A new Company Action Plan Template Section\\\"}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added Company Action Plan Template Section create endpoint
+        description: Create a Company Action Plan Template Section for a given Company ID.
+        endpoint: POST /companies/{company_id}/action_plans/plan_template_sections
+        type: new
+        breaking: false
+        datestamp: '2021-02-04'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: company-action-plan-template-sections?version=1.0#create-company-action-plan-template-section
+      operationId: createCompanyActionPlanTemplateSection
+  /rest/v1.0/companies/{company_id}/action_plans/plan_template_sections/create_from_section:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: company_id
+      in: path
+      description: Unique identifier for the company.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    post:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Create a copy of the Action Plan Template Section in the Section's Template
+      description: Create a copy of the Action Plan Template Section in the Section's Template.
+      tags:
+      - Company Action Plan Template Sections
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - template_section_id
+              properties:
+                template_section_id:
+                  type: integer
+                  description: ID of the Action Plan Template Section to copy from.
+                  example: 4435
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Company Action Plan Template Section (Show)
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier of the template section.
+                    example: 43584
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Timestamp when the section was created. ISO 8601 format.
+                    example: '2018-09-20T21:39:40Z'
+                  plan_template_id:
+                    type: integer
+                    description: Unique identifier of the parent Action Plan Template.
+                    example: 57
+                  position:
+                    type: integer
+                    description: Ordinal position of this section within the template. Use to determine display order.
+                    example: 3
+                  title:
+                    type: string
+                    description: Title of the template section.
+                    example: A New ITP Company Plan Template Section
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: Timestamp when the section was last modified. ISO 8601 format.
+                    example: '2018-09-20T21:39:40Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    description: Description of the error thrown.
+                    type: string
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/action_plans/plan_template_sections/create_from_section',\n  headers: {'content-type': 'application/json'},\n  body: {template_section_id: 4435},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"template_section_id\":4435}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v1.0/companies/%7Bcompany_id%7D/action_plans/plan_template_sections/create_from_section", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/action_plans/plan_template_sections/create_from_section \\\n  --header 'content-type: application/json' \\\n  --data '{\"template_section_id\":4435}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/action_plans/plan_template_sections/create_from_section\"),\n    Content = new StringContent(\"{\\\"template_section_id\\\":4435}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added Company Action Plan Template Sections create_from_section endpoint
+        description: Added an endpoint to create an Action Plan Template Section from another Action Plan Template Section.
+        endpoint: POST /companies/{company_id}/action_plans/plan_template_sections/create_from_section
+        type: new
+        breaking: false
+        datestamp: '2022-10-20'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: company-action-plan-template-sections?version=1.0#create-a-copy-of-the-action-plan-template-section-in-the-sections-template
+      operationId: createACopyOfTheActionPlanTemplateSectionInTheSectionSTemplate
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

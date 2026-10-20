@@ -1,0 +1,1719 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Daily Logs API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Daily Logs
+paths:
+  /rest/v1.0/projects/{project_id}/daily_logs/bulk_updates/bulk_update:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: integer
+    x-compliance-level: full
+    patch:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Bulk Updates for Daily Logs
+      description: Updates multiple daily logs with single request. Currently only status update is available. 300 logs maximum is allowed per request.
+      tags:
+      - Daily Logs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - updates
+              properties:
+                updates:
+                  type: object
+                  properties:
+                    accident_log:
+                      type: array
+                      description: Array of Update Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                    call_log:
+                      type: array
+                      description: Array of Update Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                    delay_log:
+                      type: array
+                      description: Array of Update Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                    delivery_log:
+                      type: array
+                      description: Array of Update Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                    dumpster_log:
+                      type: array
+                      description: Array of Update Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                    equipment_log:
+                      type: array
+                      description: Array of Update Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                    inspection_log:
+                      type: array
+                      description: Array of Update Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                    manpower_log:
+                      type: array
+                      description: Array of Update Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                    daily_construction_report_log:
+                      type: array
+                      description: Array of Update Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                    notes_log:
+                      type: array
+                      description: Array of Update Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                    plan_revision_log:
+                      type: array
+                      description: Array of Update Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                    productivity_log:
+                      type: array
+                      description: Array of Update Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                    quantity_log:
+                      type: array
+                      description: Array of Update Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                    safety_violation_log:
+                      type: array
+                      description: Array of Update Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                    timecard_entry:
+                      type: array
+                      description: Array of Update Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                    visitor_log:
+                      type: array
+                      description: Array of Update Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                    waste_log:
+                      type: array
+                      description: Array of Update Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                    work_log:
+                      type: array
+                      description: Array of Update Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    accident_log:
+                      type: array
+                      description: Array of Response Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        - success
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                          success:
+                            type: boolean
+                            description: Is update was successful
+                            example: true
+                          error:
+                            type: string
+                            description: Error description if update for log was not successful
+                            example: Log type is invalid
+                    call_log:
+                      type: array
+                      description: Array of Response Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        - success
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                          success:
+                            type: boolean
+                            description: Is update was successful
+                            example: true
+                          error:
+                            type: string
+                            description: Error description if update for log was not successful
+                            example: Log type is invalid
+                    delay_log:
+                      type: array
+                      description: Array of Response Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        - success
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                          success:
+                            type: boolean
+                            description: Is update was successful
+                            example: true
+                          error:
+                            type: string
+                            description: Error description if update for log was not successful
+                            example: Log type is invalid
+                    delivery_log:
+                      type: array
+                      description: Array of Response Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        - success
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                          success:
+                            type: boolean
+                            description: Is update was successful
+                            example: true
+                          error:
+                            type: string
+                            description: Error description if update for log was not successful
+                            example: Log type is invalid
+                    dumpster_log:
+                      type: array
+                      description: Array of Response Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        - success
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                          success:
+                            type: boolean
+                            description: Is update was successful
+                            example: true
+                          error:
+                            type: string
+                            description: Error description if update for log was not successful
+                            example: Log type is invalid
+                    equipment_log:
+                      type: array
+                      description: Array of Response Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        - success
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                          success:
+                            type: boolean
+                            description: Is update was successful
+                            example: true
+                          error:
+                            type: string
+                            description: Error description if update for log was not successful
+                            example: Log type is invalid
+                    inspection_log:
+                      type: array
+                      description: Array of Response Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        - success
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                          success:
+                            type: boolean
+                            description: Is update was successful
+                            example: true
+                          error:
+                            type: string
+                            description: Error description if update for log was not successful
+                            example: Log type is invalid
+                    manpower_log:
+                      type: array
+                      description: Array of Response Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        - success
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                          success:
+                            type: boolean
+                            description: Is update was successful
+                            example: true
+                          error:
+                            type: string
+                            description: Error description if update for log was not successful
+                            example: Log type is invalid
+                    daily_construction_report_log:
+                      type: array
+                      description: Array of Response Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        - success
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                          success:
+                            type: boolean
+                            description: Is update was successful
+                            example: true
+                          error:
+                            type: string
+                            description: Error description if update for log was not successful
+                            example: Log type is invalid
+                    notes_log:
+                      type: array
+                      description: Array of Response Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        - success
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                          success:
+                            type: boolean
+                            description: Is update was successful
+                            example: true
+                          error:
+                            type: string
+                            description: Error description if update for log was not successful
+                            example: Log type is invalid
+                    plan_revision_log:
+                      type: array
+                      description: Array of Response Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        - success
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                          success:
+                            type: boolean
+                            description: Is update was successful
+                            example: true
+                          error:
+                            type: string
+                            description: Error description if update for log was not successful
+                            example: Log type is invalid
+                    productivity_log:
+                      type: array
+                      description: Array of Response Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        - success
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                          success:
+                            type: boolean
+                            description: Is update was successful
+                            example: true
+                          error:
+                            type: string
+                            description: Error description if update for log was not successful
+                            example: Log type is invalid
+                    quantity_log:
+                      type: array
+                      description: Array of Response Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        - success
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                          success:
+                            type: boolean
+                            description: Is update was successful
+                            example: true
+                          error:
+                            type: string
+                            description: Error description if update for log was not successful
+                            example: Log type is invalid
+                    safety_violation_log:
+                      type: array
+                      description: Array of Response Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        - success
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                          success:
+                            type: boolean
+                            description: Is update was successful
+                            example: true
+                          error:
+                            type: string
+                            description: Error description if update for log was not successful
+                            example: Log type is invalid
+                    timecard_entry:
+                      type: array
+                      description: Array of Response Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        - success
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                          success:
+                            type: boolean
+                            description: Is update was successful
+                            example: true
+                          error:
+                            type: string
+                            description: Error description if update for log was not successful
+                            example: Log type is invalid
+                    visitor_log:
+                      type: array
+                      description: Array of Response Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        - success
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                          success:
+                            type: boolean
+                            description: Is update was successful
+                            example: true
+                          error:
+                            type: string
+                            description: Error description if update for log was not successful
+                            example: Log type is invalid
+                    waste_log:
+                      type: array
+                      description: Array of Response Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        - success
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                          success:
+                            type: boolean
+                            description: Is update was successful
+                            example: true
+                          error:
+                            type: string
+                            description: Error description if update for log was not successful
+                            example: Log type is invalid
+                    work_log:
+                      type: array
+                      description: Array of Response Data for Log Type
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - status
+                        - success
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Log
+                            example: 123
+                          status:
+                            type: string
+                            description: Status of the Log
+                            enum:
+                            - pending
+                            - approved
+                            - rejected
+                            example: approved
+                          success:
+                            type: boolean
+                            description: Is update was successful
+                            example: true
+                          error:
+                            type: string
+                            description: Error description if update for log was not successful
+                            example: Log type is invalid
+        '403':
+          description: User does not have right permissions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/daily_logs/bulk_updates/bulk_update',\n  headers: {'content-type': 'application/json'},\n  body: {\n    updates: {\n      accident_log: [{id: 123, status: 'approved'}],\n      call_log: [{id: 123, status: 'approved'}],\n      delay_log: [{id: 123, status: 'approved'}],\n      delivery_log: [{id: 123, status: 'approved'}],\n      dumpster_log: [{id: 123, status: 'approved'}],\n      equipment_log: [{id: 123, status: 'approved'}],\n      inspection_log: [{id: 123, status: 'approved'}],\n      manpower_log: [{id: 123, status: 'approved'}],\n      daily_construction_report_log: [{id: 123, status: 'approved'}],\n      notes_log: [{id: 123, status: 'approved'}],\n      plan_revision_log: [{id: 123, status: 'approved'}],\n      productivity_log: [{id: 123, status: 'approved'}],\n      quantity_log: [{id: 123, status: 'approved'}],\n      safety_violation_log: [{id: 123, status: 'approved'}],\n      timecard_entry: [{id: 123, status: 'approved'}],\n      visitor_log: [{id: 123, status: 'approved'}],\n      waste_log: [{id: 123, status: 'approved'}],\n      work_log: [{id: 123, status: 'approved'}]\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"updates\":{\"accident_log\":[{\"id\":123,\"status\":\"approved\"}],\"call_log\":[{\"id\":123,\"status\":\"approved\"}],\"delay_log\":[{\"id\":123,\"status\":\"approved\"}],\"delivery_log\":[{\"id\":123,\"status\":\"approved\"}],\"dumpster_log\":[{\"id\":123,\"status\":\"approved\"}],\"equipment_log\":[{\"id\":123,\"status\":\"approved\"}],\"inspection_log\":[{\"id\":123,\"status\":\"approved\"}],\"manpower_log\":[{\"id\":123,\"status\":\"approved\"}],\"daily_construction_report_log\":[{\"id\":123,\"status\":\"approved\"}],\"notes_log\":[{\"id\":123,\"status\":\"approved\"}],\"plan_revision_log\":[{\"id\":123,\"status\":\"approved\"}],\"productivity_log\":[{\"id\":123,\"status\":\"approved\"}],\"quantity_log\":[{\"id\":123,\"status\":\"approved\"}],\"safety_violation_log\":[{\"id\":123,\"status\":\"approved\"}],\"timecard_entry\":[{\"id\":123,\"status\":\"approved\"}],\"visitor_log\":[{\"id\":123,\"status\":\"approved\"}],\"waste_log\":[{\"id\":123,\"status\":\"approved\"}],\"work_log\":[{\"id\":123,\"status\":\"approved\"}]}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("PATCH", "/rest/v1.0/projects/%7Bproject_id%7D/daily_logs/bulk_updates/bulk_update", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/daily_logs/bulk_updates/bulk_update \\\n  --header 'content-type: application/json' \\\n  --data '{\"updates\":{\"accident_log\":[{\"id\":123,\"status\":\"approved\"}],\"call_log\":[{\"id\":123,\"status\":\"approved\"}],\"delay_log\":[{\"id\":123,\"status\":\"approved\"}],\"delivery_log\":[{\"id\":123,\"status\":\"approved\"}],\"dumpster_log\":[{\"id\":123,\"status\":\"approved\"}],\"equipment_log\":[{\"id\":123,\"status\":\"approved\"}],\"inspection_log\":[{\"id\":123,\"status\":\"approved\"}],\"manpower_log\":[{\"id\":123,\"status\":\"approved\"}],\"daily_construction_report_log\":[{\"id\":123,\"status\":\"approved\"}],\"notes_log\":[{\"id\":123,\"status\":\"approved\"}],\"plan_revision_log\":[{\"id\":123,\"status\":\"approved\"}],\"productivity_log\":[{\"id\":123,\"status\":\"approved\"}],\"quantity_log\":[{\"id\":123,\"status\":\"approved\"}],\"safety_violation_log\":[{\"id\":123,\"status\":\"approved\"}],\"timecard_entry\":[{\"id\":123,\"status\":\"approved\"}],\"visitor_log\":[{\"id\":123,\"status\":\"approved\"}],\"waste_log\":[{\"id\":123,\"status\":\"approved\"}],\"work_log\":[{\"id\":123,\"status\":\"approved\"}]}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/daily_logs/bulk_updates/bulk_update\"),\n    Content = new StringContent(\"{\\\"updates\\\":{\\\"accident_log\\\":[{\\\"id\\\":123,\\\"status\\\":\\\"approved\\\"}],\\\"call_log\\\":[{\\\"id\\\":123,\\\"status\\\":\\\"approved\\\"}],\\\"delay_log\\\":[{\\\"id\\\":123,\\\"status\\\":\\\"approved\\\"}],\\\"delivery_log\\\":[{\\\"id\\\":123,\\\"status\\\":\\\"approved\\\"}],\\\"dumpster_log\\\":[{\\\"id\\\":123,\\\"status\\\":\\\"approved\\\"}],\\\"equipment_log\\\":[{\\\"id\\\":123,\\\"status\\\":\\\"approved\\\"}],\\\"inspection_log\\\":[{\\\"id\\\":123,\\\"status\\\":\\\"approved\\\"}],\\\"manpower_log\\\":[{\\\"id\\\":123,\\\"status\\\":\\\"approved\\\"}],\\\"daily_construction_report_log\\\":[{\\\"id\\\":123,\\\"status\\\":\\\"approved\\\"}],\\\"notes_log\\\":[{\\\"id\\\":123,\\\"status\\\":\\\"approved\\\"}],\\\"plan_revision_log\\\":[{\\\"id\\\":123,\\\"status\\\":\\\"approved\\\"}],\\\"productivity_log\\\":[{\\\"id\\\":123,\\\"status\\\":\\\"approved\\\"}],\\\"quantity_log\\\":[{\\\"id\\\":123,\\\"status\\\":\\\"approved\\\"}],\\\"safety_violation_log\\\":[{\\\"id\\\":123,\\\"status\\\":\\\"approved\\\"}],\\\"timecard_entry\\\":[{\\\"id\\\":123,\\\"status\\\":\\\"approved\\\"}],\\\"visitor_log\\\":[{\\\"id\\\":123,\\\"status\\\":\\\"approved\\\"}],\\\"waste_log\\\":[{\\\"id\\\":123,\\\"status\\\":\\\"approved\\\"}],\\\"work_log\\\":[{\\\"id\\\":123,\\\"status\\\":\\\"approved\\\"}]}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Add Bulk Updates for Daily Logs
+        description: 'Add endpoint to update multiple daily logs with single request.
+
+          Currently only status update is available.'
+        endpoint: PATCH /projects/{project_id}/daily_logs/bulk_updates/bulk_update
+        type: new
+        breaking: false
+        datestamp: '2021-05-09'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: daily-log-bulk-updates?version=1.0#bulk-updates-for-daily-logs
+      operationId: bulkUpdatesForDailyLogs
+  /rest/v1.0/projects/{project_id}/daily_logs/clones:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: integer
+    - name: Idempotency-Token
+      in: header
+      description: Client-generated UUID v4 identifying a create operation. Retrying with the same token returns the original result instead of creating a duplicate.
+      schema:
+        type: string
+    x-compliance-level: full
+    post:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Clones Daily Logs from one Date to another Date
+      description: Clones Daily Logs of the given log_types from the from_date to the to_date.
+      tags:
+      - Daily Logs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - from_date
+              - to_date
+              - log_types
+              properties:
+                from_date:
+                  type: string
+                  format: date
+                  description: Date to copy logs from in YYYY-MM-DD format
+                  example: '2020-11-12'
+                to_date:
+                  type: string
+                  format: date
+                  description: Date to copy logs to in YYYY-MM-DD format
+                  example: '2020-11-12'
+                log_types:
+                  type: array
+                  description: 'Log types to copy. More than one log type can be provided.
+
+                    '
+                  items:
+                    type: string
+                    example: notes_log
+                    enum:
+                    - accident_log
+                    - call_log
+                    - delay_log
+                    - delivery_log
+                    - dumpster_log
+                    - equipment_log
+                    - inspection_log
+                    - manpower_log
+                    - daily_construction_report_log
+                    - notes_log
+                    - plan_revision_log
+                    - productivity_log
+                    - quantity_log
+                    - safety_violation_log
+                    - timecard_entry
+                    - visitor_log
+                    - waste_log
+                    - work_log
+                daily_log_segment_id:
+                  type:
+                  - integer
+                  - 'null'
+                  description: "Optional. The ID of the daily log area to filter logs by. \nOnly logs belonging to the specified area will be copied.\nIf the area has associated log types, only those log types will be allowed.\n"
+                  example: 140
+        required: true
+      responses:
+        '200':
+          description: OK (Duplicate Idempotency-token header)
+        '201':
+          description: The copy succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: 'An object where keys represent the copied log types, and their
+
+                  values are arrays of the newly-copied logs. The object will be
+
+                  empty if no logs are copied, such as when the to_date is
+
+                  already completed.
+
+                  '
+                properties:
+                  notes_log:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        example: 9
+                      comment:
+                        type: string
+                        example: 123
+                      created_at:
+                        type: string
+                        format: date-time
+                        example: '2021-01-07T21:37:43Z'
+                      created_by_collaborator:
+                        type: boolean
+                      custom_fields:
+                        type: object
+                      date:
+                        type: string
+                        format: date
+                        example: '2021-01-07'
+                      datetime:
+                        type: string
+                        format: date-time
+                        example: '2021-01-07T20:00:00Z'
+                      daily_log_header_id:
+                        type: number
+                        example: 4
+                      deleted_at:
+                        type:
+                        - string
+                        - 'null'
+                      is_issue_day:
+                        type:
+                        - string
+                        - 'null'
+                      permissions:
+                        type: object
+                        properties:
+                          can_update:
+                            type:
+                            - boolean
+                            - 'null'
+                          can_delete:
+                            type:
+                            - boolean
+                            - 'null'
+                      position:
+                        type: number
+                        example: 9
+                      updated_at:
+                        type: string
+                        format: date-time
+                        example: '2021-01-07T21:37:43Z'
+                      status:
+                        type: string
+                        example: approved
+                      attachments:
+                        type: array
+                        items:
+                          type: object
+                      created_by:
+                        type: object
+                        properties:
+                          id:
+                            type: number
+                            example: 3
+                          login:
+                            type: string
+                            example: carl.contractor@example.com
+                          name:
+                            type:
+                            - string
+                            - 'null'
+                      location:
+                        type:
+                        - string
+                        - 'null'
+        '400':
+          description: 'Request is invalid. The dates may be out-of-order or in the future,
+
+            the log types might be invalid, or the specified log types may not
+
+            belong to the provided daily_log_segment_id.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: User does not have right permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/daily_logs/clones',\n  headers: {'Idempotency-Token': 'SOME_STRING_VALUE', 'content-type': 'application/json'},\n  body: {\n    from_date: '2020-11-12',\n    to_date: '2020-11-12',\n    log_types: ['notes_log'],\n    daily_log_segment_id: 140\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: "import http.client\n\nconn = http.client.HTTPSConnection(\"api.procore.com\")\n\npayload = \"{\\\"from_date\\\":\\\"2020-11-12\\\",\\\"to_date\\\":\\\"2020-11-12\\\",\\\"log_types\\\":[\\\"notes_log\\\"],\\\"daily_log_segment_id\\\":140}\"\n\nheaders = {\n    'Idempotency-Token': \"SOME_STRING_VALUE\",\n    'content-type': \"application/json\"\n    }\n\nconn.request(\"POST\", \"/rest/v1.0/projects/%7Bproject_id%7D/daily_logs/clones\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/daily_logs/clones \\\n  --header 'Idempotency-Token: SOME_STRING_VALUE' \\\n  --header 'content-type: application/json' \\\n  --data '{\"from_date\":\"2020-11-12\",\"to_date\":\"2020-11-12\",\"log_types\":[\"notes_log\"],\"daily_log_segment_id\":140}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/daily_logs/clones\"),\n    Headers =\n    {\n        { \"Idempotency-Token\", \"SOME_STRING_VALUE\" },\n    },\n    Content = new StringContent(\"{\\\"from_date\\\":\\\"2020-11-12\\\",\\\"to_date\\\":\\\"2020-11-12\\\",\\\"log_types\\\":[\\\"notes_log\\\"],\\\"daily_log_segment_id\\\":140}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Adds daily_log_segment_id parameter
+        description: 'Adds optional daily_log_segment_id parameter to filter cloned logs by area.
+
+          When provided, only logs belonging to the specified area will be copied.
+
+          If the area has associated log types, the request will validate that all
+
+          requested log types belong to that area.'
+        endpoint: POST /projects/{project_id}/daily_logs/clones
+        type: feature
+        breaking: false
+        datestamp: '2026-01-12'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: daily-log-clones?version=1.0#clones-daily-logs-from-one-date-to-another-date
+      - summary: Responds with cloned logs
+        description: 'Provides a response body containing the logs that have been cloned.
+
+          For more information see the [Daily Log Clones](/reference/rest/v1/daily-log-clones) documentation.'
+        endpoint: POST /projects/{project_id}/daily_logs/clones
+        type: feature
+        breaking: false
+        datestamp: '2021-01-07'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: daily-log-clones?version=1.0#clones-daily-logs-from-one-date-to-another-date
+      - summary: Adds Idempotent token
+        description: Supports idempotency token in request header to uniquely identify request.
+        endpoint: POST /projects/{project_id}/daily_logs/clones
+        type: feature
+        breaking: false
+        datestamp: '2022-04-02'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: daily-log-clones?version=1.0#clones-daily-logs-from-one-date-to-another-date
+      operationId: clonesDailyLogsFromOneDateToAnotherDate
+  /rest/v1.1/projects/{project_id}/daily_logs/counts:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: integer
+    x-compliance-level: partial
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: List Counts of Daily Logs
+      description: 'Returns counts of all daily logs arranged by type, given the current user permissions. Read Only/Standard users will
+
+        see only counts of approved logs, Collaborator users will see only counts of logs created by themselves, Admins
+
+        can use filter options to see all logs, or only a specific approval status (defaulting to approved).
+
+
+        See Working with Daily Logs for information on filtering the response using the log\_date, start\_date, and end\_date parameters. Note that if none of the date parameters are provided in the call, only logs from the current date are returned.'
+      tags:
+      - Daily Logs
+      parameters:
+      - name: log_date
+        in: query
+        description: Date of specific logs desired. Example formats YYYY-MM-DD, YYYY/MM/DD, DD-MM-YYYY, DD/MM/YYYY
+        schema:
+          type: string
+          format: date
+      - name: start_date
+        in: query
+        description: Start date of specific logs desired. Use together with end_date to specify a date range. Example formats YYYY-MM-DD, YYYY/MM/DD, DD-MM-YYYY, DD/MM/YYYY
+        schema:
+          type: string
+          format: date
+      - name: end_date
+        in: query
+        description: End date of specific logs desired. Use together with start_date to specify a date range. Example formats YYYY-MM-DD, YYYY/MM/DD, DD-MM-YYYY, DD/MM/YYYY
+        schema:
+          type: string
+          format: date
+      - name: filters[status]
+        in: query
+        description: Filter on log status
+        schema:
+          type: string
+          enum:
+          - all
+          - approved
+          - pending
+      - name: filters[created_by_id]
+        in: query
+        description: Returns item(s) created by the specified User IDs.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: page
+        in: query
+        description: Page
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: Elements per page
+        schema:
+          type: integer
+      - example:
+        - 123456
+        name: filters[daily_log_segment_id]
+        in: query
+        description: Daily Log Segment ID filter
+        schema:
+          type: array
+          items:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            Per-Page:
+              description: Number of items retrieved per page
+              schema:
+                type: integer
+            Total:
+              description: Total number of items to be retrieved
+              schema:
+                type: integer
+            Link:
+              description: Link headers for the first, prev, next, and last link
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  description: Meta data about a daily log module
+                  properties:
+                    module_name:
+                      type: string
+                      description: The name of the log type
+                      example: manpower_log
+                    count:
+                      type: integer
+                      description: The number of logs that match the current date and permissions filters for this module
+                      example: 11
+                    position:
+                      type: integer
+                      description: The position this module is shown at, on the web
+                      example: 6
+        '403':
+          description: User does not have right permissions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.1/projects/%7Bproject_id%7D/daily_logs/counts',\n  qs: {\n    log_date: 'SOME_STRING_VALUE',\n    start_date: 'SOME_STRING_VALUE',\n    end_date: 'SOME_STRING_VALUE',\n    'filters[status]': 'SOME_STRING_VALUE',\n    'filters[created_by_id]': 'SOME_ARRAY_VALUE',\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE',\n    'filters[daily_log_segment_id]': '123456'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.1/projects/%7Bproject_id%7D/daily_logs/counts?log_date=SOME_STRING_VALUE&start_date=SOME_STRING_VALUE&end_date=SOME_STRING_VALUE&filters%5Bstatus%5D=SOME_STRING_VALUE&filters%5Bcreated_by_id%5D=SOME_ARRAY_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&filters%5Bdaily_log_segment_id%5D=123456")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.1/projects/%7Bproject_id%7D/daily_logs/counts?log_date=SOME_STRING_VALUE&start_date=SOME_STRING_VALUE&end_date=SOME_STRING_VALUE&filters%5Bstatus%5D=SOME_STRING_VALUE&filters%5Bcreated_by_id%5D=SOME_ARRAY_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&filters%5Bdaily_log_segment_id%5D=123456'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.1/projects/%7Bproject_id%7D/daily_logs/counts?log_date=SOME_STRING_VALUE&start_date=SOME_STRING_VALUE&end_date=SOME_STRING_VALUE&filters%5Bstatus%5D=SOME_STRING_VALUE&filters%5Bcreated_by_id%5D=SOME_ARRAY_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&filters%5Bdaily_log_segment_id%5D=123456\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: List Counts of Daily Logs
+        description: 'Returns counts of all daily logs arranged by type, given the current user permissions. Read Only/Standard users will
+
+          see only counts of approved logs, Collaborator users will see only counts of logs created by themselves, Admins
+
+          can use filter options to see all logs, or only a specific approval status (defaulting to approved).
+
+
+          See [Working with Daily Logs](https://developers.procore.com/documentation/daily-logs) for information on filtering the response using the log\_date, start\_date, and end\_date parameters.'
+        endpoint: GET /projects/{project_id}/daily_logs/counts
+        type: new
+        breaking: false
+        datestamp: '2021-01-26'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: daily-log-counts?version=1.1#list-counts-of-daily-logs
+      - summary: Add daily_log_segment_id filter parameter for Daily Log Counts endpoint
+        description: Add daily_log_segment_id filter parameter for Daily Log Counts endpoint.
+        endpoint: GET /projects/{project_id}/daily_logs/counts
+        type: feature
+        breaking: false
+        datestamp: '2025-08-07'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: daily-log-counts?version=1.1#list-counts-of-daily-logs
+      operationId: listCountsOfDailyLogs
+  /rest/v1.0/projects/{project_id}/daily_logs/count:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: partial
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: List Counts of Daily Logs
+      description: 'Returns counts of all daily logs arranged by type, given the current user permissions. Read Only/Standard users will
+
+        see only counts of approved logs, Collaborator users will see only counts of logs created by themselves, Admins
+
+        can use filter options to see all logs, or only a specific approval status (defaulting to approved).
+
+
+        See Working with Daily Logs for information on filtering the response using the log\_date, start\_date, and end\_date parameters. Note that if none of the date parameters are provided in the call, only logs from the current date are returned.
+
+
+        This is a deprecated endpoint, please use /rest/v1.1/projects/{project_id}/daily_logs/counts'
+      x-deprecated-at: '2021-01-25'
+      deprecated: true
+      tags:
+      - Daily Logs
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        description: Unique identifier for the project.
+        schema:
+          type: integer
+      - name: log_date
+        in: query
+        description: Date of specific logs desired in YYYY-MM-DD format
+        schema:
+          type: string
+          format: date
+      - name: start_date
+        in: query
+        description: Start date of specific logs desired in YYYY-MM-DD format (use together with end_date)
+        schema:
+          type: string
+          format: date
+      - name: end_date
+        in: query
+        description: End date of specific logs desired in YYYY-MM-DD format (use together with start_date)
+        schema:
+          type: string
+          format: date
+      - name: filters[status]
+        in: query
+        description: Filter on status for "pending" or "approved" or "all"
+        schema:
+          type: string
+      - name: filters[created_by_id]
+        in: query
+        description: Returns item(s) created by the specified User IDs.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  description: Meta data about a daily log module
+                  properties:
+                    module_name:
+                      type: string
+                      description: The name of the log type
+                      example: manpower_log
+                    count:
+                      type: integer
+                      description: The number of logs that match the current date and permissions filters for this module
+                      example: 11
+                    position:
+                      type: integer
+                      description: The position this module is shown at, on the web
+                      example: 6
+        '403':
+          description: User does not have right permissions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/daily_logs/count',\n  qs: {\n    log_date: 'SOME_STRING_VALUE',\n    start_date: 'SOME_STRING_VALUE',\n    end_date: 'SOME_STRING_VALUE',\n    'filters[status]': 'SOME_STRING_VALUE',\n    'filters[created_by_id]': 'SOME_ARRAY_VALUE'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.0/projects/%7Bproject_id%7D/daily_logs/count?log_date=SOME_STRING_VALUE&start_date=SOME_STRING_VALUE&end_date=SOME_STRING_VALUE&filters%5Bstatus%5D=SOME_STRING_VALUE&filters%5Bcreated_by_id%5D=SOME_ARRAY_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/daily_logs/count?log_date=SOME_STRING_VALUE&start_date=SOME_STRING_VALUE&end_date=SOME_STRING_VALUE&filters%5Bstatus%5D=SOME_STRING_VALUE&filters%5Bcreated_by_id%5D=SOME_ARRAY_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/daily_logs/count?log_date=SOME_STRING_VALUE&start_date=SOME_STRING_VALUE&end_date=SOME_STRING_VALUE&filters%5Bstatus%5D=SOME_STRING_VALUE&filters%5Bcreated_by_id%5D=SOME_ARRAY_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: listCountsOfDailyLogs2
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

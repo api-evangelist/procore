@@ -1,0 +1,901 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Markup V 2 Controller API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: markup-v-2-controller
+paths:
+  /rest/v2.0/companies/{company_id}/projects/{project_id}/viewer_documents/{viewer_doc_id}/markups/groups:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    post:
+      tags:
+      - markup-v-2-controller
+      summary: Create Group and Move Markups
+      description: Creates a new group and moves specified markups to it.
+      operationId: moveMarkupsToNewGroup
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier of the company
+        required: true
+        schema:
+          type: string
+      - name: project_id
+        in: path
+        description: Unique identifier of the project
+        required: true
+        schema:
+          type: string
+      - name: viewer_doc_id
+        in: path
+        description: Unique identifier of the viewer document
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request body with markups to move and new group details
+              properties:
+                markup_ids:
+                  type: array
+                  items:
+                    type: string
+                source_group_id:
+                  type: string
+                  minLength: 1
+                action:
+                  type: string
+                pin_id:
+                  type: string
+                escalate_to_pin:
+                  type: boolean
+              required:
+              - source_group_id
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      markups:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            xfdf_id:
+                              type: string
+                            markup_type:
+                              type: string
+                            viewer_doc_id:
+                              type: string
+                            created_at:
+                              type: string
+                              format: date-time
+                            updated_at:
+                              type: string
+                              format: date-time
+                            created_by_id:
+                              type: string
+                            updated_by_id:
+                              type: string
+                            company_id:
+                              type: string
+                            project_id:
+                              type: string
+                            deleted:
+                              type: boolean
+                            editable:
+                              type: boolean
+                            xfdf:
+                              type: string
+                            created_by_name:
+                              type: string
+                            updated_by_name:
+                              type: string
+                            created_by_vendor_id:
+                              type: string
+                            created_by_vendor_name:
+                              type: string
+                            page_number:
+                              type: integer
+                              format: int32
+                            audit_transaction_timestamp:
+                              type: string
+                              format: date-time
+                            markup_context:
+                              type: string
+                              enum:
+                              - WORKFLOW
+                              - WORKSPACE
+                              - PIN
+                              - NO_CONTEXT
+                            group_id:
+                              type: string
+                            pin_id:
+                              type: string
+                            comment_id:
+                              type: string
+                            document:
+                              type: object
+                              properties:
+                                external_document_id:
+                                  type: string
+                                document_type:
+                                  type: string
+                            markup_source:
+                              type: string
+                      failed_markups:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            xfdf_id:
+                              type: string
+                            reason:
+                              type: string
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/markups/groups',\n  headers: {'content-type': 'application/json'},\n  body: {\n    markup_ids: ['string'],\n    source_group_id: 'string',\n    action: 'string',\n    pin_id: 'string',\n    escalate_to_pin: true\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPConnection("localhost:8080")
+
+
+          payload = "{\"markup_ids\":[\"string\"],\"source_group_id\":\"string\",\"action\":\"string\",\"pin_id\":\"string\",\"escalate_to_pin\":true}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/markups/groups", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/markups/groups \\\n  --header 'content-type: application/json' \\\n  --data '{\"markup_ids\":[\"string\"],\"source_group_id\":\"string\",\"action\":\"string\",\"pin_id\":\"string\",\"escalate_to_pin\":true}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/markups/groups\"),\n    Content = new StringContent(\"{\\\"markup_ids\\\":[\\\"string\\\"],\\\"source_group_id\\\":\\\"string\\\",\\\"action\\\":\\\"string\\\",\\\"pin_id\\\":\\\"string\\\",\\\"escalate_to_pin\\\":true}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+  /rest/v2.0/companies/{company_id}/projects/{project_id}/viewer_documents/{viewer_doc_id}/markups/{markup_id}/stamps:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      tags:
+      - markup-v-2-controller
+      summary: Get Markup Stamp
+      description: Get Markup Stamp image.
+      operationId: getStamp
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier of the company
+        required: true
+        schema:
+          type: string
+      - name: project_id
+        in: path
+        description: Unique identifier of the project
+        required: true
+        schema:
+          type: string
+      - name: viewer_doc_id
+        in: path
+        description: Unique identifier of the viewer document
+        required: true
+        schema:
+          type: string
+      - name: markup_id
+        in: path
+        description: Unique identifier of the markup
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/markups/%7Bmarkup_id%7D/stamps'\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPConnection("localhost:8080")
+
+
+          conn.request("GET", "/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/markups/%7Bmarkup_id%7D/stamps")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/markups/%7Bmarkup_id%7D/stamps"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/markups/%7Bmarkup_id%7D/stamps\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+  /rest/v2.0/companies/{company_id}/projects/{project_id}/viewer_documents/{viewer_doc_id}/markups:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    put:
+      tags:
+      - markup-v-2-controller
+      summary: Modify Markups
+      description: Modifies existing markups for a specific company, project, and document.
+      operationId: modifyMarkups
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier of the company
+        required: true
+        schema:
+          type: string
+      - name: project_id
+        in: path
+        description: Unique identifier of the project
+        required: true
+        schema:
+          type: string
+      - name: viewer_doc_id
+        in: path
+        description: Unique identifier of the viewer document
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request body with markups to save
+              properties:
+                markups:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      xfdf:
+                        type: string
+                      markup_type:
+                        type: string
+                      page_number:
+                        type: integer
+                        format: int32
+                      xfdf_id:
+                        type: string
+                      id:
+                        type: string
+                      page_height:
+                        type: integer
+                        format: int32
+                      page_width:
+                        type: integer
+                        format: int32
+                      updated_at:
+                        type: string
+                        format: date-time
+                      markup_context:
+                        type: string
+                        enum:
+                        - WORKFLOW
+                        - WORKSPACE
+                        - PIN
+                        - NO_CONTEXT
+                      group_id:
+                        type: string
+                      pin_id:
+                        type: string
+                      comment_id:
+                        type: string
+                      base_version:
+                        type: integer
+                        format: int32
+                    required:
+                    - markup_type
+                    - page_height
+                    - page_number
+                    - page_width
+                    - xfdf
+                    - xfdf_id
+              required:
+              - markups
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      markups:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            xfdf_id:
+                              type: string
+                            markup_type:
+                              type: string
+                            viewer_doc_id:
+                              type: string
+                            created_at:
+                              type: string
+                              format: date-time
+                            updated_at:
+                              type: string
+                              format: date-time
+                            created_by_id:
+                              type: string
+                            updated_by_id:
+                              type: string
+                            company_id:
+                              type: string
+                            project_id:
+                              type: string
+                            deleted:
+                              type: boolean
+                            editable:
+                              type: boolean
+                            xfdf:
+                              type: string
+                            created_by_name:
+                              type: string
+                            updated_by_name:
+                              type: string
+                            created_by_vendor_id:
+                              type: string
+                            created_by_vendor_name:
+                              type: string
+                            page_number:
+                              type: integer
+                              format: int32
+                            audit_transaction_timestamp:
+                              type: string
+                              format: date-time
+                            markup_context:
+                              type: string
+                              enum:
+                              - WORKFLOW
+                              - WORKSPACE
+                              - PIN
+                              - NO_CONTEXT
+                            group_id:
+                              type: string
+                            pin_id:
+                              type: string
+                            comment_id:
+                              type: string
+                            document:
+                              type: object
+                              properties:
+                                external_document_id:
+                                  type: string
+                                document_type:
+                                  type: string
+                            markup_source:
+                              type: string
+                      failed_markups:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            xfdf_id:
+                              type: string
+                            reason:
+                              type: string
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PUT',\n  url: 'http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/markups',\n  headers: {'content-type': 'application/json'},\n  body: {\n    markups: [\n      {\n        xfdf: 'string',\n        markup_type: 'string',\n        page_number: 0,\n        xfdf_id: 'string',\n        id: 'string',\n        page_height: 0,\n        page_width: 0,\n        updated_at: '2019-08-24T14:15:22Z',\n        markup_context: 'WORKFLOW',\n        group_id: 'string',\n        pin_id: 'string',\n        comment_id: 'string',\n        base_version: 0\n      }\n    ]\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPConnection("localhost:8080")
+
+
+          payload = "{\"markups\":[{\"xfdf\":\"string\",\"markup_type\":\"string\",\"page_number\":0,\"xfdf_id\":\"string\",\"id\":\"string\",\"page_height\":0,\"page_width\":0,\"updated_at\":\"2019-08-24T14:15:22Z\",\"markup_context\":\"WORKFLOW\",\"group_id\":\"string\",\"pin_id\":\"string\",\"comment_id\":\"string\",\"base_version\":0}]}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("PUT", "/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/markups", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PUT \\\n  --url http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/markups \\\n  --header 'content-type: application/json' \\\n  --data '{\"markups\":[{\"xfdf\":\"string\",\"markup_type\":\"string\",\"page_number\":0,\"xfdf_id\":\"string\",\"id\":\"string\",\"page_height\":0,\"page_width\":0,\"updated_at\":\"2019-08-24T14:15:22Z\",\"markup_context\":\"WORKFLOW\",\"group_id\":\"string\",\"pin_id\":\"string\",\"comment_id\":\"string\",\"base_version\":0}]}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Put,\n    RequestUri = new Uri(\"http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/markups\"),\n    Content = new StringContent(\"{\\\"markups\\\":[{\\\"xfdf\\\":\\\"string\\\",\\\"markup_type\\\":\\\"string\\\",\\\"page_number\\\":0,\\\"xfdf_id\\\":\\\"string\\\",\\\"id\\\":\\\"string\\\",\\\"page_height\\\":0,\\\"page_width\\\":0,\\\"updated_at\\\":\\\"2019-08-24T14:15:22Z\\\",\\\"markup_context\\\":\\\"WORKFLOW\\\",\\\"group_id\\\":\\\"string\\\",\\\"pin_id\\\":\\\"string\\\",\\\"comment_id\\\":\\\"string\\\",\\\"base_version\\\":0}]}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+    post:
+      tags:
+      - markup-v-2-controller
+      summary: Save Markups
+      description: Saves new markups for a specific company, project, and document.
+      operationId: saveMarkups
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier of the company
+        required: true
+        schema:
+          type: string
+      - name: project_id
+        in: path
+        description: Unique identifier of the project
+        required: true
+        schema:
+          type: string
+      - name: viewer_doc_id
+        in: path
+        description: Unique identifier of the viewer document
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request body with markups to save
+              properties:
+                markups:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      xfdf:
+                        type: string
+                      markup_type:
+                        type: string
+                      page_number:
+                        type: integer
+                        format: int32
+                      xfdf_id:
+                        type: string
+                      id:
+                        type: string
+                      page_height:
+                        type: integer
+                        format: int32
+                      page_width:
+                        type: integer
+                        format: int32
+                      updated_at:
+                        type: string
+                        format: date-time
+                      markup_context:
+                        type: string
+                        enum:
+                        - WORKFLOW
+                        - WORKSPACE
+                        - PIN
+                        - NO_CONTEXT
+                      group_id:
+                        type: string
+                      pin_id:
+                        type: string
+                      comment_id:
+                        type: string
+                      base_version:
+                        type: integer
+                        format: int32
+                    required:
+                    - markup_type
+                    - page_height
+                    - page_number
+                    - page_width
+                    - xfdf
+                    - xfdf_id
+              required:
+              - markups
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      markups:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            xfdf_id:
+                              type: string
+                            markup_type:
+                              type: string
+                            viewer_doc_id:
+                              type: string
+                            created_at:
+                              type: string
+                              format: date-time
+                            updated_at:
+                              type: string
+                              format: date-time
+                            created_by_id:
+                              type: string
+                            updated_by_id:
+                              type: string
+                            company_id:
+                              type: string
+                            project_id:
+                              type: string
+                            deleted:
+                              type: boolean
+                            editable:
+                              type: boolean
+                            xfdf:
+                              type: string
+                            created_by_name:
+                              type: string
+                            updated_by_name:
+                              type: string
+                            created_by_vendor_id:
+                              type: string
+                            created_by_vendor_name:
+                              type: string
+                            page_number:
+                              type: integer
+                              format: int32
+                            audit_transaction_timestamp:
+                              type: string
+                              format: date-time
+                            markup_context:
+                              type: string
+                              enum:
+                              - WORKFLOW
+                              - WORKSPACE
+                              - PIN
+                              - NO_CONTEXT
+                            group_id:
+                              type: string
+                            pin_id:
+                              type: string
+                            comment_id:
+                              type: string
+                            document:
+                              type: object
+                              properties:
+                                external_document_id:
+                                  type: string
+                                document_type:
+                                  type: string
+                            markup_source:
+                              type: string
+                      failed_markups:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            xfdf_id:
+                              type: string
+                            reason:
+                              type: string
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/markups',\n  headers: {'content-type': 'application/json'},\n  body: {\n    markups: [\n      {\n        xfdf: 'string',\n        markup_type: 'string',\n        page_number: 0,\n        xfdf_id: 'string',\n        id: 'string',\n        page_height: 0,\n        page_width: 0,\n        updated_at: '2019-08-24T14:15:22Z',\n        markup_context: 'WORKFLOW',\n        group_id: 'string',\n        pin_id: 'string',\n        comment_id: 'string',\n        base_version: 0\n      }\n    ]\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPConnection("localhost:8080")
+
+
+          payload = "{\"markups\":[{\"xfdf\":\"string\",\"markup_type\":\"string\",\"page_number\":0,\"xfdf_id\":\"string\",\"id\":\"string\",\"page_height\":0,\"page_width\":0,\"updated_at\":\"2019-08-24T14:15:22Z\",\"markup_context\":\"WORKFLOW\",\"group_id\":\"string\",\"pin_id\":\"string\",\"comment_id\":\"string\",\"base_version\":0}]}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/markups", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/markups \\\n  --header 'content-type: application/json' \\\n  --data '{\"markups\":[{\"xfdf\":\"string\",\"markup_type\":\"string\",\"page_number\":0,\"xfdf_id\":\"string\",\"id\":\"string\",\"page_height\":0,\"page_width\":0,\"updated_at\":\"2019-08-24T14:15:22Z\",\"markup_context\":\"WORKFLOW\",\"group_id\":\"string\",\"pin_id\":\"string\",\"comment_id\":\"string\",\"base_version\":0}]}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/markups\"),\n    Content = new StringContent(\"{\\\"markups\\\":[{\\\"xfdf\\\":\\\"string\\\",\\\"markup_type\\\":\\\"string\\\",\\\"page_number\\\":0,\\\"xfdf_id\\\":\\\"string\\\",\\\"id\\\":\\\"string\\\",\\\"page_height\\\":0,\\\"page_width\\\":0,\\\"updated_at\\\":\\\"2019-08-24T14:15:22Z\\\",\\\"markup_context\\\":\\\"WORKFLOW\\\",\\\"group_id\\\":\\\"string\\\",\\\"pin_id\\\":\\\"string\\\",\\\"comment_id\\\":\\\"string\\\",\\\"base_version\\\":0}]}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+    delete:
+      tags:
+      - markup-v-2-controller
+      summary: Delete Markups
+      description: Deletes markups for a specific company, project, and document.
+      operationId: deleteMarkups
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier of the company
+        required: true
+        schema:
+          type: string
+      - name: project_id
+        in: path
+        description: Unique identifier of the project
+        required: true
+        schema:
+          type: string
+      - name: viewer_doc_id
+        in: path
+        description: Unique identifier of the viewer document
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request body with markups to delete
+              properties:
+                markups:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      xfdf_id:
+                        type: string
+                    required:
+                    - xfdf_id
+              required:
+              - markups
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      markups:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            xfdf_id:
+                              type: string
+                            markup_type:
+                              type: string
+                            viewer_doc_id:
+                              type: string
+                            created_at:
+                              type: string
+                              format: date-time
+                            updated_at:
+                              type: string
+                              format: date-time
+                            created_by_id:
+                              type: string
+                            updated_by_id:
+                              type: string
+                            company_id:
+                              type: string
+                            project_id:
+                              type: string
+                            deleted:
+                              type: boolean
+                            editable:
+                              type: boolean
+                            xfdf:
+                              type: string
+                            created_by_name:
+                              type: string
+                            updated_by_name:
+                              type: string
+                            created_by_vendor_id:
+                              type: string
+                            created_by_vendor_name:
+                              type: string
+                            page_number:
+                              type: integer
+                              format: int32
+                            audit_transaction_timestamp:
+                              type: string
+                              format: date-time
+                            markup_context:
+                              type: string
+                              enum:
+                              - WORKFLOW
+                              - WORKSPACE
+                              - PIN
+                              - NO_CONTEXT
+                            group_id:
+                              type: string
+                            pin_id:
+                              type: string
+                            comment_id:
+                              type: string
+                            document:
+                              type: object
+                              properties:
+                                external_document_id:
+                                  type: string
+                                document_type:
+                                  type: string
+                            markup_source:
+                              type: string
+                      failed_markups:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            xfdf_id:
+                              type: string
+                            reason:
+                              type: string
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'DELETE',\n  url: 'http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/markups',\n  headers: {'content-type': 'application/json'},\n  body: {markups: [{id: 'string', xfdf_id: 'string'}]},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPConnection("localhost:8080")
+
+
+          payload = "{\"markups\":[{\"id\":\"string\",\"xfdf_id\":\"string\"}]}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("DELETE", "/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/markups", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request DELETE \\\n  --url http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/markups \\\n  --header 'content-type: application/json' \\\n  --data '{\"markups\":[{\"id\":\"string\",\"xfdf_id\":\"string\"}]}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Delete,\n    RequestUri = new Uri(\"http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/viewer_documents/%7Bviewer_doc_id%7D/markups\"),\n    Content = new StringContent(\"{\\\"markups\\\":[{\\\"id\\\":\\\"string\\\",\\\"xfdf_id\\\":\\\"string\\\"}]}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

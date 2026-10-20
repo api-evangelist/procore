@@ -1,0 +1,3026 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Requisitions (Subcontractor Invoice) API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Requisitions (Subcontractor Invoice)
+paths:
+  /rest/v1.0/requisitions/{id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      description: Requisition (Subcontractor Invoice) ID
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    patch:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Update Requisition (Subcontractor Invoice)
+      description: Update a specified Requisition (Subcontractor Invoice). Users without admin permissions can only update a requisition (sub invoice) if it is the most recent and has a status of 'draft' or 'revise_and_resubmit'. Users with admin permissions can update a requisition (sub invoice) regardless of its status or whether it is the most recent.
+      tags:
+      - Requisitions (Subcontractor Invoice)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Body
+              type: object
+              required:
+              - project_id
+              - commitment_id
+              properties:
+                project_id:
+                  type: integer
+                  description: Unique identifier for the project.
+                  example: 55001
+                commitment_id:
+                  type: integer
+                  description: Commitment ID
+                  example: 66005
+                attachments:
+                  type: array
+                  description: 'Requisition (Subcontractor Invoice) attachments.
+
+                    To upload attachments you must upload the entire payload as `multipart/form-data` content-type and
+
+                    specify each parameter as form-data together with `attachments[]` as files.'
+                  items:
+                    type: string
+                requisition:
+                  title: Requisition (Subcontractor Invoice)
+                  type: object
+                  description: Requisition (Subcontractor Invoice)
+                  properties:
+                    period_id:
+                      type: integer
+                      description: Period ID
+                      example: 20093
+                    requisition_start:
+                      type: string
+                      format: date
+                      description: Requisition (Subcontractor Invoice) start date
+                      example: '2013-10-01'
+                    requisition_end:
+                      type: string
+                      format: date
+                      description: Requisition (Subcontractor Invoice) end date
+                      example: '2013-10-31'
+                    billing_date:
+                      type: string
+                      format: date
+                      description: Billing date
+                      example: '2013-10-31'
+                    final:
+                      type: boolean
+                      description: true or false value indicating whether or not this is the final invoice
+                      example: true
+                    invoice_number:
+                      type: string
+                      description: Invoice number
+                      example: ABC-1234
+                    payment_date:
+                      type: string
+                      format: date
+                      description: Date requisition was paid
+                      example: '2013-11-15'
+                    origin_data:
+                      type: string
+                      description: Requisition (Subcontractor Invoice) third party data
+                      example: XYZ-0012
+                    origin_id:
+                      type: string
+                      description: Requisition (Subcontractor Invoice) third party ID
+                      example: abc-123
+                    status:
+                      type: string
+                      enum:
+                      - draft
+                      - under_review
+                      - revise_and_resubmit
+                      - approved
+                      - approved_as_noted
+                      - pending_owner_approval
+                      description: Status; admin can set any status, standard and billing recipient can set to under_review (submit) or draft (save)
+                      example: under_review
+                    submitted_at:
+                      type: string
+                      format: date
+                      description: Date requisition was submitted
+                      example: '2013-11-02'
+                    comment:
+                      type: string
+                      description: Any comment
+                      example: Materials requested for foyer upgrade.
+                    custom_field_%{custom_field_definition_id}:
+                      description: 'Value of the custom field. The data type of the value passed in corresponds with the data_type of the Custom Field Definition.
+
+                        For a lov_entry data_type the value passed in should be the ID of one of the Custom Field Definition''s LOV Entries. For a lov_entries data_type the value passed in should be an array of IDs of the Custom Field Definition''s LOV Entries.'
+                      example: custom field value
+                      oneOf:
+                      - type: string
+                        title: string
+                      - type: number
+                        title: number
+                      - type: boolean
+                        title: boolean
+                      - type: array
+                        title: array
+                        items:
+                          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Extended Requisition (Subcontractor Invoice)
+                properties:
+                  id:
+                    type: integer
+                    description: ID
+                    example: 58820
+                  previous_requisition_id:
+                    type: integer
+                    description: ID for the previous requisition before this one on the same contract
+                    example: 58819
+                  project_id:
+                    type: integer
+                    description: Project ID
+                    example: 789
+                  billing_date:
+                    type: string
+                    format: date
+                    description: Billing date
+                    example: '2013-11-20'
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Date req was created
+                    example: '2013-11-15T12:00:00Z'
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: Date req was last updated
+                    example: '2013-11-15T12:00:00Z'
+                  commitment_id:
+                    type: integer
+                    description: commitment ID
+                    example: 701973
+                  commitment_type:
+                    type: string
+                    description: Commitment Type
+                    example: WorkOrderContract
+                  contract_name:
+                    type: string
+                    description: Contract Name
+                    example: Contract SC-001
+                  deletable:
+                    type: boolean
+                    description: A boolean indicating whether or not the invoice can be deleted.
+                    example: false
+                  final:
+                    type:
+                    - boolean
+                    - 'null'
+                    description: true or false value indicating whether or not this is the final invoice
+                    example: true
+                  vendor_name:
+                    type: string
+                    description: Name of Vendor for Invoice
+                    example: Ernie's Electrical
+                  vendor_id:
+                    type: integer
+                    description: ID of Vendor for Invoice
+                    example: 8881212
+                  invoice_number:
+                    type:
+                    - string
+                    - 'null'
+                    description: Invoice number
+                    example: 123
+                  invoice_type:
+                    type: string
+                    description: Invoice type (present in all views)
+                    example: progress_and_retainage_release
+                    enum:
+                    - progress
+                    - retainage_release
+                    - progress_and_retainage_release
+                  contract_invoicing_method:
+                    type: string
+                    description: The invoicing method for the contract, either progressive or simplified
+                    example: progressive
+                    enum:
+                    - progressive
+                    - simplified
+                  origin_data:
+                    type:
+                    - string
+                    - 'null'
+                    description: Requisition (Subcontractor Invoice) third party data
+                    example: XYZ-0012
+                  origin_id:
+                    type:
+                    - string
+                    - 'null'
+                    description: Requisition (Subcontractor Invoice) third party ID
+                    example: abc-123
+                  payment_date:
+                    type:
+                    - string
+                    - 'null'
+                    format: date
+                    description: Date requisition was paid
+                    example: '2013-11-15'
+                  percent_complete:
+                    type: string
+                    description: Percent complete
+                    example: 0
+                  period_id:
+                    type: integer
+                    description: Period ID
+                    example: 4293
+                  requisition_start:
+                    type: string
+                    format: date
+                    description: Requisition (Subcontractor Invoice) start date
+                    example: '2013-11-01'
+                  requisition_end:
+                    type: string
+                    format: date
+                    description: Requisition (Subcontractor Invoice) end date
+                    example: '2013-11-02'
+                  status:
+                    type: string
+                    enum:
+                    - draft
+                    - under_review
+                    - revise_and_resubmit
+                    - approved
+                    - approved_as_noted
+                    - pending_owner_approval
+                    description: Status
+                    example: approved
+                  erp_status:
+                    type: string
+                    description: Current ERP status of Requisition
+                    example: synced
+                  number:
+                    type: integer
+                    description: Requisition (Subcontractor Invoice) number
+                    example: 1
+                  submitted_at:
+                    type:
+                    - string
+                    - 'null'
+                    format: date
+                    description: Date requisition was submitted
+                    example: '2013-11-02'
+                  total_claimed_amount:
+                    type: string
+                    description: Total Claimed Amount for the Invoice
+                    example: '100.00'
+                  electronic_signature_id:
+                    type: integer
+                    description: Electronic Signature ID
+                    example: 701973
+                  move_materials_to_previous_work_completed:
+                    type: boolean
+                    description: A boolean indicating if should move materials to previous work completed.
+                    example: false
+                  summary_text:
+                    type: object
+                    description: Requisition (Subcontractor Invoice) summary text. Included when the view query param is 'extended' or 'header_only' AND the contract's invoicing method is 'progressive'. Omitted for 'simplified' contracts regardless of view.
+                    properties:
+                      project_name:
+                        type: string
+                        description: Name of the project
+                        example: Project
+                      project_number:
+                        type: string
+                        description: Number of the project
+                        example: '100'
+                      to_general_contractor:
+                        type: string
+                        description: Name of the company the requisition is for
+                        example: Company A
+                      requisition_period_start:
+                        type: string
+                        format: date
+                        description: Requisition period start date
+                        example: '2010-01-01'
+                      requisition_period_end:
+                        type: string
+                        format: date
+                        description: Requisition period end date
+                        example: '2010-01-01'
+                      subcontractor_name:
+                        type: string
+                        description: Name of the company the requisition is from
+                        example: Company B
+                      subcontractor_street:
+                        type: string
+                        description: Street address of the company the requisition is from
+                        example: 101 XYZ Avenue
+                      subcontractor_city:
+                        type: string
+                        description: City of the company the requisition is from
+                        example: New York
+                      subcontractor_state_code:
+                        type: string
+                        description: State code of the company the requisition is from
+                        example: NY
+                      subcontractor_zip:
+                        type: string
+                        description: Zip code of the company the requisition is from
+                        example: '10101'
+                      subcontractor_country_code:
+                        type: string
+                        description: Country code of the company the requisition is from
+                        example: US
+                      application_number:
+                        type: string
+                        description: Invoice number
+                        example: '1'
+                      contract_for:
+                        type: string
+                        description: The contract title
+                        example: Ceiling Tiles
+                      contract_date:
+                        type: string
+                        format: date
+                        description: Date the signed contract is received
+                        example: '2010-01-01'
+                  summary:
+                    type: object
+                    description: Requisition (Subcontractor Invoice) summary
+                    properties:
+                      balance_to_finish_including_retainage:
+                        type: string
+                        description: Balance to finish including retainage
+                        example: 1268346.55
+                      completed_work_retainage_percent:
+                        type: string
+                        description: Completed work retainage percent
+                        example: 10
+                      completed_work_retainage_amount:
+                        type: string
+                        description: Completed work retainage amount
+                        example: '1201.0'
+                      contract_sum_to_date:
+                        type: string
+                        description: Contract sum to date
+                        example: 1279159.15
+                      current_payment_due:
+                        type: string
+                        description: Current payment due
+                        example: 10812.6
+                      formatted_period:
+                        type: string
+                        description: Formatted billing period
+                        example: 01/06/19 - 30/06/19
+                      less_previous_certificates_for_payment:
+                        type: string
+                        description: Less previous certificates for payment
+                        example: 0
+                      negative_change_order_item_total:
+                        type: string
+                        description: Negative change order item total
+                        example: 0
+                      negative_new_change_order_item_total:
+                        type: string
+                        description: Negative new change order item total
+                        example: 0
+                      negative_previous_change_order_item_total:
+                        type: string
+                        description: Negative previous change order item total
+                        example: 0
+                      net_change_by_change_orders:
+                        type: string
+                        description: Net change by change orders
+                        example: 256706.65
+                      original_contract_sum:
+                        type: string
+                        description: Original contract sum
+                        example: 1022452.5
+                      positive_change_order_item_total:
+                        type: string
+                        description: Positive change order item total
+                        example: '0.00'
+                      positive_new_change_order_item_total:
+                        type: string
+                        description: Positive new change order item total
+                        example: '0.00'
+                      positive_previous_change_order_item_total:
+                        type: string
+                        description: Positive previous change order item total
+                        example: '0.00'
+                      stored_materials_retainage_amount:
+                        type: string
+                        description: Stored materials retainage amount
+                        example: 0.4
+                      stored_materials_retainage_percent:
+                        type: string
+                        description: Stored materials retainage percent
+                        example: 10
+                      tax_applicable_to_this_payment:
+                        type: string
+                        description: Tax applicable to this payment
+                        example: 0
+                      total_completed_and_stored_to_date:
+                        type: string
+                        description: Total completed and stored to date
+                        example: 1201.4
+                      total_earned_less_retainage:
+                        type: string
+                        description: Total earned less retainage
+                        example: 10812.6
+                      total_retainage:
+                        type: string
+                        description: Total retainage
+                        example: 1201.4
+                      new_materials:
+                        type: string
+                        description: Amount of new materials added this period
+                        example: '1975.31'
+                      new_materials_quantity:
+                        type: string
+                        description: Quantity of new materials added this period, only for unit based line items
+                        example: '98.7654'
+                      stored_materials:
+                        type: string
+                        description: Amount of materials presently stored less the new materials added this period
+                        example: '716.05'
+                      stored_materials_quantity:
+                        type: string
+                        description: Quantity of materials presently stored less the new materials added this period
+                        example: '35.80249'
+                  created_by:
+                    type: object
+                    description: Login Information
+                    properties:
+                      id:
+                        type: integer
+                        description: Login Information ID
+                        example: 1738090
+                      name:
+                        type: string
+                        description: User name
+                        example: John Doe
+                      login:
+                        type: string
+                        description: User email
+                        example: johndoe@example.com
+                      company_name:
+                        type:
+                        - string
+                        - 'null'
+                        description: User Company name. If the user belongs to a vendor, the vendor name will be returned.
+                        example: Builders Inc.
+                  subtiers_certified_by:
+                    type: object
+                    description: Login Information
+                    properties:
+                      id:
+                        type: integer
+                        description: Login Information ID
+                        example: 1738090
+                      name:
+                        type: string
+                        description: User name
+                        example: John Doe
+                      login:
+                        type: string
+                        description: User email
+                        example: johndoe@example.com
+                      company_name:
+                        type:
+                        - string
+                        - 'null'
+                        description: User Company name. If the user belongs to a vendor, the vendor name will be returned.
+                        example: Builders Inc.
+                  custom_fields:
+                    type: object
+                    properties:
+                      custom_field_%{custom_field_string_definition_id}:
+                        type: object
+                        properties:
+                          data_type:
+                            type: string
+                            description: Data type of the Custom Field Definition
+                            example: string
+                          value:
+                            type: string
+                            description: The value of the custom field
+                            example: custom field value
+                          variant:
+                            type: string
+                            description: The variant of the Custom Field Definition (e.g. `phone_number`). Present only when the definition has an associated variant.
+                            example: phone_number
+                      custom_field_%{custom_field_decimal_definition_id}:
+                        type: object
+                        properties:
+                          data_type:
+                            type: string
+                            description: Data type of the Custom Field Definition
+                            example: decimal
+                          value:
+                            type: number
+                            description: The value of the custom field
+                            example: 2.2
+                      custom_field_%{custom_field_boolean_definition_id}:
+                        type: object
+                        properties:
+                          data_type:
+                            type: string
+                            description: Data type of the Custom Field Definition
+                            example: boolean
+                          value:
+                            type: boolean
+                            description: The value of the custom field
+                            example: true
+                      custom_field_%{custom_field_lov_entry_definition_id}:
+                        type: object
+                        properties:
+                          data_type:
+                            type: string
+                            description: Data type of the Custom Field Definition
+                            example: lov_entry
+                          value:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                description: ID of the LOV Entry
+                                example: 1
+                              label:
+                                type: string
+                                description: Label of the LOV Entry
+                                example: Open
+                          variant:
+                            type: string
+                            description: The variant of the Custom Field Definition (e.g. `project_directory`). Present only when the definition has an associated variant.
+                            example: with_code
+                      custom_field_%{custom_field_lov_entries_definition_id}:
+                        type: object
+                        properties:
+                          data_type:
+                            type: string
+                            description: Data type of the Custom Field Definition
+                            example: lov_entries
+                          value:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                  description: ID of the LOV Entry
+                                  example: 2
+                                label:
+                                  type: string
+                                  description: Label of the LOV Entry
+                                  example: Open
+                  currency_configuration:
+                    type: object
+                    description: Requisition (Subcontractor Invoice) Currency Configuration
+                    properties:
+                      currency_iso_code:
+                        type: string
+                        description: ISO Code for the Currency
+                        example: USD
+                      currency_exchange_rate:
+                        type: number
+                        format: float
+                        description: The exchange rate between the invoice currency and the project currency
+                        example: 1.8
+                      base_currency_iso_code:
+                        type: string
+                        description: Project or Company ISO Code
+                        example: EUR
+                  attachments:
+                    type: array
+                    description: Attachments
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: ID
+                          example: 5324
+                        url:
+                          type: string
+                          description: URL
+                          example: http://www.example.com/
+                        filename:
+                          type: string
+                          description: Filename
+                          example: january_receipt_copy.jpg
+                        content_type:
+                          type: string
+                          description: Content Type
+                          example: image/jpeg
+                  action_policy:
+                    allOf:
+                    - type: object
+                      description: 'Action policy for a Requisition (Subcontractor Invoice). Each key under `controls` is the name of an action (e.g. `update`, `destroy`, `send_to_erp`); each leaf is a `{ allowed: boolean, tooltip: string|null }` pair indicating whether the calling user can perform that action and, if not, why. Action-shaped controls (like `destroy`) nest a single `requisition` key, while field-shaped controls (like `update`) list one key per editable field; field-shaped controls may also nest an `items` object to gate edits on individual line item fields. `remove_billable_change_orders` additionally nests a `change_orders` object keyed by change order id, giving a per-change-order verdict (for example, a change order that was already billed on a previous invoice cannot be removed) alongside the requisition-level verdict.'
+                      properties:
+                        controls:
+                          type: object
+                          description: Map of action names to their permission descriptors.
+                      example:
+                        controls:
+                          destroy:
+                            requisition:
+                              allowed: false
+                              tooltip: Only the most recently created Invoice is deletable
+                          send_to_erp:
+                            requisition:
+                              allowed: false
+                              tooltip: This invoice is not in a status that can be sent to ERP
+                          remove_billable_change_orders:
+                            requisition:
+                              allowed: true
+                              tooltip: null
+                            change_orders:
+                              '1':
+                                allowed: true
+                                tooltip: null
+                              '2':
+                                allowed: false
+                                tooltip: This change order cannot be deleted because it is included in another invoice.
+                          update:
+                            billing_date:
+                              allowed: true
+                              tooltip: null
+                            status:
+                              allowed: false
+                              tooltip: The status of this invoice cannot be changed because there is a workflow enabled for this project.
+                            items:
+                              status:
+                                allowed: true
+                                tooltip: null
+                              work_completed_this_period:
+                                allowed: false
+                                tooltip: Only the most recently created Invoice is editable or deletable
+                    - description: Object that describes the action policy for the requisition. Included only when the view query param is 'action_policy', 'extended', or 'header_only'.
+                  tax_summary:
+                    type: array
+                    description: Aggregated tax summary for the requisition, grouped by tax code. Included only when the view query param is 'extended' or 'header_only'.
+                    items:
+                      type: object
+                      description: Line Item Tax Summary
+                      properties:
+                        tax_code_id:
+                          type: integer
+                          description: Tax code id
+                          example: 163215
+                        tax_code_name:
+                          type: string
+                          description: Tax code name
+                          example: HST
+                        tax_code_rate:
+                          type: number
+                          description: Tax code rate
+                          example: 0.15
+                        applied_amount:
+                          type: number
+                          description: Total applied amount for all line items with this tax code
+                          example: 54321
+                  accounting_method:
+                    type: string
+                    enum:
+                    - amount
+                    - unit
+                    description: Accounting method of the requisition's contract. Included only when the view query param is 'extended' or 'header_only'.
+                    example: amount
+                  items:
+                    type: array
+                    description: Requisition items. Included only when the views query param includes 'extended' or 'items'.
+                    items:
+                      type: object
+                      description: Requisition (Subcontractor Invoice) item
+                      properties:
+                        id:
+                          type: integer
+                          description: ID of the Contract Item or Contract Detail Item or Change Order Item or Whole Change Order Item
+                          example: 341256
+                        item_type:
+                          type: string
+                          deprecated: true
+                          description: Deprecated. Use `item_type_v2`. Item Type - (contract_item, contract_detail_item, change_order_item, whole_change_order_item). Commitment Change Order SSOV detail rows are reported as `contract_detail_item` here.
+                          example: contract_detail_item
+                        item_type_v2:
+                          type: string
+                          description: Item Type - one of `contract_item`, `contract_detail_item`, `change_order_detail_item`, `change_order_item`, or `whole_change_order_item`. `change_order_detail_item` identifies a Commitment Change Order (CCO) SSOV detail row.
+                          enum:
+                          - contract_item
+                          - change_order_detail_item
+                          - change_order_item
+                          - contract_detail_item
+                          - whole_change_order_item
+                        accounting_method:
+                          type: string
+                          enum:
+                          - amount
+                          - unit
+                          description: Accounting method
+                          example: amount
+                        cost_code_id:
+                          type:
+                          - integer
+                          - 'null'
+                          description: Cost Code ID
+                          example: 21585118
+                        currency_configuration:
+                          type: object
+                          description: Requisition (Subcontractor Invoice) Currency Configuration
+                          properties:
+                            currency_iso_code:
+                              type: string
+                              description: ISO Code for the Currency
+                              example: USD
+                            currency_exchange_rate:
+                              type: number
+                              format: float
+                              description: The exchange rate between the invoice currency and the project currency
+                              example: 1.8
+                            base_currency_iso_code:
+                              type: string
+                              description: Project or Company ISO Code
+                              example: EUR
+                        line_item_id:
+                          type: integer
+                          description: Line Item ID
+                          example: 3129856
+                        description_of_work:
+                          type:
+                          - string
+                          - 'null'
+                          example: Install windows
+                        net_amount:
+                          type: string
+                          description: Net amount of line item
+                          example: '100.00'
+                        gross_amount:
+                          type: string
+                          description: Gross amount of line item
+                          example: '200.00'
+                        wbs_code:
+                          type: object
+                          description: Item's associated Budget Code
+                          properties:
+                            id:
+                              type: integer
+                              description: ID
+                              example: 44
+                            flat_code:
+                              type: string
+                              description: wbs code flat code
+                              example: 2.E
+                            description:
+                              type: string
+                              description: wbs code description
+                              example: Earthwork.Equipment
+                            segment_items:
+                              type: array
+                              description: Work breakdown structure segment items
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: integer
+                                    description: ID
+                                    example: 55
+                                  code:
+                                    type: string
+                                    description: Code
+                                    example: 2
+                                  name:
+                                    type: string
+                                    description: Name
+                                    example: Earthwork
+                                  path_ids:
+                                    type: array
+                                    description: Path variable IDs
+                                    items:
+                                      type: integer
+                                      example:
+                                      - 55
+                                  path_codes:
+                                    type: array
+                                    description: Path variable codes
+                                    items:
+                                      type: string
+                                      example:
+                                      - 2 - Earthwork
+                                  segment_type:
+                                    type: string
+                                    description: Segment Type
+                                    example: cost_code
+                                  segment_id:
+                                    type: integer
+                                    description: Segment ID
+                        scheduled_value:
+                          type: string
+                          description: Scheduled value amount
+                          example: '1.00'
+                        work_completed_from_previous_application:
+                          type: string
+                          description: Work completed from previous application amount
+                          example: '0.00'
+                        work_completed_this_period:
+                          type: string
+                          description: Work completed this period amount
+                          example: '0.00'
+                        materials_presently_stored:
+                          type: string
+                          description: Amount of materials presently stored
+                          example: '2691.36'
+                        materials_presently_stored_quantity:
+                          type: string
+                          description: Quantity of the Materials presently stored, only for unit based line items
+                          example: '134.56789'
+                        materials_presently_stored_from_previous_progress:
+                          type: string
+                          description: Materials presently stored from previous progress
+                          example: '0.00'
+                        materials_previously_stored_quantity:
+                          type: string
+                          description: Quantity of the Materials stored from the previous invoice, only for unit based line items
+                          example: 12.3456
+                        materials_moved:
+                          type: string
+                          description: Materials automatically moved from previous line item into previous work completed. This will be non-zero only if move_materials_to_previous_work_completed is true on the payment application.
+                          example: '0.00'
+                        materials_retainage_retained_moved:
+                          type: string
+                          description: Retainage on materials automatically moved from previous line item into work completed retainage amount accrued previously. This will be non-zero only if move_materials_to_previous_work_completed is true on the payment application.
+                          example: '0.00'
+                        total_completed_and_stored_to_date:
+                          type: string
+                          description: Total completed and stored to date amount
+                          example: '0.00'
+                        total_completed_and_stored_to_date_percent:
+                          type: string
+                          description: Total completed and stored to date percent
+                          example: '0.0'
+                        total_completed_and_stored_to_date_from_previous:
+                          type: string
+                          description: Total completed and stored to date from previous
+                          example: '100.00'
+                        work_completed_retainage_from_previous_application:
+                          type: string
+                          description: Work completed retainage amount from previous application
+                          example: '0.0'
+                        work_completed_retainage_retained_this_period:
+                          type: string
+                          description: Work completed retainage amount retained this period
+                          example: '0.0'
+                        work_completed_retainage_percent_this_period:
+                          type: string
+                          description: Work completed retainage percent this period
+                          example: '10.0'
+                        materials_stored_retainage_currently_retained:
+                          type: string
+                          description: Materials stored retainage amount currently retained
+                          example: '0.0'
+                        materials_stored_retainage_percent_this_period:
+                          type: string
+                          description: Materials stored retainage percent this period, present
+                          example: '10.0'
+                        materials_stored_retainage_new_materials:
+                          type: string
+                          description: Materials stored retainage from new materials, present
+                          example: '10.0'
+                        work_completed_retainage_released_this_period:
+                          type: string
+                          description: Work completed retainage amount released this period
+                          example: '0.0'
+                        materials_stored_retainage_released_this_period:
+                          type: string
+                          description: Materials stored retainage amount released this period
+                          example: '0.0'
+                        scheduled_quantity:
+                          type: string
+                          description: Scheduled quantity
+                          example: '0.0'
+                        scheduled_unit_price:
+                          type: string
+                          description: Scheduled unit price
+                          example: '20.0'
+                        work_completed_this_period_quantity:
+                          type: string
+                          description: Work completed this period quantity
+                          example: '0.0'
+                        work_completed_from_previous_application_quantity:
+                          type: string
+                          description: Work completed from previous application quantity
+                          example: '0.0'
+                        comment:
+                          type:
+                          - string
+                          - 'null'
+                          description: Comment
+                          example: Installation charges
+                        status:
+                          type: string
+                          description: Status
+                          example: no_action
+                        position:
+                          type: integer
+                          description: Position of this item
+                          example: 1
+                        line_number:
+                          type: string
+                          description: Line Number for the item
+                          example: '1.1'
+                        ssr_manual_override:
+                          type: boolean
+                          description: SSR Manual Override
+                          example: false
+                        subcontractor_claimed_amount:
+                          type: string
+                          description: Amount claimed by the subcontractor
+                          example: '0.0'
+                        previous_progress_id:
+                          type: integer
+                          description: ID of the previous progress for the item
+                          example: 55463
+                        taxes:
+                          type: array
+                          description: Tax code information associated with the item
+                          items:
+                            type: object
+                            properties:
+                              tax_code_id:
+                                type: integer
+                                description: ID of the tax code
+                                example: 1
+                              tax_code_name:
+                                type: string
+                                description: Code of the tax code
+                                example: VAT
+                              tax_code_rate:
+                                type: number
+                                format: float
+                                description: Rate of the tax code
+                                example: 0.1
+                        uom:
+                          type: string
+                          description: Unit of measure for this line item
+                          example: m²
+                  item_packages:
+                    type: array
+                    description: Requisition item packages. An item package can have either a contract or change order as its parent entity. Included only when the views query param includes 'extended' or 'items'.
+                    items:
+                      type: object
+                      description: Requisition (Subcontractor Invoice) item package
+                      properties:
+                        id:
+                          type: integer
+                          description: ID of the item package
+                          example: 341256
+                        contract_id:
+                          type: integer
+                          description: ID of the contract associated with the item package
+                          example: 341256
+                        change_order_id:
+                          type:
+                          - integer
+                          - 'null'
+                          description: ID of the change order associated with the item package
+                          example: 341256
+                        number:
+                          type:
+                          - string
+                          - 'null'
+                          description: number associated with the item package's parent entity
+                          example: 1
+                        title:
+                          type:
+                          - string
+                          - 'null'
+                          description: title associated with the item package's parent entity
+                          example: Contract Title
+                        status:
+                          type: string
+                          description: status associated with the item package's parent entity
+                          example: Approved
+                        position:
+                          type: integer
+                          description: position associated with the item package's parent entity
+                          example: 1
+                        change_order_acronym_number:
+                          type: string
+                          description: acronym for the change order object associated with the item package. Null if the item package's parent entity is a contract.
+                          example: 'PCO #003'
+                        change_order_request:
+                          type: object
+                          description: The change order request an item package is associated with. Only returned on three tier projects.
+                          properties:
+                            id:
+                              type:
+                              - integer
+                              - 'null'
+                              description: ID of the change order request associated with the item package
+                              example: 341256
+                            title:
+                              type:
+                              - string
+                              - 'null'
+                              description: title of the change order request associated with the item package
+                              example: COR Title
+                            change_order_acronym_number:
+                              type: string
+                              description: acronym and number for the change order request associated with the item package
+                              example: 'COR #003'
+                        batch:
+                          type: object
+                          description: The change order batch an item package is associated with. Only returned on multi tier projects.
+                          properties:
+                            id:
+                              type:
+                              - integer
+                              - 'null'
+                              description: ID of the change order batch associated with the item package
+                              example: 341256
+                            title:
+                              type:
+                              - string
+                              - 'null'
+                              description: title of the change order batch associated with the item package
+                              example: COR Title
+                            change_order_acronym_number:
+                              type: string
+                              description: acronym and number for the change order batch associated with the item package
+                              example: 'CCO #003'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  exception:
+                    type: string
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.0/requisitions/%7Bid%7D',\n  headers: {'content-type': 'application/json'},\n  body: {\n    project_id: 55001,\n    commitment_id: 66005,\n    attachments: ['string'],\n    requisition: {\n      period_id: 20093,\n      requisition_start: '2013-10-01',\n      requisition_end: '2013-10-31',\n      billing_date: '2013-10-31',\n      final: true,\n      invoice_number: 'ABC-1234',\n      payment_date: '2013-11-15',\n      origin_data: 'XYZ-0012',\n      origin_id: 'abc-123',\n      status: 'under_review',\n      submitted_at: '2013-11-02',\n      comment: 'Materials requested for foyer upgrade.',\n      'custom_field_%{custom_field_definition_id}': 'custom field value'\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"project_id\":55001,\"commitment_id\":66005,\"attachments\":[\"string\"],\"requisition\":{\"period_id\":20093,\"requisition_start\":\"2013-10-01\",\"requisition_end\":\"2013-10-31\",\"billing_date\":\"2013-10-31\",\"final\":true,\"invoice_number\":\"ABC-1234\",\"payment_date\":\"2013-11-15\",\"origin_data\":\"XYZ-0012\",\"origin_id\":\"abc-123\",\"status\":\"under_review\",\"submitted_at\":\"2013-11-02\",\"comment\":\"Materials requested for foyer upgrade.\",\"custom_field_%{custom_field_definition_id}\":\"custom field value\"}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("PATCH", "/rest/v1.0/requisitions/%7Bid%7D", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url https://api.procore.com/rest/v1.0/requisitions/%7Bid%7D \\\n  --header 'content-type: application/json' \\\n  --data '{\"project_id\":55001,\"commitment_id\":66005,\"attachments\":[\"string\"],\"requisition\":{\"period_id\":20093,\"requisition_start\":\"2013-10-01\",\"requisition_end\":\"2013-10-31\",\"billing_date\":\"2013-10-31\",\"final\":true,\"invoice_number\":\"ABC-1234\",\"payment_date\":\"2013-11-15\",\"origin_data\":\"XYZ-0012\",\"origin_id\":\"abc-123\",\"status\":\"under_review\",\"submitted_at\":\"2013-11-02\",\"comment\":\"Materials requested for foyer upgrade.\",\"custom_field_%{custom_field_definition_id}\":\"custom field value\"}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/requisitions/%7Bid%7D\"),\n    Content = new StringContent(\"{\\\"project_id\\\":55001,\\\"commitment_id\\\":66005,\\\"attachments\\\":[\\\"string\\\"],\\\"requisition\\\":{\\\"period_id\\\":20093,\\\"requisition_start\\\":\\\"2013-10-01\\\",\\\"requisition_end\\\":\\\"2013-10-31\\\",\\\"billing_date\\\":\\\"2013-10-31\\\",\\\"final\\\":true,\\\"invoice_number\\\":\\\"ABC-1234\\\",\\\"payment_date\\\":\\\"2013-11-15\\\",\\\"origin_data\\\":\\\"XYZ-0012\\\",\\\"origin_id\\\":\\\"abc-123\\\",\\\"status\\\":\\\"under_review\\\",\\\"submitted_at\\\":\\\"2013-11-02\\\",\\\"comment\\\":\\\"Materials requested for foyer upgrade.\\\",\\\"custom_field_%{custom_field_definition_id}\\\":\\\"custom field value\\\"}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added custom_fields to the output.
+        description: When enabled, the output will contain custom_fields associated with the project.
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2022-05-25'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.0#update-requisition-subcontractor-invoice
+      - summary: Added custom_fields to the request input body.
+        description: When enabled, the request body will now accept custom_fields
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2022-06-01'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.0#update-requisition-subcontractor-invoice
+      - summary: Remove items from the docs response, as it's not returned in this endpoint
+        description: This endpoint does not return items in the response
+        endpoint: PATCH /requisitions/{id}
+        type: fix
+        breaking: false
+        datestamp: '2023-04-13'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.0#update-requisition-subcontractor-invoice
+      - summary: Added currency_configuration to the output.
+        description: Creation of new response field currency_configuration, that will hold currency information for the invoice
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2023-04-19'
+        versions:
+        - '1.0'
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.0#update-requisition-subcontractor-invoice
+      - summary: Added Invoice Type to response
+        description: Added invoice_type to response.
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2024-09-26'
+        versions:
+        - '1.1'
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.0#update-requisition-subcontractor-invoice
+      operationId: updateRequisitionSubcontractorInvoice
+  /rest/v1.1/requisitions/{id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      description: Requisition (Subcontractor Invoice) ID
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    patch:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Update Requisition (Subcontractor Invoice)
+      description: Update a specified Requisition (Subcontractor Invoice). Users without admin permissions can only update a requisition (sub invoice) if it is the most recent and has a status of 'draft' or 'revise_and_resubmit'. Users with admin permissions can update a requisition (sub invoice) regardless of its status or whether it is the most recent. Requisition items are optional.
+      tags:
+      - Requisitions (Subcontractor Invoice)
+      parameters:
+      - name: view
+        in: query
+        required: false
+        description: 'Specifies which view (which attributes) of the resource is going to be present in the response. The `header_only` view is intended for split header / line-items rendering on the Subcontractor Invoicing UI: it returns the same shape as `action_policy` plus `tax_summary`, `accounting_method`, and `summary_text`, while skipping `items` and `item_packages`.'
+        schema:
+          type: string
+          enum:
+          - default
+          - extended
+          - items
+          - action_policy
+          - header_only
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Body
+              type: object
+              required:
+              - project_id
+              - commitment_id
+              properties:
+                project_id:
+                  type: integer
+                  description: Project ID
+                  example: 55001
+                commitment_id:
+                  type: integer
+                  description: Commitment ID
+                  example: 66005
+                requisition:
+                  title: Requisition (Subcontractor Invoice)
+                  type: object
+                  description: Requisition (Subcontractor Invoice)
+                  properties:
+                    items:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - id
+                        - item_type
+                        properties:
+                          id:
+                            type: integer
+                            description: The id of a requisition line item
+                            example: 1001
+                          line_item_id:
+                            type: integer
+                            description: The line item id of a contract line item
+                            example: 1001
+                          detail_line_item_id:
+                            type: integer
+                            description: Parent detail line item ID. For `contract_detail_item`, this is a Work Order / Purchase Order Contract Detail Line Item ID. For `change_order_detail_item`, this is a Change Order Detail Line Item ID (Commitment Change Order SSOV).
+                            example: 1001
+                          item_type:
+                            type: string
+                            description: The type of the item you are updating. Required if you are updating a line item. `change_order_detail_item` identifies a Commitment Change Order (CCO) SSOV detail row (a detail row that hangs off an approved change order rather than the base contract SOV).
+                            enum:
+                            - contract_item
+                            - contract_detail_item
+                            - change_order_detail_item
+                            - change_order_item
+                            example: contract_detail_item
+                          work_completed_this_period:
+                            type: string
+                            description: The amount of work completed this period
+                            example: 1000
+                          materials_presently_stored:
+                            type: string
+                            description: The amount of materials presently stored. Only considered when neither new_materials nor stored_materials are in the input. Ingored for unit based line items.
+                            example: 500
+                          materials_presently_stored_from_previous_progress:
+                            type: string
+                            description: The amount of materials presently stored from the previous progress
+                            example: 250
+                          new_materials:
+                            type: string
+                            description: New materials amount
+                            example: 30
+                          new_materials_quantity:
+                            type: string
+                            description: Quantity of new materials added. Only applicable to unit based line items.
+                            example: 30.1234
+                          stored_materials:
+                            type: string
+                            description: Previously stored materials amount, ignored for unit base line items.
+                            example: '0.00'
+                          stored_materials_quantity:
+                            type: number
+                            format: float
+                            description: Quantity of previously stored materials. Only applicable for unit based line items.
+                            example: 50.456
+                          work_completed_retainage_retained_this_period:
+                            type: string
+                            description: Work completed retainage amount retained this period (admin user only, work_completed_this_period should be non-zero to hold a retainage). If both this field and work_completed_retainage_percent_this_period are sent, this retained amount takes precedence and the percent is derived from this amount divided by work_completed_this_period.
+                            example: 100
+                          materials_stored_retainage_currently_retained:
+                            type: string
+                            description: Materials stored retainage amount currently retained (admin user, amount accounting only, materials_presently_stored should be non-zero to hold a retainage). If both this field and materials_stored_retainage_percent_this_period are sent, this retained amount takes precedence and the percent is derived from this amount divided by materials_presently_stored.
+                            example: 50
+                          work_completed_retainage_released_this_period:
+                            type: string
+                            description: The amount of work completed retainage released this period
+                            example: 0
+                          work_completed_this_period_quantity:
+                            type: string
+                            description: Work completed this period quantity (unit accounting contract only)
+                            example: 10
+                          work_completed_retainage_percent_this_period:
+                            type: string
+                            description: Work completed retainage percent for this period. When provided without work_completed_retainage_retained_this_period, this field is only persisted if work_completed_this_period is zero. In that case, the explicit percent is preserved while the retained amount remains zero. Must be between 0 and 100 inclusive; values outside this range return 422.
+                            example: 10
+                          materials_stored_retainage_percent_this_period:
+                            type: string
+                            description: Materials stored retainage percent for this period. When provided without materials_stored_retainage_currently_retained, this field is only persisted if materials_presently_stored is zero. In that case, the explicit percent is preserved while the retained amount remains zero. Must be between 0 and 100 inclusive; values outside this range return 422.
+                            example: 10
+                          subcontractor_claimed_amount:
+                            type: string
+                            description: The total amount the subcontractor original claimed for this line
+                            example: 20.5
+                          status:
+                            type: string
+                            description: Approval status of the invoice line item
+                            enum:
+                            - approved
+                            - rejected
+                            - no_action
+                            example: rejected
+                          comment:
+                            type: string
+                            description: Comment about the invoice line item
+                            example: This work was not yet completed
+                    period_id:
+                      type: integer
+                      description: Period ID
+                      example: 20093
+                    requisition_start:
+                      type: string
+                      format: date
+                      description: Requisition (Subcontractor Invoice) start date
+                      example: '2013-10-01'
+                    requisition_end:
+                      type: string
+                      format: date
+                      description: Requisition (Subcontractor Invoice) end date
+                      example: '2013-10-31'
+                    billing_date:
+                      type: string
+                      format: date
+                      description: Billing date
+                      example: '2013-10-31'
+                    final:
+                      type: boolean
+                      description: true or false value indicating whether or not this is the final invoice
+                      example: true
+                    invoice_number:
+                      type: string
+                      description: Invoice number
+                      example: ABC-1234
+                    payment_date:
+                      type: string
+                      format: date
+                      description: Date requisition was paid
+                      example: '2013-11-15'
+                    origin_data:
+                      type: string
+                      description: Requisition (Subcontractor Invoice) third party data
+                      example: XYZ-0012
+                    origin_id:
+                      type: string
+                      description: Requisition (Subcontractor Invoice) third party ID
+                      example: abc-123
+                    status:
+                      type: string
+                      enum:
+                      - draft
+                      - under_review
+                      - revise_and_resubmit
+                      - approved
+                      - approved_as_noted
+                      - pending_owner_approval
+                      description: Status; admin can set any status, standard and billing recipient can set to under_review (submit) or draft (save)
+                      example: under_review
+                    submitted_at:
+                      type: string
+                      format: date
+                      description: Date requisition was submitted
+                      example: '2013-11-02'
+                    prostore_file_ids:
+                      type: array
+                      description: An array of Prostore File IDs. The Prostore Files will be associated with the Requisition (Subcontractor Invoice) as attachments.
+                      items:
+                        type: integer
+                      example:
+                      - 42
+                    upload_ids:
+                      type: array
+                      description: An array of Upload UUIDs. The Uploads will be associated with the Requisition (Subcontractor Invoice) as attachments.
+                      items:
+                        type: string
+                        description: Upload IDs
+                        example:
+                        - 01HZB4TFFBZWDQ92N3RJFM5J2Z
+                        - 01HZB4TFERXDDQ354NTB09GEA6
+                    custom_field_%{custom_field_definition_id}:
+                      description: 'Value of the custom field. The data type of the value passed in corresponds with the data_type of the Custom Field Definition.
+
+                        For a lov_entry data_type the value passed in should be the ID of one of the Custom Field Definition''s LOV Entries. For a lov_entries data_type the value passed in should be an array of IDs of the Custom Field Definition''s LOV Entries.'
+                      example: custom field value
+                      oneOf:
+                      - type: string
+                        title: string
+                      - type: number
+                        title: number
+                      - type: boolean
+                        title: boolean
+                      - type: array
+                        title: array
+                        items:
+                          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Extended Requisition (Subcontractor Invoice)
+                properties:
+                  id:
+                    type: integer
+                    description: ID
+                    example: 58820
+                  previous_requisition_id:
+                    type: integer
+                    description: ID for the previous requisition before this one on the same contract
+                    example: 58819
+                  project_id:
+                    type: integer
+                    description: Project ID
+                    example: 789
+                  billing_date:
+                    type: string
+                    format: date
+                    description: Billing date
+                    example: '2013-11-20'
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Date req was created
+                    example: '2013-11-15T12:00:00Z'
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: Date req was last updated
+                    example: '2013-11-15T12:00:00Z'
+                  commitment_id:
+                    type: integer
+                    description: commitment ID
+                    example: 701973
+                  commitment_type:
+                    type: string
+                    description: Commitment Type
+                    example: WorkOrderContract
+                  contract_name:
+                    type: string
+                    description: Contract Name
+                    example: Contract SC-001
+                  deletable:
+                    type: boolean
+                    description: A boolean indicating whether or not the invoice can be deleted.
+                    example: false
+                  final:
+                    type:
+                    - boolean
+                    - 'null'
+                    description: true or false value indicating whether or not this is the final invoice
+                    example: true
+                  vendor_name:
+                    type: string
+                    description: Name of Vendor for Invoice
+                    example: Ernie's Electrical
+                  vendor_id:
+                    type: integer
+                    description: ID of Vendor for Invoice
+                    example: 8881212
+                  invoice_number:
+                    type:
+                    - string
+                    - 'null'
+                    description: Invoice number
+                    example: 123
+                  invoice_type:
+                    type: string
+                    description: Invoice type (present in all views)
+                    example: progress_and_retainage_release
+                    enum:
+                    - progress
+                    - retainage_release
+                    - progress_and_retainage_release
+                  contract_invoicing_method:
+                    type: string
+                    description: The invoicing method for the contract, either progressive or simplified
+                    example: progressive
+                    enum:
+                    - progressive
+                    - simplified
+                  origin_data:
+                    type:
+                    - string
+                    - 'null'
+                    description: Requisition (Subcontractor Invoice) third party data
+                    example: XYZ-0012
+                  origin_id:
+                    type:
+                    - string
+                    - 'null'
+                    description: Requisition (Subcontractor Invoice) third party ID
+                    example: abc-123
+                  payment_date:
+                    type:
+                    - string
+                    - 'null'
+                    format: date
+                    description: Date requisition was paid
+                    example: '2013-11-15'
+                  percent_complete:
+                    type: string
+                    description: Percent complete
+                    example: 0
+                  period_id:
+                    type: integer
+                    description: Period ID
+                    example: 4293
+                  requisition_start:
+                    type: string
+                    format: date
+                    description: Requisition (Subcontractor Invoice) start date
+                    example: '2013-11-01'
+                  requisition_end:
+                    type: string
+                    format: date
+                    description: Requisition (Subcontractor Invoice) end date
+                    example: '2013-11-02'
+                  status:
+                    type: string
+                    enum:
+                    - draft
+                    - under_review
+                    - revise_and_resubmit
+                    - approved
+                    - approved_as_noted
+                    - pending_owner_approval
+                    description: Status
+                    example: approved
+                  erp_status:
+                    type: string
+                    description: Current ERP status of Requisition
+                    example: synced
+                  number:
+                    type: integer
+                    description: Requisition (Subcontractor Invoice) number
+                    example: 1
+                  submitted_at:
+                    type:
+                    - string
+                    - 'null'
+                    format: date
+                    description: Date requisition was submitted
+                    example: '2013-11-02'
+                  total_claimed_amount:
+                    type: string
+                    description: Total Claimed Amount for the Invoice
+                    example: '100.00'
+                  electronic_signature_id:
+                    type: integer
+                    description: Electronic Signature ID
+                    example: 701973
+                  move_materials_to_previous_work_completed:
+                    type: boolean
+                    description: A boolean indicating if should move materials to previous work completed.
+                    example: false
+                  summary_text:
+                    type: object
+                    description: Requisition (Subcontractor Invoice) summary text. Included when the view query param is 'extended' or 'header_only' AND the contract's invoicing method is 'progressive'. Omitted for 'simplified' contracts regardless of view.
+                    properties:
+                      project_name:
+                        type: string
+                        description: Name of the project
+                        example: Project
+                      project_number:
+                        type: string
+                        description: Number of the project
+                        example: '100'
+                      to_general_contractor:
+                        type: string
+                        description: Name of the company the requisition is for
+                        example: Company A
+                      requisition_period_start:
+                        type: string
+                        format: date
+                        description: Requisition period start date
+                        example: '2010-01-01'
+                      requisition_period_end:
+                        type: string
+                        format: date
+                        description: Requisition period end date
+                        example: '2010-01-01'
+                      subcontractor_name:
+                        type: string
+                        description: Name of the company the requisition is from
+                        example: Company B
+                      subcontractor_street:
+                        type: string
+                        description: Street address of the company the requisition is from
+                        example: 101 XYZ Avenue
+                      subcontractor_city:
+                        type: string
+                        description: City of the company the requisition is from
+                        example: New York
+                      subcontractor_state_code:
+                        type: string
+                        description: State code of the company the requisition is from
+                        example: NY
+                      subcontractor_zip:
+                        type: string
+                        description: Zip code of the company the requisition is from
+                        example: '10101'
+                      subcontractor_country_code:
+                        type: string
+                        description: Country code of the company the requisition is from
+                        example: US
+                      application_number:
+                        type: string
+                        description: Invoice number
+                        example: '1'
+                      contract_for:
+                        type: string
+                        description: The contract title
+                        example: Ceiling Tiles
+                      contract_date:
+                        type: string
+                        format: date
+                        description: Date the signed contract is received
+                        example: '2010-01-01'
+                  summary:
+                    type: object
+                    description: Requisition (Subcontractor Invoice) summary
+                    properties:
+                      balance_to_finish_including_retainage:
+                        type: string
+                        description: Balance to finish including retainage
+                        example: 1268346.55
+                      completed_work_retainage_percent:
+                        type: string
+                        description: Completed work retainage percent
+                        example: 10
+                      completed_work_retainage_amount:
+                        type: string
+                        description: Completed work retainage amount
+                        example: '1201.0'
+                      contract_sum_to_date:
+                        type: string
+                        description: Contract sum to date
+                        example: 1279159.15
+                      current_payment_due:
+                        type: string
+                        description: Current payment due
+                        example: 10812.6
+                      formatted_period:
+                        type: string
+                        description: Formatted billing period
+                        example: 01/06/19 - 30/06/19
+                      less_previous_certificates_for_payment:
+                        type: string
+                        description: Less previous certificates for payment
+                        example: 0
+                      negative_change_order_item_total:
+                        type: string
+                        description: Negative change order item total
+                        example: 0
+                      negative_new_change_order_item_total:
+                        type: string
+                        description: Negative new change order item total
+                        example: 0
+                      negative_previous_change_order_item_total:
+                        type: string
+                        description: Negative previous change order item total
+                        example: 0
+                      net_change_by_change_orders:
+                        type: string
+                        description: Net change by change orders
+                        example: 256706.65
+                      original_contract_sum:
+                        type: string
+                        description: Original contract sum
+                        example: 1022452.5
+                      positive_change_order_item_total:
+                        type: string
+                        description: Positive change order item total
+                        example: '0.00'
+                      positive_new_change_order_item_total:
+                        type: string
+                        description: Positive new change order item total
+                        example: '0.00'
+                      positive_previous_change_order_item_total:
+                        type: string
+                        description: Positive previous change order item total
+                        example: '0.00'
+                      stored_materials_retainage_amount:
+                        type: string
+                        description: Stored materials retainage amount
+                        example: 0.4
+                      stored_materials_retainage_percent:
+                        type: string
+                        description: Stored materials retainage percent
+                        example: 10
+                      tax_applicable_to_this_payment:
+                        type: string
+                        description: Tax applicable to this payment
+                        example: 0
+                      total_completed_and_stored_to_date:
+                        type: string
+                        description: Total completed and stored to date
+                        example: 1201.4
+                      total_earned_less_retainage:
+                        type: string
+                        description: Total earned less retainage
+                        example: 10812.6
+                      total_retainage:
+                        type: string
+                        description: Total retainage
+                        example: 1201.4
+                      new_materials:
+                        type: string
+                        description: Amount of new materials added this period
+                        example: '1975.31'
+                      new_materials_quantity:
+                        type: string
+                        description: Quantity of new materials added this period, only for unit based line items
+                        example: '98.7654'
+                      stored_materials:
+                        type: string
+                        description: Amount of materials presently stored less the new materials added this period
+                        example: '716.05'
+                      stored_materials_quantity:
+                        type: string
+                        description: Quantity of materials presently stored less the new materials added this period
+                        example: '35.80249'
+                  created_by:
+                    type: object
+                    description: Login Information
+                    properties:
+                      id:
+                        type: integer
+                        description: Login Information ID
+                        example: 1738090
+                      name:
+                        type: string
+                        description: User name
+                        example: John Doe
+                      login:
+                        type: string
+                        description: User email
+                        example: johndoe@example.com
+                      company_name:
+                        type:
+                        - string
+                        - 'null'
+                        description: User Company name. If the user belongs to a vendor, the vendor name will be returned.
+                        example: Builders Inc.
+                  subtiers_certified_by:
+                    type: object
+                    description: Login Information
+                    properties:
+                      id:
+                        type: integer
+                        description: Login Information ID
+                        example: 1738090
+                      name:
+                        type: string
+                        description: User name
+                        example: John Doe
+                      login:
+                        type: string
+                        description: User email
+                        example: johndoe@example.com
+                      company_name:
+                        type:
+                        - string
+                        - 'null'
+                        description: User Company name. If the user belongs to a vendor, the vendor name will be returned.
+                        example: Builders Inc.
+                  custom_fields:
+                    type: object
+                    properties:
+                      custom_field_%{custom_field_string_definition_id}:
+                        type: object
+                        properties:
+                          data_type:
+                            type: string
+                            description: Data type of the Custom Field Definition
+                            example: string
+                          value:
+                            type: string
+                            description: The value of the custom field
+                            example: custom field value
+                          variant:
+                            type: string
+                            description: The variant of the Custom Field Definition (e.g. `phone_number`). Present only when the definition has an associated variant.
+                            example: phone_number
+                      custom_field_%{custom_field_decimal_definition_id}:
+                        type: object
+                        properties:
+                          data_type:
+                            type: string
+                            description: Data type of the Custom Field Definition
+                            example: decimal
+                          value:
+                            type: number
+                            description: The value of the custom field
+                            example: 2.2
+                      custom_field_%{custom_field_boolean_definition_id}:
+                        type: object
+                        properties:
+                          data_type:
+                            type: string
+                            description: Data type of the Custom Field Definition
+                            example: boolean
+                          value:
+                            type: boolean
+                            description: The value of the custom field
+                            example: true
+                      custom_field_%{custom_field_lov_entry_definition_id}:
+                        type: object
+                        properties:
+                          data_type:
+                            type: string
+                            description: Data type of the Custom Field Definition
+                            example: lov_entry
+                          value:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                description: ID of the LOV Entry
+                                example: 1
+                              label:
+                                type: string
+                                description: Label of the LOV Entry
+                                example: Open
+                          variant:
+                            type: string
+                            description: The variant of the Custom Field Definition (e.g. `project_directory`). Present only when the definition has an associated variant.
+                            example: with_code
+                      custom_field_%{custom_field_lov_entries_definition_id}:
+                        type: object
+                        properties:
+                          data_type:
+                            type: string
+                            description: Data type of the Custom Field Definition
+                            example: lov_entries
+                          value:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                  description: ID of the LOV Entry
+                                  example: 2
+                                label:
+                                  type: string
+                                  description: Label of the LOV Entry
+                                  example: Open
+                  currency_configuration:
+                    type: object
+                    description: Requisition (Subcontractor Invoice) Currency Configuration
+                    properties:
+                      currency_iso_code:
+                        type: string
+                        description: ISO Code for the Currency
+                        example: USD
+                      currency_exchange_rate:
+                        type: number
+                        format: float
+                        description: The exchange rate between the invoice currency and the project currency
+                        example: 1.8
+                      base_currency_iso_code:
+                        type: string
+                        description: Project or Company ISO Code
+                        example: EUR
+                  attachments:
+                    type: array
+                    description: Attachments
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: ID
+                          example: 5324
+                        url:
+                          type: string
+                          description: URL
+                          example: http://www.example.com/
+                        filename:
+                          type: string
+                          description: Filename
+                          example: january_receipt_copy.jpg
+                        content_type:
+                          type: string
+                          description: Content Type
+                          example: image/jpeg
+                  action_policy:
+                    allOf:
+                    - type: object
+                      description: 'Action policy for a Requisition (Subcontractor Invoice). Each key under `controls` is the name of an action (e.g. `update`, `destroy`, `send_to_erp`); each leaf is a `{ allowed: boolean, tooltip: string|null }` pair indicating whether the calling user can perform that action and, if not, why. Action-shaped controls (like `destroy`) nest a single `requisition` key, while field-shaped controls (like `update`) list one key per editable field; field-shaped controls may also nest an `items` object to gate edits on individual line item fields. `remove_billable_change_orders` additionally nests a `change_orders` object keyed by change order id, giving a per-change-order verdict (for example, a change order that was already billed on a previous invoice cannot be removed) alongside the requisition-level verdict.'
+                      properties:
+                        controls:
+                          type: object
+                          description: Map of action names to their permission descriptors.
+                      example:
+                        controls:
+                          destroy:
+                            requisition:
+                              allowed: false
+                              tooltip: Only the most recently created Invoice is deletable
+                          send_to_erp:
+                            requisition:
+                              allowed: false
+                              tooltip: This invoice is not in a status that can be sent to ERP
+                          remove_billable_change_orders:
+                            requisition:
+                              allowed: true
+                              tooltip: null
+                            change_orders:
+                              '1':
+                                allowed: true
+                                tooltip: null
+                              '2':
+                                allowed: false
+                                tooltip: This change order cannot be deleted because it is included in another invoice.
+                          update:
+                            billing_date:
+                              allowed: true
+                              tooltip: null
+                            status:
+                              allowed: false
+                              tooltip: The status of this invoice cannot be changed because there is a workflow enabled for this project.
+                            items:
+                              status:
+                                allowed: true
+                                tooltip: null
+                              work_completed_this_period:
+                                allowed: false
+                                tooltip: Only the most recently created Invoice is editable or deletable
+                    - description: Object that describes the action policy for the requisition. Included only when the view query param is 'action_policy', 'extended', or 'header_only'.
+                  tax_summary:
+                    type: array
+                    description: Aggregated tax summary for the requisition, grouped by tax code. Included only when the view query param is 'extended' or 'header_only'.
+                    items:
+                      type: object
+                      description: Line Item Tax Summary
+                      properties:
+                        tax_code_id:
+                          type: integer
+                          description: Tax code id
+                          example: 163215
+                        tax_code_name:
+                          type: string
+                          description: Tax code name
+                          example: HST
+                        tax_code_rate:
+                          type: number
+                          description: Tax code rate
+                          example: 0.15
+                        applied_amount:
+                          type: number
+                          description: Total applied amount for all line items with this tax code
+                          example: 54321
+                  accounting_method:
+                    type: string
+                    enum:
+                    - amount
+                    - unit
+                    description: Accounting method of the requisition's contract. Included only when the view query param is 'extended' or 'header_only'.
+                    example: amount
+                  items:
+                    type: array
+                    description: Requisition items. Included only when the views query param includes 'extended' or 'items'.
+                    items:
+                      type: object
+                      description: Requisition (Subcontractor Invoice) item
+                      properties:
+                        id:
+                          type: integer
+                          description: ID of the Contract Item or Contract Detail Item or Change Order Item or Whole Change Order Item
+                          example: 341256
+                        item_type:
+                          type: string
+                          deprecated: true
+                          description: Deprecated. Use `item_type_v2`. Item Type - (contract_item, contract_detail_item, change_order_item, whole_change_order_item). Commitment Change Order SSOV detail rows are reported as `contract_detail_item` here.
+                          example: contract_detail_item
+                        item_type_v2:
+                          type: string
+                          description: Item Type - one of `contract_item`, `contract_detail_item`, `change_order_detail_item`, `change_order_item`, or `whole_change_order_item`. `change_order_detail_item` identifies a Commitment Change Order (CCO) SSOV detail row.
+                          enum:
+                          - contract_item
+                          - change_order_detail_item
+                          - change_order_item
+                          - contract_detail_item
+                          - whole_change_order_item
+                        accounting_method:
+                          type: string
+                          enum:
+                          - amount
+                          - unit
+                          description: Accounting method
+                          example: amount
+                        cost_code_id:
+                          type:
+                          - integer
+                          - 'null'
+                          description: Cost Code ID
+                          example: 21585118
+                        currency_configuration:
+                          type: object
+                          description: Requisition (Subcontractor Invoice) Currency Configuration
+                          properties:
+                            currency_iso_code:
+                              type: string
+                              description: ISO Code for the Currency
+                              example: USD
+                            currency_exchange_rate:
+                              type: number
+                              format: float
+                              description: The exchange rate between the invoice currency and the project currency
+                              example: 1.8
+                            base_currency_iso_code:
+                              type: string
+                              description: Project or Company ISO Code
+                              example: EUR
+                        line_item_id:
+                          type: integer
+                          description: Line Item ID
+                          example: 3129856
+                        description_of_work:
+                          type:
+                          - string
+                          - 'null'
+                          example: Install windows
+                        net_amount:
+                          type: string
+                          description: Net amount of line item
+                          example: '100.00'
+                        gross_amount:
+                          type: string
+                          description: Gross amount of line item
+                          example: '200.00'
+                        wbs_code:
+                          type: object
+                          description: Item's associated Budget Code
+                          properties:
+                            id:
+                              type: integer
+                              description: ID
+                              example: 44
+                            flat_code:
+                              type: string
+                              description: wbs code flat code
+                              example: 2.E
+                            description:
+                              type: string
+                              description: wbs code description
+                              example: Earthwork.Equipment
+                            segment_items:
+                              type: array
+                              description: Work breakdown structure segment items
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: integer
+                                    description: ID
+                                    example: 55
+                                  code:
+                                    type: string
+                                    description: Code
+                                    example: 2
+                                  name:
+                                    type: string
+                                    description: Name
+                                    example: Earthwork
+                                  path_ids:
+                                    type: array
+                                    description: Path variable IDs
+                                    items:
+                                      type: integer
+                                      example:
+                                      - 55
+                                  path_codes:
+                                    type: array
+                                    description: Path variable codes
+                                    items:
+                                      type: string
+                                      example:
+                                      - 2 - Earthwork
+                                  segment_type:
+                                    type: string
+                                    description: Segment Type
+                                    example: cost_code
+                                  segment_id:
+                                    type: integer
+                                    description: Segment ID
+                        scheduled_value:
+                          type: string
+                          description: Scheduled value amount
+                          example: '1.00'
+                        work_completed_from_previous_application:
+                          type: string
+                          description: Work completed from previous application amount
+                          example: '0.00'
+                        work_completed_this_period:
+                          type: string
+                          description: Work completed this period amount
+                          example: '0.00'
+                        materials_presently_stored:
+                          type: string
+                          description: Amount of materials presently stored
+                          example: '2691.36'
+                        materials_presently_stored_quantity:
+                          type: string
+                          description: Quantity of the Materials presently stored, only for unit based line items
+                          example: '134.56789'
+                        materials_presently_stored_from_previous_progress:
+                          type: string
+                          description: Materials presently stored from previous progress
+                          example: '0.00'
+                        materials_previously_stored_quantity:
+                          type: string
+                          description: Quantity of the Materials stored from the previous invoice, only for unit based line items
+                          example: 12.3456
+                        materials_moved:
+                          type: string
+                          description: Materials automatically moved from previous line item into previous work completed. This will be non-zero only if move_materials_to_previous_work_completed is true on the payment application.
+                          example: '0.00'
+                        materials_retainage_retained_moved:
+                          type: string
+                          description: Retainage on materials automatically moved from previous line item into work completed retainage amount accrued previously. This will be non-zero only if move_materials_to_previous_work_completed is true on the payment application.
+                          example: '0.00'
+                        total_completed_and_stored_to_date:
+                          type: string
+                          description: Total completed and stored to date amount
+                          example: '0.00'
+                        total_completed_and_stored_to_date_percent:
+                          type: string
+                          description: Total completed and stored to date percent
+                          example: '0.0'
+                        total_completed_and_stored_to_date_from_previous:
+                          type: string
+                          description: Total completed and stored to date from previous
+                          example: '100.00'
+                        work_completed_retainage_from_previous_application:
+                          type: string
+                          description: Work completed retainage amount from previous application
+                          example: '0.0'
+                        work_completed_retainage_retained_this_period:
+                          type: string
+                          description: Work completed retainage amount retained this period
+                          example: '0.0'
+                        work_completed_retainage_percent_this_period:
+                          type: string
+                          description: Work completed retainage percent this period
+                          example: '10.0'
+                        materials_stored_retainage_currently_retained:
+                          type: string
+                          description: Materials stored retainage amount currently retained
+                          example: '0.0'
+                        materials_stored_retainage_percent_this_period:
+                          type: string
+                          description: Materials stored retainage percent this period, present
+                          example: '10.0'
+                        materials_stored_retainage_new_materials:
+                          type: string
+                          description: Materials stored retainage from new materials, present
+                          example: '10.0'
+                        work_completed_retainage_released_this_period:
+                          type: string
+                          description: Work completed retainage amount released this period
+                          example: '0.0'
+                        materials_stored_retainage_released_this_period:
+                          type: string
+                          description: Materials stored retainage amount released this period
+                          example: '0.0'
+                        scheduled_quantity:
+                          type: string
+                          description: Scheduled quantity
+                          example: '0.0'
+                        scheduled_unit_price:
+                          type: string
+                          description: Scheduled unit price
+                          example: '20.0'
+                        work_completed_this_period_quantity:
+                          type: string
+                          description: Work completed this period quantity
+                          example: '0.0'
+                        work_completed_from_previous_application_quantity:
+                          type: string
+                          description: Work completed from previous application quantity
+                          example: '0.0'
+                        comment:
+                          type:
+                          - string
+                          - 'null'
+                          description: Comment
+                          example: Installation charges
+                        status:
+                          type: string
+                          description: Status
+                          example: no_action
+                        position:
+                          type: integer
+                          description: Position of this item
+                          example: 1
+                        line_number:
+                          type: string
+                          description: Line Number for the item
+                          example: '1.1'
+                        ssr_manual_override:
+                          type: boolean
+                          description: SSR Manual Override
+                          example: false
+                        subcontractor_claimed_amount:
+                          type: string
+                          description: Amount claimed by the subcontractor
+                          example: '0.0'
+                        previous_progress_id:
+                          type: integer
+                          description: ID of the previous progress for the item
+                          example: 55463
+                        taxes:
+                          type: array
+                          description: Tax code information associated with the item
+                          items:
+                            type: object
+                            properties:
+                              tax_code_id:
+                                type: integer
+                                description: ID of the tax code
+                                example: 1
+                              tax_code_name:
+                                type: string
+                                description: Code of the tax code
+                                example: VAT
+                              tax_code_rate:
+                                type: number
+                                format: float
+                                description: Rate of the tax code
+                                example: 0.1
+                        uom:
+                          type: string
+                          description: Unit of measure for this line item
+                          example: m²
+                  item_packages:
+                    type: array
+                    description: Requisition item packages. An item package can have either a contract or change order as its parent entity. Included only when the views query param includes 'extended' or 'items'.
+                    items:
+                      type: object
+                      description: Requisition (Subcontractor Invoice) item package
+                      properties:
+                        id:
+                          type: integer
+                          description: ID of the item package
+                          example: 341256
+                        contract_id:
+                          type: integer
+                          description: ID of the contract associated with the item package
+                          example: 341256
+                        change_order_id:
+                          type:
+                          - integer
+                          - 'null'
+                          description: ID of the change order associated with the item package
+                          example: 341256
+                        number:
+                          type:
+                          - string
+                          - 'null'
+                          description: number associated with the item package's parent entity
+                          example: 1
+                        title:
+                          type:
+                          - string
+                          - 'null'
+                          description: title associated with the item package's parent entity
+                          example: Contract Title
+                        status:
+                          type: string
+                          description: status associated with the item package's parent entity
+                          example: Approved
+                        position:
+                          type: integer
+                          description: position associated with the item package's parent entity
+                          example: 1
+                        change_order_acronym_number:
+                          type: string
+                          description: acronym for the change order object associated with the item package. Null if the item package's parent entity is a contract.
+                          example: 'PCO #003'
+                        change_order_request:
+                          type: object
+                          description: The change order request an item package is associated with. Only returned on three tier projects.
+                          properties:
+                            id:
+                              type:
+                              - integer
+                              - 'null'
+                              description: ID of the change order request associated with the item package
+                              example: 341256
+                            title:
+                              type:
+                              - string
+                              - 'null'
+                              description: title of the change order request associated with the item package
+                              example: COR Title
+                            change_order_acronym_number:
+                              type: string
+                              description: acronym and number for the change order request associated with the item package
+                              example: 'COR #003'
+                        batch:
+                          type: object
+                          description: The change order batch an item package is associated with. Only returned on multi tier projects.
+                          properties:
+                            id:
+                              type:
+                              - integer
+                              - 'null'
+                              description: ID of the change order batch associated with the item package
+                              example: 341256
+                            title:
+                              type:
+                              - string
+                              - 'null'
+                              description: title of the change order batch associated with the item package
+                              example: COR Title
+                            change_order_acronym_number:
+                              type: string
+                              description: acronym and number for the change order batch associated with the item package
+                              example: 'CCO #003'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  exception:
+                    type: string
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.1/requisitions/%7Bid%7D',\n  qs: {view: 'SOME_STRING_VALUE'},\n  headers: {'content-type': 'application/json'},\n  body: {\n    project_id: 55001,\n    commitment_id: 66005,\n    requisition: {\n      items: [\n        {\n          id: 1001,\n          line_item_id: 1001,\n          detail_line_item_id: 1001,\n          item_type: 'contract_detail_item',\n          work_completed_this_period: 1000,\n          materials_presently_stored: 500,\n          materials_presently_stored_from_previous_progress: 250,\n          new_materials: 30,\n          new_materials_quantity: 30.1234,\n          stored_materials: '0.00',\n          stored_materials_quantity: 50.456,\n          work_completed_retainage_retained_this_period: 100,\n          materials_stored_retainage_currently_retained: 50,\n          work_completed_retainage_released_this_period: 0,\n          work_completed_this_period_quantity: 10,\n          work_completed_retainage_percent_this_period: 10,\n          materials_stored_retainage_percent_this_period: 10,\n          subcontractor_claimed_amount: 20.5,\n          status: 'rejected',\n          comment: 'This work was not yet completed'\n        }\n      ],\n      period_id: 20093,\n      requisition_start: '2013-10-01',\n      requisition_end: '2013-10-31',\n      billing_date: '2013-10-31',\n      final: true,\n      invoice_number: 'ABC-1234',\n      payment_date: '2013-11-15',\n      origin_data: 'XYZ-0012',\n      origin_id: 'abc-123',\n      status: 'under_review',\n      submitted_at: '2013-11-02',\n      prostore_file_ids: [42],\n      upload_ids: [['01HZB4TFFBZWDQ92N3RJFM5J2Z', '01HZB4TFERXDDQ354NTB09GEA6']],\n      'custom_field_%{custom_field_definition_id}': 'custom field value'\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"project_id\":55001,\"commitment_id\":66005,\"requisition\":{\"items\":[{\"id\":1001,\"line_item_id\":1001,\"detail_line_item_id\":1001,\"item_type\":\"contract_detail_item\",\"work_completed_this_period\":1000,\"materials_presently_stored\":500,\"materials_presently_stored_from_previous_progress\":250,\"new_materials\":30,\"new_materials_quantity\":30.1234,\"stored_materials\":\"0.00\",\"stored_materials_quantity\":50.456,\"work_completed_retainage_retained_this_period\":100,\"materials_stored_retainage_currently_retained\":50,\"work_completed_retainage_released_this_period\":0,\"work_completed_this_period_quantity\":10,\"work_completed_retainage_percent_this_period\":10,\"materials_stored_retainage_percent_this_period\":10,\"subcontractor_claimed_amount\":20.5,\"status\":\"rejected\",\"comment\":\"This work was not yet completed\"}],\"period_id\":20093,\"requisition_start\":\"2013-10-01\",\"requisition_end\":\"2013-10-31\",\"billing_date\":\"2013-10-31\",\"final\":true,\"invoice_number\":\"ABC-1234\",\"payment_date\":\"2013-11-15\",\"origin_data\":\"XYZ-0012\",\"origin_id\":\"abc-123\",\"status\":\"under_review\",\"submitted_at\":\"2013-11-02\",\"prostore_file_ids\":[42],\"upload_ids\":[[\"01HZB4TFFBZWDQ92N3RJFM5J2Z\",\"01HZB4TFERXDDQ354NTB09GEA6\"]],\"custom_field_%{custom_field_definition_id}\":\"custom field value\"}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("PATCH", "/rest/v1.1/requisitions/%7Bid%7D?view=SOME_STRING_VALUE", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url 'https://api.procore.com/rest/v1.1/requisitions/%7Bid%7D?view=SOME_STRING_VALUE' \\\n  --header 'content-type: application/json' \\\n  --data '{\"project_id\":55001,\"commitment_id\":66005,\"requisition\":{\"items\":[{\"id\":1001,\"line_item_id\":1001,\"detail_line_item_id\":1001,\"item_type\":\"contract_detail_item\",\"work_completed_this_period\":1000,\"materials_presently_stored\":500,\"materials_presently_stored_from_previous_progress\":250,\"new_materials\":30,\"new_materials_quantity\":30.1234,\"stored_materials\":\"0.00\",\"stored_materials_quantity\":50.456,\"work_completed_retainage_retained_this_period\":100,\"materials_stored_retainage_currently_retained\":50,\"work_completed_retainage_released_this_period\":0,\"work_completed_this_period_quantity\":10,\"work_completed_retainage_percent_this_period\":10,\"materials_stored_retainage_percent_this_period\":10,\"subcontractor_claimed_amount\":20.5,\"status\":\"rejected\",\"comment\":\"This work was not yet completed\"}],\"period_id\":20093,\"requisition_start\":\"2013-10-01\",\"requisition_end\":\"2013-10-31\",\"billing_date\":\"2013-10-31\",\"final\":true,\"invoice_number\":\"ABC-1234\",\"payment_date\":\"2013-11-15\",\"origin_data\":\"XYZ-0012\",\"origin_id\":\"abc-123\",\"status\":\"under_review\",\"submitted_at\":\"2013-11-02\",\"prostore_file_ids\":[42],\"upload_ids\":[[\"01HZB4TFFBZWDQ92N3RJFM5J2Z\",\"01HZB4TFERXDDQ354NTB09GEA6\"]],\"custom_field_%{custom_field_definition_id}\":\"custom field value\"}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.1/requisitions/%7Bid%7D?view=SOME_STRING_VALUE\"),\n    Content = new StringContent(\"{\\\"project_id\\\":55001,\\\"commitment_id\\\":66005,\\\"requisition\\\":{\\\"items\\\":[{\\\"id\\\":1001,\\\"line_item_id\\\":1001,\\\"detail_line_item_id\\\":1001,\\\"item_type\\\":\\\"contract_detail_item\\\",\\\"work_completed_this_period\\\":1000,\\\"materials_presently_stored\\\":500,\\\"materials_presently_stored_from_previous_progress\\\":250,\\\"new_materials\\\":30,\\\"new_materials_quantity\\\":30.1234,\\\"stored_materials\\\":\\\"0.00\\\",\\\"stored_materials_quantity\\\":50.456,\\\"work_completed_retainage_retained_this_period\\\":100,\\\"materials_stored_retainage_currently_retained\\\":50,\\\"work_completed_retainage_released_this_period\\\":0,\\\"work_completed_this_period_quantity\\\":10,\\\"work_completed_retainage_percent_this_period\\\":10,\\\"materials_stored_retainage_percent_this_period\\\":10,\\\"subcontractor_claimed_amount\\\":20.5,\\\"status\\\":\\\"rejected\\\",\\\"comment\\\":\\\"This work was not yet completed\\\"}],\\\"period_id\\\":20093,\\\"requisition_start\\\":\\\"2013-10-01\\\",\\\"requisition_end\\\":\\\"2013-10-31\\\",\\\"billing_date\\\":\\\"2013-10-31\\\",\\\"final\\\":true,\\\"invoice_number\\\":\\\"ABC-1234\\\",\\\"payment_date\\\":\\\"2013-11-15\\\",\\\"origin_data\\\":\\\"XYZ-0012\\\",\\\"origin_id\\\":\\\"abc-123\\\",\\\"status\\\":\\\"under_review\\\",\\\"submitted_at\\\":\\\"2013-11-02\\\",\\\"prostore_file_ids\\\":[42],\\\"upload_ids\\\":[[\\\"01HZB4TFFBZWDQ92N3RJFM5J2Z\\\",\\\"01HZB4TFERXDDQ354NTB09GEA6\\\"]],\\\"custom_field_%{custom_field_definition_id}\\\":\\\"custom field value\\\"}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Update Requisition (Subcontractor Invoice) now accepts prostore_file_ids instead of attachments
+        description: This endpoint now accepts prostore_file_ids as part of the payload. This parameter was called attachments in the previous API version, where the request needed to be a multipart/form-data file
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: true
+        datestamp: '2021-02-01'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Support view parameter
+        description: 'This endpoint now supports and extends a parameter called ''view'' which, when specified, can control the requisition data that is returned along on a successful response. Possible values are: ''default'', ''action_policy'', ''extended'', ''items'''
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2021-12-22'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Added custom_fields to the output.
+        description: When enabled, the output will contain custom_fields associated with the project.
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2022-04-11'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Added new field work_completed_retainage_percent_this_period
+        description: Request body will now accept a field that indicates a percentage of work completed. This will be persisted as the percentage if the field work completed is equal to zero. If not, the percentage will be calculated based on work completed value.
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2022-07-15'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Added new field materials_stored_retainage_percent_this_period
+        description: Request body will now accept a field that indicates a percentage of materials stored retainage. This will be persisted as the percentage if the field materials retainage is equal to zero. If not, the percentage will be calculated based on materials retainage value.
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2022-07-15'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Added detailed WBS Segment information to the extended response
+        description: Each Line Item returned with the extended response now contains detailed WBS Segment information
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2022-10-18'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Added line_number to the extended response
+        description: Each Line Item returned with the extended response now has a calculated line number
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2022-10-20'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Added currency_configuration to the output.
+        description: Creation of new response field currency_configuration, that will hold currency information for the invoice
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2023-04-19'
+        versions:
+        - '1.0'
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.0#update-requisition-subcontractor-invoice
+      - summary: Update Requisition (Subcontractor Invoice) is now publicly available.
+        description: This endpoint is now publicly available.
+        endpoint: PATCH /requisitions/{id}
+        type: new
+        breaking: false
+        datestamp: '2023-07-20'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Added move_materials_to_previous_work_completed to the response.
+        description: Creation of new response field move_materials_to_previous_work_completed, that will tell if materials should be moved to previous work completed.
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2024-04-29'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Added stored materials fields to unit based items in response
+        description: Added new_materials_quantity, stored_materials_quantity, materials_previously_stored_quantity to the unit based items in the API response, and included stored materials retainage fields for unit based items in addition to amount based items.
+        endpoint: PATCH /requisitions/{id}
+        type: new
+        breaking: false
+        datestamp: '2024-04-25'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Added exchange rate and base currency code to the response
+        description: Currency fields added to the top level requisition as well as each line item.
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2024-07-25'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Added materials moved fields to items in response
+        description: Added materials_moved and materials_retainage_retained_moved to the items in the API response.
+        endpoint: PATCH /requisitions/{id}
+        type: new
+        breaking: false
+        datestamp: '2024-08-21'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Added Invoice Type to response
+        description: Added invoice_type to response.
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2024-09-26'
+        versions:
+        - '1.1'
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.0#update-requisition-subcontractor-invoice
+      - summary: Added item packages attribute in response
+        description: Added item packages to response. These are collections of billings items that have either a contract or change order as their parent entity.
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2024-10-05'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Added enforcements to action policy
+        description: Enforces invoice type specific action policy constraints when creating progress line items.
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2024-10-30'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: custom_fields will always show independently of project settings.
+        description: All requisitions will now have the field `custom_fields` included automatically.
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2025-01-13'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Added previous_progress_id to requisition items
+        description: Added previous_progress_id to requisition items.
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2025-05-21'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Fixed bug where materials_presently_stored was being ignored.
+        description: If materials_presently_stored is present in the input and neither new_materials nor stored_materials are present it will be persisted.
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2025-06-05'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Added tax_code information to requisition items
+        description: Added array of tax_code ids, tax_code_name, and tax_code_rate to requisition items.
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2025-08-21'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Added tax summary
+        description: Added tax summary to response.
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2025-08-22'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Added unit of measure (uom) field to requisition items
+        description: Added uom field to requisition items to specify the unit of measure for each line item.
+        endpoint: PATCH /requisitions/{id}
+        type: new
+        breaking: false
+        datestamp: '2025-09-16'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Added header_only view
+        description: Added a new `header_only` view value to the `view` query parameter. When specified, the response includes the default header fields plus `action_policy`, `tax_summary`, `accounting_method`, and — for `progressive` contracts only — `summary_text`. The `items` and `item_packages` collections are intentionally omitted. This view is intended for split header / line-items rendering, where the SOV line items are fetched separately.
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2026-05-12'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: summary_text is now gated on progressive contracts in the extended view
+        description: The `summary_text` field is now only included in the response when the contract's invoicing method is `progressive`. This applies to both the `extended` and `header_only` views. Previously, the `extended` view always included `summary_text` regardless of invoicing method. Callers that relied on `summary_text` being present for `simplified` contracts in the `extended` view should update accordingly.
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: true
+        datestamp: '2026-05-25'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Retainage percent updates now preserve explicit user intent
+        description: The update endpoint now treats retainage amount and retainage percent as separate inputs on subcontractor invoice line items. When billed work is non-zero, changing the retainage amount derives the retainage percent from retainage amount divided by billed work; for example, billed work `100` and retainage amount `10` results in retainage percent `10%`. When billed work is changed to `0`, retainage amount recalculates to `0` and the existing retainage percent is preserved unless the request explicitly includes a new percent. When billed work is already `0`, an explicit retainage percent edit is still saved, even though the retainage amount remains `0`. This changes the prior zero-billed behavior where a retained amount of `0` could clear the existing retainage percent. Additionally, retainage percent values are now validated to be between `0` and `100` inclusive on zero-billed lines; previously accepted out-of-range values (such as `-5` or `150`) now return `422` instead of being stored silently with a `200`.
+        endpoint: PATCH /requisitions/{id}
+        type: refinement
+        breaking: true
+        datestamp: '2026-06-26'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Added contract_invoicing_method to the response.
+        description: Creation of new response field contract_invoicing_method, that will tell if the contract invoicing method is progressive or simplified.
+        endpoint: PATCH /requisitions/{id}
+        type: feature
+        breaking: false
+        datestamp: '2026-07-12'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: Notice of General Availability
+        description: This endpoint is now generally available (GA).
+        endpoint: PATCH /requisitions/{id}
+        type: refinement
+        breaking: false
+        datestamp: '2026-07-29'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      - summary: previous_requisition_id is now populated for Simplified Invoicing invoices
+        description: '`previous_requisition_id` was always `null` for invoices whose `contract_invoicing_method` is `simplified`, because Simplified Invoicing does not store an invoice chain. It is now resolved as the non-deleted invoice on the same commitment that immediately precedes this one (`null` for the first invoice on the commitment). The field, its type and its nullability are unchanged; only the value for Simplified Invoicing invoices changes, and the field was never functional for them. Simplified Invoicing is not generally available, so no existing integration is affected. Progressive invoices are unaffected.'
+        endpoint: PATCH /requisitions/{id}
+        type: fix
+        breaking: false
+        datestamp: '2026-09-22'
+        versions:
+        - '1.1'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: requisitions-subcontractor-invoices?version=1.1#update-requisition-subcontractor-invoice
+      operationId: updateRequisitionSubcontractorInvoice2
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

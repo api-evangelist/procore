@@ -1,0 +1,770 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Company Managed Equipment API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Company Managed Equipment
+paths:
+  /rest/v1.0/companies/{company_id}/managed_equipment/bulk_restore:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: company_id
+      in: path
+      description: Unique identifier for the company.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    patch:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      deprecated: true
+      x-deprecated-at: '2024-12-01'
+      x-sunset: '2025-12-02'
+      summary: Bulk Retrieve Managed Equipment
+      description: Restore multiple Managed Equipment with one request.
+      tags:
+      - Company Managed Equipment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - managed_equipment
+              properties:
+                managed_equipment:
+                  description: Parameters for bulk-restoring managed equipment.
+                  type: object
+                  properties:
+                    managed_equipment_ids:
+                      description: IDs of all Managed Equipment specified for bulk restore
+                      type: array
+                      items:
+                        type: integer
+                        description: Unique identifier of a managed equipment to restore.
+                        example: 65
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: Array of Equipment
+                items:
+                  type: object
+                  description: Managed Equipment
+                  properties:
+                    id:
+                      type: integer
+                      description: Unique identifier of the managed equipment.
+                      example: 75414
+                    name:
+                      type: string
+                      description: Display name of the managed equipment.
+                      example: Backhoe
+                    company_id:
+                      type: integer
+                      description: Identifier of the company that owns this managed equipment.
+                      example: 1
+                    current_project_id:
+                      type: integer
+                      description: Identifier of the project this equipment is currently dispatched to. Null if not assigned.
+                      example: 1
+                    company_visible:
+                      type: boolean
+                      description: Whether this equipment is visible at the company level across all projects.
+                      example: false
+                    updated_at:
+                      type: string
+                      format: date-time
+                      description: Timestamp when this managed equipment was last modified, in ISO 8601 format.
+                      example: '2015-11-12T21:26:28Z'
+                    created_at:
+                      type: string
+                      format: date-time
+                      description: Timestamp when this managed equipment was created, in ISO 8601 format.
+                      example: '2015-11-12T21:26:28Z'
+                    deleted_at:
+                      type: string
+                      format: date-time
+                      description: Timestamp when this managed equipment was soft-deleted, in ISO 8601 format. Null if the record is active.
+                      example: '2015-11-12T21:26:28Z'
+                    serial_number:
+                      type: string
+                      description: Serial number of the equipment.
+                      example: S#12892
+                    identification_number:
+                      type: string
+                      description: Identification number of the equipment.
+                      example: ID#9018290
+                    description:
+                      type: string
+                      description: Description of the equipment.
+                      example: This equipment was brought in for the backyard work.
+                    managed_equipment_make_id:
+                      type: integer
+                      description: Identifier of the equipment make associated with this equipment.
+                      example: 14
+                    managed_equipment_model_id:
+                      type: integer
+                      description: Identifier of the equipment model associated with this equipment.
+                      example: 13
+                    managed_equipment_type_id:
+                      type: integer
+                      description: Identifier of the equipment type associated with this equipment.
+                      example: 132
+                    managed_equipment_category_id:
+                      type: integer
+                      description: Identifier of the equipment category associated with this equipment.
+                      example: 13
+                    year:
+                      type: integer
+                      description: Year the equipment was manufactured in.
+                      example: 2017
+                    status:
+                      type: string
+                      description: Current operational status of the equipment.
+                      enum:
+                      - available
+                      - in_use
+                      - under_maintenance
+                      example: in_use
+                    ownership:
+                      type: string
+                      description: Ownership arrangement for this equipment.
+                      enum:
+                      - owned
+                      - rented
+                      - sub
+                      example: owned
+                    created_by:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique identifier of the user who created this managed equipment.
+                          example: 160586
+                        login:
+                          type: string
+                          description: Email address of the user who created this managed equipment.
+                          example: carl.contractor@example.com
+                        name:
+                          type: string
+                          description: Full name of the user who created this managed equipment.
+                          example: Carl Contractor
+                    managed_equipment_make:
+                      type: object
+                      title: ManagedEquipmentMake
+                      description: Equipment Make
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique identifier of the equipment make.
+                          example: 75414
+                        name:
+                          type: string
+                          description: Name of the equipment make (manufacturer brand).
+                          example: CAT
+                        company_id:
+                          type: integer
+                          description: Identifier of the company that owns this equipment make.
+                          example: 3355
+                        is_active:
+                          type: boolean
+                          description: Whether this equipment make is currently active and available for use.
+                          example: true
+                        updated_at:
+                          type: string
+                          format: date-time
+                          description: Timestamp when this equipment make was last modified, in ISO 8601 format.
+                          example: '2015-11-12T21:26:28Z'
+                        created_at:
+                          type: string
+                          format: date-time
+                          description: Timestamp when this equipment make was created, in ISO 8601 format.
+                          example: '2015-11-12T21:26:28Z'
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          description: Timestamp when this equipment make was soft-deleted, in ISO 8601 format. Null if the record is active.
+                          example: '2015-11-12T21:26:28Z'
+                        created_by:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              description: Unique identifier of the user who created this equipment make.
+                              example: 160586
+                            login:
+                              type: string
+                              description: Email address of the user who created this equipment make.
+                              example: carl.contractor@example.com
+                            name:
+                              type: string
+                              description: Full name of the user who created this equipment make.
+                              example: Carl Contractor
+                    managed_equipment_model:
+                      type: object
+                      title: ManagedEquipmentModel
+                      description: Equipment Model
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique identifier of the equipment model.
+                          example: 75414
+                        name:
+                          type: string
+                          description: Name of the equipment model.
+                          example: Earthmoving
+                        managed_equipment_make_id:
+                          type: integer
+                          description: Identifier of the equipment make this model belongs to.
+                          example: 3355
+                        managed_equipment_type_id:
+                          type: integer
+                          description: Identifier of the equipment type this model belongs to.
+                          example: 3356
+                        company_id:
+                          type: integer
+                          description: Identifier of the company that owns this equipment model.
+                          example: 3355
+                        is_active:
+                          type: boolean
+                          description: Whether this equipment model is currently active and available for use.
+                          example: true
+                        updated_at:
+                          type: string
+                          format: date-time
+                          description: Timestamp when this equipment model was last modified, in ISO 8601 format.
+                          example: '2015-11-12T21:26:28Z'
+                        created_at:
+                          type: string
+                          format: date-time
+                          description: Timestamp when this equipment model was created, in ISO 8601 format.
+                          example: '2015-11-12T21:26:28Z'
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          description: Timestamp when this equipment model was soft-deleted, in ISO 8601 format. Null if the record is active.
+                          example: '2015-11-12T21:26:28Z'
+                        created_by:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              description: Unique identifier of the user who created this equipment model.
+                              example: 160586
+                            login:
+                              type: string
+                              description: Email address of the user who created this equipment model.
+                              example: carl.contractor@example.com
+                            name:
+                              type: string
+                              description: Full name of the user who created this equipment model.
+                              example: Carl Contractor
+                        managed_equipment_make:
+                          type: object
+                          title: ManagedEquipmentMake
+                          description: Equipment Make
+                          properties:
+                            id:
+                              type: integer
+                              description: Unique identifier of the equipment make.
+                              example: 75414
+                            name:
+                              type: string
+                              description: Name of the equipment make (manufacturer brand).
+                              example: CAT
+                            company_id:
+                              type: integer
+                              description: Identifier of the company that owns this equipment make.
+                              example: 3355
+                            is_active:
+                              type: boolean
+                              description: Whether this equipment make is currently active and available for use.
+                              example: true
+                            updated_at:
+                              type: string
+                              format: date-time
+                              description: Timestamp when this equipment make was last modified, in ISO 8601 format.
+                              example: '2015-11-12T21:26:28Z'
+                            created_at:
+                              type: string
+                              format: date-time
+                              description: Timestamp when this equipment make was created, in ISO 8601 format.
+                              example: '2015-11-12T21:26:28Z'
+                            deleted_at:
+                              type: string
+                              format: date-time
+                              description: Timestamp when this equipment make was soft-deleted, in ISO 8601 format. Null if the record is active.
+                              example: '2015-11-12T21:26:28Z'
+                            created_by:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                  description: Unique identifier of the user who created this equipment make.
+                                  example: 160586
+                                login:
+                                  type: string
+                                  description: Email address of the user who created this equipment make.
+                                  example: carl.contractor@example.com
+                                name:
+                                  type: string
+                                  description: Full name of the user who created this equipment make.
+                                  example: Carl Contractor
+                        managed_equipment_type:
+                          type: object
+                          title: ManagedEquipmentType
+                          description: Equipment Type
+                          properties:
+                            id:
+                              type: integer
+                              description: Unique identifier of the equipment type.
+                              example: 75414
+                            name:
+                              type: string
+                              description: Name of the equipment type.
+                              example: Backhoe
+                            managed_equipment_category_id:
+                              type: integer
+                              description: Identifier of the equipment category this type belongs to.
+                              example: 3355
+                            company_id:
+                              type: integer
+                              description: Identifier of the company that owns this equipment type.
+                              example: 3355
+                            is_active:
+                              type: boolean
+                              description: Whether this equipment type is currently active and available for use.
+                              example: true
+                            updated_at:
+                              type: string
+                              format: date-time
+                              description: Timestamp when this equipment type was last modified, in ISO 8601 format.
+                              example: '2015-11-12T21:26:28Z'
+                            created_at:
+                              type: string
+                              format: date-time
+                              description: Timestamp when this equipment type was created, in ISO 8601 format.
+                              example: '2015-11-12T21:26:28Z'
+                            deleted_at:
+                              type: string
+                              format: date-time
+                              description: Timestamp when this equipment type was soft-deleted, in ISO 8601 format. Null if the record is active.
+                              example: '2015-11-12T21:26:28Z'
+                            managed_equipment_category:
+                              type: object
+                              title: ManagedEquipmentCategory
+                              description: Equipment Category
+                              properties:
+                                id:
+                                  type: integer
+                                  description: Unique identifier of the equipment category.
+                                  example: 75414
+                                name:
+                                  type: string
+                                  description: Name of the equipment category.
+                                  example: Earthmoving
+                                company_id:
+                                  type: integer
+                                  description: Identifier of the company that owns this equipment category.
+                                  example: 3355
+                                is_active:
+                                  type: boolean
+                                  description: Whether this equipment category is currently active and available for use.
+                                  example: true
+                                updated_at:
+                                  type: string
+                                  format: date-time
+                                  description: Timestamp when this equipment category was last modified, in ISO 8601 format.
+                                  example: '2015-11-12T21:26:28Z'
+                                created_at:
+                                  type: string
+                                  format: date-time
+                                  description: Timestamp when this equipment category was created, in ISO 8601 format.
+                                  example: '2015-11-12T21:26:28Z'
+                                deleted_at:
+                                  type: string
+                                  format: date-time
+                                  description: Timestamp when this equipment category was soft-deleted, in ISO 8601 format. Null if the record is active.
+                                  example: '2015-11-12T21:26:28Z'
+                                created_by:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: integer
+                                      description: Unique identifier of the user who created this equipment category.
+                                      example: 160586
+                                    login:
+                                      type: string
+                                      description: Email address of the user who created this equipment category.
+                                      example: carl.contractor@example.com
+                                    name:
+                                      type: string
+                                      description: Full name of the user who created this equipment category.
+                                      example: Carl Contractor
+                            created_by:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                  description: Unique identifier of the user who created this equipment type.
+                                  example: 160586
+                                login:
+                                  type: string
+                                  description: Email address of the user who created this equipment type.
+                                  example: carl.contractor@example.com
+                                name:
+                                  type: string
+                                  description: Full name of the user who created this equipment type.
+                                  example: Carl Contractor
+                    managed_equipment_category:
+                      type: object
+                      title: ManagedEquipmentCategory
+                      description: Equipment Category
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique identifier of the equipment category.
+                          example: 75414
+                        name:
+                          type: string
+                          description: Name of the equipment category.
+                          example: Earthmoving
+                        company_id:
+                          type: integer
+                          description: Identifier of the company that owns this equipment category.
+                          example: 3355
+                        is_active:
+                          type: boolean
+                          description: Whether this equipment category is currently active and available for use.
+                          example: true
+                        updated_at:
+                          type: string
+                          format: date-time
+                          description: Timestamp when this equipment category was last modified, in ISO 8601 format.
+                          example: '2015-11-12T21:26:28Z'
+                        created_at:
+                          type: string
+                          format: date-time
+                          description: Timestamp when this equipment category was created, in ISO 8601 format.
+                          example: '2015-11-12T21:26:28Z'
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          description: Timestamp when this equipment category was soft-deleted, in ISO 8601 format. Null if the record is active.
+                          example: '2015-11-12T21:26:28Z'
+                        created_by:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              description: Unique identifier of the user who created this equipment category.
+                              example: 160586
+                            login:
+                              type: string
+                              description: Email address of the user who created this equipment category.
+                              example: carl.contractor@example.com
+                            name:
+                              type: string
+                              description: Full name of the user who created this equipment category.
+                              example: Carl Contractor
+                    managed_equipment_type:
+                      type: object
+                      title: ManagedEquipmentType
+                      description: Equipment Type
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique identifier of the equipment type.
+                          example: 75414
+                        name:
+                          type: string
+                          description: Name of the equipment type.
+                          example: Backhoe
+                        managed_equipment_category_id:
+                          type: integer
+                          description: Identifier of the equipment category this type belongs to.
+                          example: 3355
+                        company_id:
+                          type: integer
+                          description: Identifier of the company that owns this equipment type.
+                          example: 3355
+                        is_active:
+                          type: boolean
+                          description: Whether this equipment type is currently active and available for use.
+                          example: true
+                        updated_at:
+                          type: string
+                          format: date-time
+                          description: Timestamp when this equipment type was last modified, in ISO 8601 format.
+                          example: '2015-11-12T21:26:28Z'
+                        created_at:
+                          type: string
+                          format: date-time
+                          description: Timestamp when this equipment type was created, in ISO 8601 format.
+                          example: '2015-11-12T21:26:28Z'
+                        deleted_at:
+                          type: string
+                          format: date-time
+                          description: Timestamp when this equipment type was soft-deleted, in ISO 8601 format. Null if the record is active.
+                          example: '2015-11-12T21:26:28Z'
+                        managed_equipment_category:
+                          type: object
+                          title: ManagedEquipmentCategory
+                          description: Equipment Category
+                          properties:
+                            id:
+                              type: integer
+                              description: Unique identifier of the equipment category.
+                              example: 75414
+                            name:
+                              type: string
+                              description: Name of the equipment category.
+                              example: Earthmoving
+                            company_id:
+                              type: integer
+                              description: Identifier of the company that owns this equipment category.
+                              example: 3355
+                            is_active:
+                              type: boolean
+                              description: Whether this equipment category is currently active and available for use.
+                              example: true
+                            updated_at:
+                              type: string
+                              format: date-time
+                              description: Timestamp when this equipment category was last modified, in ISO 8601 format.
+                              example: '2015-11-12T21:26:28Z'
+                            created_at:
+                              type: string
+                              format: date-time
+                              description: Timestamp when this equipment category was created, in ISO 8601 format.
+                              example: '2015-11-12T21:26:28Z'
+                            deleted_at:
+                              type: string
+                              format: date-time
+                              description: Timestamp when this equipment category was soft-deleted, in ISO 8601 format. Null if the record is active.
+                              example: '2015-11-12T21:26:28Z'
+                            created_by:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                  description: Unique identifier of the user who created this equipment category.
+                                  example: 160586
+                                login:
+                                  type: string
+                                  description: Email address of the user who created this equipment category.
+                                  example: carl.contractor@example.com
+                                name:
+                                  type: string
+                                  description: Full name of the user who created this equipment category.
+                                  example: Carl Contractor
+                        created_by:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              description: Unique identifier of the user who created this equipment type.
+                              example: 160586
+                            login:
+                              type: string
+                              description: Email address of the user who created this equipment type.
+                              example: carl.contractor@example.com
+                            name:
+                              type: string
+                              description: Full name of the user who created this equipment type.
+                              example: Carl Contractor
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/managed_equipment/bulk_restore',\n  headers: {'content-type': 'application/json'},\n  body: {managed_equipment: {managed_equipment_ids: [65]}},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"managed_equipment\":{\"managed_equipment_ids\":[65]}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("PATCH", "/rest/v1.0/companies/%7Bcompany_id%7D/managed_equipment/bulk_restore", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/managed_equipment/bulk_restore \\\n  --header 'content-type: application/json' \\\n  --data '{\"managed_equipment\":{\"managed_equipment_ids\":[65]}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/managed_equipment/bulk_restore\"),\n    Content = new StringContent(\"{\\\"managed_equipment\\\":{\\\"managed_equipment_ids\\\":[65]}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Bulk Retrieve Managed Equipment is Deprecated
+        description: This endpoint is a deprecated endpoint.
+        endpoint: PATCH /companies/{company_id}/managed_equipment/bulk_restore
+        type: deprecated
+        breaking: false
+        datestamp: '2024-12-01'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: managed-equipment---company-level?version=1.0#bulk-retrieve-managed-equipment
+      operationId: bulkRetrieveManagedEquipment
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

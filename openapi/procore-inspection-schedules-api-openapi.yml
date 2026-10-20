@@ -1,0 +1,384 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Inspection Schedules API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Inspection Schedules
+paths:
+  /rest/v1.0/projects/{project_id}/checklist/schedules/calculate_first_inspection_created_at:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Calculate when the first Inspection of an Inspection Schedule will be created
+      description: Calculates the creation date for the first Inspection to be created based on an Inspection Schedule's temporal attributes.
+      tags:
+      - Inspection Schedules
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - schedule
+              properties:
+                schedule:
+                  type: object
+                  required:
+                  - starts_at
+                  - ends_at
+                  - frequency
+                  - days_created_before_due_date
+                  properties:
+                    starts_at:
+                      type: string
+                      format: date-time
+                      description: Schedule start date
+                      example: '2019-10-27T07:40:12Z'
+                    ends_at:
+                      type: string
+                      format: date-time
+                      description: Schedule end date. When frequency is 'once' this should be the same value as starts_at.
+                      example: '2019-10-27T07:40:12Z'
+                    frequency:
+                      type: string
+                      description: Schedule frequency type name
+                      enum:
+                      - once
+                      - daily
+                      - weekly
+                      - once_every_two_weeks
+                      - monthly
+                      - quarterly
+                      - twice_yearly
+                      - yearly
+                      example: once_every_two_weeks
+                    days_created_before_due_date:
+                      type: integer
+                      description: Number of days before the inspection due date that the inspection should be created
+                      example: 3
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  first_inspection_created_at:
+                    type: string
+                    format: date-time
+                    description: Timestamp of when the first inspection will be created from the schedule.
+                    example: '2019-10-27T07:40:12Z'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/checklist/schedules/calculate_first_inspection_created_at',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN',\n    'content-type': 'application/json'\n  },\n  body: {\n    schedule: {\n      starts_at: '2019-10-27T07:40:12Z',\n      ends_at: '2019-10-27T07:40:12Z',\n      frequency: 'once_every_two_weeks',\n      days_created_before_due_date: 3\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: "import http.client\n\nconn = http.client.HTTPSConnection(\"api.procore.com\")\n\npayload = \"{\\\"schedule\\\":{\\\"starts_at\\\":\\\"2019-10-27T07:40:12Z\\\",\\\"ends_at\\\":\\\"2019-10-27T07:40:12Z\\\",\\\"frequency\\\":\\\"once_every_two_weeks\\\",\\\"days_created_before_due_date\\\":3}}\"\n\nheaders = {\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\",\n    'content-type': \"application/json\"\n    }\n\nconn.request(\"GET\", \"/rest/v1.0/projects/%7Bproject_id%7D/checklist/schedules/calculate_first_inspection_created_at\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request GET \\\n  --url https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/checklist/schedules/calculate_first_inspection_created_at \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"schedule\":{\"starts_at\":\"2019-10-27T07:40:12Z\",\"ends_at\":\"2019-10-27T07:40:12Z\",\"frequency\":\"once_every_two_weeks\",\"days_created_before_due_date\":3}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/checklist/schedules/calculate_first_inspection_created_at\"),\n    Headers =\n    {\n        { \"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\" },\n    },\n    Content = new StringContent(\"{\\\"schedule\\\":{\\\"starts_at\\\":\\\"2019-10-27T07:40:12Z\\\",\\\"ends_at\\\":\\\"2019-10-27T07:40:12Z\\\",\\\"frequency\\\":\\\"once_every_two_weeks\\\",\\\"days_created_before_due_date\\\":3}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Calculate the creation date for the first inspection to be created from a Checklist (Inspection) Schedule.
+        description: Calculate when the first Inspection created from a Schedule is due based off of starts_at, ends_at, frequency, and days_created_before_due_date parameters.
+        endpoint: GET /projects/{project_id}/checklist/schedules/calculate_first_inspection_created_at
+        type: new
+        breaking: false
+        datestamp: '2022-10-20'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: checklist-schedules?version=1.0#calculate-when-the-first-inspection-of-an-inspection-schedule-will-be-created
+      operationId: calculateWhenTheFirstInspectionOfAnInspectionScheduleWillBeCreated
+  /rest/v1.0/projects/{project_id}/checklist/schedules/calculate_total_inspections_count:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Calculate number of Inspections to create based on Schedule
+      description: Calculates the total number of Inspections to create based on Schedule parameters.
+      tags:
+      - Inspection Schedules
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - schedule
+              properties:
+                schedule:
+                  type: object
+                  required:
+                  - starts_at
+                  - ends_at
+                  - frequency
+                  properties:
+                    starts_at:
+                      type: string
+                      format: date-time
+                      description: Schedule start date
+                      example: '2019-10-27T07:40:12Z'
+                    ends_at:
+                      type: string
+                      format: date-time
+                      description: Schedule end date
+                      example: '2019-10-27T07:40:12Z'
+                    frequency:
+                      type: string
+                      description: Schedule frequency type name
+                      enum:
+                      - once
+                      - daily
+                      - weekly
+                      - once_every_two_weeks
+                      - monthly
+                      - quarterly
+                      - twice_yearly
+                      - yearly
+                      example: once_every_two_weeks
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: Total Inspections
+                type: object
+                properties:
+                  total_in_schedule:
+                    type: integer
+                    description: Total inspections number calculated.
+                    example: 2
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/checklist/schedules/calculate_total_inspections_count',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN',\n    'content-type': 'application/json'\n  },\n  body: {\n    schedule: {\n      starts_at: '2019-10-27T07:40:12Z',\n      ends_at: '2019-10-27T07:40:12Z',\n      frequency: 'once_every_two_weeks'\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: "import http.client\n\nconn = http.client.HTTPSConnection(\"api.procore.com\")\n\npayload = \"{\\\"schedule\\\":{\\\"starts_at\\\":\\\"2019-10-27T07:40:12Z\\\",\\\"ends_at\\\":\\\"2019-10-27T07:40:12Z\\\",\\\"frequency\\\":\\\"once_every_two_weeks\\\"}}\"\n\nheaders = {\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\",\n    'content-type': \"application/json\"\n    }\n\nconn.request(\"GET\", \"/rest/v1.0/projects/%7Bproject_id%7D/checklist/schedules/calculate_total_inspections_count\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request GET \\\n  --url https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/checklist/schedules/calculate_total_inspections_count \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"schedule\":{\"starts_at\":\"2019-10-27T07:40:12Z\",\"ends_at\":\"2019-10-27T07:40:12Z\",\"frequency\":\"once_every_two_weeks\"}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/checklist/schedules/calculate_total_inspections_count\"),\n    Headers =\n    {\n        { \"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\" },\n    },\n    Content = new StringContent(\"{\\\"schedule\\\":{\\\"starts_at\\\":\\\"2019-10-27T07:40:12Z\\\",\\\"ends_at\\\":\\\"2019-10-27T07:40:12Z\\\",\\\"frequency\\\":\\\"once_every_two_weeks\\\"}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Calculate the total number of inspections to create.
+        description: Calculate the total number of inspections to create based off of starts_at, ends_at, frequency parameters.
+        endpoint: GET /projects/{project_id}/checklist/schedules/calculate_total_inspections_count
+        type: new
+        breaking: false
+        datestamp: '2022-08-10'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: checklist-schedules?version=1.0#calculate-number-of-inspections-to-create-based-on-schedule
+      operationId: calculateNumberOfInspectionsToCreateBasedOnSchedule
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

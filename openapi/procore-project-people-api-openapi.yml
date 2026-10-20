@@ -1,0 +1,1237 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Project People API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Project People
+paths:
+  /rest/v1.0/projects/{project_id}/people:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: integer
+    x-compliance-level: full
+    post:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Create project Person
+      description: 'Create a new Person in the specified Project.
+
+
+        This endpoint can currently only create reference users. It cannot create a user who can login.'
+      tags:
+      - Project People
+      parameters:
+      - name: view
+        in: query
+        description: Specifies which view of the resource to return (which attributes should be present in the response). Users without read permissions to Directory are limited to the normal and extended views. If a valid view is not provided, it will default to normal.
+        schema:
+          type: string
+          enum:
+          - extended
+          - normal
+          - web
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Project Person Body
+              type: object
+              required:
+              - person
+              properties:
+                person:
+                  title: Project Person
+                  type: object
+                  required:
+                  - last_name
+                  properties:
+                    first_name:
+                      type: string
+                      description: The First Name of the Project Person
+                    last_name:
+                      type: string
+                      description: The Last Name of the Project Person
+                    is_employee:
+                      type: boolean
+                      description: The Employee status of the Project Person
+                      default: false
+                    employee_id:
+                      type: string
+                      description: The Employee ID of the Project Person
+                    origin_id:
+                      type: string
+                      description: The ID of the External Data associated with the Project Person
+                    job_title:
+                      type: string
+                      description: The Job Title of the Project Person
+                      example: Developer
+                    work_classification_id:
+                      type: integer
+                      description: The unique identifier for the work classification of the Project Person.
+                      example: 398438
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  title: Normal
+                  description: Project Person
+                  properties:
+                    contact:
+                      type: object
+                      description: The Contact associated with the Project Person
+                      properties:
+                        is_active:
+                          type: boolean
+                          description: The active status of the Contact associated with the Project Person
+                        email:
+                          type: string
+                          description: The email address of the contact.
+                          example: paul@example.com
+                    contact_id:
+                      type: integer
+                      description: Contact ID for the Project Person
+                      example: 38965
+                    employee_id:
+                      type:
+                      - string
+                      - 'null'
+                      description: Employee ID for the Project Person
+                      example: '123456789'
+                    first_name:
+                      type: string
+                      description: Project Person first name
+                      example: Leah
+                    id:
+                      type: integer
+                      description: Unique identifier for the Project Person.
+                      example: 381006
+                    is_employee:
+                      type:
+                      - boolean
+                      - 'null'
+                      description: Employee status for the Project Person
+                      example: false
+                    last_name:
+                      type: string
+                      description: Project Person last name
+                      example: Russell
+                    name:
+                      type: string
+                      description: Project Person full name
+                      example: Leah Russell
+                    user_id:
+                      type:
+                      - integer
+                      - 'null'
+                      description: User ID if this Project Person represents a User. NULL for a Reference User.
+                      example: 700215
+                    user_uuid:
+                      type:
+                      - integer
+                      - 'null'
+                      description: The user UUID for if this Company Person represents a user. This value is set to NULL for a Reference User.
+                      example: e26894a5-41a7-4c14-b202-929bf2d5f95
+                    work_classification_id:
+                      type:
+                      - integer
+                      - 'null'
+                      description: Work Classification ID for the Project Person
+                      example: 398438
+                    origin_id:
+                      type:
+                      - integer
+                      - 'null'
+                      description: The ID of the External Data associated with the Project Person
+                      example: 398438
+                    job_title:
+                      type: string
+                      description: The job title of the Project Person
+                      example: Developer
+                - type: object
+                  title: extended view
+                  description: Project Person
+                  properties:
+                    contact:
+                      type: object
+                      description: The Contact associated with the Project Person
+                      properties:
+                        is_active:
+                          type: boolean
+                          description: The active status of the Contact associated with the Project Person
+                        email:
+                          type: string
+                          description: The email address of the contact.
+                          example: paul@example.com
+                    contact_id:
+                      type: integer
+                      description: Contact ID for the Project Person
+                      example: 38965
+                    employee_id:
+                      type:
+                      - string
+                      - 'null'
+                      description: Employee ID for the Project Person
+                      example: '123456789'
+                    first_name:
+                      type: string
+                      description: Project Person first name
+                      example: Leah
+                    id:
+                      type: integer
+                      description: Unique identifier for the Project Person.
+                      example: 381006
+                    is_employee:
+                      type:
+                      - boolean
+                      - 'null'
+                      description: Employee status for the Project Person
+                      example: false
+                    last_name:
+                      type: string
+                      description: Project Person last name
+                      example: Russell
+                    name:
+                      type: string
+                      description: Project Person full name
+                      example: Leah Russell
+                    user_id:
+                      type:
+                      - integer
+                      - 'null'
+                      description: User ID if this Project Person represents a User. NULL for a Reference User.
+                      example: 700215
+                    user_uuid:
+                      type:
+                      - integer
+                      - 'null'
+                      description: The user UUID for if this Company Person represents a user. This value is set to NULL for a Reference User.
+                      example: e26894a5-41a7-4c14-b202-929bf2d5f95
+                    work_classification_id:
+                      type:
+                      - integer
+                      - 'null'
+                      description: Work Classification ID for the Project Person
+                      example: 398438
+                    origin_id:
+                      type:
+                      - integer
+                      - 'null'
+                      description: The ID of the External Data associated with the Project Person
+                      example: 398438
+                    job_title:
+                      type: string
+                      description: The job title of the Project Person
+                      example: Developer
+                    work_classification:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: ID
+                          example: 57869
+                        name:
+                          type: string
+                          description: The name of the classification
+                          example: Driver
+                    vendor:
+                      type: object
+                      title: Compact
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique integer identifier for this vendor/company.
+                          example: 161072
+                        name:
+                          type: string
+                          description: Display name of the vendor or contractor company.
+                          example: SID Architecture
+                - type: object
+                  title: web view
+                  description: Project Person
+                  properties:
+                    first_name:
+                      type: string
+                      description: Project Person first name
+                      example: Leah
+                    id:
+                      type: integer
+                      description: Unique identifier for the Project Person.
+                      example: 381006
+                    is_employee:
+                      type:
+                      - boolean
+                      - 'null'
+                      description: Employee status for the Project Person
+                      example: false
+                    last_name:
+                      type: string
+                      description: Project Person last name
+                      example: Russell
+                    name:
+                      type: string
+                      description: Project Person full name
+                      example: Leah Russell
+                    user_id:
+                      type:
+                      - integer
+                      - 'null'
+                      description: User ID if this Project Person represents a User. NULL for a Reference User.
+                      example: 700215
+                    origin_id:
+                      type:
+                      - integer
+                      - 'null'
+                      description: The ID of the External Data associated with the Project Person
+                      example: 398438
+                    work_classification_id:
+                      type:
+                      - integer
+                      - 'null'
+                      description: Work Classification ID for the Project Person
+                      example: 398438
+                    work_classification:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: ID
+                          example: 57869
+                        name:
+                          type: string
+                          description: The name of the classification
+                          example: Driver
+                    vendor:
+                      type: object
+                      title: Vendor Project Person Web
+                      properties:
+                        id:
+                          type: integer
+                          example: 161072
+                        name:
+                          type: string
+                          example: SID Architecture
+                        company_vendor:
+                          type: boolean
+                          example: true
+                        is_connected:
+                          type: boolean
+                          example: true
+                        origin_id:
+                          type:
+                          - string
+                          - 'null'
+                          example: ABC-123
+                        origin_code:
+                          type:
+                          - string
+                          - 'null'
+                          example: DEF-456
+                        business_register:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              example: abn
+                            identifier:
+                              type: string
+                              example: 12345678901
+                            verification_status:
+                              type: string
+                              example: does_not_exist
+                            verified_at:
+                              type: string
+                              example: '2024-05-29T17:00:00Z'
+                            id:
+                              type: integer
+                              example: 1
+                    contact:
+                      type: object
+                      description: The Contact associated with the Project Person
+                      properties:
+                        is_active:
+                          type: boolean
+                          description: The active status of the Contact associated with the Project Person
+                        email:
+                          type: string
+                          description: The email address of the contact.
+                          example: paul@example.com
+                    contact_id:
+                      type: integer
+                      description: The ID of the Contact associated with the Project Person
+                      example: 398438
+                    employee_id:
+                      type:
+                      - string
+                      - 'null'
+                      description: The employee ID of the Project Person
+                      example: 12345
+                    initials:
+                      type: string
+                      description: Initials of the Project Person
+                      example: LR
+                    avatar:
+                      type: string
+                      description: URL to the avatar of the Project Person
+                      example: https://example.com/avatar.jpg
+                    reference_user:
+                      type: boolean
+                      description: Whether the Project Person is a Reference User
+                      example: true
+                    created_at:
+                      type: string
+                      format: date-time
+                      description: Date and time the Project Person was created
+                      example: '2021-01-01T00:00:00Z'
+                    updated_at:
+                      type: string
+                      format: date-time
+                      description: Date and time the Project Person was last updated
+                      example: '2021-01-01T00:00:00Z'
+                    email:
+                      type: string
+                      description: The email address of the Project Person
+                      example: email!example.com
+                    mobile_phone:
+                      type: string
+                      description: The mobile phone number of the Project Person
+                      example: 123-456-7890
+                    business_phone:
+                      type: string
+                      description: The business phone number of the Project Person
+                      example: 123-456-7890
+                    job_title:
+                      type: string
+                      description: The job title of the Project Person
+                      example: Developer
+                    fax_number:
+                      type: string
+                      description: The fax number of the Project Person
+                      example: 123-456-7890
+                    address:
+                      type: string
+                      description: The address of the Project Person
+                      example: 123 Main St
+                    city:
+                      type: string
+                      description: The city of the Project Person
+                      example: Anytown
+                    country_code:
+                      type: string
+                      description: The country code of the Project Person
+                      example: US
+                    state_code:
+                      type: string
+                      description: The state code of the Project Person
+                      example: CA
+                    zip:
+                      type: string
+                      description: The zip code of the Project Person
+                      example: 12345
+                    connected:
+                      type: boolean
+                      description: Whether the Project Person is connected to the user
+                      example: true
+                    last_login_at:
+                      type: string
+                      format: date-time
+                      description: Date and time the Project Person last logged in
+                      example: '2021-01-01T00:00:00Z'
+                    welcome_email_sent_at:
+                      type: string
+                      format: date-time
+                      description: Date and time the welcome email was sent to the Project Person
+                      example: '2021-01-01T00:00:00Z'
+                    erp_integrated_accountant:
+                      type: boolean
+                      description: Whether the Project Person is an ERP Integrated Accountant
+                      example: true
+                    permission_template:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: The ID of the Permission Template
+                          example: 1
+                        name:
+                          type: string
+                          description: The name of the Permission Template
+                          example: General Contractor
+                        category:
+                          type:
+                          - string
+                          - 'null'
+                          description: The category of the Permission Template
+                          enum:
+                          - internal
+                          - external
+                          example: internal
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/people',\n  qs: {view: 'SOME_STRING_VALUE'},\n  headers: {'content-type': 'application/json'},\n  body: {\n    person: {\n      first_name: 'string',\n      last_name: 'string',\n      is_employee: false,\n      employee_id: 'string',\n      origin_id: 'string',\n      job_title: 'Developer',\n      work_classification_id: 398438\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"person\":{\"first_name\":\"string\",\"last_name\":\"string\",\"is_employee\":false,\"employee_id\":\"string\",\"origin_id\":\"string\",\"job_title\":\"Developer\",\"work_classification_id\":398438}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v1.0/projects/%7Bproject_id%7D/people?view=SOME_STRING_VALUE", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/people?view=SOME_STRING_VALUE' \\\n  --header 'content-type: application/json' \\\n  --data '{\"person\":{\"first_name\":\"string\",\"last_name\":\"string\",\"is_employee\":false,\"employee_id\":\"string\",\"origin_id\":\"string\",\"job_title\":\"Developer\",\"work_classification_id\":398438}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/people?view=SOME_STRING_VALUE\"),\n    Content = new StringContent(\"{\\\"person\\\":{\\\"first_name\\\":\\\"string\\\",\\\"last_name\\\":\\\"string\\\",\\\"is_employee\\\":false,\\\"employee_id\\\":\\\"string\\\",\\\"origin_id\\\":\\\"string\\\",\\\"job_title\\\":\\\"Developer\\\",\\\"work_classification_id\\\":398438}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added `job_title` to list of allowed attributes for create
+        description: job_title attribute is now allowed to be set on creation and is displayed in the response.
+        endpoint: POST /projects/{project_id}/people
+        type: feature
+        breaking: false
+        datestamp: '2025-10-27'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-people?version=1.0#create-project-person
+      - summary: Removed internal directory-create-person-spi feature flag from create endpoint
+        description: Removed the dormant directory-create-person-spi feature flag from the create endpoint and collapsed to the existing flag-off implementation. No change to request parameters, response, or behavior.
+        endpoint: POST /projects/{project_id}/people
+        type: refinement
+        breaking: false
+        datestamp: '2026-07-27'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-people?version=1.0#create-project-person
+      operationId: createProjectPerson
+  /rest/v1.0/projects/{project_id}/people/{id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      description: ID of the project
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      description: ID of the person
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    patch:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Update project person
+      description: Update the specified Project User.
+      tags:
+      - Project People
+      parameters:
+      - name: view
+        in: query
+        description: Specifies which view of the resource to return (which attributes should be present in the response). Users without read permissions to Directory are limited to the normal and extended views. If a valid view is not provided, it will default to normal.
+        schema:
+          type: string
+          enum:
+          - extended
+          - normal
+          - web
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Project Person Body
+              type: object
+              required:
+              - person
+              properties:
+                person:
+                  title: Project Person
+                  type: object
+                  required:
+                  - last_name
+                  properties:
+                    first_name:
+                      type: string
+                      description: The First Name of the Project Person
+                    last_name:
+                      type: string
+                      description: The Last Name of the Project Person
+                    is_employee:
+                      type: boolean
+                      description: The Employee status of the Project Person
+                      default: false
+                    employee_id:
+                      type: string
+                      description: The Employee ID of the Project Person
+                    origin_id:
+                      type: string
+                      description: The ID of the External Data associated with the Project Person
+                    job_title:
+                      type: string
+                      description: The Job Title of the Project Person
+                      example: Developer
+                    work_classification_id:
+                      type: integer
+                      description: The unique identifier for the work classification of the Project Person.
+                      example: 398438
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  title: Normal
+                  description: Project Person
+                  properties:
+                    contact:
+                      type: object
+                      description: The Contact associated with the Project Person
+                      properties:
+                        is_active:
+                          type: boolean
+                          description: The active status of the Contact associated with the Project Person
+                        email:
+                          type: string
+                          description: The email address of the contact.
+                          example: paul@example.com
+                    contact_id:
+                      type: integer
+                      description: Contact ID for the Project Person
+                      example: 38965
+                    employee_id:
+                      type:
+                      - string
+                      - 'null'
+                      description: Employee ID for the Project Person
+                      example: '123456789'
+                    first_name:
+                      type: string
+                      description: Project Person first name
+                      example: Leah
+                    id:
+                      type: integer
+                      description: Unique identifier for the Project Person.
+                      example: 381006
+                    is_employee:
+                      type:
+                      - boolean
+                      - 'null'
+                      description: Employee status for the Project Person
+                      example: false
+                    last_name:
+                      type: string
+                      description: Project Person last name
+                      example: Russell
+                    name:
+                      type: string
+                      description: Project Person full name
+                      example: Leah Russell
+                    user_id:
+                      type:
+                      - integer
+                      - 'null'
+                      description: User ID if this Project Person represents a User. NULL for a Reference User.
+                      example: 700215
+                    user_uuid:
+                      type:
+                      - integer
+                      - 'null'
+                      description: The user UUID for if this Company Person represents a user. This value is set to NULL for a Reference User.
+                      example: e26894a5-41a7-4c14-b202-929bf2d5f95
+                    work_classification_id:
+                      type:
+                      - integer
+                      - 'null'
+                      description: Work Classification ID for the Project Person
+                      example: 398438
+                    origin_id:
+                      type:
+                      - integer
+                      - 'null'
+                      description: The ID of the External Data associated with the Project Person
+                      example: 398438
+                    job_title:
+                      type: string
+                      description: The job title of the Project Person
+                      example: Developer
+                - type: object
+                  title: extended view
+                  description: Project Person
+                  properties:
+                    contact:
+                      type: object
+                      description: The Contact associated with the Project Person
+                      properties:
+                        is_active:
+                          type: boolean
+                          description: The active status of the Contact associated with the Project Person
+                        email:
+                          type: string
+                          description: The email address of the contact.
+                          example: paul@example.com
+                    contact_id:
+                      type: integer
+                      description: Contact ID for the Project Person
+                      example: 38965
+                    employee_id:
+                      type:
+                      - string
+                      - 'null'
+                      description: Employee ID for the Project Person
+                      example: '123456789'
+                    first_name:
+                      type: string
+                      description: Project Person first name
+                      example: Leah
+                    id:
+                      type: integer
+                      description: Unique identifier for the Project Person.
+                      example: 381006
+                    is_employee:
+                      type:
+                      - boolean
+                      - 'null'
+                      description: Employee status for the Project Person
+                      example: false
+                    last_name:
+                      type: string
+                      description: Project Person last name
+                      example: Russell
+                    name:
+                      type: string
+                      description: Project Person full name
+                      example: Leah Russell
+                    user_id:
+                      type:
+                      - integer
+                      - 'null'
+                      description: User ID if this Project Person represents a User. NULL for a Reference User.
+                      example: 700215
+                    user_uuid:
+                      type:
+                      - integer
+                      - 'null'
+                      description: The user UUID for if this Company Person represents a user. This value is set to NULL for a Reference User.
+                      example: e26894a5-41a7-4c14-b202-929bf2d5f95
+                    work_classification_id:
+                      type:
+                      - integer
+                      - 'null'
+                      description: Work Classification ID for the Project Person
+                      example: 398438
+                    origin_id:
+                      type:
+                      - integer
+                      - 'null'
+                      description: The ID of the External Data associated with the Project Person
+                      example: 398438
+                    job_title:
+                      type: string
+                      description: The job title of the Project Person
+                      example: Developer
+                    work_classification:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: ID
+                          example: 57869
+                        name:
+                          type: string
+                          description: The name of the classification
+                          example: Driver
+                    vendor:
+                      type: object
+                      title: Compact
+                      properties:
+                        id:
+                          type: integer
+                          description: Unique integer identifier for this vendor/company.
+                          example: 161072
+                        name:
+                          type: string
+                          description: Display name of the vendor or contractor company.
+                          example: SID Architecture
+                - type: object
+                  title: web view
+                  description: Project Person
+                  properties:
+                    first_name:
+                      type: string
+                      description: Project Person first name
+                      example: Leah
+                    id:
+                      type: integer
+                      description: Unique identifier for the Project Person.
+                      example: 381006
+                    is_employee:
+                      type:
+                      - boolean
+                      - 'null'
+                      description: Employee status for the Project Person
+                      example: false
+                    last_name:
+                      type: string
+                      description: Project Person last name
+                      example: Russell
+                    name:
+                      type: string
+                      description: Project Person full name
+                      example: Leah Russell
+                    user_id:
+                      type:
+                      - integer
+                      - 'null'
+                      description: User ID if this Project Person represents a User. NULL for a Reference User.
+                      example: 700215
+                    origin_id:
+                      type:
+                      - integer
+                      - 'null'
+                      description: The ID of the External Data associated with the Project Person
+                      example: 398438
+                    work_classification_id:
+                      type:
+                      - integer
+                      - 'null'
+                      description: Work Classification ID for the Project Person
+                      example: 398438
+                    work_classification:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: ID
+                          example: 57869
+                        name:
+                          type: string
+                          description: The name of the classification
+                          example: Driver
+                    vendor:
+                      type: object
+                      title: Vendor Project Person Web
+                      properties:
+                        id:
+                          type: integer
+                          example: 161072
+                        name:
+                          type: string
+                          example: SID Architecture
+                        company_vendor:
+                          type: boolean
+                          example: true
+                        is_connected:
+                          type: boolean
+                          example: true
+                        origin_id:
+                          type:
+                          - string
+                          - 'null'
+                          example: ABC-123
+                        origin_code:
+                          type:
+                          - string
+                          - 'null'
+                          example: DEF-456
+                        business_register:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              example: abn
+                            identifier:
+                              type: string
+                              example: 12345678901
+                            verification_status:
+                              type: string
+                              example: does_not_exist
+                            verified_at:
+                              type: string
+                              example: '2024-05-29T17:00:00Z'
+                            id:
+                              type: integer
+                              example: 1
+                    contact:
+                      type: object
+                      description: The Contact associated with the Project Person
+                      properties:
+                        is_active:
+                          type: boolean
+                          description: The active status of the Contact associated with the Project Person
+                        email:
+                          type: string
+                          description: The email address of the contact.
+                          example: paul@example.com
+                    contact_id:
+                      type: integer
+                      description: The ID of the Contact associated with the Project Person
+                      example: 398438
+                    employee_id:
+                      type:
+                      - string
+                      - 'null'
+                      description: The employee ID of the Project Person
+                      example: 12345
+                    initials:
+                      type: string
+                      description: Initials of the Project Person
+                      example: LR
+                    avatar:
+                      type: string
+                      description: URL to the avatar of the Project Person
+                      example: https://example.com/avatar.jpg
+                    reference_user:
+                      type: boolean
+                      description: Whether the Project Person is a Reference User
+                      example: true
+                    created_at:
+                      type: string
+                      format: date-time
+                      description: Date and time the Project Person was created
+                      example: '2021-01-01T00:00:00Z'
+                    updated_at:
+                      type: string
+                      format: date-time
+                      description: Date and time the Project Person was last updated
+                      example: '2021-01-01T00:00:00Z'
+                    email:
+                      type: string
+                      description: The email address of the Project Person
+                      example: email!example.com
+                    mobile_phone:
+                      type: string
+                      description: The mobile phone number of the Project Person
+                      example: 123-456-7890
+                    business_phone:
+                      type: string
+                      description: The business phone number of the Project Person
+                      example: 123-456-7890
+                    job_title:
+                      type: string
+                      description: The job title of the Project Person
+                      example: Developer
+                    fax_number:
+                      type: string
+                      description: The fax number of the Project Person
+                      example: 123-456-7890
+                    address:
+                      type: string
+                      description: The address of the Project Person
+                      example: 123 Main St
+                    city:
+                      type: string
+                      description: The city of the Project Person
+                      example: Anytown
+                    country_code:
+                      type: string
+                      description: The country code of the Project Person
+                      example: US
+                    state_code:
+                      type: string
+                      description: The state code of the Project Person
+                      example: CA
+                    zip:
+                      type: string
+                      description: The zip code of the Project Person
+                      example: 12345
+                    connected:
+                      type: boolean
+                      description: Whether the Project Person is connected to the user
+                      example: true
+                    last_login_at:
+                      type: string
+                      format: date-time
+                      description: Date and time the Project Person last logged in
+                      example: '2021-01-01T00:00:00Z'
+                    welcome_email_sent_at:
+                      type: string
+                      format: date-time
+                      description: Date and time the welcome email was sent to the Project Person
+                      example: '2021-01-01T00:00:00Z'
+                    erp_integrated_accountant:
+                      type: boolean
+                      description: Whether the Project Person is an ERP Integrated Accountant
+                      example: true
+                    permission_template:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: The ID of the Permission Template
+                          example: 1
+                        name:
+                          type: string
+                          description: The name of the Permission Template
+                          example: General Contractor
+                        category:
+                          type:
+                          - string
+                          - 'null'
+                          description: The category of the Permission Template
+                          enum:
+                          - internal
+                          - external
+                          example: internal
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/people/%7Bid%7D',\n  qs: {view: 'SOME_STRING_VALUE'},\n  headers: {'content-type': 'application/json'},\n  body: {\n    person: {\n      first_name: 'string',\n      last_name: 'string',\n      is_employee: false,\n      employee_id: 'string',\n      origin_id: 'string',\n      job_title: 'Developer',\n      work_classification_id: 398438\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"person\":{\"first_name\":\"string\",\"last_name\":\"string\",\"is_employee\":false,\"employee_id\":\"string\",\"origin_id\":\"string\",\"job_title\":\"Developer\",\"work_classification_id\":398438}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("PATCH", "/rest/v1.0/projects/%7Bproject_id%7D/people/%7Bid%7D?view=SOME_STRING_VALUE", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/people/%7Bid%7D?view=SOME_STRING_VALUE' \\\n  --header 'content-type: application/json' \\\n  --data '{\"person\":{\"first_name\":\"string\",\"last_name\":\"string\",\"is_employee\":false,\"employee_id\":\"string\",\"origin_id\":\"string\",\"job_title\":\"Developer\",\"work_classification_id\":398438}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/people/%7Bid%7D?view=SOME_STRING_VALUE\"),\n    Content = new StringContent(\"{\\\"person\\\":{\\\"first_name\\\":\\\"string\\\",\\\"last_name\\\":\\\"string\\\",\\\"is_employee\\\":false,\\\"employee_id\\\":\\\"string\\\",\\\"origin_id\\\":\\\"string\\\",\\\"job_title\\\":\\\"Developer\\\",\\\"work_classification_id\\\":398438}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added `job_title` to list of allowed attributes for update
+        description: job_title attribute is now allowed to be updated on Users and Contacts and is displayed in the response.
+        endpoint: PATCH /projects/{project_id}/people/{id}
+        type: feature
+        breaking: false
+        datestamp: '2025-10-27'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-people?version=1.0#update-project-person
+      operationId: updateProjectPerson
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

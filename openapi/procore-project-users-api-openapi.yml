@@ -1,0 +1,4190 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Project Users API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Project Users
+paths:
+  /rest/v1.0/projects/{project_id}/people/inactive:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      description: ID of the project
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: List Inactive Project People
+      description: 'Return a list of People associated with a Project. Includes users in the directory and reference users.
+
+
+        See Filtering on List Actions for information on using the filtering capabilities provided by this endpoint.'
+      tags:
+      - Project Users
+      parameters:
+      - name: view
+        in: query
+        description: Specifies which view of the resource to return (which attributes should be present in the response). Users without read permissions to Directory are limited to the normal and extended views. If a valid view is not provided, it will default to normal.
+        schema:
+          type: string
+          enum:
+          - extended
+          - normal
+          - web
+      - name: page
+        in: query
+        description: Page
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: Elements per page
+        schema:
+          type: integer
+      - name: filters[is_employee]
+        in: query
+        description: If true, returns item(s) where `is_employee` value is true.
+        required: false
+        schema:
+          type: boolean
+      - name: filters[reference_users_only]
+        in: query
+        required: false
+        description: If true, returns only people who are reference users.
+        schema:
+          type: boolean
+      - name: filters[without_reference_users]
+        in: query
+        required: false
+        description: If true, returns only people who are not reference users.
+        schema:
+          type: boolean
+      - name: filters[include_company_people]
+        in: query
+        required: false
+        description: If true, returns people in the Company not just the Project. This option only works if the user has permission to create people in the project directory or permission to read from the company directory.
+        schema:
+          type: boolean
+      - name: filters[search]
+        in: query
+        description: Returns People where the search string matches the Person's name (first, last, or full), email address, mobile phone, business phone, fax number, or job title.
+        required: false
+        schema:
+          type: string
+      - name: filters[connected]
+        in: query
+        description: If true, returns only people who are connected users. If false, returns only people who are not connected users.
+        required: false
+        schema:
+          type: boolean
+      - name: filters[vendor_id]
+        in: query
+        description: Return item(s) with the specified Vendor IDs.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: filters[job_title]
+        in: query
+        description: Returns only people who have the specified job title.
+        required: false
+        schema:
+          type: string
+      - name: filters[country_code]
+        in: query
+        description: Returns only people who have the specified country code.
+        required: false
+        schema:
+          type: string
+      - name: filters[state_code]
+        in: query
+        description: Returns only people who have the specified state code.
+        required: false
+        schema:
+          type: string
+      - name: filters[trade_id]
+        in: query
+        description: Array of Trade IDs. Returns item(s) with the specified Trade IDs.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: filters[permission_template_id]
+        in: query
+        description: Array of Permission Template IDs. Returns item(s) with the specified Permission Template IDs.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: sort
+        in: query
+        description: Return items with the specified sort
+        required: false
+        schema:
+          type: string
+          enum:
+          - name
+          - vendor_name
+          - job_title
+          - permission_template
+      responses:
+        '200':
+          description: OK
+          headers:
+            Per-Page:
+              description: Number of items retrieved per page
+              schema:
+                type: integer
+            Total:
+              description: Total number of items to be retrieved
+              schema:
+                type: integer
+            Link:
+              description: Link headers for the first, prev, next, and last link
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                description: Array of project People
+                items:
+                  oneOf:
+                  - type: object
+                    title: Normal
+                    description: Project Person
+                    properties:
+                      contact:
+                        type: object
+                        description: The Contact associated with the Project Person
+                        properties:
+                          is_active:
+                            type: boolean
+                            description: The active status of the Contact associated with the Project Person
+                          email:
+                            type: string
+                            description: The email address of the contact.
+                            example: paul@example.com
+                      contact_id:
+                        type: integer
+                        description: Contact ID for the Project Person
+                        example: 38965
+                      employee_id:
+                        type:
+                        - string
+                        - 'null'
+                        description: Employee ID for the Project Person
+                        example: '123456789'
+                      first_name:
+                        type: string
+                        description: Project Person first name
+                        example: Leah
+                      id:
+                        type: integer
+                        description: Unique identifier for the Project Person.
+                        example: 381006
+                      is_employee:
+                        type:
+                        - boolean
+                        - 'null'
+                        description: Employee status for the Project Person
+                        example: false
+                      last_name:
+                        type: string
+                        description: Project Person last name
+                        example: Russell
+                      name:
+                        type: string
+                        description: Project Person full name
+                        example: Leah Russell
+                      user_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: User ID if this Project Person represents a User. NULL for a Reference User.
+                        example: 700215
+                      user_uuid:
+                        type:
+                        - integer
+                        - 'null'
+                        description: The user UUID for if this Company Person represents a user. This value is set to NULL for a Reference User.
+                        example: e26894a5-41a7-4c14-b202-929bf2d5f95
+                      work_classification_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: Work Classification ID for the Project Person
+                        example: 398438
+                      origin_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: The ID of the External Data associated with the Project Person
+                        example: 398438
+                      job_title:
+                        type: string
+                        description: The job title of the Project Person
+                        example: Developer
+                  - type: object
+                    title: extended view
+                    description: Project Person
+                    properties:
+                      contact:
+                        type: object
+                        description: The Contact associated with the Project Person
+                        properties:
+                          is_active:
+                            type: boolean
+                            description: The active status of the Contact associated with the Project Person
+                          email:
+                            type: string
+                            description: The email address of the contact.
+                            example: paul@example.com
+                      contact_id:
+                        type: integer
+                        description: Contact ID for the Project Person
+                        example: 38965
+                      employee_id:
+                        type:
+                        - string
+                        - 'null'
+                        description: Employee ID for the Project Person
+                        example: '123456789'
+                      first_name:
+                        type: string
+                        description: Project Person first name
+                        example: Leah
+                      id:
+                        type: integer
+                        description: Unique identifier for the Project Person.
+                        example: 381006
+                      is_employee:
+                        type:
+                        - boolean
+                        - 'null'
+                        description: Employee status for the Project Person
+                        example: false
+                      last_name:
+                        type: string
+                        description: Project Person last name
+                        example: Russell
+                      name:
+                        type: string
+                        description: Project Person full name
+                        example: Leah Russell
+                      user_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: User ID if this Project Person represents a User. NULL for a Reference User.
+                        example: 700215
+                      user_uuid:
+                        type:
+                        - integer
+                        - 'null'
+                        description: The user UUID for if this Company Person represents a user. This value is set to NULL for a Reference User.
+                        example: e26894a5-41a7-4c14-b202-929bf2d5f95
+                      work_classification_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: Work Classification ID for the Project Person
+                        example: 398438
+                      origin_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: The ID of the External Data associated with the Project Person
+                        example: 398438
+                      job_title:
+                        type: string
+                        description: The job title of the Project Person
+                        example: Developer
+                      work_classification:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            description: ID
+                            example: 57869
+                          name:
+                            type: string
+                            description: The name of the classification
+                            example: Driver
+                      vendor:
+                        type: object
+                        title: Compact
+                        properties:
+                          id:
+                            type: integer
+                            description: Unique integer identifier for this vendor/company.
+                            example: 161072
+                          name:
+                            type: string
+                            description: Display name of the vendor or contractor company.
+                            example: SID Architecture
+                  - type: object
+                    title: web view
+                    description: Project Person
+                    properties:
+                      first_name:
+                        type: string
+                        description: Project Person first name
+                        example: Leah
+                      id:
+                        type: integer
+                        description: Unique identifier for the Project Person.
+                        example: 381006
+                      is_employee:
+                        type:
+                        - boolean
+                        - 'null'
+                        description: Employee status for the Project Person
+                        example: false
+                      last_name:
+                        type: string
+                        description: Project Person last name
+                        example: Russell
+                      name:
+                        type: string
+                        description: Project Person full name
+                        example: Leah Russell
+                      user_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: User ID if this Project Person represents a User. NULL for a Reference User.
+                        example: 700215
+                      origin_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: The ID of the External Data associated with the Project Person
+                        example: 398438
+                      work_classification_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: Work Classification ID for the Project Person
+                        example: 398438
+                      work_classification:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            description: ID
+                            example: 57869
+                          name:
+                            type: string
+                            description: The name of the classification
+                            example: Driver
+                      vendor:
+                        type: object
+                        title: Vendor Project Person Web
+                        properties:
+                          id:
+                            type: integer
+                            example: 161072
+                          name:
+                            type: string
+                            example: SID Architecture
+                          company_vendor:
+                            type: boolean
+                            example: true
+                          is_connected:
+                            type: boolean
+                            example: true
+                          origin_id:
+                            type:
+                            - string
+                            - 'null'
+                            example: ABC-123
+                          origin_code:
+                            type:
+                            - string
+                            - 'null'
+                            example: DEF-456
+                          business_register:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                                example: abn
+                              identifier:
+                                type: string
+                                example: 12345678901
+                              verification_status:
+                                type: string
+                                example: does_not_exist
+                              verified_at:
+                                type: string
+                                example: '2024-05-29T17:00:00Z'
+                              id:
+                                type: integer
+                                example: 1
+                      contact:
+                        type: object
+                        description: The Contact associated with the Project Person
+                        properties:
+                          is_active:
+                            type: boolean
+                            description: The active status of the Contact associated with the Project Person
+                          email:
+                            type: string
+                            description: The email address of the contact.
+                            example: paul@example.com
+                      contact_id:
+                        type: integer
+                        description: The ID of the Contact associated with the Project Person
+                        example: 398438
+                      employee_id:
+                        type:
+                        - string
+                        - 'null'
+                        description: The employee ID of the Project Person
+                        example: 12345
+                      initials:
+                        type: string
+                        description: Initials of the Project Person
+                        example: LR
+                      avatar:
+                        type: string
+                        description: URL to the avatar of the Project Person
+                        example: https://example.com/avatar.jpg
+                      reference_user:
+                        type: boolean
+                        description: Whether the Project Person is a Reference User
+                        example: true
+                      created_at:
+                        type: string
+                        format: date-time
+                        description: Date and time the Project Person was created
+                        example: '2021-01-01T00:00:00Z'
+                      updated_at:
+                        type: string
+                        format: date-time
+                        description: Date and time the Project Person was last updated
+                        example: '2021-01-01T00:00:00Z'
+                      email:
+                        type: string
+                        description: The email address of the Project Person
+                        example: email!example.com
+                      mobile_phone:
+                        type: string
+                        description: The mobile phone number of the Project Person
+                        example: 123-456-7890
+                      business_phone:
+                        type: string
+                        description: The business phone number of the Project Person
+                        example: 123-456-7890
+                      job_title:
+                        type: string
+                        description: The job title of the Project Person
+                        example: Developer
+                      fax_number:
+                        type: string
+                        description: The fax number of the Project Person
+                        example: 123-456-7890
+                      address:
+                        type: string
+                        description: The address of the Project Person
+                        example: 123 Main St
+                      city:
+                        type: string
+                        description: The city of the Project Person
+                        example: Anytown
+                      country_code:
+                        type: string
+                        description: The country code of the Project Person
+                        example: US
+                      state_code:
+                        type: string
+                        description: The state code of the Project Person
+                        example: CA
+                      zip:
+                        type: string
+                        description: The zip code of the Project Person
+                        example: 12345
+                      connected:
+                        type: boolean
+                        description: Whether the Project Person is connected to the user
+                        example: true
+                      last_login_at:
+                        type: string
+                        format: date-time
+                        description: Date and time the Project Person last logged in
+                        example: '2021-01-01T00:00:00Z'
+                      welcome_email_sent_at:
+                        type: string
+                        format: date-time
+                        description: Date and time the welcome email was sent to the Project Person
+                        example: '2021-01-01T00:00:00Z'
+                      erp_integrated_accountant:
+                        type: boolean
+                        description: Whether the Project Person is an ERP Integrated Accountant
+                        example: true
+                      permission_template:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Permission Template
+                            example: 1
+                          name:
+                            type: string
+                            description: The name of the Permission Template
+                            example: General Contractor
+                          category:
+                            type:
+                            - string
+                            - 'null'
+                            description: The category of the Permission Template
+                            enum:
+                            - internal
+                            - external
+                            example: internal
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/people/inactive',\n  qs: {\n    view: 'SOME_STRING_VALUE',\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE',\n    'filters[is_employee]': 'SOME_BOOLEAN_VALUE',\n    'filters[reference_users_only]': 'SOME_BOOLEAN_VALUE',\n    'filters[without_reference_users]': 'SOME_BOOLEAN_VALUE',\n    'filters[include_company_people]': 'SOME_BOOLEAN_VALUE',\n    'filters[search]': 'SOME_STRING_VALUE',\n    'filters[connected]': 'SOME_BOOLEAN_VALUE',\n    'filters[vendor_id]': 'SOME_ARRAY_VALUE',\n    'filters[job_title]': 'SOME_STRING_VALUE',\n    'filters[country_code]': 'SOME_STRING_VALUE',\n    'filters[state_code]': 'SOME_STRING_VALUE',\n    'filters[trade_id]': 'SOME_ARRAY_VALUE',\n    'filters[permission_template_id]': 'SOME_ARRAY_VALUE',\n    sort: 'SOME_STRING_VALUE'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.0/projects/%7Bproject_id%7D/people/inactive?view=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&filters%5Bis_employee%5D=SOME_BOOLEAN_VALUE&filters%5Breference_users_only%5D=SOME_BOOLEAN_VALUE&filters%5Bwithout_reference_users%5D=SOME_BOOLEAN_VALUE&filters%5Binclude_company_people%5D=SOME_BOOLEAN_VALUE&filters%5Bsearch%5D=SOME_STRING_VALUE&filters%5Bconnected%5D=SOME_BOOLEAN_VALUE&filters%5Bvendor_id%5D=SOME_ARRAY_VALUE&filters%5Bjob_title%5D=SOME_STRING_VALUE&filters%5Bcountry_code%5D=SOME_STRING_VALUE&filters%5Bstate_code%5D=SOME_STRING_VALUE&filters%5Btrade_id%5D=SOME_ARRAY_VALUE&filters%5Bpermission_template_id%5D=SOME_ARRAY_VALUE&sort=SOME_STRING_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/people/inactive?view=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&filters%5Bis_employee%5D=SOME_BOOLEAN_VALUE&filters%5Breference_users_only%5D=SOME_BOOLEAN_VALUE&filters%5Bwithout_reference_users%5D=SOME_BOOLEAN_VALUE&filters%5Binclude_company_people%5D=SOME_BOOLEAN_VALUE&filters%5Bsearch%5D=SOME_STRING_VALUE&filters%5Bconnected%5D=SOME_BOOLEAN_VALUE&filters%5Bvendor_id%5D=SOME_ARRAY_VALUE&filters%5Bjob_title%5D=SOME_STRING_VALUE&filters%5Bcountry_code%5D=SOME_STRING_VALUE&filters%5Bstate_code%5D=SOME_STRING_VALUE&filters%5Btrade_id%5D=SOME_ARRAY_VALUE&filters%5Bpermission_template_id%5D=SOME_ARRAY_VALUE&sort=SOME_STRING_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/people/inactive?view=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&filters%5Bis_employee%5D=SOME_BOOLEAN_VALUE&filters%5Breference_users_only%5D=SOME_BOOLEAN_VALUE&filters%5Bwithout_reference_users%5D=SOME_BOOLEAN_VALUE&filters%5Binclude_company_people%5D=SOME_BOOLEAN_VALUE&filters%5Bsearch%5D=SOME_STRING_VALUE&filters%5Bconnected%5D=SOME_BOOLEAN_VALUE&filters%5Bvendor_id%5D=SOME_ARRAY_VALUE&filters%5Bjob_title%5D=SOME_STRING_VALUE&filters%5Bcountry_code%5D=SOME_STRING_VALUE&filters%5Bstate_code%5D=SOME_STRING_VALUE&filters%5Btrade_id%5D=SOME_ARRAY_VALUE&filters%5Bpermission_template_id%5D=SOME_ARRAY_VALUE&sort=SOME_STRING_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added Inactive Project People list endpoint
+        description: Get list of inactive people associated with specified project id.
+        endpoint: GET /projects/{project_id}/people/inactive
+        type: new
+        breaking: false
+        datestamp: '2020-11-19'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-inactive-people?version=1.0#list-inactive-project-people
+      - summary: Add sort by name to Inactive Project People list endpoint
+        description: Inactive Project People list endpoint now supports sorting by name.
+        endpoint: GET /projects/{project_id}/people/inactive
+        type: feature
+        breaking: false
+        datestamp: '2024-08-12'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-inactive-people?version=1.0#list-inactive-project-people
+      - summary: Filter by connected users
+        description: Inactive Project People list endpoint now supports the option to filter by connected users.
+        endpoint: GET /projects/{project_id}/people/inactive
+        type: feature
+        breaking: false
+        datestamp: '2024-08-16'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-inactive-people?version=1.0#list-inactive-project-people
+      - summary: Documented filter by non-reference users
+        description: Added missing documentation for the option to filter by non-reference users on the Inactive Project People list endpoint.
+        endpoint: GET /projects/{project_id}/people/inactive
+        type: feature
+        breaking: false
+        datestamp: '2024-08-21'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-inactive-people?version=1.0#list-inactive-project-people
+      - summary: Filter by Vendor ID
+        description: Inactive Project People list endpoint now supports the option to filter by Vendor ID.
+        endpoint: GET /projects/{project_id}/people/inactive
+        type: feature
+        breaking: false
+        datestamp: '2024-08-23'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-inactive-people?version=1.0#list-inactive-project-people
+      - summary: Add sort by vendor name to Inactive Project People list endpoint
+        description: Inactive Project People list endpoint now supports sorting by vendor name.
+        endpoint: GET /projects/{project_id}/people/inactive
+        type: feature
+        breaking: false
+        datestamp: '2024-08-19'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-inactive-people?version=1.0#list-inactive-project-people
+      - summary: Filter by job title
+        description: Inactive Project People list endpoint now supports the option to filter by job title.
+        endpoint: GET /projects/{project_id}/people/inactive
+        type: feature
+        breaking: false
+        datestamp: '2024-08-27'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-inactive-people?version=1.0#list-inactive-project-people
+      - summary: Filter by country code
+        description: Inactive Project People list endpoint now supports the option to filter by country code.
+        endpoint: GET /projects/{project_id}/people/inactive
+        type: feature
+        breaking: false
+        datestamp: '2024-08-29'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-inactive-people?version=1.0#list-inactive-project-people
+      - summary: Filter by state code
+        description: Inactive Project People list endpoint now supports the option to filter by state code.
+        endpoint: GET /projects/{project_id}/people/inactive
+        type: feature
+        breaking: false
+        datestamp: '2024-08-29'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-inactive-people?version=1.0#list-inactive-project-people
+      - summary: Filter by Trade ID
+        description: Inactive Project People list endpoint now supports the option to filter by Trade ID.
+        endpoint: GET /projects/{project_id}/people/inactive
+        type: feature
+        breaking: false
+        datestamp: '2024-09-05'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-inactive-people?version=1.0#list-inactive-project-people
+      - summary: Filter by Permission Template ID
+        description: Inactive Project People list endpoint now supports the option to filter by Permission Template ID.
+        endpoint: GET /projects/{project_id}/people/inactive
+        type: feature
+        breaking: false
+        datestamp: '2024-09-06'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-inactive-people?version=1.0#list-inactive-project-people
+      - summary: Add sort by job title to Inactive Project People list endpoint
+        description: Inactive Project People list endpoint now supports sorting by job title.
+        endpoint: GET /projects/{project_id}/people/inactive
+        type: feature
+        breaking: false
+        datestamp: '2024-09-09'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-inactive-people?version=1.0#list-inactive-project-people
+      - summary: Add 'web' view to Inactive Project People list endpoint
+        description: Inactive Project People list endpoint now supports a new view, `web`.
+        endpoint: GET /projects/{project_id}/people/inactive
+        type: feature
+        breaking: false
+        datestamp: '2024-09-13'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-inactive-people?version=1.0#list-inactive-project-people
+      - summary: Add sort by permission template to Inactive Project People list endpoint
+        description: Inactive Project People list endpoint now supports sorting by permission template.
+        endpoint: GET /projects/{project_id}/people/inactive
+        type: feature
+        breaking: false
+        datestamp: '2024-09-11'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-inactive-people?version=1.0#list-inactive-project-people
+      - summary: Add attributes to 'web' view of Inactive Project People list endpoint
+        description: Added `contact`, `contact_id`, and `vendor` attributes to the 'web' view
+        endpoint: GET /projects/{project_id}/people/inactive
+        type: feature
+        breaking: false
+        datestamp: '2025-02-10'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-inactive-people?version=1.0#list-inactive-project-people
+      - summary: Add attributes to 'web' view of Inactive Project People list endpoint
+        description: Added `employee_id` attribute to the 'web' view
+        endpoint: GET /projects/{project_id}/people/inactive
+        type: feature
+        breaking: false
+        datestamp: '2025-02-13'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-inactive-people?version=1.0#list-inactive-project-people
+      - summary: Add attributes to 'web' view of Inactive Project People list endpoint
+        description: Added `origin_code`, `business_register`, and associated `business_register` attributes to the 'web' view
+        endpoint: GET /projects/{project_id}/people/inactive
+        type: feature
+        breaking: false
+        datestamp: '2025-02-25'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-inactive-people?version=1.0#list-inactive-project-people
+      - summary: Added `job_title` attribute to response
+        description: job_title attribute is now available in the response for all views of the Inactive Project People list endpoint.
+        endpoint: GET /projects/{project_id}/people/inactive
+        type: feature
+        breaking: false
+        datestamp: '2025-10-27'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-inactive-people?version=1.0#list-inactive-project-people
+      operationId: listInactiveProjectPeople
+  /rest/v1.0/projects/{project_id}/people:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: List Project People
+      description: 'Return a list of People associated with a Project. Includes users in the directory and reference users.
+
+
+        See Filtering on List Actions for information on using the filtering capabilities provided by this endpoint.'
+      tags:
+      - Project Users
+      parameters:
+      - name: view
+        in: query
+        description: Specifies which view of the resource to return (which attributes should be present in the response). Users without read permissions to Directory are limited to the normal and extended views. If a valid view is not provided, it will default to normal.
+        schema:
+          type: string
+          enum:
+          - extended
+          - normal
+          - web
+      - name: page
+        in: query
+        description: Page
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: Elements per page
+        schema:
+          type: integer
+      - name: filters[is_employee]
+        in: query
+        description: If true, returns item(s) where `is_employee` value is true.
+        required: false
+        schema:
+          type: boolean
+      - name: filters[reference_users_only]
+        in: query
+        required: false
+        description: If true, returns only people who are reference users.
+        schema:
+          type: boolean
+      - name: filters[without_reference_users]
+        in: query
+        required: false
+        description: If true, returns only people who are not reference users.
+        schema:
+          type: boolean
+      - name: filters[include_company_people]
+        in: query
+        required: false
+        description: If true, returns people in the Company not just the Project. This option only works if the user has permission to create people in the project directory or permission to read from the company directory.
+        schema:
+          type: boolean
+      - name: filters[search]
+        in: query
+        description: Returns People where the search string matches the Person's name (first, last, or full), email address, mobile phone, business phone, fax number, or job title.
+        required: false
+        schema:
+          type: string
+      - name: filters[connected]
+        in: query
+        description: If true, returns only people who are connected users. If false, returns only people who are not connected users.
+        required: false
+        schema:
+          type: boolean
+      - name: filters[vendor_id]
+        in: query
+        description: Return item(s) with the specified Vendor IDs.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: filters[job_title]
+        in: query
+        description: Returns only people who have the specified job title.
+        required: false
+        schema:
+          type: string
+      - name: filters[country_code]
+        in: query
+        description: Returns only people who have the specified country code.
+        required: false
+        schema:
+          type: string
+      - name: filters[state_code]
+        in: query
+        description: Returns only people who have the specified state code.
+        required: false
+        schema:
+          type: string
+      - name: filters[trade_id]
+        in: query
+        description: Array of Trade IDs. Returns item(s) with the specified Trade IDs.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: filters[permission_template_id]
+        in: query
+        description: Array of Permission Template IDs. Returns item(s) with the specified Permission Template IDs.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: sort
+        in: query
+        description: Return items with the specified sort
+        required: false
+        schema:
+          type: string
+          enum:
+          - name
+          - vendor_name
+          - job_title
+          - permission_template
+      responses:
+        '200':
+          description: OK
+          headers:
+            Per-Page:
+              description: Number of items retrieved per page
+              schema:
+                type: integer
+            Total:
+              description: Total number of items to be retrieved
+              schema:
+                type: integer
+            Link:
+              description: Link headers for the first, prev, next, and last link
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                description: Array of project People
+                items:
+                  oneOf:
+                  - type: object
+                    title: Normal
+                    description: Project Person
+                    properties:
+                      contact:
+                        type: object
+                        description: The Contact associated with the Project Person
+                        properties:
+                          is_active:
+                            type: boolean
+                            description: The active status of the Contact associated with the Project Person
+                          email:
+                            type: string
+                            description: The email address of the contact.
+                            example: paul@example.com
+                      contact_id:
+                        type: integer
+                        description: Contact ID for the Project Person
+                        example: 38965
+                      employee_id:
+                        type:
+                        - string
+                        - 'null'
+                        description: Employee ID for the Project Person
+                        example: '123456789'
+                      first_name:
+                        type: string
+                        description: Project Person first name
+                        example: Leah
+                      id:
+                        type: integer
+                        description: Unique identifier for the Project Person.
+                        example: 381006
+                      is_employee:
+                        type:
+                        - boolean
+                        - 'null'
+                        description: Employee status for the Project Person
+                        example: false
+                      last_name:
+                        type: string
+                        description: Project Person last name
+                        example: Russell
+                      name:
+                        type: string
+                        description: Project Person full name
+                        example: Leah Russell
+                      user_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: User ID if this Project Person represents a User. NULL for a Reference User.
+                        example: 700215
+                      user_uuid:
+                        type:
+                        - integer
+                        - 'null'
+                        description: The user UUID for if this Company Person represents a user. This value is set to NULL for a Reference User.
+                        example: e26894a5-41a7-4c14-b202-929bf2d5f95
+                      work_classification_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: Work Classification ID for the Project Person
+                        example: 398438
+                      origin_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: The ID of the External Data associated with the Project Person
+                        example: 398438
+                      job_title:
+                        type: string
+                        description: The job title of the Project Person
+                        example: Developer
+                  - type: object
+                    title: extended view
+                    description: Project Person
+                    properties:
+                      contact:
+                        type: object
+                        description: The Contact associated with the Project Person
+                        properties:
+                          is_active:
+                            type: boolean
+                            description: The active status of the Contact associated with the Project Person
+                          email:
+                            type: string
+                            description: The email address of the contact.
+                            example: paul@example.com
+                      contact_id:
+                        type: integer
+                        description: Contact ID for the Project Person
+                        example: 38965
+                      employee_id:
+                        type:
+                        - string
+                        - 'null'
+                        description: Employee ID for the Project Person
+                        example: '123456789'
+                      first_name:
+                        type: string
+                        description: Project Person first name
+                        example: Leah
+                      id:
+                        type: integer
+                        description: Unique identifier for the Project Person.
+                        example: 381006
+                      is_employee:
+                        type:
+                        - boolean
+                        - 'null'
+                        description: Employee status for the Project Person
+                        example: false
+                      last_name:
+                        type: string
+                        description: Project Person last name
+                        example: Russell
+                      name:
+                        type: string
+                        description: Project Person full name
+                        example: Leah Russell
+                      user_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: User ID if this Project Person represents a User. NULL for a Reference User.
+                        example: 700215
+                      user_uuid:
+                        type:
+                        - integer
+                        - 'null'
+                        description: The user UUID for if this Company Person represents a user. This value is set to NULL for a Reference User.
+                        example: e26894a5-41a7-4c14-b202-929bf2d5f95
+                      work_classification_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: Work Classification ID for the Project Person
+                        example: 398438
+                      origin_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: The ID of the External Data associated with the Project Person
+                        example: 398438
+                      job_title:
+                        type: string
+                        description: The job title of the Project Person
+                        example: Developer
+                      work_classification:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            description: ID
+                            example: 57869
+                          name:
+                            type: string
+                            description: The name of the classification
+                            example: Driver
+                      vendor:
+                        type: object
+                        title: Compact
+                        properties:
+                          id:
+                            type: integer
+                            description: Unique integer identifier for this vendor/company.
+                            example: 161072
+                          name:
+                            type: string
+                            description: Display name of the vendor or contractor company.
+                            example: SID Architecture
+                  - type: object
+                    title: web view
+                    description: Project Person
+                    properties:
+                      first_name:
+                        type: string
+                        description: Project Person first name
+                        example: Leah
+                      id:
+                        type: integer
+                        description: Unique identifier for the Project Person.
+                        example: 381006
+                      is_employee:
+                        type:
+                        - boolean
+                        - 'null'
+                        description: Employee status for the Project Person
+                        example: false
+                      last_name:
+                        type: string
+                        description: Project Person last name
+                        example: Russell
+                      name:
+                        type: string
+                        description: Project Person full name
+                        example: Leah Russell
+                      user_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: User ID if this Project Person represents a User. NULL for a Reference User.
+                        example: 700215
+                      origin_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: The ID of the External Data associated with the Project Person
+                        example: 398438
+                      work_classification_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: Work Classification ID for the Project Person
+                        example: 398438
+                      work_classification:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            description: ID
+                            example: 57869
+                          name:
+                            type: string
+                            description: The name of the classification
+                            example: Driver
+                      vendor:
+                        type: object
+                        title: Vendor Project Person Web
+                        properties:
+                          id:
+                            type: integer
+                            example: 161072
+                          name:
+                            type: string
+                            example: SID Architecture
+                          company_vendor:
+                            type: boolean
+                            example: true
+                          is_connected:
+                            type: boolean
+                            example: true
+                          origin_id:
+                            type:
+                            - string
+                            - 'null'
+                            example: ABC-123
+                          origin_code:
+                            type:
+                            - string
+                            - 'null'
+                            example: DEF-456
+                          business_register:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                                example: abn
+                              identifier:
+                                type: string
+                                example: 12345678901
+                              verification_status:
+                                type: string
+                                example: does_not_exist
+                              verified_at:
+                                type: string
+                                example: '2024-05-29T17:00:00Z'
+                              id:
+                                type: integer
+                                example: 1
+                      contact:
+                        type: object
+                        description: The Contact associated with the Project Person
+                        properties:
+                          is_active:
+                            type: boolean
+                            description: The active status of the Contact associated with the Project Person
+                          email:
+                            type: string
+                            description: The email address of the contact.
+                            example: paul@example.com
+                      contact_id:
+                        type: integer
+                        description: The ID of the Contact associated with the Project Person
+                        example: 398438
+                      employee_id:
+                        type:
+                        - string
+                        - 'null'
+                        description: The employee ID of the Project Person
+                        example: 12345
+                      initials:
+                        type: string
+                        description: Initials of the Project Person
+                        example: LR
+                      avatar:
+                        type: string
+                        description: URL to the avatar of the Project Person
+                        example: https://example.com/avatar.jpg
+                      reference_user:
+                        type: boolean
+                        description: Whether the Project Person is a Reference User
+                        example: true
+                      created_at:
+                        type: string
+                        format: date-time
+                        description: Date and time the Project Person was created
+                        example: '2021-01-01T00:00:00Z'
+                      updated_at:
+                        type: string
+                        format: date-time
+                        description: Date and time the Project Person was last updated
+                        example: '2021-01-01T00:00:00Z'
+                      email:
+                        type: string
+                        description: The email address of the Project Person
+                        example: email!example.com
+                      mobile_phone:
+                        type: string
+                        description: The mobile phone number of the Project Person
+                        example: 123-456-7890
+                      business_phone:
+                        type: string
+                        description: The business phone number of the Project Person
+                        example: 123-456-7890
+                      job_title:
+                        type: string
+                        description: The job title of the Project Person
+                        example: Developer
+                      fax_number:
+                        type: string
+                        description: The fax number of the Project Person
+                        example: 123-456-7890
+                      address:
+                        type: string
+                        description: The address of the Project Person
+                        example: 123 Main St
+                      city:
+                        type: string
+                        description: The city of the Project Person
+                        example: Anytown
+                      country_code:
+                        type: string
+                        description: The country code of the Project Person
+                        example: US
+                      state_code:
+                        type: string
+                        description: The state code of the Project Person
+                        example: CA
+                      zip:
+                        type: string
+                        description: The zip code of the Project Person
+                        example: 12345
+                      connected:
+                        type: boolean
+                        description: Whether the Project Person is connected to the user
+                        example: true
+                      last_login_at:
+                        type: string
+                        format: date-time
+                        description: Date and time the Project Person last logged in
+                        example: '2021-01-01T00:00:00Z'
+                      welcome_email_sent_at:
+                        type: string
+                        format: date-time
+                        description: Date and time the welcome email was sent to the Project Person
+                        example: '2021-01-01T00:00:00Z'
+                      erp_integrated_accountant:
+                        type: boolean
+                        description: Whether the Project Person is an ERP Integrated Accountant
+                        example: true
+                      permission_template:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            description: The ID of the Permission Template
+                            example: 1
+                          name:
+                            type: string
+                            description: The name of the Permission Template
+                            example: General Contractor
+                          category:
+                            type:
+                            - string
+                            - 'null'
+                            description: The category of the Permission Template
+                            enum:
+                            - internal
+                            - external
+                            example: internal
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/people',\n  qs: {\n    view: 'SOME_STRING_VALUE',\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE',\n    'filters[is_employee]': 'SOME_BOOLEAN_VALUE',\n    'filters[reference_users_only]': 'SOME_BOOLEAN_VALUE',\n    'filters[without_reference_users]': 'SOME_BOOLEAN_VALUE',\n    'filters[include_company_people]': 'SOME_BOOLEAN_VALUE',\n    'filters[search]': 'SOME_STRING_VALUE',\n    'filters[connected]': 'SOME_BOOLEAN_VALUE',\n    'filters[vendor_id]': 'SOME_ARRAY_VALUE',\n    'filters[job_title]': 'SOME_STRING_VALUE',\n    'filters[country_code]': 'SOME_STRING_VALUE',\n    'filters[state_code]': 'SOME_STRING_VALUE',\n    'filters[trade_id]': 'SOME_ARRAY_VALUE',\n    'filters[permission_template_id]': 'SOME_ARRAY_VALUE',\n    sort: 'SOME_STRING_VALUE'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.0/projects/%7Bproject_id%7D/people?view=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&filters%5Bis_employee%5D=SOME_BOOLEAN_VALUE&filters%5Breference_users_only%5D=SOME_BOOLEAN_VALUE&filters%5Bwithout_reference_users%5D=SOME_BOOLEAN_VALUE&filters%5Binclude_company_people%5D=SOME_BOOLEAN_VALUE&filters%5Bsearch%5D=SOME_STRING_VALUE&filters%5Bconnected%5D=SOME_BOOLEAN_VALUE&filters%5Bvendor_id%5D=SOME_ARRAY_VALUE&filters%5Bjob_title%5D=SOME_STRING_VALUE&filters%5Bcountry_code%5D=SOME_STRING_VALUE&filters%5Bstate_code%5D=SOME_STRING_VALUE&filters%5Btrade_id%5D=SOME_ARRAY_VALUE&filters%5Bpermission_template_id%5D=SOME_ARRAY_VALUE&sort=SOME_STRING_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/people?view=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&filters%5Bis_employee%5D=SOME_BOOLEAN_VALUE&filters%5Breference_users_only%5D=SOME_BOOLEAN_VALUE&filters%5Bwithout_reference_users%5D=SOME_BOOLEAN_VALUE&filters%5Binclude_company_people%5D=SOME_BOOLEAN_VALUE&filters%5Bsearch%5D=SOME_STRING_VALUE&filters%5Bconnected%5D=SOME_BOOLEAN_VALUE&filters%5Bvendor_id%5D=SOME_ARRAY_VALUE&filters%5Bjob_title%5D=SOME_STRING_VALUE&filters%5Bcountry_code%5D=SOME_STRING_VALUE&filters%5Bstate_code%5D=SOME_STRING_VALUE&filters%5Btrade_id%5D=SOME_ARRAY_VALUE&filters%5Bpermission_template_id%5D=SOME_ARRAY_VALUE&sort=SOME_STRING_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/people?view=SOME_STRING_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&filters%5Bis_employee%5D=SOME_BOOLEAN_VALUE&filters%5Breference_users_only%5D=SOME_BOOLEAN_VALUE&filters%5Bwithout_reference_users%5D=SOME_BOOLEAN_VALUE&filters%5Binclude_company_people%5D=SOME_BOOLEAN_VALUE&filters%5Bsearch%5D=SOME_STRING_VALUE&filters%5Bconnected%5D=SOME_BOOLEAN_VALUE&filters%5Bvendor_id%5D=SOME_ARRAY_VALUE&filters%5Bjob_title%5D=SOME_STRING_VALUE&filters%5Bcountry_code%5D=SOME_STRING_VALUE&filters%5Bstate_code%5D=SOME_STRING_VALUE&filters%5Btrade_id%5D=SOME_ARRAY_VALUE&filters%5Bpermission_template_id%5D=SOME_ARRAY_VALUE&sort=SOME_STRING_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Add sort by name to Project People list endpoint
+        description: Project People list endpoint now supports sorting by name.
+        endpoint: GET /projects/{project_id}/people
+        type: feature
+        breaking: false
+        datestamp: '2024-08-12'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-people?version=1.0#list-project-people
+      - summary: Filter by connected users
+        description: Project People list endpoint now supports the option to filter by connected users.
+        endpoint: GET /projects/{project_id}/people
+        type: feature
+        breaking: false
+        datestamp: '2024-08-16'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-people?version=1.0#list-project-people
+      - summary: Documented filter by non-reference users
+        description: Added missing documentation for the option to filter by non-reference users on the Project People list endpoint.
+        endpoint: GET /projects/{project_id}/people
+        type: feature
+        breaking: false
+        datestamp: '2024-08-21'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-people?version=1.0#list-project-people
+      - summary: Filter by Vendor ID
+        description: Project People list endpoint now supports the option to filter by Vendor ID.
+        endpoint: GET /projects/{project_id}/people
+        type: feature
+        breaking: false
+        datestamp: '2024-08-23'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-people?version=1.0#list-project-people
+      - summary: Add sort by vendor name to Project People list endpoint
+        description: Project People list endpoint now supports sorting by vendor name.
+        endpoint: GET /projects/{project_id}/people
+        type: feature
+        breaking: false
+        datestamp: '2024-08-12'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-people?version=1.0#list-project-people
+      - summary: Filter by job title
+        description: Project People list endpoint now supports the option to filter by job title.
+        endpoint: GET /projects/{project_id}/people
+        type: feature
+        breaking: false
+        datestamp: '2024-08-27'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-people?version=1.0#list-project-people
+      - summary: Filter by country code
+        description: Project People list endpoint now supports the option to filter by country code.
+        endpoint: GET /projects/{project_id}/people
+        type: feature
+        breaking: false
+        datestamp: '2024-08-29'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-people?version=1.0#list-project-people
+      - summary: Filter by state code
+        description: Project People list endpoint now supports the option to filter by state code.
+        endpoint: GET /projects/{project_id}/people
+        type: feature
+        breaking: false
+        datestamp: '2024-08-29'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-people?version=1.0#list-project-people
+      - summary: Filter by Trade ID
+        description: Project People list endpoint now supports the option to filter by Trade ID.
+        endpoint: GET /projects/{project_id}/people
+        type: feature
+        breaking: false
+        datestamp: '2024-09-05'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-people?version=1.0#list-project-people
+      - summary: Filter by Permission Template ID
+        description: Project People list endpoint now supports the option to filter by Permission Template ID.
+        endpoint: GET /projects/{project_id}/people
+        type: feature
+        breaking: false
+        datestamp: '2024-09-06'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-people?version=1.0#list-project-people
+      - summary: Add sort by job title to Project People list endpoint
+        description: Project People list endpoint now supports sorting by job title.
+        endpoint: GET /projects/{project_id}/people
+        type: feature
+        breaking: false
+        datestamp: '2024-09-09'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-people?version=1.0#list-project-people
+      - summary: Add 'web' view to Project People list endpoint
+        description: Project People list endpoint now supports a new view, `web`.
+        endpoint: GET /projects/{project_id}/people
+        type: feature
+        breaking: false
+        datestamp: '2024-09-13'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-people?version=1.0#list-project-people
+      - summary: Add sort by permission template to Project People list endpoint
+        description: Project People list endpoint now supports sorting by permission template.
+        endpoint: GET /projects/{project_id}/people
+        type: feature
+        breaking: false
+        datestamp: '2024-09-11'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-people?version=1.0#list-project-people
+      - summary: Add attributes to 'web' view of Project People list endpoint
+        description: Added `contact`, `contact_id`, and `vendor` attributes to the 'web' view
+        endpoint: GET /projects/{project_id}/people
+        type: feature
+        breaking: false
+        datestamp: '2025-02-10'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-people?version=1.0#list-project-people
+      - summary: Add attributes to 'web' view of Project People list endpoint
+        description: Added `employee_id` attribute to the 'web' view
+        endpoint: GET /projects/{project_id}/people
+        type: feature
+        breaking: false
+        datestamp: '2025-02-13'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-people?version=1.0#list-project-people
+      - summary: Add attributes to 'web' view of Project People list endpoint
+        description: Added `origin_code`, `business_register`, and associated `business_register` attributes to the 'web' view
+        endpoint: GET /projects/{project_id}/people
+        type: feature
+        breaking: false
+        datestamp: '2025-02-25'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-people?version=1.0#list-project-people
+      - summary: Added `job_title` attribute to response
+        description: job_title attribute is now available in the response for all views of the Project People list endpoint.
+        endpoint: GET /projects/{project_id}/people
+        type: feature
+        breaking: false
+        datestamp: '2025-10-27'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-people?version=1.0#list-project-people
+      operationId: listProjectPeople
+  /rest/v1.0/projects/{project_id}/users:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: List Project Users
+      description: 'Returns a list of active users associated with a project.
+
+
+        See Filtering on List Actions for information on using the filtering capabilities provided by this endpoint.'
+      tags:
+      - Project Users
+      parameters:
+      - name: page
+        in: query
+        description: Page
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: Elements per page
+        schema:
+          type: integer
+      - name: view
+        in: query
+        description: Specifies which view of the resource to return (which attributes should be present in the response). Users without read permissions to Directory are limited to the compact view. Otherwise, the default view is normal.
+        schema:
+          type: string
+          enum:
+          - compact
+          - normal
+      - name: filters[created_at]
+        in: query
+        description: 'Return item(s) created within the specified ISO 8601 datetime range.
+
+          Formats:
+
+          `YYYY-MM-DD`...`YYYY-MM-DD` - Date
+
+          `YYYY-MM-DDTHH:MM:SSZ`...`YYYY-MM-DDTHH:MM:SSZ` - DateTime with UTC Offset
+
+          `YYYY-MM-DDTHH:MM:SS+XX:00...`YYYY-MM-DDTHH:MM:SS+XX:00` - Datetime with Custom Offset'
+        required: false
+        schema:
+          type: string
+          format: date
+      - name: filters[updated_at]
+        in: query
+        description: 'Return item(s) last updated within the specified ISO 8601 datetime range.
+
+          Formats:
+
+          `YYYY-MM-DD`...`YYYY-MM-DD` - Date
+
+          `YYYY-MM-DDTHH:MM:SSZ`...`YYYY-MM-DDTHH:MM:SSZ` - DateTime with UTC Offset
+
+          `YYYY-MM-DDTHH:MM:SS+XX:00`...`YYYY-MM-DDTHH:MM:SS+XX:00` - Datetime with Custom Offset'
+        required: false
+        schema:
+          type: string
+          format: date
+      - name: filters[permission_template]
+        in: query
+        description: Permission Template ID. Returns item(s) assiociated with the specified Permission Template ID.
+        schema:
+          type: integer
+      - name: filters[vendor_id]
+        in: query
+        description: Return item(s) with the specified Vendor IDs.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: filters[origin_id]
+        in: query
+        description: Origin ID. Returns item(s) with the specified Origin ID.
+        required: false
+        schema:
+          type: string
+      - name: filters[trade_id][]
+        in: query
+        description: Returns users whose vendor record is associated with the specified trade id(s).
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: filters[search]
+        in: query
+        description: Returns users where the search string matches the user's first name, last name, email address, keywords, job title, or company name
+        required: false
+        schema:
+          type: string
+      - name: filters[employee]
+        in: query
+        description: Returns users whose is_employee attribute matches the parameter.
+        required: false
+        schema:
+          type: boolean
+      - name: filters[id][]
+        in: query
+        description: Returns users whose id attribute matches the parameter.
+        required: false
+        explode: true
+        style: form
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: filters[search_by_full_name]
+        in: query
+        description: Returns users whose full_name matches the parameter.
+        required: false
+        schema:
+          type: string
+      - name: sort
+        in: query
+        description: Returns items with the specified sort.
+        required: false
+        schema:
+          type: string
+          enum:
+          - name
+          - vendor_name
+          - permission_template
+      responses:
+        '200':
+          description: OK
+          headers:
+            Per-Page:
+              description: Number of items retrieved per page
+              schema:
+                type: integer
+            Total:
+              description: Total number of items to be retrieved
+              schema:
+                type: integer
+            Link:
+              description: Link headers for the first, prev, next, and last link
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                description: Array of project users
+                items:
+                  oneOf:
+                  - type: object
+                    title: Compact View
+                    description: Project User Compact View
+                    properties:
+                      first_name:
+                        type:
+                        - string
+                        - 'null'
+                        description: User first name
+                        example: Jane
+                      id:
+                        type: integer
+                        description: User id
+                        example: 381006
+                      initials:
+                        type:
+                        - string
+                        - 'null'
+                        description: User initials
+                        example: JD
+                      last_name:
+                        type: string
+                        description: User last name
+                        example: Doe
+                      name:
+                        type: string
+                        description: User full name
+                        example: Jane Doe
+                      party_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: The Directory Party ID for this user, resolved via Contact → Person → Party. Null when the user has no associated person record. Use this ID when calling endpoints that require a party identifier (e.g. certification assignments).
+                        example: 12345
+                      vendor:
+                        type:
+                        - object
+                        - 'null'
+                        properties:
+                          id:
+                            type: integer
+                            example: 161072
+                          name:
+                            type: string
+                            example: SID Architecture
+                  - type: object
+                    title: Normal View
+                    description: Project User Normal View
+                    properties:
+                      address:
+                        type:
+                        - string
+                        - 'null'
+                        description: User address
+                        example: 6305 Carpinteria Ave
+                      avatar:
+                        type:
+                        - string
+                        - 'null'
+                        description: User avatar url
+                        example: http://s3.amazonaws.com/pro-core.com/prostore/20150713184222_production_74548228.gif?AWSAccessKeyId=0PFNH01C4MZVXKXZNK82&Expires=2067964943&Signature=l4zpZIM3bgxydrr4hn6lM%2FdtreQ%3D
+                      business_id:
+                        description: Business id
+                        example: 89cac92d-fbd8-40ec-a1fc-24bbbd035a78
+                        type:
+                        - string
+                        - 'null'
+                      business_phone:
+                        type:
+                        - string
+                        - 'null'
+                        description: User business phone
+                        example: '1234567890'
+                      business_phone_extension:
+                        type:
+                        - integer
+                        - 'null'
+                        description: User business phone extension
+                        example: 21
+                      city:
+                        type:
+                        - string
+                        - 'null'
+                        description: User city
+                        example: Carpinteria
+                      country_code:
+                        type:
+                        - string
+                        - 'null'
+                        description: User country code (ISO-3166 Alpha-2 format)
+                        example: US
+                      email_address:
+                        type:
+                        - string
+                        - 'null'
+                        format: email
+                        description: User email
+                        example: jane.doe@example.com
+                      email_signature:
+                        type:
+                        - string
+                        - 'null'
+                        description: User email signature
+                        example: <p>Sent from Procore.</p>
+                      employee_id:
+                        type:
+                        - string
+                        - 'null'
+                        description: User employee id
+                        example: '123456789'
+                      erp_integrated_accountant:
+                        type: boolean
+                        description: User ERP integrated accountant status
+                        example: true
+                      fax_number:
+                        type:
+                        - string
+                        - 'null'
+                        description: User fax number
+                        example: '5555555555'
+                      first_name:
+                        type:
+                        - string
+                        - 'null'
+                        description: User first name
+                        example: Jane
+                      id:
+                        type: integer
+                        description: User id
+                        example: 381006
+                      initials:
+                        type:
+                        - string
+                        - 'null'
+                        description: User initials
+                        example: JD
+                      is_active:
+                        type:
+                        - boolean
+                        - 'null'
+                        description: User active status
+                        example: true
+                      is_employee:
+                        type:
+                        - boolean
+                        - 'null'
+                        description: User employee status
+                        example: false
+                      job_title:
+                        type:
+                        - string
+                        - 'null'
+                        description: User job title
+                        example: QA Manager
+                      last_login_at:
+                        type:
+                        - string
+                        - 'null'
+                        format: date-time
+                        description: User last login at
+                        example: '2016-06-30T20:41:58Z'
+                      last_name:
+                        type: string
+                        description: User last name
+                        example: Doe
+                      mobile_phone:
+                        type:
+                        - string
+                        - 'null'
+                        description: User mobile phone
+                        example: '5555555555'
+                      name:
+                        type: string
+                        description: User full name
+                        example: Jane Doe
+                      notes:
+                        type:
+                        - string
+                        - 'null'
+                        description: User notes
+                        example: notes
+                      state_code:
+                        type:
+                        - string
+                        - 'null'
+                        description: User state code (ISO-3166 Alpha-2 format)
+                        example: CA
+                      welcome_email_sent_at:
+                        type:
+                        - string
+                        - 'null'
+                        format: date-time
+                        description: User welcome email sent at
+                        example: '2013-05-30T20:41:58Z'
+                      zip:
+                        type:
+                        - string
+                        - 'null'
+                        description: User zip code
+                        example: '93013'
+                      origin_id:
+                        type:
+                        - string
+                        - 'null'
+                        example: foobar
+                        description: User origin id
+                      origin_data:
+                        type:
+                        - string
+                        - 'null'
+                        description: User origin data
+                        example: OD-2398273424
+                      created_at:
+                        type: string
+                        format: date-time
+                        description: User created at
+                        example: '2016-10-23T21:39:40Z'
+                      updated_at:
+                        type: string
+                        format: date-time
+                        description: User updated at
+                        example: '2016-10-23T21:39:40Z'
+                      vendor:
+                        type:
+                        - object
+                        - 'null'
+                        properties:
+                          id:
+                            type: integer
+                            example: 161072
+                          name:
+                            type: string
+                            example: SID Architecture
+                          is_connected:
+                            type: boolean
+                            example: true
+                          origin_id:
+                            type: integer
+                            example: 56238
+                          business_register_id:
+                            type: integer
+                            example: 123
+                      contact_id:
+                        type: integer
+                        example: 523
+                      work_classification_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: Work classification id
+                        example: 13
+                      party_id:
+                        type:
+                        - integer
+                        - 'null'
+                        description: The Directory Party ID for this user, resolved via Contact → Person → Party. Null when the user has no associated person record. Use this ID when calling endpoints that require a party identifier (e.g. certification assignments).
+                        example: 12345
+                      permission_template:
+                        type:
+                        - object
+                        - 'null'
+                        properties:
+                          id:
+                            type: integer
+                            description: Unique identifier for the Permission Template
+                            example: 1
+                          name:
+                            type: string
+                            description: The name of the Permission Template
+                            example: General Contractor
+                          project_specific:
+                            type: boolean
+                            description: If the Permission Template is project specific
+                            example: true
+                          type:
+                            type: string
+                            description: The type of the Permission Template
+                            enum:
+                            - global
+                            - project_specific
+                        example:
+                          id: 1
+                          name: General Contractor
+                          project_specific: true
+                          type: global
+                      company_permission_template:
+                        type:
+                        - object
+                        - 'null'
+                        properties:
+                          id:
+                            type: integer
+                            description: Unique identifier for the Permission Template
+                            example: 1
+                          name:
+                            type: string
+                            description: The name of the Permission Template
+                            example: General Contractor
+                          project_specific:
+                            type: boolean
+                            description: If the Permission Template is project specific
+                            example: true
+                          type:
+                            type: string
+                            description: The type of the Permission Template
+                            enum:
+                            - company_tools
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users',\n  qs: {\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE',\n    view: 'SOME_STRING_VALUE',\n    'filters[created_at]': 'SOME_STRING_VALUE',\n    'filters[updated_at]': 'SOME_STRING_VALUE',\n    'filters[permission_template]': 'SOME_INTEGER_VALUE',\n    'filters[vendor_id]': 'SOME_ARRAY_VALUE',\n    'filters[origin_id]': 'SOME_STRING_VALUE',\n    'filters[trade_id][]': 'SOME_ARRAY_VALUE',\n    'filters[search]': 'SOME_STRING_VALUE',\n    'filters[employee]': 'SOME_BOOLEAN_VALUE',\n    'filters[id][]': 'SOME_ARRAY_VALUE',\n    'filters[search_by_full_name]': 'SOME_STRING_VALUE',\n    sort: 'SOME_STRING_VALUE'\n  },\n  headers: {Authorization: 'Bearer REPLACE_BEARER_TOKEN'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          headers = { ''Authorization'': "Bearer REPLACE_BEARER_TOKEN" }
+
+
+          conn.request("GET", "/rest/v1.0/projects/%7Bproject_id%7D/users?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&view=SOME_STRING_VALUE&filters%5Bcreated_at%5D=SOME_STRING_VALUE&filters%5Bupdated_at%5D=SOME_STRING_VALUE&filters%5Bpermission_template%5D=SOME_INTEGER_VALUE&filters%5Bvendor_id%5D=SOME_ARRAY_VALUE&filters%5Borigin_id%5D=SOME_STRING_VALUE&filters%5Btrade_id%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bsearch%5D=SOME_STRING_VALUE&filters%5Bemployee%5D=SOME_BOOLEAN_VALUE&filters%5Bid%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bsearch_by_full_name%5D=SOME_STRING_VALUE&sort=SOME_STRING_VALUE", headers=headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&view=SOME_STRING_VALUE&filters%5Bcreated_at%5D=SOME_STRING_VALUE&filters%5Bupdated_at%5D=SOME_STRING_VALUE&filters%5Bpermission_template%5D=SOME_INTEGER_VALUE&filters%5Bvendor_id%5D=SOME_ARRAY_VALUE&filters%5Borigin_id%5D=SOME_STRING_VALUE&filters%5Btrade_id%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bsearch%5D=SOME_STRING_VALUE&filters%5Bemployee%5D=SOME_BOOLEAN_VALUE&filters%5Bid%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bsearch_by_full_name%5D=SOME_STRING_VALUE&sort=SOME_STRING_VALUE' \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&view=SOME_STRING_VALUE&filters%5Bcreated_at%5D=SOME_STRING_VALUE&filters%5Bupdated_at%5D=SOME_STRING_VALUE&filters%5Bpermission_template%5D=SOME_INTEGER_VALUE&filters%5Bvendor_id%5D=SOME_ARRAY_VALUE&filters%5Borigin_id%5D=SOME_STRING_VALUE&filters%5Btrade_id%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bsearch%5D=SOME_STRING_VALUE&filters%5Bemployee%5D=SOME_BOOLEAN_VALUE&filters%5Bid%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bsearch_by_full_name%5D=SOME_STRING_VALUE&sort=SOME_STRING_VALUE\"),\n    Headers =\n    {\n        { \"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\" },\n    },\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added party_id for List project users
+        description: 'Added `party_id` to the response body of the List project users endpoint in
+
+          the compact and normal views. `party_id` is the Directory Party ID for the
+
+          user and is nullable for users without an associated person record.'
+        endpoint: GET /projects/{project_id}/users
+        type: new
+        breaking: false
+        datestamp: '2026-08-07'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-users?version=1.0#list-project-users
+      - summary: Corrected filters[id] to accept an array of IDs
+        description: 'The `filters[id]` parameter on GET /projects/{project_id}/users was documented
+
+          as accepting a single integer, but the API has always accepted an array of IDs
+
+          (filters[id][]=1&filters[id][]=2) via procore-sift, consistent with other array
+
+          filters on the same endpoint (filters[vendor_id][], filters[trade_id][]). The
+
+          parameter is now correctly documented as filters[id][] with type: array of integer.'
+        endpoint: GET /projects/{project_id}/users
+        type: fix
+        breaking: false
+        datestamp: '2026-05-07'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-users?version=1.0#list-project-users
+      - summary: Added Business Id for List project users
+        description: Added `business_id` to payload response body.
+        endpoint: GET /projects/{project_id}/users
+        type: new
+        breaking: false
+        datestamp: '2022-06-27'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-users?version=1.0#list-project-users
+      - summary: Added Id filter for List project users
+        description: Added `filters[id]` to request body.
+        endpoint: GET /projects/{project_id}/users
+        type: new
+        breaking: false
+        datestamp: '2022-08-22'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-users?version=1.0#list-project-users
+      - summary: Documented available views List Project Users
+        description: 'Documented the different available views for List Project Users, correcting the responses provided for each view param.
+
+          Users without Read access to the Directory were already limited to only the compact view, this has now been documented.'
+        endpoint: GET /projects/{project_id}/users
+        type: fix
+        breaking: false
+        datestamp: '2023-06-12'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-users?version=1.0#list-project-users
+      - summary: Added new vendor keys to response body for List project users
+        description: Added is_connected, origin_id, and business_register_id to payload response body.
+        endpoint: GET /projects/{project_id}/users
+        type: new
+        breaking: false
+        datestamp: '2024-12-06'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-users?version=1.0#list-project-users
+      - summary: Added search_by_full_name filter for List project users
+        description: Added `filters[search_by_full_name]` to request body.
+        endpoint: GET /projects/{project_id}/users
+        type: new
+        breaking: false
+        datestamp: '2026-04-16'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-users?version=1.0#list-project-users
+      operationId: listProjectUsers
+    post:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Create project user
+      description: 'Creates a new user in the specified project.
+
+
+        #### Country and State codes
+
+        The `country_code` and `state_code` parameter values must conform to the ISO-3166 Alpha-2 specification.
+
+        See Working with Country Codes for additional information.
+
+
+        #### Created Response
+
+        For null values, the key won''t be returned'
+      tags:
+      - Project Users
+      parameters:
+      - name: run_configurable_validations
+        in: query
+        required: false
+        description: If true, validations are run for the corresponding Configurable Field Set.
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: Project User Body
+              type: object
+              required:
+              - user
+              properties:
+                user:
+                  title: Project User
+                  type: object
+                  required:
+                  - email_address
+                  - last_name
+                  properties:
+                    address:
+                      type: string
+                      description: The street Address of the Project User
+                      example: 6305 Carpinteria Ave
+                    avatar:
+                      type: string
+                      description: 'Project User Avatar.
+
+                        To upload avatar you must upload whole payload as `multipart/form-data` content-type and
+
+                        specify each parameter as form-data together with `user[avatar]` as file.'
+                      example: http://s3.amazonaws.com/pro-core.com/prostore/20150713184222_production_74548228.gif?AWSAccessKeyId=XXXXXXXX&Expires=2067964943&Signature=l4zpZIM3bgxydrr4hn6lM%2FdtreQ%3D
+                    business_phone:
+                      type: string
+                      description: The Business Phone number of the Project User
+                      example: 1-555-555-1234
+                    business_phone_extension:
+                      type: integer
+                      description: The Business Phone Extension of the Project User
+                      example: 123
+                    city:
+                      type: string
+                      description: The City in which the Project User resides
+                      example: Carpinteria
+                    country_code:
+                      type: string
+                      description: The Country Code of the Project User (ISO-3166 Alpha-2 format)
+                      example: US
+                    email_address:
+                      type: string
+                      format: email
+                      description: The Email Address of the Project User
+                      example: jane.doe@example.com
+                    email_signature:
+                      type: string
+                      description: The Email Signature of the Project User
+                      example: <p>Sent from Procore.</p>
+                    employee_id:
+                      type: string
+                      description: The Employee ID of the Project User
+                      example: '123456789'
+                    fax_number:
+                      type: string
+                      description: The Fax Number of the Project User
+                      example: 1-555-555-5555
+                    first_name:
+                      type: string
+                      description: The First Name of the Project User
+                      example: Jane
+                    initials:
+                      type: string
+                      description: The Initials of the Project User
+                      example: LR
+                    is_active:
+                      type: boolean
+                      description: The Active status of the Project User
+                      example: true
+                    is_employee:
+                      type: boolean
+                      description: The Employee status of the Project User
+                      default: false
+                      example: false
+                    job_title:
+                      type: string
+                      description: The Job Title of the Project User
+                      example: QA Manager
+                    last_name:
+                      type: string
+                      description: The Last Name of the Project User
+                      example: Doe
+                    mobile_phone:
+                      type: string
+                      description: The Mobile Phone number of the Project User
+                      example: 1-555-555-1234
+                    notes:
+                      type: string
+                      description: The Notes (notes/keywords/tags) of the Project User
+                      example: notes
+                    permission_template_id:
+                      type: integer
+                      description: The Permission Template ID of the Project User
+                      example: 27
+                    state_code:
+                      type: string
+                      description: The State Code of the Project User (ISO-3166 Alpha-2 format)
+                      example: CA
+                    vendor_id:
+                      type: integer
+                      description: The Vendor ID of the Project User
+                      example: 161072
+                    zip:
+                      type: string
+                      description: The Zip Code of the Project User
+                      example: '93013'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: User
+                description: Company User
+                properties:
+                  address:
+                    type: string
+                    description: User address
+                    example: 6305 Carpinteria Ave
+                  avatar:
+                    type: string
+                    description: User avatar url
+                    example: http://s3.amazonaws.com/pro-core.com/prostore/20150713184222_production_74548228.gif?AWSAccessKeyId=0PFNH01C4MZVXKXZNK82&Expires=2067964943&Signature=l4zpZIM3bgxydrr4hn6lM%2FdtreQ%3D
+                  business_id:
+                    description: Business id
+                    example: 89cac92d-fbd8-40ec-a1fc-24bbbd035a78
+                    type:
+                    - string
+                    - 'null'
+                  business_phone:
+                    type: string
+                    description: User business phone
+                    example: 1-555-555-1234
+                  business_phone_extension:
+                    type: integer
+                    description: User business phone extension
+                    example: 123
+                  city:
+                    type: string
+                    description: User city
+                    example: Carpinteria
+                  country_code:
+                    type: string
+                    description: User country code (ISO-3166 Alpha-2 format)
+                    example: US
+                  email_address:
+                    type: string
+                    format: email
+                    description: User email
+                    example: jane.doe@example.com
+                  email_signature:
+                    type: string
+                    description: User email signature
+                    example: <p>Sent from Procore.</p>
+                  employee_id:
+                    type: string
+                    description: User employee id
+                    example: '123456789'
+                  fax_number:
+                    type: string
+                    description: User fax number
+                    example: 1-555-555-1234
+                  first_name:
+                    type: string
+                    description: User first name
+                    example: Jane
+                  name:
+                    type: string
+                    description: User full name
+                    example: Jane Doe
+                  id:
+                    type: integer
+                    description: User id
+                    example: 381006
+                  initials:
+                    type: string
+                    description: User initials
+                    example: JD
+                  is_active:
+                    type: boolean
+                    description: User active status
+                    example: true
+                  is_employee:
+                    type: boolean
+                    description: User employee status
+                    example: false
+                  is_insurance_manager:
+                    type: boolean
+                    description: Is user an insurance manager
+                    example: false
+                  job_title:
+                    type: string
+                    description: User job title
+                    example: QA Manager
+                  last_login_at:
+                    type: string
+                    format: date-time
+                    description: User last login at
+                    example: '2016-06-30T20:41:58Z'
+                  last_name:
+                    type: string
+                    description: User last name
+                    example: Doe
+                  mobile_phone:
+                    type: string
+                    description: User mobile phone
+                    example: 1-555-555-1234
+                  notes:
+                    type: string
+                    description: User notes
+                    example: notes
+                  state_code:
+                    type: string
+                    description: User state code (ISO-3166 Alpha-2 format)
+                    example: CA
+                  zip:
+                    type: string
+                    description: User zip code
+                    example: '93013'
+                  default_permission_template_id:
+                    type: integer
+                    description: User default permission template id
+                    example: 27
+                  company_permission_template_id:
+                    type: integer
+                    description: User Company Permission Template id
+                    example: 28
+                  origin_id:
+                    type: string
+                    example: foobar
+                    description: User origin id
+                  origin_data:
+                    type: string
+                    description: User origin data
+                    example: OD-2398273424
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: User created at
+                    example: '2016-10-23T21:39:40Z'
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: User updated at
+                    example: '2016-10-23T21:39:40Z'
+                  work_classification_id:
+                    type: integer
+                    description: Work classification id
+                    example: 13
+                  vendor:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 161072
+                      name:
+                        type: string
+                        example: SID Architecture
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users',\n  qs: {run_configurable_validations: 'SOME_BOOLEAN_VALUE'},\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN',\n    'content-type': 'application/json'\n  },\n  body: {\n    user: {\n      address: '6305 Carpinteria Ave',\n      avatar: 'http://s3.amazonaws.com/pro-core.com/prostore/20150713184222_production_74548228.gif?AWSAccessKeyId=XXXXXXXX&Expires=2067964943&Signature=l4zpZIM3bgxydrr4hn6lM%2FdtreQ%3D',\n      business_phone: '1-555-555-1234',\n      business_phone_extension: 123,\n      city: 'Carpinteria',\n      country_code: 'US',\n      email_address: 'jane.doe@example.com',\n      email_signature: '<p>Sent from Procore.</p>',\n      employee_id: '123456789',\n      fax_number: '1-555-555-5555',\n      first_name: 'Jane',\n      initials: 'LR',\n      is_active: true,\n      is_employee: false,\n      job_title: 'QA Manager',\n      last_name: 'Doe',\n      mobile_phone: '1-555-555-1234',\n      notes: 'notes',\n      permission_template_id: 27,\n      state_code: 'CA',\n      vendor_id: 161072,\n      zip: '93013'\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: "import http.client\n\nconn = http.client.HTTPSConnection(\"api.procore.com\")\n\npayload = \"{\\\"user\\\":{\\\"address\\\":\\\"6305 Carpinteria Ave\\\",\\\"avatar\\\":\\\"http://s3.amazonaws.com/pro-core.com/prostore/20150713184222_production_74548228.gif?AWSAccessKeyId=XXXXXXXX&Expires=2067964943&Signature=l4zpZIM3bgxydrr4hn6lM%2FdtreQ%3D\\\",\\\"business_phone\\\":\\\"1-555-555-1234\\\",\\\"business_phone_extension\\\":123,\\\"city\\\":\\\"Carpinteria\\\",\\\"country_code\\\":\\\"US\\\",\\\"email_address\\\":\\\"jane.doe@example.com\\\",\\\"email_signature\\\":\\\"<p>Sent from Procore.</p>\\\",\\\"employee_id\\\":\\\"123456789\\\",\\\"fax_number\\\":\\\"1-555-555-5555\\\",\\\"first_name\\\":\\\"Jane\\\",\\\"initials\\\":\\\"LR\\\",\\\"is_active\\\":true,\\\"is_employee\\\":false,\\\"job_title\\\":\\\"QA Manager\\\",\\\"last_name\\\":\\\"Doe\\\",\\\"mobile_phone\\\":\\\"1-555-555-1234\\\",\\\"notes\\\":\\\"notes\\\",\\\"permission_template_id\\\":27,\\\"state_code\\\":\\\"CA\\\",\\\"vendor_id\\\":161072,\\\"zip\\\":\\\"93013\\\"}}\"\n\nheaders = {\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\",\n    'content-type': \"application/json\"\n    }\n\nconn.request(\"POST\", \"/rest/v1.0/projects/%7Bproject_id%7D/users?run_configurable_validations=SOME_BOOLEAN_VALUE\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users?run_configurable_validations=SOME_BOOLEAN_VALUE' \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"user\":{\"address\":\"6305 Carpinteria Ave\",\"avatar\":\"http://s3.amazonaws.com/pro-core.com/prostore/20150713184222_production_74548228.gif?AWSAccessKeyId=XXXXXXXX&Expires=2067964943&Signature=l4zpZIM3bgxydrr4hn6lM%2FdtreQ%3D\",\"business_phone\":\"1-555-555-1234\",\"business_phone_extension\":123,\"city\":\"Carpinteria\",\"country_code\":\"US\",\"email_address\":\"jane.doe@example.com\",\"email_signature\":\"<p>Sent from Procore.</p>\",\"employee_id\":\"123456789\",\"fax_number\":\"1-555-555-5555\",\"first_name\":\"Jane\",\"initials\":\"LR\",\"is_active\":true,\"is_employee\":false,\"job_title\":\"QA Manager\",\"last_name\":\"Doe\",\"mobile_phone\":\"1-555-555-1234\",\"notes\":\"notes\",\"permission_template_id\":27,\"state_code\":\"CA\",\"vendor_id\":161072,\"zip\":\"93013\"}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users?run_configurable_validations=SOME_BOOLEAN_VALUE\"),\n    Headers =\n    {\n        { \"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\" },\n    },\n    Content = new StringContent(\"{\\\"user\\\":{\\\"address\\\":\\\"6305 Carpinteria Ave\\\",\\\"avatar\\\":\\\"http://s3.amazonaws.com/pro-core.com/prostore/20150713184222_production_74548228.gif?AWSAccessKeyId=XXXXXXXX&Expires=2067964943&Signature=l4zpZIM3bgxydrr4hn6lM%2FdtreQ%3D\\\",\\\"business_phone\\\":\\\"1-555-555-1234\\\",\\\"business_phone_extension\\\":123,\\\"city\\\":\\\"Carpinteria\\\",\\\"country_code\\\":\\\"US\\\",\\\"email_address\\\":\\\"jane.doe@example.com\\\",\\\"email_signature\\\":\\\"<p>Sent from Procore.</p>\\\",\\\"employee_id\\\":\\\"123456789\\\",\\\"fax_number\\\":\\\"1-555-555-5555\\\",\\\"first_name\\\":\\\"Jane\\\",\\\"initials\\\":\\\"LR\\\",\\\"is_active\\\":true,\\\"is_employee\\\":false,\\\"job_title\\\":\\\"QA Manager\\\",\\\"last_name\\\":\\\"Doe\\\",\\\"mobile_phone\\\":\\\"1-555-555-1234\\\",\\\"notes\\\":\\\"notes\\\",\\\"permission_template_id\\\":27,\\\"state_code\\\":\\\"CA\\\",\\\"vendor_id\\\":161072,\\\"zip\\\":\\\"93013\\\"}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added Business Id for Create project user
+        description: Added `business_id` to payload response body.
+        endpoint: POST /projects/{project_id}/users
+        type: new
+        breaking: false
+        datestamp: '2022-06-27'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-users?version=1.0#create-project-user
+      operationId: createProjectUser
+  /rest/v1.0/projects/{project_id}/users/{id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: integer
+    - name: id
+      in: path
+      description: ID of the user
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Show project user
+      description: 'Show detail on a specified Project User.
+
+
+        #### OK Response
+
+        For null values, the key won''t be returned'
+      tags:
+      - Project Users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: User
+                description: Company User
+                properties:
+                  address:
+                    type: string
+                    description: User address
+                    example: 6305 Carpinteria Ave
+                  avatar:
+                    type: string
+                    description: User avatar url
+                    example: http://s3.amazonaws.com/pro-core.com/prostore/20150713184222_production_74548228.gif?AWSAccessKeyId=0PFNH01C4MZVXKXZNK82&Expires=2067964943&Signature=l4zpZIM3bgxydrr4hn6lM%2FdtreQ%3D
+                  business_id:
+                    description: Business id
+                    example: 89cac92d-fbd8-40ec-a1fc-24bbbd035a78
+                    type:
+                    - string
+                    - 'null'
+                  business_phone:
+                    type: string
+                    description: User business phone
+                    example: 1-555-555-1234
+                  business_phone_extension:
+                    type: integer
+                    description: User business phone extension
+                    example: 123
+                  city:
+                    type: string
+                    description: User city
+                    example: Carpinteria
+                  country_code:
+                    type: string
+                    description: User country code (ISO-3166 Alpha-2 format)
+                    example: US
+                  email_address:
+                    type: string
+                    format: email
+                    description: User email
+                    example: jane.doe@example.com
+                  email_signature:
+                    type: string
+                    description: User email signature
+                    example: <p>Sent from Procore.</p>
+                  employee_id:
+                    type: string
+                    description: User employee id
+                    example: '123456789'
+                  fax_number:
+                    type: string
+                    description: User fax number
+                    example: 1-555-555-1234
+                  first_name:
+                    type: string
+                    description: User first name
+                    example: Jane
+                  name:
+                    type: string
+                    description: User full name
+                    example: Jane Doe
+                  id:
+                    type: integer
+                    description: User id
+                    example: 381006
+                  initials:
+                    type: string
+                    description: User initials
+                    example: JD
+                  is_active:
+                    type: boolean
+                    description: User active status
+                    example: true
+                  is_employee:
+                    type: boolean
+                    description: User employee status
+                    example: false
+                  is_insurance_manager:
+                    type: boolean
+                    description: Is user an insurance manager
+                    example: false
+                  job_title:
+                    type: string
+                    description: User job title
+                    example: QA Manager
+                  last_login_at:
+                    type: string
+                    format: date-time
+                    description: User last login at
+                    example: '2016-06-30T20:41:58Z'
+                  last_name:
+                    type: string
+                    description: User last name
+                    example: Doe
+                  mobile_phone:
+                    type: string
+                    description: User mobile phone
+                    example: 1-555-555-1234
+                  notes:
+                    type: string
+                    description: User notes
+                    example: notes
+                  state_code:
+                    type: string
+                    description: User state code (ISO-3166 Alpha-2 format)
+                    example: CA
+                  zip:
+                    type: string
+                    description: User zip code
+                    example: '93013'
+                  default_permission_template_id:
+                    type: integer
+                    description: User default permission template id
+                    example: 27
+                  company_permission_template_id:
+                    type: integer
+                    description: User Company Permission Template id
+                    example: 28
+                  origin_id:
+                    type: string
+                    example: foobar
+                    description: User origin id
+                  origin_data:
+                    type: string
+                    description: User origin data
+                    example: OD-2398273424
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: User created at
+                    example: '2016-10-23T21:39:40Z'
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: User updated at
+                    example: '2016-10-23T21:39:40Z'
+                  work_classification_id:
+                    type: integer
+                    description: Work classification id
+                    example: 13
+                  vendor:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 161072
+                      name:
+                        type: string
+                        example: SID Architecture
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users/%7Bid%7D',\n  headers: {Authorization: 'Bearer REPLACE_BEARER_TOKEN'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          headers = { ''Authorization'': "Bearer REPLACE_BEARER_TOKEN" }
+
+
+          conn.request("GET", "/rest/v1.0/projects/%7Bproject_id%7D/users/%7Bid%7D", headers=headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users/%7Bid%7D \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users/%7Bid%7D\"),\n    Headers =\n    {\n        { \"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\" },\n    },\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added Business Id for Show project user
+        description: Added `business_id` to payload response body.
+        endpoint: GET /projects/{project_id}/users/{id}
+        type: new
+        breaking: false
+        datestamp: '2022-06-27'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-users?version=1.0#show-project-user
+      operationId: showProjectUser
+    patch:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Update project user
+      description: 'Updates the specified project user. The `country_code` and `state_code` parameter values must conform to the ISO-3166 Alpha-2 specification.
+
+        See Working with Country Codes for additional information. For OK responses with null values, the key will not be returned.
+
+
+        Note: The `is_active` parameter value requires
+
+        a boolean value to be passed in. Setting this parameter to false deactivates the user.
+
+        If you have deactivated a user by setting `is_active` to false and then try to
+
+        reactivate the user by setting `is_active` to true, you will receive an error message.
+
+        To reactivate the user via API, you need to call the
+
+        Sync Company Users method.'
+      tags:
+      - Project Users
+      parameters:
+      - name: run_configurable_validations
+        in: query
+        required: false
+        description: If true, validations are run for the corresponding Configurable Field Set.
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: Project User Body
+              type: object
+              required:
+              - user
+              properties:
+                user:
+                  title: Project User
+                  type: object
+                  properties:
+                    abbreviated_name:
+                      type: string
+                      description: The Initials of the Project User
+                      example: JD
+                    address:
+                      type: string
+                      description: The street Address of the Project User
+                      example: 6305 Carpinteria Ave
+                    avatar:
+                      type: string
+                      description: 'Project User Avatar.
+
+                        To upload avatar you must upload whole payload as `multipart/form-data` content-type and
+
+                        specify each parameter as form-data together with `user[avatar]` as file.'
+                      example: http://s3.amazonaws.com/pro-core.com/prostore/20150713184222_production_74548228.gif?AWSAccessKeyId=XXXXXXXX&Expires=2067964943&Signature=l4zpZIM3bgxydrr4hn6lM%2FdtreQ%3D
+                    business_phone:
+                      type: string
+                      description: The Business Phone number of the Project User
+                      example: 1-555-555-1234
+                    business_phone_extension:
+                      type: integer
+                      description: The Business Phone Extension of the Project User
+                      example: 123
+                    city:
+                      type: string
+                      description: The City in which the Project User resides
+                      example: Carpinteria
+                    country_code:
+                      type: string
+                      description: The Country Code of the Project User (ISO-3166 Alpha-2 format)
+                      example: US
+                    email_address:
+                      type: string
+                      format: email
+                      description: The Email Address of the Project User
+                      example: jane.doe@example.com
+                    email_signature:
+                      type: string
+                      description: The Email Signature of the Project User
+                      example: <p>Sent from Procore.</p>
+                    employee_id:
+                      type: string
+                      description: The Employee ID of the Project User
+                      example: '123456789'
+                    fax_number:
+                      type: string
+                      description: The Fax Number of the Project User
+                      example: 1-555-555-5555
+                    first_name:
+                      type: string
+                      description: The First Name of the Project User
+                      example: Jane
+                    is_active:
+                      type: boolean
+                      description: The Active status of the Project User
+                      example: true
+                    is_employee:
+                      type: boolean
+                      description: The Employee status of the Project User
+                      default: false
+                      example: false
+                    job_title:
+                      type: string
+                      description: The Job Title of the Project User
+                      example: QA Manager
+                    last_name:
+                      type: string
+                      description: The Last Name of the Project User
+                      example: Doe
+                    mobile_phone:
+                      type: string
+                      description: The Mobile Phone number of the Project User
+                      example: 1-555-555-1234
+                    notes:
+                      type: string
+                      description: The Notes (notes/keywords/tags) of the Project User
+                      example: notes
+                    state_code:
+                      type: string
+                      description: The State Code of the Project User (ISO-3166 Alpha-2 format)
+                      example: CA
+                    vendor_id:
+                      type: integer
+                      description: The Vendor ID of the Project User
+                      example: 161072
+                    zip:
+                      type: string
+                      description: The Zip Code of the Project User
+                      example: '93013'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: User
+                description: Company User
+                properties:
+                  address:
+                    type: string
+                    description: User address
+                    example: 6305 Carpinteria Ave
+                  avatar:
+                    type: string
+                    description: User avatar url
+                    example: http://s3.amazonaws.com/pro-core.com/prostore/20150713184222_production_74548228.gif?AWSAccessKeyId=0PFNH01C4MZVXKXZNK82&Expires=2067964943&Signature=l4zpZIM3bgxydrr4hn6lM%2FdtreQ%3D
+                  business_id:
+                    description: Business id
+                    example: 89cac92d-fbd8-40ec-a1fc-24bbbd035a78
+                    type:
+                    - string
+                    - 'null'
+                  business_phone:
+                    type: string
+                    description: User business phone
+                    example: 1-555-555-1234
+                  business_phone_extension:
+                    type: integer
+                    description: User business phone extension
+                    example: 123
+                  city:
+                    type: string
+                    description: User city
+                    example: Carpinteria
+                  country_code:
+                    type: string
+                    description: User country code (ISO-3166 Alpha-2 format)
+                    example: US
+                  email_address:
+                    type: string
+                    format: email
+                    description: User email
+                    example: jane.doe@example.com
+                  email_signature:
+                    type: string
+                    description: User email signature
+                    example: <p>Sent from Procore.</p>
+                  employee_id:
+                    type: string
+                    description: User employee id
+                    example: '123456789'
+                  fax_number:
+                    type: string
+                    description: User fax number
+                    example: 1-555-555-1234
+                  first_name:
+                    type: string
+                    description: User first name
+                    example: Jane
+                  name:
+                    type: string
+                    description: User full name
+                    example: Jane Doe
+                  id:
+                    type: integer
+                    description: User id
+                    example: 381006
+                  initials:
+                    type: string
+                    description: User initials
+                    example: JD
+                  is_active:
+                    type: boolean
+                    description: User active status
+                    example: true
+                  is_employee:
+                    type: boolean
+                    description: User employee status
+                    example: false
+                  is_insurance_manager:
+                    type: boolean
+                    description: Is user an insurance manager
+                    example: false
+                  job_title:
+                    type: string
+                    description: User job title
+                    example: QA Manager
+                  last_login_at:
+                    type: string
+                    format: date-time
+                    description: User last login at
+                    example: '2016-06-30T20:41:58Z'
+                  last_name:
+                    type: string
+                    description: User last name
+                    example: Doe
+                  mobile_phone:
+                    type: string
+                    description: User mobile phone
+                    example: 1-555-555-1234
+                  notes:
+                    type: string
+                    description: User notes
+                    example: notes
+                  state_code:
+                    type: string
+                    description: User state code (ISO-3166 Alpha-2 format)
+                    example: CA
+                  zip:
+                    type: string
+                    description: User zip code
+                    example: '93013'
+                  default_permission_template_id:
+                    type: integer
+                    description: User default permission template id
+                    example: 27
+                  company_permission_template_id:
+                    type: integer
+                    description: User Company Permission Template id
+                    example: 28
+                  origin_id:
+                    type: string
+                    example: foobar
+                    description: User origin id
+                  origin_data:
+                    type: string
+                    description: User origin data
+                    example: OD-2398273424
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: User created at
+                    example: '2016-10-23T21:39:40Z'
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: User updated at
+                    example: '2016-10-23T21:39:40Z'
+                  work_classification_id:
+                    type: integer
+                    description: Work classification id
+                    example: 13
+                  vendor:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 161072
+                      name:
+                        type: string
+                        example: SID Architecture
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users/%7Bid%7D',\n  qs: {run_configurable_validations: 'SOME_BOOLEAN_VALUE'},\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN',\n    'content-type': 'application/json'\n  },\n  body: {\n    user: {\n      abbreviated_name: 'JD',\n      address: '6305 Carpinteria Ave',\n      avatar: 'http://s3.amazonaws.com/pro-core.com/prostore/20150713184222_production_74548228.gif?AWSAccessKeyId=XXXXXXXX&Expires=2067964943&Signature=l4zpZIM3bgxydrr4hn6lM%2FdtreQ%3D',\n      business_phone: '1-555-555-1234',\n      business_phone_extension: 123,\n      city: 'Carpinteria',\n      country_code: 'US',\n      email_address: 'jane.doe@example.com',\n      email_signature: '<p>Sent from Procore.</p>',\n      employee_id: '123456789',\n      fax_number: '1-555-555-5555',\n      first_name: 'Jane',\n      is_active: true,\n      is_employee: false,\n      job_title: 'QA Manager',\n      last_name: 'Doe',\n      mobile_phone: '1-555-555-1234',\n      notes: 'notes',\n      state_code: 'CA',\n      vendor_id: 161072,\n      zip: '93013'\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: "import http.client\n\nconn = http.client.HTTPSConnection(\"api.procore.com\")\n\npayload = \"{\\\"user\\\":{\\\"abbreviated_name\\\":\\\"JD\\\",\\\"address\\\":\\\"6305 Carpinteria Ave\\\",\\\"avatar\\\":\\\"http://s3.amazonaws.com/pro-core.com/prostore/20150713184222_production_74548228.gif?AWSAccessKeyId=XXXXXXXX&Expires=2067964943&Signature=l4zpZIM3bgxydrr4hn6lM%2FdtreQ%3D\\\",\\\"business_phone\\\":\\\"1-555-555-1234\\\",\\\"business_phone_extension\\\":123,\\\"city\\\":\\\"Carpinteria\\\",\\\"country_code\\\":\\\"US\\\",\\\"email_address\\\":\\\"jane.doe@example.com\\\",\\\"email_signature\\\":\\\"<p>Sent from Procore.</p>\\\",\\\"employee_id\\\":\\\"123456789\\\",\\\"fax_number\\\":\\\"1-555-555-5555\\\",\\\"first_name\\\":\\\"Jane\\\",\\\"is_active\\\":true,\\\"is_employee\\\":false,\\\"job_title\\\":\\\"QA Manager\\\",\\\"last_name\\\":\\\"Doe\\\",\\\"mobile_phone\\\":\\\"1-555-555-1234\\\",\\\"notes\\\":\\\"notes\\\",\\\"state_code\\\":\\\"CA\\\",\\\"vendor_id\\\":161072,\\\"zip\\\":\\\"93013\\\"}}\"\n\nheaders = {\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\",\n    'content-type': \"application/json\"\n    }\n\nconn.request(\"PATCH\", \"/rest/v1.0/projects/%7Bproject_id%7D/users/%7Bid%7D?run_configurable_validations=SOME_BOOLEAN_VALUE\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users/%7Bid%7D?run_configurable_validations=SOME_BOOLEAN_VALUE' \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"user\":{\"abbreviated_name\":\"JD\",\"address\":\"6305 Carpinteria Ave\",\"avatar\":\"http://s3.amazonaws.com/pro-core.com/prostore/20150713184222_production_74548228.gif?AWSAccessKeyId=XXXXXXXX&Expires=2067964943&Signature=l4zpZIM3bgxydrr4hn6lM%2FdtreQ%3D\",\"business_phone\":\"1-555-555-1234\",\"business_phone_extension\":123,\"city\":\"Carpinteria\",\"country_code\":\"US\",\"email_address\":\"jane.doe@example.com\",\"email_signature\":\"<p>Sent from Procore.</p>\",\"employee_id\":\"123456789\",\"fax_number\":\"1-555-555-5555\",\"first_name\":\"Jane\",\"is_active\":true,\"is_employee\":false,\"job_title\":\"QA Manager\",\"last_name\":\"Doe\",\"mobile_phone\":\"1-555-555-1234\",\"notes\":\"notes\",\"state_code\":\"CA\",\"vendor_id\":161072,\"zip\":\"93013\"}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users/%7Bid%7D?run_configurable_validations=SOME_BOOLEAN_VALUE\"),\n    Headers =\n    {\n        { \"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\" },\n    },\n    Content = new StringContent(\"{\\\"user\\\":{\\\"abbreviated_name\\\":\\\"JD\\\",\\\"address\\\":\\\"6305 Carpinteria Ave\\\",\\\"avatar\\\":\\\"http://s3.amazonaws.com/pro-core.com/prostore/20150713184222_production_74548228.gif?AWSAccessKeyId=XXXXXXXX&Expires=2067964943&Signature=l4zpZIM3bgxydrr4hn6lM%2FdtreQ%3D\\\",\\\"business_phone\\\":\\\"1-555-555-1234\\\",\\\"business_phone_extension\\\":123,\\\"city\\\":\\\"Carpinteria\\\",\\\"country_code\\\":\\\"US\\\",\\\"email_address\\\":\\\"jane.doe@example.com\\\",\\\"email_signature\\\":\\\"<p>Sent from Procore.</p>\\\",\\\"employee_id\\\":\\\"123456789\\\",\\\"fax_number\\\":\\\"1-555-555-5555\\\",\\\"first_name\\\":\\\"Jane\\\",\\\"is_active\\\":true,\\\"is_employee\\\":false,\\\"job_title\\\":\\\"QA Manager\\\",\\\"last_name\\\":\\\"Doe\\\",\\\"mobile_phone\\\":\\\"1-555-555-1234\\\",\\\"notes\\\":\\\"notes\\\",\\\"state_code\\\":\\\"CA\\\",\\\"vendor_id\\\":161072,\\\"zip\\\":\\\"93013\\\"}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Added Business Id for Update project user
+        description: Added `business_id` to payload response body.
+        endpoint: PATCH /projects/{project_id}/users/{id}
+        type: new
+        breaking: false
+        datestamp: '2022-06-27'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-users?version=1.0#update-project-user
+      operationId: updateProjectUser
+  /rest/v1.0/projects/{project_id}/users/{id}/actions/add:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: integer
+    - name: id
+      in: path
+      description: ID of the user
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    post:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Add company user to project
+      description: 'Adds a user from the Company Directory to the Project Directory.
+
+        #### Created Response
+
+        For null values, the key won''t be returned'
+      tags:
+      - Project Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    permission_template_id:
+                      type: integer
+                      description: User permission template identifier
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                title: User
+                description: Company User
+                properties:
+                  address:
+                    type: string
+                    description: User address
+                    example: 6305 Carpinteria Ave
+                  avatar:
+                    type: string
+                    description: User avatar url
+                    example: http://s3.amazonaws.com/pro-core.com/prostore/20150713184222_production_74548228.gif?AWSAccessKeyId=0PFNH01C4MZVXKXZNK82&Expires=2067964943&Signature=l4zpZIM3bgxydrr4hn6lM%2FdtreQ%3D
+                  business_id:
+                    description: Business id
+                    example: 89cac92d-fbd8-40ec-a1fc-24bbbd035a78
+                    type:
+                    - string
+                    - 'null'
+                  business_phone:
+                    type: string
+                    description: User business phone
+                    example: 1-555-555-1234
+                  business_phone_extension:
+                    type: integer
+                    description: User business phone extension
+                    example: 123
+                  city:
+                    type: string
+                    description: User city
+                    example: Carpinteria
+                  country_code:
+                    type: string
+                    description: User country code (ISO-3166 Alpha-2 format)
+                    example: US
+                  email_address:
+                    type: string
+                    format: email
+                    description: User email
+                    example: jane.doe@example.com
+                  email_signature:
+                    type: string
+                    description: User email signature
+                    example: <p>Sent from Procore.</p>
+                  employee_id:
+                    type: string
+                    description: User employee id
+                    example: '123456789'
+                  fax_number:
+                    type: string
+                    description: User fax number
+                    example: 1-555-555-1234
+                  first_name:
+                    type: string
+                    description: User first name
+                    example: Jane
+                  name:
+                    type: string
+                    description: User full name
+                    example: Jane Doe
+                  id:
+                    type: integer
+                    description: User id
+                    example: 381006
+                  initials:
+                    type: string
+                    description: User initials
+                    example: JD
+                  is_active:
+                    type: boolean
+                    description: User active status
+                    example: true
+                  is_employee:
+                    type: boolean
+                    description: User employee status
+                    example: false
+                  is_insurance_manager:
+                    type: boolean
+                    description: Is user an insurance manager
+                    example: false
+                  job_title:
+                    type: string
+                    description: User job title
+                    example: QA Manager
+                  last_login_at:
+                    type: string
+                    format: date-time
+                    description: User last login at
+                    example: '2016-06-30T20:41:58Z'
+                  last_name:
+                    type: string
+                    description: User last name
+                    example: Doe
+                  mobile_phone:
+                    type: string
+                    description: User mobile phone
+                    example: 1-555-555-1234
+                  notes:
+                    type: string
+                    description: User notes
+                    example: notes
+                  state_code:
+                    type: string
+                    description: User state code (ISO-3166 Alpha-2 format)
+                    example: CA
+                  zip:
+                    type: string
+                    description: User zip code
+                    example: '93013'
+                  default_permission_template_id:
+                    type: integer
+                    description: User default permission template id
+                    example: 27
+                  company_permission_template_id:
+                    type: integer
+                    description: User Company Permission Template id
+                    example: 28
+                  origin_id:
+                    type: string
+                    example: foobar
+                    description: User origin id
+                  origin_data:
+                    type: string
+                    description: User origin data
+                    example: OD-2398273424
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: User created at
+                    example: '2016-10-23T21:39:40Z'
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: User updated at
+                    example: '2016-10-23T21:39:40Z'
+                  work_classification_id:
+                    type: integer
+                    description: Work classification id
+                    example: 13
+                  vendor:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 161072
+                      name:
+                        type: string
+                        example: SID Architecture
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users/%7Bid%7D/actions/add',\n  headers: {\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN',\n    'content-type': 'application/json'\n  },\n  body: {user: {permission_template_id: 0}},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: "import http.client\n\nconn = http.client.HTTPSConnection(\"api.procore.com\")\n\npayload = \"{\\\"user\\\":{\\\"permission_template_id\\\":0}}\"\n\nheaders = {\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\",\n    'content-type': \"application/json\"\n    }\n\nconn.request(\"POST\", \"/rest/v1.0/projects/%7Bproject_id%7D/users/%7Bid%7D/actions/add\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users/%7Bid%7D/actions/add \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"user\":{\"permission_template_id\":0}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users/%7Bid%7D/actions/add\"),\n    Headers =\n    {\n        { \"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\" },\n    },\n    Content = new StringContent(\"{\\\"user\\\":{\\\"permission_template_id\\\":0}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: addCompanyUserToProject
+  /rest/v1.0/projects/{project_id}/users/{id}/actions/remove:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: integer
+    - name: id
+      in: path
+      description: ID of the user
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    delete:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Remove a user from the project
+      description: Removes a specified user from a project.
+      tags:
+      - Project Users
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '422':
+          description: Unprocessable Entity. Returned when the user's Project Membership is managed by Groups and the Groups feature is enabled; the user is not removed (USER-2168).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: Stable machine-readable error code for a group-managed membership.
+                    example: MEMBERSHIP_GROUP_MANAGED
+                  message:
+                    type: string
+                    description: Human readable message describing the error.
+                    example: This project membership is managed by Groups and cannot be modified directly.
+                  hint:
+                    type: string
+                    description: Machine-actionable hint; indicates the membership is group-managed.
+                    example: group_managed
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'DELETE',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users/%7Bid%7D/actions/remove',\n  headers: {Authorization: 'Bearer REPLACE_BEARER_TOKEN'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          headers = { ''Authorization'': "Bearer REPLACE_BEARER_TOKEN" }
+
+
+          conn.request("DELETE", "/rest/v1.0/projects/%7Bproject_id%7D/users/%7Bid%7D/actions/remove", headers=headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request DELETE \\\n  --url https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users/%7Bid%7D/actions/remove \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Delete,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users/%7Bid%7D/actions/remove\"),\n    Headers =\n    {\n        { \"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\" },\n    },\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Group-managed memberships are protected from removal
+        description: 'When the Groups feature is enabled, removing a user whose Project
+
+          Membership is managed by Groups now returns `422 Unprocessable Entity`
+
+          with a structured error (`code: MEMBERSHIP_GROUP_MANAGED`,
+
+          `hint: group_managed`) instead of silently returning `204`. Behavior is
+
+          unchanged when the feature is off.'
+        endpoint: DELETE /projects/{project_id}/users/{id}/actions/remove
+        type: refinement
+        breaking: false
+        datestamp: '2026-06-22'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-users?version=1.0#remove-a-user-from-the-project
+      operationId: removeAUserFromTheProject
+  /rest/v1.0/projects/{project_id}/users/pdf:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: integer
+    x-compliance-level: full
+    post:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Generates PDF Document
+      description: 'Generate PDF Document from a project. The endpoint returns url to PDF file.
+
+        See Filtering on List Actions for information on using the filtering capabilities provided by this endpoint.'
+      tags:
+      - Project Users
+      parameters:
+      - name: filters[permission_template]
+        in: query
+        description: Permission Template ID. Returns item(s) assiociated with the specified Permission Template ID.
+        schema:
+          type: integer
+      - name: filters[vendor_id]
+        in: query
+        description: Return item(s) with the specified Vendor IDs.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: filters[id][]
+        in: query
+        description: Returns users whose id attribute matches the parameter.
+        required: false
+        explode: true
+        style: form
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: filters[except_id]
+        in: query
+        description: Returns users except as specified.
+        required: false
+        schema:
+          type: integer
+      - name: filters[trade_id][]
+        in: query
+        description: Returns users whose vendor record is associated with the specified trade id(s).
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: contact
+        in: query
+        description: Indicates whether contacts should be included in PDF document.
+        required: false
+        schema:
+          type: boolean
+      - name: vendor
+        in: query
+        description: Indicates whether vendor should be included in PDF document.
+        required: false
+        schema:
+          type: boolean
+      - name: user_role
+        in: query
+        description: Indicates whether user_role should be included in PDF document.
+        required: false
+        schema:
+          type: boolean
+      - name: grouped_by_vendor
+        in: query
+        description: Indicates whether users should be grouped by vendor.
+        required: false
+        schema:
+          type: boolean
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pdf_file_url:
+                    type: string
+                    description: URL to PDF file
+                    example: http://example.com/pdf_file.pdf
+        '202':
+          description: Accepted — the directory exceeds the synchronous size threshold (500 contacts). The PDF is being generated asynchronously and will be emailed to the requesting user when complete. The response body is empty.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users/pdf',\n  qs: {\n    'filters[permission_template]': 'SOME_INTEGER_VALUE',\n    'filters[vendor_id]': 'SOME_ARRAY_VALUE',\n    'filters[id][]': 'SOME_ARRAY_VALUE',\n    'filters[except_id]': 'SOME_INTEGER_VALUE',\n    'filters[trade_id][]': 'SOME_ARRAY_VALUE',\n    contact: 'SOME_BOOLEAN_VALUE',\n    vendor: 'SOME_BOOLEAN_VALUE',\n    user_role: 'SOME_BOOLEAN_VALUE',\n    grouped_by_vendor: 'SOME_BOOLEAN_VALUE'\n  },\n  headers: {Authorization: 'Bearer REPLACE_BEARER_TOKEN'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          headers = { ''Authorization'': "Bearer REPLACE_BEARER_TOKEN" }
+
+
+          conn.request("POST", "/rest/v1.0/projects/%7Bproject_id%7D/users/pdf?filters%5Bpermission_template%5D=SOME_INTEGER_VALUE&filters%5Bvendor_id%5D=SOME_ARRAY_VALUE&filters%5Bid%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bexcept_id%5D=SOME_INTEGER_VALUE&filters%5Btrade_id%5D%5B%5D=SOME_ARRAY_VALUE&contact=SOME_BOOLEAN_VALUE&vendor=SOME_BOOLEAN_VALUE&user_role=SOME_BOOLEAN_VALUE&grouped_by_vendor=SOME_BOOLEAN_VALUE", headers=headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request POST \\\n  --url 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users/pdf?filters%5Bpermission_template%5D=SOME_INTEGER_VALUE&filters%5Bvendor_id%5D=SOME_ARRAY_VALUE&filters%5Bid%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bexcept_id%5D=SOME_INTEGER_VALUE&filters%5Btrade_id%5D%5B%5D=SOME_ARRAY_VALUE&contact=SOME_BOOLEAN_VALUE&vendor=SOME_BOOLEAN_VALUE&user_role=SOME_BOOLEAN_VALUE&grouped_by_vendor=SOME_BOOLEAN_VALUE' \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/users/pdf?filters%5Bpermission_template%5D=SOME_INTEGER_VALUE&filters%5Bvendor_id%5D=SOME_ARRAY_VALUE&filters%5Bid%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bexcept_id%5D=SOME_INTEGER_VALUE&filters%5Btrade_id%5D%5B%5D=SOME_ARRAY_VALUE&contact=SOME_BOOLEAN_VALUE&vendor=SOME_BOOLEAN_VALUE&user_role=SOME_BOOLEAN_VALUE&grouped_by_vendor=SOME_BOOLEAN_VALUE\"),\n    Headers =\n    {\n        { \"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\" },\n    },\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: PDF endpoint returns 202 Accepted for large directories
+        description: 'POST /projects/{project_id}/users/pdf now returns HTTP 202 Accepted
+
+          (empty body) when the directory exceeds the 500-contact synchronous
+
+          threshold. In this case the PDF is generated asynchronously and
+
+          emailed to the requesting user. Previously the endpoint raised a
+
+          NoMethodError in this scenario.'
+        endpoint: POST /projects/{project_id}/users/pdf
+        type: fix
+        breaking: false
+        datestamp: '2026-08-28'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-users?version=1.0#generates-pdf-document
+      - summary: Created PDF generation endpoint
+        description: Created endpoint for generation of PDF Document from a project.
+        endpoint: POST /projects/{project_id}/users/pdf
+        type: new
+        breaking: false
+        datestamp: '2025-01-10'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-users?version=1.0#generates-pdf-document
+      - summary: Added filters to PDF generation endpoint
+        description: Added filtering by ID and vendor_id to PDF generation endpoint.
+        endpoint: POST /projects/{project_id}/users/pdf
+        type: new
+        breaking: false
+        datestamp: '2025-03-05'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: project-users?version=1.0#generates-pdf-document
+      operationId: generatesPdfDocument
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

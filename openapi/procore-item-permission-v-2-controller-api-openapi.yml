@@ -1,0 +1,191 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Item Permission V 2 Controller API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: item-permission-v-2-controller
+paths:
+  /rest/v2.0/companies/{company_id}/projects/{project_id}/{item_type}/{item_id}/viewer_permissions:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      tags:
+      - item-permission-v-2-controller
+      summary: Item-scoped Document Markup Permissions
+      description: Returns the user's tool-level permissions for the specified document, identified by item_type and item_id in the URL path. Allowed item_type values are document_revision, document_upload, FileVersion, and specification_section_revision, and drawing_revision.
+      operationId: getPermissions
+      parameters:
+      - name: company_id
+        in: path
+        description: Unique identifier of the company
+        required: true
+        schema:
+          type: string
+      - name: project_id
+        in: path
+        description: Unique identifier of the project
+        required: true
+        schema:
+          type: string
+      - name: item_type
+        in: path
+        description: 'Type of the item being queried. One of: document_revision, document_upload, FileVersion, specification_section_revision, drawing_revision.'
+        required: true
+        schema:
+          type: string
+      - name: item_id
+        in: path
+        description: External identifier of the item
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      viewer_doc_id:
+                        type: string
+                      markups:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            xfdf_id:
+                              type: string
+                            markup_type:
+                              type: string
+                            viewer_doc_id:
+                              type: string
+                            created_at:
+                              type: string
+                              format: date-time
+                            updated_at:
+                              type: string
+                              format: date-time
+                            created_by_id:
+                              type: string
+                            updated_by_id:
+                              type: string
+                            company_id:
+                              type: string
+                            project_id:
+                              type: string
+                            deleted:
+                              type: boolean
+                            editable:
+                              type: boolean
+                            xfdf:
+                              type: string
+                            created_by_name:
+                              type: string
+                            updated_by_name:
+                              type: string
+                            created_by_vendor_id:
+                              type: string
+                            created_by_vendor_name:
+                              type: string
+                            page_number:
+                              type: integer
+                              format: int32
+                            audit_transaction_timestamp:
+                              type: string
+                              format: date-time
+                            markup_context:
+                              type: string
+                              enum:
+                              - WORKFLOW
+                              - WORKSPACE
+                              - PIN
+                              - NO_CONTEXT
+                            group_id:
+                              type: string
+                            pin_id:
+                              type: string
+                            comment_id:
+                              type: string
+                            document:
+                              type: object
+                              properties:
+                                external_document_id:
+                                  type: string
+                                document_type:
+                                  type: string
+                            markup_source:
+                              type: string
+                      combined_xfdf:
+                        type: string
+                      permissions:
+                        type: object
+                        properties:
+                          file_locked:
+                            type: boolean
+                          allowed_actions:
+                            type: array
+                            items:
+                              type: string
+                      document:
+                        type: object
+                        properties:
+                          external_document_id:
+                            type: string
+                          document_type:
+                            type: string
+      x-rate-limit-enabled: true
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/%7Bitem_type%7D/%7Bitem_id%7D/viewer_permissions'\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPConnection("localhost:8080")
+
+
+          conn.request("GET", "/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/%7Bitem_type%7D/%7Bitem_id%7D/viewer_permissions")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/%7Bitem_type%7D/%7Bitem_id%7D/viewer_permissions"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"http://localhost:8080/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/%7Bitem_type%7D/%7Bitem_id%7D/viewer_permissions\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

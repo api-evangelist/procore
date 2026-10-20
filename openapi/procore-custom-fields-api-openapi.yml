@@ -1,0 +1,368 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Custom Fields API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Custom Fields
+paths:
+  /rest/v2.0/companies/{company_id}/custom_field/data_types:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: company_id
+      in: path
+      description: Unique identifier for the company.
+      required: true
+      schema:
+        type: string
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Get Custom Field Data Types
+      description: 'Returns all available custom field data types for a company, including their variants. This endpoint provides information about which data types are enabled for the company based on feature flags, the list of values (LOV) data types, and the available variants for each data type.
+
+
+        When `field_set_id` or `type` parameters are provided, the variants will be filtered to only include those supported by the specified field set.'
+      tags:
+      - Custom Fields
+      parameters:
+      - name: type
+        in: query
+        description: 'Configurable field set type to filter data type variants.  If provided, only variants supported by this field set type will be returned. For GenericToolItem, append the generic_tool_id (e.g., ''ConfigurableFieldSet::GenericToolItem::123''). Supported types: ''ConfigurableFieldSet::Observations::Item'', ''ConfigurableFieldSet::GenericToolItem''.'
+        required: false
+        schema:
+          type: string
+          example: ConfigurableFieldSet::Observations::Item
+      - name: field_set_id
+        in: query
+        description: ID of an existing configurable field set.  If provided, only variants supported by this specific field set will be returned. Takes priority over the 'type' parameter if both are provided.
+        required: false
+        schema:
+          type: string
+          example: '12345'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    required:
+                    - all
+                    - lov
+                    - variants
+                    properties:
+                      all:
+                        type: array
+                        description: Array of all enabled data types for the company
+                        items:
+                          type: string
+                        example:
+                        - string
+                        - decimal
+                        - boolean
+                        - lov_entry
+                        - lov_entries
+                        - datetime
+                        - rich_text
+                        - login_information
+                        - vendor
+                        - login_informations
+                        - prostore_files
+                      lov:
+                        type: array
+                        description: Array of LOV (List of Values) data types
+                        items:
+                          type: string
+                        example:
+                        - lov_entry
+                        - lov_entries
+                      variants:
+                        type: object
+                        description: Object mapping data types to their available variants
+                        additionalProperties:
+                          type: array
+                          items:
+                            type: string
+                        example:
+                          string: []
+                          decimal: []
+                          boolean: []
+                          lov_entry: []
+                          lov_entries: []
+                          datetime:
+                          - time
+                          rich_text:
+                          - read_only
+                          login_information:
+                          - project_directory
+                          vendor: []
+                          login_informations: []
+                          prostore_files: []
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '403':
+          description: Forbidden - User lacks admin permissions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '404':
+          description: Not Found - Company not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: HTTP status in screaming snake case (like BAD_REQUEST)
+                      message:
+                        type: string
+                        description: Human readable message describing error.
+                      details:
+                        type: array
+                        description: Additional information about the error.
+                        items:
+                          type: object
+                          required:
+                          - reason_code
+                          - message
+                          properties:
+                            reason_code:
+                              type: string
+                              description: A machine-readable code that identifies the error specifically enough for the client to interpret what happened and take action.
+                              example: BLANK
+                            message:
+                              type: string
+                              description: Human readable message
+                              example: Name can't be blank
+                            source:
+                              type: string
+                              description: Source of the error
+                              example: name
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/custom_field/data_types',\n  qs: {type: 'ConfigurableFieldSet::Observations::Item', field_set_id: '12345'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v2.0/companies/%7Bcompany_id%7D/custom_field/data_types?type=ConfigurableFieldSet%3A%3AObservations%3A%3AItem&field_set_id=12345")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/custom_field/data_types?type=ConfigurableFieldSet%3A%3AObservations%3A%3AItem&field_set_id=12345'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/custom_field/data_types?type=ConfigurableFieldSet%3A%3AObservations%3A%3AItem&field_set_id=12345\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Introduce GET Configurable Types Endpoint
+        description: Get the configurable types for custom fields
+        endpoint: GET /companies/{company_id}/custom_field/data_types
+        type: new
+        breaking: false
+        datestamp: '2025-11-16'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: custom-fields?version=2.0#get-custom-field-data-types
+      - summary: Add type and field_set_id query params for GET Configurable Types Endpoint
+        description: Add filtering options to get configurable types for custom fields
+        endpoint: GET /companies/{company_id}/custom_field/data_types
+        type: refinement
+        breaking: false
+        datestamp: '2025-11-25'
+        versions:
+        - '2.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: custom-fields?version=2.0#get-custom-field-data-types
+      operationId: getCustomFieldDataTypes
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

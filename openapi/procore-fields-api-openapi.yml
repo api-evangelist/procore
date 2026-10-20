@@ -1,0 +1,1124 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Fields API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Fields
+paths:
+  /rest/v2.0/companies/{company_id}/projects/{project_id}/document_management/fields:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: partial
+    get:
+      description: Returns the Fields for a Project
+      operationId: ProjectFieldsV2Controller_getProjectFieldListV2_0
+      parameters:
+      - name: company_id
+        required: true
+        in: path
+        description: Company ID
+        schema:
+          type: string
+      - name: project_id
+        required: true
+        in: path
+        description: Project ID
+        schema:
+          type: string
+      - name: filters
+        required: false
+        in: query
+        description: 'Object with whitelisted Field ids as keys and their corresponding MetadataValue id, MetadataValue ids array, or primitive string value as values.
+
+          Valid filterable fields are:
+
+          active,
+
+          can_affect_permissions'
+        schema:
+          type: object
+          properties:
+            active:
+              oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+            can_affect_permissions:
+              oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+      - name: page
+        required: false
+        in: query
+        description: Page
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - name: per_page
+        required: false
+        in: query
+        description: Elements per page
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      - name: locale
+        required: false
+        in: query
+        description: Language for the response to be translated into
+        schema:
+          type: string
+          enum:
+          - de-DE
+          - en-AE
+          - en-AU
+          - en-CA
+          - en-GB
+          - en-SG
+          - en
+          - es-ES
+          - es
+          - fr-CA
+          - fr-FR
+          - is-IS
+          - ja-JP
+          - pl-PL
+          - pseudo
+          - pt-BR
+          - th-TH
+          - zh-SG
+          - zh-TW
+          - nb-NO
+          - pt-PT
+          - it-IT
+      responses:
+        '200':
+          description: Returns Project Fields
+          headers:
+            Per-Page:
+              description: Number of items retrieved per page
+              schema:
+                type: number
+            Total:
+              description: Total number of items to be retrieved
+              schema:
+                type: number
+            Link:
+              description: Link headers for the first, prev, next and last link
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: 01G3F39BRDKDK04FV9BARK6YTS
+                        name:
+                          type: string
+                          example: status
+                          enum:
+                          - original_filename
+                          - format
+                          - type
+                          - name
+                          - description
+                          - revision
+                          - status
+                          - classification
+                          - project_stage
+                          - project
+                          - originator
+                          - volume
+                          - location
+                          - discipline
+                          - number
+                          - created_at
+                          - created_by
+                          - date_authored
+                          - authored_by
+                          - updated_at
+                          - updated_by
+                          - uploaded_at
+                          - uploaded_by
+                          - file_size
+                          - project_new
+                          - assigned_workflow
+                          - assigned_workflow_template
+                          - workflow_assignees
+                          - workflow_current_step_assignees
+                          - workflow_current_step
+                          - workflow_step_due_date
+                          - workflow_manager
+                          - workflow_status
+                          - workflow_template_version
+                          - workflow_pending_assignees
+                          - workflow_current_step_roles
+                          - version
+                          - in_active_workflow
+                          - workflow_completion_date
+                          - submitted_into_drawings
+                          - custom_field_id
+                          - submitted_into_drawings_by
+                          - submitted_into_drawings_at
+                          - cf_lov_entries
+                          - recycled_by
+                          - recycled_at
+                          - recycled_reason
+                          - action_required
+                          - document_stage
+                          - item_content
+                          - placeholder_assignee
+                          - placeholder_due_date
+                          - placeholder_created_by
+                          - package
+                          - applied_naming_standard
+                        label:
+                          type: string
+                          example: ISO 96850 Status
+                        description:
+                          type: string
+                          example: ISO 96850 Status
+                        position:
+                          type: string
+                          example: a
+                        active:
+                          type: boolean
+                          example: true
+                        visible:
+                          type: boolean
+                          example: true
+                        readonly:
+                          type: boolean
+                          example: true
+                        can_affect_permissions:
+                          type: boolean
+                          example: true
+                        type:
+                          type: string
+                          enum:
+                          - string
+                          - reference
+                          - lov_entry
+                          - lov_entries
+                          - rich_text
+                          - timestamp
+                          - numeric
+                        variant:
+                          type: string
+                          enum:
+                          - procore_project
+                          - procore_project_stage
+                          - procore_location
+                          - procore_company
+                          - procore_user
+                          - procore_vendor
+                          - procore_workflow_template
+                          - procore_workflow_template_preset
+                          - procore_workflow_status
+                          - procore_workflow_template_version
+                          - with_code
+                          - procore_users
+                          - procore_tool_user
+                          - multi_select
+                          - package
+                        custom_field_definition_id:
+                          type: string
+                          example: '456'
+                      required:
+                      - id
+                      - name
+                      - label
+                      - description
+                      - position
+                      - active
+                      - visible
+                      - readonly
+                      - can_affect_permissions
+                      - type
+                required:
+                - data
+        '400':
+          description: 'Bad Request
+
+
+            Possible reason codes:
+
+            - MISSING_REQUIRED_PROPERTY
+
+            - INVALID_PROPERTY'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Top level HTTP error code
+                        enum:
+                        - BAD_REQUEST
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - GONE
+                        - METHOD_NOT_ALLOWED
+                        - NOT_ACCEPTABLE
+                        - CONFLICT
+                        - UNPROCESSABLE_ENTITY
+                        - TOO_MANY_REQUESTS
+                        - PAYLOAD_TOO_LARGE
+                        - INTERNAL_SERVER_ERROR
+                        example: BAD_REQUEST
+                      message:
+                        type: string
+                        description: Human readable message describing the HTTP error code
+                        example: Bad Request
+                      details:
+                        type: array
+                        description: Specific information to convey the nature and source of the error(s)
+                        items:
+                          type: object
+                          properties:
+                            reason_code:
+                              type: string
+                              description: 'Specific code representing the details of an error.
+
+
+                                Possible reason codes:
+
+                                - ACCESS_DENIED
+
+                                - MISSING_REQUIRED_PROPERTY
+
+                                - INVALID_PROPERTY
+
+                                - INVALID_BODY
+
+                                - INVALID_TOKEN
+
+                                - INVALID_URL
+
+                                - INTERNAL_ERROR
+
+                                - NOT_FOUND
+
+                                - GONE
+
+                                - ENDPOINT_DEPRECATED
+
+                                - EXCEEDS_LIMIT
+
+                                - ALREADY_EXISTS
+
+                                - RESOURCE_IN_USE'
+                              example: MISSING_REQUIRED_PROPERTY
+                            source:
+                              type: string
+                              description: Specific field or domain identifying where this error occurred
+                              example: first_name
+                            message:
+                              type: string
+                              description: Human readable message describing the specific error
+                              example: First name is a required property
+                          required:
+                          - reason_code
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '401':
+          description: 'Unauthorized
+
+
+            Possible reason codes:
+
+            - INVALID_TOKEN'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Top level HTTP error code
+                        enum:
+                        - BAD_REQUEST
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - GONE
+                        - METHOD_NOT_ALLOWED
+                        - NOT_ACCEPTABLE
+                        - CONFLICT
+                        - UNPROCESSABLE_ENTITY
+                        - TOO_MANY_REQUESTS
+                        - PAYLOAD_TOO_LARGE
+                        - INTERNAL_SERVER_ERROR
+                        example: BAD_REQUEST
+                      message:
+                        type: string
+                        description: Human readable message describing the HTTP error code
+                        example: Bad Request
+                      details:
+                        type: array
+                        description: Specific information to convey the nature and source of the error(s)
+                        items:
+                          type: object
+                          properties:
+                            reason_code:
+                              type: string
+                              description: 'Specific code representing the details of an error.
+
+
+                                Possible reason codes:
+
+                                - ACCESS_DENIED
+
+                                - MISSING_REQUIRED_PROPERTY
+
+                                - INVALID_PROPERTY
+
+                                - INVALID_BODY
+
+                                - INVALID_TOKEN
+
+                                - INVALID_URL
+
+                                - INTERNAL_ERROR
+
+                                - NOT_FOUND
+
+                                - GONE
+
+                                - ENDPOINT_DEPRECATED
+
+                                - EXCEEDS_LIMIT
+
+                                - ALREADY_EXISTS
+
+                                - RESOURCE_IN_USE'
+                              example: MISSING_REQUIRED_PROPERTY
+                            source:
+                              type: string
+                              description: Specific field or domain identifying where this error occurred
+                              example: first_name
+                            message:
+                              type: string
+                              description: Human readable message describing the specific error
+                              example: First name is a required property
+                          required:
+                          - reason_code
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '403':
+          description: 'Forbidden
+
+
+            Possible reason codes:
+
+            - ACCESS_DENIED'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Top level HTTP error code
+                        enum:
+                        - BAD_REQUEST
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - GONE
+                        - METHOD_NOT_ALLOWED
+                        - NOT_ACCEPTABLE
+                        - CONFLICT
+                        - UNPROCESSABLE_ENTITY
+                        - TOO_MANY_REQUESTS
+                        - PAYLOAD_TOO_LARGE
+                        - INTERNAL_SERVER_ERROR
+                        example: BAD_REQUEST
+                      message:
+                        type: string
+                        description: Human readable message describing the HTTP error code
+                        example: Bad Request
+                      details:
+                        type: array
+                        description: Specific information to convey the nature and source of the error(s)
+                        items:
+                          type: object
+                          properties:
+                            reason_code:
+                              type: string
+                              description: 'Specific code representing the details of an error.
+
+
+                                Possible reason codes:
+
+                                - ACCESS_DENIED
+
+                                - MISSING_REQUIRED_PROPERTY
+
+                                - INVALID_PROPERTY
+
+                                - INVALID_BODY
+
+                                - INVALID_TOKEN
+
+                                - INVALID_URL
+
+                                - INTERNAL_ERROR
+
+                                - NOT_FOUND
+
+                                - GONE
+
+                                - ENDPOINT_DEPRECATED
+
+                                - EXCEEDS_LIMIT
+
+                                - ALREADY_EXISTS
+
+                                - RESOURCE_IN_USE'
+                              example: MISSING_REQUIRED_PROPERTY
+                            source:
+                              type: string
+                              description: Specific field or domain identifying where this error occurred
+                              example: first_name
+                            message:
+                              type: string
+                              description: Human readable message describing the specific error
+                              example: First name is a required property
+                          required:
+                          - reason_code
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+      summary: List Project Fields
+      tags:
+      - Fields
+      x-doc:
+        visibility: public
+        stage: beta
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/document_management/fields',\n  qs: {\n    filters: 'SOME_OBJECT_VALUE',\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE',\n    locale: 'SOME_STRING_VALUE'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/document_management/fields?filters=SOME_OBJECT_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&locale=SOME_STRING_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/document_management/fields?filters=SOME_OBJECT_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&locale=SOME_STRING_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/document_management/fields?filters=SOME_OBJECT_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&locale=SOME_STRING_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+  /rest/v2.0/companies/{company_id}/projects/{project_id}/document_management/fields/{field_id_or_name}/values:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: partial
+    get:
+      description: Returns a list of Metadata Values for the specified field
+      operationId: ProjectMetadataValuesV2Controller_getProjectMetadataValueListV2_0
+      parameters:
+      - name: company_id
+        required: true
+        in: path
+        description: Company ID
+        schema:
+          type: string
+      - name: project_id
+        required: true
+        in: path
+        description: Project ID
+        schema:
+          type: string
+      - name: field_id_or_name
+        required: true
+        in: path
+        description: Field ID or Name
+        schema:
+          type: string
+      - name: include_inactive
+        required: false
+        in: query
+        description: Include inactive metadata values
+        schema:
+          type: boolean
+      - name: document_collection_id
+        required: false
+        in: query
+        description: Only return metadata values that are included in the filters of the given document collection
+        schema:
+          type: string
+      - name: upload_collection_id
+        required: false
+        in: query
+        description: Only return metadata values that are included in the filters of the given upload collection
+        schema:
+          type: string
+      - name: keyword
+        required: false
+        in: query
+        description: Returns metadata values that are matched with the given keyword
+        schema:
+          type: string
+      - name: sort_by
+        required: false
+        in: query
+        description: Sort by field values
+        schema:
+          type: string
+          enum:
+          - position
+          - active
+          - code
+          - label
+      - name: sort_order
+        required: false
+        in: query
+        description: Sort order for the sort_by field values
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - name: include_all
+        required: false
+        in: query
+        description: Include all metadata values
+        schema:
+          type: boolean
+      - name: include_readonly
+        required: false
+        in: query
+        description: Include read-only metadata values
+        schema:
+          type: boolean
+      - name: page
+        required: false
+        in: query
+        description: Page
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - name: per_page
+        required: false
+        in: query
+        description: Elements per page
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      - name: locale
+        required: false
+        in: query
+        description: Language for the response to be translated into
+        schema:
+          type: string
+          enum:
+          - de-DE
+          - en-AE
+          - en-AU
+          - en-CA
+          - en-GB
+          - en-SG
+          - en
+          - es-ES
+          - es
+          - fr-CA
+          - fr-FR
+          - is-IS
+          - ja-JP
+          - pl-PL
+          - pseudo
+          - pt-BR
+          - th-TH
+          - zh-SG
+          - zh-TW
+          - nb-NO
+          - pt-PT
+          - it-IT
+      responses:
+        '200':
+          description: Returns Project Metadata Values
+          headers:
+            Per-Page:
+              description: Number of items retrieved per page
+              schema:
+                type: number
+            Total:
+              description: Total number of items to be retrieved
+              schema:
+                type: number
+            Link:
+              description: Link headers for the first, prev, next and last link
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: List of project metadata values
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: 01FVG7CQBPS470N4DAC1GTB1DS
+                          description: Unique identifier for the metadata value
+                        code:
+                          type: string
+                          example: S3
+                          description: Code for the metadata value
+                        label:
+                          type: string
+                          example: Suitable for review and comment
+                          description: Label for the metadata value
+                        active:
+                          type: boolean
+                          example: true
+                          description: Is project metadata value active
+                        tags:
+                          description: Tags associated with the metadata value
+                          type: array
+                          items:
+                            type: string
+                        field_id:
+                          type: string
+                          example: 01FVG7CQBPS470N4DAC1GTB1DT
+                          description: Field ID for reference metadata values (present when originId exists)
+                        group:
+                          description: Resolved color group for the value (pilot). Absent when the pilot flag is off; null when on but the value has no assignment.
+                          allOf:
+                          - type: object
+                            properties:
+                              id:
+                                type: string
+                                description: Stable enum-style identifier for the color group.
+                                enum:
+                                - approved
+                                - in_review
+                                - not_accepted
+                                - open
+                                - draft
+                                example: approved
+                              color:
+                                type: string
+                                description: Design-system Pill color token for the group (`green`, `yellow`, `red`, `blue`, `gray`).
+                                enum:
+                                - green
+                                - yellow
+                                - red
+                                - blue
+                                - gray
+                                example: green
+                              label:
+                                type: string
+                                description: Translated display label for the caller's locale.
+                                example: Approved
+                            required:
+                            - id
+                            - color
+                            - label
+                      required:
+                      - id
+                      - code
+                      - label
+                      - active
+                      - tags
+                required:
+                - data
+        '400':
+          description: 'Bad Request
+
+
+            Possible reason codes:
+
+            - MISSING_REQUIRED_PROPERTY
+
+            - INVALID_PROPERTY'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Top level HTTP error code
+                        enum:
+                        - BAD_REQUEST
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - GONE
+                        - METHOD_NOT_ALLOWED
+                        - NOT_ACCEPTABLE
+                        - CONFLICT
+                        - UNPROCESSABLE_ENTITY
+                        - TOO_MANY_REQUESTS
+                        - PAYLOAD_TOO_LARGE
+                        - INTERNAL_SERVER_ERROR
+                        example: BAD_REQUEST
+                      message:
+                        type: string
+                        description: Human readable message describing the HTTP error code
+                        example: Bad Request
+                      details:
+                        type: array
+                        description: Specific information to convey the nature and source of the error(s)
+                        items:
+                          type: object
+                          properties:
+                            reason_code:
+                              type: string
+                              description: 'Specific code representing the details of an error.
+
+
+                                Possible reason codes:
+
+                                - ACCESS_DENIED
+
+                                - MISSING_REQUIRED_PROPERTY
+
+                                - INVALID_PROPERTY
+
+                                - INVALID_BODY
+
+                                - INVALID_TOKEN
+
+                                - INVALID_URL
+
+                                - INTERNAL_ERROR
+
+                                - NOT_FOUND
+
+                                - GONE
+
+                                - ENDPOINT_DEPRECATED
+
+                                - EXCEEDS_LIMIT
+
+                                - ALREADY_EXISTS
+
+                                - RESOURCE_IN_USE'
+                              example: MISSING_REQUIRED_PROPERTY
+                            source:
+                              type: string
+                              description: Specific field or domain identifying where this error occurred
+                              example: first_name
+                            message:
+                              type: string
+                              description: Human readable message describing the specific error
+                              example: First name is a required property
+                          required:
+                          - reason_code
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '401':
+          description: 'Unauthorized
+
+
+            Possible reason codes:
+
+            - INVALID_TOKEN'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Top level HTTP error code
+                        enum:
+                        - BAD_REQUEST
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - GONE
+                        - METHOD_NOT_ALLOWED
+                        - NOT_ACCEPTABLE
+                        - CONFLICT
+                        - UNPROCESSABLE_ENTITY
+                        - TOO_MANY_REQUESTS
+                        - PAYLOAD_TOO_LARGE
+                        - INTERNAL_SERVER_ERROR
+                        example: BAD_REQUEST
+                      message:
+                        type: string
+                        description: Human readable message describing the HTTP error code
+                        example: Bad Request
+                      details:
+                        type: array
+                        description: Specific information to convey the nature and source of the error(s)
+                        items:
+                          type: object
+                          properties:
+                            reason_code:
+                              type: string
+                              description: 'Specific code representing the details of an error.
+
+
+                                Possible reason codes:
+
+                                - ACCESS_DENIED
+
+                                - MISSING_REQUIRED_PROPERTY
+
+                                - INVALID_PROPERTY
+
+                                - INVALID_BODY
+
+                                - INVALID_TOKEN
+
+                                - INVALID_URL
+
+                                - INTERNAL_ERROR
+
+                                - NOT_FOUND
+
+                                - GONE
+
+                                - ENDPOINT_DEPRECATED
+
+                                - EXCEEDS_LIMIT
+
+                                - ALREADY_EXISTS
+
+                                - RESOURCE_IN_USE'
+                              example: MISSING_REQUIRED_PROPERTY
+                            source:
+                              type: string
+                              description: Specific field or domain identifying where this error occurred
+                              example: first_name
+                            message:
+                              type: string
+                              description: Human readable message describing the specific error
+                              example: First name is a required property
+                          required:
+                          - reason_code
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '403':
+          description: 'Forbidden
+
+
+            Possible reason codes:
+
+            - ACCESS_DENIED'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Top level HTTP error code
+                        enum:
+                        - BAD_REQUEST
+                        - UNAUTHORIZED
+                        - FORBIDDEN
+                        - NOT_FOUND
+                        - GONE
+                        - METHOD_NOT_ALLOWED
+                        - NOT_ACCEPTABLE
+                        - CONFLICT
+                        - UNPROCESSABLE_ENTITY
+                        - TOO_MANY_REQUESTS
+                        - PAYLOAD_TOO_LARGE
+                        - INTERNAL_SERVER_ERROR
+                        example: BAD_REQUEST
+                      message:
+                        type: string
+                        description: Human readable message describing the HTTP error code
+                        example: Bad Request
+                      details:
+                        type: array
+                        description: Specific information to convey the nature and source of the error(s)
+                        items:
+                          type: object
+                          properties:
+                            reason_code:
+                              type: string
+                              description: 'Specific code representing the details of an error.
+
+
+                                Possible reason codes:
+
+                                - ACCESS_DENIED
+
+                                - MISSING_REQUIRED_PROPERTY
+
+                                - INVALID_PROPERTY
+
+                                - INVALID_BODY
+
+                                - INVALID_TOKEN
+
+                                - INVALID_URL
+
+                                - INTERNAL_ERROR
+
+                                - NOT_FOUND
+
+                                - GONE
+
+                                - ENDPOINT_DEPRECATED
+
+                                - EXCEEDS_LIMIT
+
+                                - ALREADY_EXISTS
+
+                                - RESOURCE_IN_USE'
+                              example: MISSING_REQUIRED_PROPERTY
+                            source:
+                              type: string
+                              description: Specific field or domain identifying where this error occurred
+                              example: first_name
+                            message:
+                              type: string
+                              description: Human readable message describing the specific error
+                              example: First name is a required property
+                          required:
+                          - reason_code
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+      summary: List Project Metadata Values
+      tags:
+      - Fields
+      x-doc:
+        visibility: public
+        stage: beta
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/document_management/fields/%7Bfield_id_or_name%7D/values',\n  qs: {\n    include_inactive: 'SOME_BOOLEAN_VALUE',\n    document_collection_id: 'SOME_STRING_VALUE',\n    upload_collection_id: 'SOME_STRING_VALUE',\n    keyword: 'SOME_STRING_VALUE',\n    sort_by: 'SOME_STRING_VALUE',\n    sort_order: 'SOME_STRING_VALUE',\n    include_all: 'SOME_BOOLEAN_VALUE',\n    include_readonly: 'SOME_BOOLEAN_VALUE',\n    page: 'SOME_INTEGER_VALUE',\n    per_page: 'SOME_INTEGER_VALUE',\n    locale: 'SOME_STRING_VALUE'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/document_management/fields/%7Bfield_id_or_name%7D/values?include_inactive=SOME_BOOLEAN_VALUE&document_collection_id=SOME_STRING_VALUE&upload_collection_id=SOME_STRING_VALUE&keyword=SOME_STRING_VALUE&sort_by=SOME_STRING_VALUE&sort_order=SOME_STRING_VALUE&include_all=SOME_BOOLEAN_VALUE&include_readonly=SOME_BOOLEAN_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&locale=SOME_STRING_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/document_management/fields/%7Bfield_id_or_name%7D/values?include_inactive=SOME_BOOLEAN_VALUE&document_collection_id=SOME_STRING_VALUE&upload_collection_id=SOME_STRING_VALUE&keyword=SOME_STRING_VALUE&sort_by=SOME_STRING_VALUE&sort_order=SOME_STRING_VALUE&include_all=SOME_BOOLEAN_VALUE&include_readonly=SOME_BOOLEAN_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&locale=SOME_STRING_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v2.0/companies/%7Bcompany_id%7D/projects/%7Bproject_id%7D/document_management/fields/%7Bfield_id_or_name%7D/values?include_inactive=SOME_BOOLEAN_VALUE&document_collection_id=SOME_STRING_VALUE&upload_collection_id=SOME_STRING_VALUE&keyword=SOME_STRING_VALUE&sort_by=SOME_STRING_VALUE&sort_order=SOME_STRING_VALUE&include_all=SOME_BOOLEAN_VALUE&include_readonly=SOME_BOOLEAN_VALUE&page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE&locale=SOME_STRING_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

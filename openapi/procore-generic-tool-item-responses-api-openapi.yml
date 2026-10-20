@@ -1,0 +1,1495 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Generic Tool Item Responses API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Generic Tool Item Responses
+paths:
+  ? /rest/v1.0/projects/{project_id}/generic_tools/{generic_tool_id}/generic_tool_items/{generic_tool_item_id}/generic_tool_item_responses
+  : parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: generic_tool_id
+      in: path
+      description: Unique identifier for the generic tool.
+      required: true
+      schema:
+        type: integer
+    - name: generic_tool_item_id
+      in: path
+      description: Unique identifier for the generic tool item.
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: List Responses for a Generic Tool Item
+      description: 'Returns a list of all responses for a generic tool item in the specified project and generic tool.
+
+        For more information on Generic Tool and Correspondence Tool endpoints,
+
+        see Working with the Correspondence Tool.'
+      tags:
+      - Generic Tool Item Responses
+      parameters:
+      - name: page
+        in: query
+        description: Page
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: Elements per page
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            Per-Page:
+              description: Number of items retrieved per page
+              schema:
+                type: integer
+            Total:
+              description: Total number of items to be retrieved
+              schema:
+                type: integer
+            Link:
+              description: Link headers for the first, prev, next, and last link
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                description: Array of generic tool items
+                items:
+                  title: GenericToolItemResponse
+                  type: object
+                  description: Generic Tool Item Response
+                  properties:
+                    id:
+                      type: integer
+                      description: Drawing Upload ID
+                      example: 85
+                    notes:
+                      type: string
+                      description: The text of the Response
+                      example: This is a response.
+                    created_at:
+                      type: string
+                      format: date-time
+                      description: Generic Tool Item Response created at
+                      example: '2016-08-08T21:35:58Z'
+                    official:
+                      type: boolean
+                      description: If the response is an Official Response
+                      example: true
+                    position:
+                      type: integer
+                      description: Position of the Response
+                      example: 3
+                    status:
+                      type: string
+                      description: Status of the Generic Tool Item Response
+                      example: open
+                    created_by:
+                      allOf:
+                      - type: object
+                        properties:
+                          id:
+                            type: integer
+                            description: The unique identifier of the user.
+                            example: 160586
+                          login:
+                            type: string
+                            description: The email address of the user that is used to log in.
+                            example: carl.contractor@example.com
+                          name:
+                            type: string
+                            description: The name of the user.
+                            example: Carl the Contractor
+                      - type: object
+                        properties:
+                          company_name:
+                            type: string
+                            description: User's Company Name
+                            example: Company ABC
+                    attachments:
+                      type: array
+                      description: Attachments
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            description: ID
+                            example: 5324
+                          url:
+                            type: string
+                            description: URL
+                            example: http://www.example.com/
+                          filename:
+                            type: string
+                            description: Filename
+                            example: january_receipt_copy.jpg
+                    download_all_attachments_url:
+                      type:
+                      - string
+                      - 'null'
+                      description: URL for downloading all of the response's prostore-file attachments as a single zip. Only present when the response has at least 2 prostore-file attachments; null otherwise. PDM (document_management_document_revision) attachments are not currently included in the zip.
+                      example: https://api.procore.com/rest/v1.0/projects/1/generic_tools/2/generic_tool_items/3/generic_tool_item_responses/4/download_all_attachments
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/generic_tool_item_responses',\n  qs: {page: 'SOME_INTEGER_VALUE', per_page: 'SOME_INTEGER_VALUE'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/generic_tool_item_responses?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/generic_tool_item_responses?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/generic_tool_item_responses?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Expose download_all_attachments_url on response payload
+        description: The list response payload for a generic tool item's responses now includes a download_all_attachments_url field. It is populated only when the response has at least 2 prostore-file attachments, pointing at the new dedicated REST endpoint; null otherwise.
+        endpoint: GET /projects/{project_id}/generic_tools/{generic_tool_id}/generic_tool_items/{generic_tool_item_id}/generic_tool_item_responses
+        type: refinement
+        breaking: false
+        datestamp: '2026-06-02'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: correspondences?version=1.0#list-responses-for-a-generic-tool-item
+      - summary: Count PDM attachments toward download_all_attachments_url on response payload
+        description: download_all_attachments_url on a generic tool item response is now populated when the combined number of ProStore and PDM (document_management_document_revision) attachments is at least 2, instead of counting ProStore-file attachments only. This exposes the URL for PDM-only and mixed responses. The streamed zip itself remains ProStore-only.
+        endpoint: GET /projects/{project_id}/generic_tools/{generic_tool_id}/generic_tool_items/{generic_tool_item_id}/generic_tool_item_responses
+        type: fix
+        breaking: false
+        datestamp: '2026-08-04'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: correspondences?version=1.0#list-responses-for-a-generic-tool-item
+      operationId: listResponsesForAGenericToolItem
+    post:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Create generic tool item response
+      description: 'Create a new response for a generic tool item in the specified project and generic tool.
+
+        For more information on Generic Tool and Correspondence Tool endpoints,
+
+        see Working with the Correspondence Tool.'
+      tags:
+      - Generic Tool Item Responses
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - generic_tool_item_response
+              properties:
+                generic_tool_item_response:
+                  title: The Generic Tool Item Response object
+                  type: object
+                  allOf:
+                  - properties:
+                      notes:
+                        type: string
+                        description: The notes property.
+                      official:
+                        type: boolean
+                        description: If this property is set to true, the response is an official response. If this property is set to false, the response is not an official response.
+                      skip_emails:
+                        type: boolean
+                        description: If true creating the response will not send emails to the users on the item.
+                      attachments:
+                        type: array
+                        description: 'Specifies the Generic Tool Item Response attachments.
+
+                          To upload attachments you must upload the entire payload as a `multipart/form-data` content-type and
+
+                          specify each parameter as form-data together with `attachments[]` as files.'
+                        items:
+                          type: string
+                  - properties:
+                      drawing_revision_ids:
+                        type: array
+                        description: Drawing Revisions to attach to the response
+                        items:
+                          type: integer
+                        example:
+                        - 4
+                        - 5
+                      file_version_ids:
+                        type: array
+                        description: File Versions to attach to the response
+                        items:
+                          type: integer
+                        example:
+                        - 6
+                        - 7
+                      form_ids:
+                        type: array
+                        description: Forms to attach to the response
+                        items:
+                          type: integer
+                        example:
+                        - 7
+                        - 8
+                      image_ids:
+                        type: array
+                        description: Images to attach to the response
+                        items:
+                          type: integer
+                        example:
+                        - 9
+                        - 10
+                      upload_ids:
+                        type: array
+                        description: Uploads to attach to the response
+                        items:
+                          type: string
+                        example:
+                        - 4120226e-36a8-416f-970e-880bae78164f
+                        - de07e35a-4860-4f96-acd8-8360833dc495
+                      document_management_document_revision_ids:
+                        type: array
+                        description: PDM document to attach to the response
+                        items:
+                          type: string
+                        example:
+                        - 01JC3TZNKJK6121Z1A2V7G574Q
+                        - 01JC3TZPXCJMC6P88CHHD6PTZ9
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - generic_tool_item_response
+              properties:
+                generic_tool_item_response:
+                  title: The Generic Tool Item Response object
+                  type: object
+                  allOf:
+                  - properties:
+                      notes:
+                        type: string
+                        description: The notes property.
+                      official:
+                        type: boolean
+                        description: If this property is set to true, the response is an official response. If this property is set to false, the response is not an official response.
+                      skip_emails:
+                        type: boolean
+                        description: If true creating the response will not send emails to the users on the item.
+                      attachments:
+                        type: array
+                        description: 'Specifies the Generic Tool Item Response attachments.
+
+                          To upload attachments you must upload the entire payload as a `multipart/form-data` content-type and
+
+                          specify each parameter as form-data together with `attachments[]` as files.'
+                        items:
+                          type: string
+                  - properties:
+                      drawing_revision_ids:
+                        type: array
+                        description: Drawing Revisions to attach to the response
+                        items:
+                          type: integer
+                        example:
+                        - 4
+                        - 5
+                      file_version_ids:
+                        type: array
+                        description: File Versions to attach to the response
+                        items:
+                          type: integer
+                        example:
+                        - 6
+                        - 7
+                      form_ids:
+                        type: array
+                        description: Forms to attach to the response
+                        items:
+                          type: integer
+                        example:
+                        - 7
+                        - 8
+                      image_ids:
+                        type: array
+                        description: Images to attach to the response
+                        items:
+                          type: integer
+                        example:
+                        - 9
+                        - 10
+                      upload_ids:
+                        type: array
+                        description: Uploads to attach to the response
+                        items:
+                          type: string
+                        example:
+                        - 4120226e-36a8-416f-970e-880bae78164f
+                        - de07e35a-4860-4f96-acd8-8360833dc495
+                      document_management_document_revision_ids:
+                        type: array
+                        description: PDM document to attach to the response
+                        items:
+                          type: string
+                        example:
+                        - 01JC3TZNKJK6121Z1A2V7G574Q
+                        - 01JC3TZPXCJMC6P88CHHD6PTZ9
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                title: GenericToolItemResponse
+                type: object
+                description: Generic Tool Item Response
+                properties:
+                  id:
+                    type: integer
+                    description: Drawing Upload ID
+                    example: 85
+                  notes:
+                    type: string
+                    description: The text of the Response
+                    example: This is a response.
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Generic Tool Item Response created at
+                    example: '2016-08-08T21:35:58Z'
+                  official:
+                    type: boolean
+                    description: If the response is an Official Response
+                    example: true
+                  position:
+                    type: integer
+                    description: Position of the Response
+                    example: 3
+                  status:
+                    type: string
+                    description: Status of the Generic Tool Item Response
+                    example: open
+                  created_by:
+                    allOf:
+                    - type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: The unique identifier of the user.
+                          example: 160586
+                        login:
+                          type: string
+                          description: The email address of the user that is used to log in.
+                          example: carl.contractor@example.com
+                        name:
+                          type: string
+                          description: The name of the user.
+                          example: Carl the Contractor
+                    - type: object
+                      properties:
+                        company_name:
+                          type: string
+                          description: User's Company Name
+                          example: Company ABC
+                  attachments:
+                    type: array
+                    description: Attachments
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: ID
+                          example: 5324
+                        url:
+                          type: string
+                          description: URL
+                          example: http://www.example.com/
+                        filename:
+                          type: string
+                          description: Filename
+                          example: january_receipt_copy.jpg
+                  download_all_attachments_url:
+                    type:
+                    - string
+                    - 'null'
+                    description: URL for downloading all of the response's prostore-file attachments as a single zip. Only present when the response has at least 2 prostore-file attachments; null otherwise. PDM (document_management_document_revision) attachments are not currently included in the zip.
+                    example: https://api.procore.com/rest/v1.0/projects/1/generic_tools/2/generic_tool_items/3/generic_tool_item_responses/4/download_all_attachments
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/generic_tool_item_responses',\n  headers: {'content-type': 'application/json'},\n  body: {\n    generic_tool_item_response: {\n      notes: 'string',\n      official: true,\n      skip_emails: true,\n      attachments: ['string'],\n      drawing_revision_ids: [4, 5],\n      file_version_ids: [6, 7],\n      form_ids: [7, 8],\n      image_ids: [9, 10],\n      upload_ids: ['4120226e-36a8-416f-970e-880bae78164f', 'de07e35a-4860-4f96-acd8-8360833dc495'],\n      document_management_document_revision_ids: ['01JC3TZNKJK6121Z1A2V7G574Q', '01JC3TZPXCJMC6P88CHHD6PTZ9']\n    }\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"generic_tool_item_response\":{\"notes\":\"string\",\"official\":true,\"skip_emails\":true,\"attachments\":[\"string\"],\"drawing_revision_ids\":[4,5],\"file_version_ids\":[6,7],\"form_ids\":[7,8],\"image_ids\":[9,10],\"upload_ids\":[\"4120226e-36a8-416f-970e-880bae78164f\",\"de07e35a-4860-4f96-acd8-8360833dc495\"],\"document_management_document_revision_ids\":[\"01JC3TZNKJK6121Z1A2V7G574Q\",\"01JC3TZPXCJMC6P88CHHD6PTZ9\"]}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("POST", "/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/generic_tool_item_responses", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request POST \\\n  --url https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/generic_tool_item_responses \\\n  --header 'content-type: application/json' \\\n  --data '{\"generic_tool_item_response\":{\"notes\":\"string\",\"official\":true,\"skip_emails\":true,\"attachments\":[\"string\"],\"drawing_revision_ids\":[4,5],\"file_version_ids\":[6,7],\"form_ids\":[7,8],\"image_ids\":[9,10],\"upload_ids\":[\"4120226e-36a8-416f-970e-880bae78164f\",\"de07e35a-4860-4f96-acd8-8360833dc495\"],\"document_management_document_revision_ids\":[\"01JC3TZNKJK6121Z1A2V7G574Q\",\"01JC3TZPXCJMC6P88CHHD6PTZ9\"]}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/generic_tool_item_responses\"),\n    Content = new StringContent(\"{\\\"generic_tool_item_response\\\":{\\\"notes\\\":\\\"string\\\",\\\"official\\\":true,\\\"skip_emails\\\":true,\\\"attachments\\\":[\\\"string\\\"],\\\"drawing_revision_ids\\\":[4,5],\\\"file_version_ids\\\":[6,7],\\\"form_ids\\\":[7,8],\\\"image_ids\\\":[9,10],\\\"upload_ids\\\":[\\\"4120226e-36a8-416f-970e-880bae78164f\\\",\\\"de07e35a-4860-4f96-acd8-8360833dc495\\\"],\\\"document_management_document_revision_ids\\\":[\\\"01JC3TZNKJK6121Z1A2V7G574Q\\\",\\\"01JC3TZPXCJMC6P88CHHD6PTZ9\\\"]}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      - id: node_request
+        mimeType: multipart/form-data
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/generic_tool_item_responses',\n  headers: {'content-type': 'multipart/form-data; boundary=---011000010111000001101001'},\n  formData: {\n    generic_tool_item_response: '{\"notes\":\"string\",\"official\":true,\"skip_emails\":true,\"attachments\":[\"string\"],\"drawing_revision_ids\":[4,5],\"file_version_ids\":[6,7],\"form_ids\":[7,8],\"image_ids\":[9,10],\"upload_ids\":[\"4120226e-36a8-416f-970e-880bae78164f\",\"de07e35a-4860-4f96-acd8-8360833dc495\"],\"document_management_document_revision_ids\":[\"01JC3TZNKJK6121Z1A2V7G574Q\",\"01JC3TZPXCJMC6P88CHHD6PTZ9\"]}'\n  }\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: multipart/form-data
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"generic_tool_item_response\"\r\n\r\n{\"notes\":\"string\",\"official\":true,\"skip_emails\":true,\"attachments\":[\"string\"],\"drawing_revision_ids\":[4,5],\"file_version_ids\":[6,7],\"form_ids\":[7,8],\"image_ids\":[9,10],\"upload_ids\":[\"4120226e-36a8-416f-970e-880bae78164f\",\"de07e35a-4860-4f96-acd8-8360833dc495\"],\"document_management_document_revision_ids\":[\"01JC3TZNKJK6121Z1A2V7G574Q\",\"01JC3TZPXCJMC6P88CHHD6PTZ9\"]}\r\n-----011000010111000001101001--\r\n"
+
+
+          headers = { ''content-type'': "multipart/form-data; boundary=---011000010111000001101001" }
+
+
+          conn.request("POST", "/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/generic_tool_item_responses", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: multipart/form-data
+        title: Curl
+        content: "curl --request POST \\\n  --url https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/generic_tool_item_responses \\\n  --header 'content-type: multipart/form-data' \\\n  --form 'generic_tool_item_response={\"notes\":\"string\",\"official\":true,\"skip_emails\":true,\"attachments\":[\"string\"],\"drawing_revision_ids\":[4,5],\"file_version_ids\":[6,7],\"form_ids\":[7,8],\"image_ids\":[9,10],\"upload_ids\":[\"4120226e-36a8-416f-970e-880bae78164f\",\"de07e35a-4860-4f96-acd8-8360833dc495\"],\"document_management_document_revision_ids\":[\"01JC3TZNKJK6121Z1A2V7G574Q\",\"01JC3TZPXCJMC6P88CHHD6PTZ9\"]}'"
+      - id: csharp_httpclient
+        mimeType: multipart/form-data
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/generic_tool_item_responses\"),\n    Content = new MultipartFormDataContent\n    {\n        new StringContent(\"{\\\"notes\\\":\\\"string\\\",\\\"official\\\":true,\\\"skip_emails\\\":true,\\\"attachments\\\":[\\\"string\\\"],\\\"drawing_revision_ids\\\":[4,5],\\\"file_version_ids\\\":[6,7],\\\"form_ids\\\":[7,8],\\\"image_ids\\\":[9,10],\\\"upload_ids\\\":[\\\"4120226e-36a8-416f-970e-880bae78164f\\\",\\\"de07e35a-4860-4f96-acd8-8360833dc495\\\"],\\\"document_management_document_revision_ids\\\":[\\\"01JC3TZNKJK6121Z1A2V7G574Q\\\",\\\"01JC3TZPXCJMC6P88CHHD6PTZ9\\\"]}\")\n        {\n            Headers =\n            {\n                ContentDisposition = new ContentDispositionHeaderValue(\"form-data\")\n                {\n                    Name = \"generic_tool_item_response\",\n                }\n            }\n        },\n    },\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Add Attachments by Reference to file.
+        description: Add attachments by image, drawing revision, file version, form, or direct upload ids.
+        endpoint: POST /projects/{project_id}/generic_tools/{generic_tool_id}/generic_tool_items/{generic_tool_item_id}/generic_tool_item_responses
+        type: feature
+        breaking: false
+        datestamp: '2024-06-18'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: correspondences?version=1.0#create-generic-tool-item-response
+      - summary: Support adding PDM attachments to Generic Tool Item Response
+        description: Attach PDM document revisions to responses by providing document_management_document_revision_ids parameter in the request body.
+        endpoint: POST /projects/{project_id}/generic_tools/{generic_tool_id}/generic_tool_items/{generic_tool_item_id}/generic_tool_item_responses
+        type: feature
+        breaking: false
+        datestamp: '2025-12-30'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: correspondences?version=1.0#create-generic-tool-item-response
+      operationId: createGenericToolItemResponse
+  ? /rest/v1.0/projects/{project_id}/generic_tools/{generic_tool_id}/generic_tool_items/{generic_tool_item_id}/generic_tool_item_responses/{id}/download_all_attachments
+  : parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: generic_tool_id
+      in: path
+      description: Unique identifier for the generic tool
+      required: true
+      schema:
+        type: integer
+    - name: generic_tool_item_id
+      in: path
+      description: Unique identifier for the generic tool item
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      description: Unique identifier for the response
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Download All Response Attachments
+      description: Downloads all of the response's prostore-file attachments as a single zip. Creates an asynchronous zip manifest server-side and 302 redirects to the streaming URL for the resulting zip. Responds with 422 when the response has fewer than 2 attachments in total (ProStore + PDM) or when it has no prostore-file attachments to bundle. PDM (document_management_document_revision) attachments are counted toward that threshold but are not currently included in the resulting zip.
+      tags:
+      - Generic Tool Item Responses
+      responses:
+        '302':
+          description: Redirect to the streaming URL for the zip download
+          headers:
+            Location:
+              description: Streaming URL for the zip download
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '422':
+          description: Unprocessable Entity - fewer than 2 total attachments (ProStore + PDM), or no prostore-file attachments to bundle
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/generic_tool_item_responses/%7Bid%7D/download_all_attachments'\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/generic_tool_item_responses/%7Bid%7D/download_all_attachments")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/generic_tool_item_responses/%7Bid%7D/download_all_attachments"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/generic_tool_item_responses/%7Bid%7D/download_all_attachments\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Introduce GET Download All Response Attachments endpoint
+        description: 'Introduces a dedicated endpoint to download all of a correspondence response''s prostore-file attachments as a single zip.
+
+          Creates an asynchronous zip manifest and 302 redirects to its streaming URL. Returns 422 when fewer than 2 prostore-file attachments are present.
+
+          Replaces the legacy session-uuid based bulk-download mechanism for response attachments specifically; other tools using the shared helper are unaffected.'
+        endpoint: GET /projects/{project_id}/generic_tools/{generic_tool_id}/generic_tool_items/{generic_tool_item_id}/generic_tool_item_responses/{id}/download_all_attachments
+        type: new
+        breaking: false
+        datestamp: '2026-06-02'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: correspondences?version=1.0#download-all-response-attachments
+      - summary: Download All Response Attachments validates combined attachment count
+        description: The Download All Response Attachments endpoint now returns 422 when the response has fewer than 2 attachments in total (ProStore + PDM) or has no ProStore files to bundle, rather than counting ProStore-file attachments only. PDM attachments are counted toward the threshold but are still excluded from the resulting ProStore-only zip.
+        endpoint: GET /projects/{project_id}/generic_tools/{generic_tool_id}/generic_tool_items/{generic_tool_item_id}/generic_tool_item_responses/{id}/download_all_attachments
+        type: fix
+        breaking: false
+        datestamp: '2026-08-04'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: correspondences?version=1.0#download-all-response-attachments
+      operationId: downloadAllResponseAttachments
+  ? /rest/v1.0/projects/{project_id}/generic_tools/{generic_tool_id}/generic_tool_items/{generic_tool_item_id}/generic_tool_item_responses/{id}
+  : parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: generic_tool_id
+      in: path
+      description: Unique identifier for the generic tool
+      required: true
+      schema:
+        type: integer
+    - name: generic_tool_item_id
+      in: path
+      description: Unique identifier for the generic tool item
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      description: Unique identifier for the response
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: integer
+    x-compliance-level: full
+    patch:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: Update Generic Tool Item Response
+      description: 'Update attributes on a generic tool item response.
+
+        For more information on Generic Tool and Correspondence Tool endpoints,
+
+        see Working with the Correspondence Tool.'
+      tags:
+      - Generic Tool Item Responses
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - generic_tool_item_response
+              properties:
+                generic_tool_item_response:
+                  title: The Generic Tool Item Response object.
+                  type: object
+                  properties:
+                    official:
+                      type: boolean
+                      description: If this property is set ot true, the response is an official response. If this property is set to false, the response is not an official response.
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: GenericToolItemResponse
+                type: object
+                description: Generic Tool Item Response
+                properties:
+                  id:
+                    type: integer
+                    description: Drawing Upload ID
+                    example: 85
+                  notes:
+                    type: string
+                    description: The text of the Response
+                    example: This is a response.
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Generic Tool Item Response created at
+                    example: '2016-08-08T21:35:58Z'
+                  official:
+                    type: boolean
+                    description: If the response is an Official Response
+                    example: true
+                  position:
+                    type: integer
+                    description: Position of the Response
+                    example: 3
+                  status:
+                    type: string
+                    description: Status of the Generic Tool Item Response
+                    example: open
+                  created_by:
+                    allOf:
+                    - type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: The unique identifier of the user.
+                          example: 160586
+                        login:
+                          type: string
+                          description: The email address of the user that is used to log in.
+                          example: carl.contractor@example.com
+                        name:
+                          type: string
+                          description: The name of the user.
+                          example: Carl the Contractor
+                    - type: object
+                      properties:
+                        company_name:
+                          type: string
+                          description: User's Company Name
+                          example: Company ABC
+                  attachments:
+                    type: array
+                    description: Attachments
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: ID
+                          example: 5324
+                        url:
+                          type: string
+                          description: URL
+                          example: http://www.example.com/
+                        filename:
+                          type: string
+                          description: Filename
+                          example: january_receipt_copy.jpg
+                  download_all_attachments_url:
+                    type:
+                    - string
+                    - 'null'
+                    description: URL for downloading all of the response's prostore-file attachments as a single zip. Only present when the response has at least 2 prostore-file attachments; null otherwise. PDM (document_management_document_revision) attachments are not currently included in the zip.
+                    example: https://api.procore.com/rest/v1.0/projects/1/generic_tools/2/generic_tool_items/3/generic_tool_item_responses/4/download_all_attachments
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/generic_tool_item_responses/%7Bid%7D',\n  headers: {'content-type': 'application/json'},\n  body: {generic_tool_item_response: {official: true}},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          payload = "{\"generic_tool_item_response\":{\"official\":true}}"
+
+
+          headers = { ''content-type'': "application/json" }
+
+
+          conn.request("PATCH", "/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/generic_tool_item_responses/%7Bid%7D", payload, headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/generic_tool_item_responses/%7Bid%7D \\\n  --header 'content-type: application/json' \\\n  --data '{\"generic_tool_item_response\":{\"official\":true}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/generic_tool_item_responses/%7Bid%7D\"),\n    Content = new StringContent(\"{\\\"generic_tool_item_response\\\":{\\\"official\\\":true}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      x-changelog:
+      - summary: Support adding PDM attachments to Generic Tool Item Response
+        description: Attach PDM document revisions to responses by providing document_management_document_revision_ids parameter in the request body.
+        endpoint: PATCH /projects/{project_id}/generic_tools/{generic_tool_id}/generic_tool_items/{generic_tool_item_id}/generic_tool_item_responses/{id}
+        type: feature
+        breaking: false
+        datestamp: '2025-12-30'
+        versions:
+        - '1.0'
+        x-doc:
+          visibility: public
+          stage: ga
+          exposure: public
+        link: correspondences?version=1.0#update-generic-tool-item-response
+      operationId: updateGenericToolItemResponse
+  ? /rest/v1.0/projects/{project_id}/generic_tools/{generic_tool_id}/generic_tool_items/{generic_tool_item_id}/change_histories
+  : parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    - name: generic_tool_id
+      in: path
+      description: Unique identifier for the generic tool.
+      required: true
+      schema:
+        type: integer
+    - name: generic_tool_item_id
+      in: path
+      description: Unique identifier for the generic tool item.
+      required: true
+      schema:
+        type: integer
+    - name: project_id
+      in: path
+      required: true
+      description: Unique identifier for the project.
+      schema:
+        type: integer
+    x-compliance-level: full
+    get:
+      x-doc:
+        visibility: public
+        stage: ga
+        exposure: public
+      summary: List Change History for a Generic Tool Item
+      description: 'Returns a list of all change histories for a generic tool item in the specified project and generic tool.
+
+        For more information on Generic Tool and Correspondence Tool endpoints,
+
+        see Working with the Correspondence Tool.'
+      tags:
+      - Generic Tool Item Responses
+      parameters:
+      - name: page
+        in: query
+        description: Page
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: Elements per page
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          headers:
+            Per-Page:
+              description: Number of items retrieved per page
+              schema:
+                type: integer
+            Total:
+              description: Total number of items to be retrieved
+              schema:
+                type: integer
+            Link:
+              description: Link headers for the first, prev, next, and last link
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                description: Array of generic tool items
+                items:
+                  type: object
+                  description: A single change history entry, recording one field modification on the parent resource.
+                  properties:
+                    id:
+                      type: integer
+                      description: Unique identifier of this change history entry.
+                      example: 101
+                    column:
+                      type: string
+                      description: Internal column name of the field that was changed.
+                      example: assignee_id
+                    readable_column:
+                      type: string
+                      description: Localized, human-readable name of the field that was changed, translated to the requested locale.
+                      example: Assignee
+                    formatted_column:
+                      type: string
+                      description: Human-readable name of the field that was changed, in the default locale.
+                      example: Assignee
+                    old_value:
+                      type:
+                      - string
+                      - 'null'
+                      description: Previous value of the field. Null if the field was not previously set.
+                      example: The original title
+                    new_value:
+                      type: string
+                      description: New value of the field.
+                      example: The updated title
+                    created_by:
+                      allOf:
+                      - type: object
+                        properties:
+                          id:
+                            type: integer
+                            description: Unique identifier of the user who made the change.
+                            example: 160586
+                          login:
+                            type: string
+                            description: Email address (login) of the user who made the change.
+                            example: carl.contractor@example.com
+                          name:
+                            type: string
+                            description: Full name of the user who made the change.
+                            example: Carl the Contractor
+                          locale:
+                            type:
+                            - string
+                            - 'null'
+                            description: Locale preference of the user who made the change. Null if not set.
+                            example: en-GB
+                      - type: object
+                        properties:
+                          company_name:
+                            type: string
+                            description: Name of the company the user belongs to.
+                            example: Company ABC
+                    created_at:
+                      type: string
+                      format: date-time
+                      description: Timestamp when this change was recorded, in ISO 8601 format.
+                      example: '2018-05-08T13:21:20Z'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  message:
+                    type: string
+                  fields:
+                    type: string
+                  reason:
+                    description: A human-readable code providing additional detail on the cause of the error.
+                    type: string
+                  error:
+                    description: Description of the error thrown.
+                    type:
+                    - string
+                    - 'null'
+                    example: Invalid Token
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/change_histories',\n  qs: {page: 'SOME_INTEGER_VALUE', per_page: 'SOME_INTEGER_VALUE'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          conn.request("GET", "/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/change_histories?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE")
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/change_histories?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/projects/%7Bproject_id%7D/generic_tools/%7Bgeneric_tool_id%7D/generic_tool_items/%7Bgeneric_tool_item_id%7D/change_histories?page=SOME_INTEGER_VALUE&per_page=SOME_INTEGER_VALUE\"),\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+      operationId: listChangeHistoryForAGenericToolItem
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

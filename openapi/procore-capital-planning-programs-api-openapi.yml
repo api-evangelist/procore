@@ -1,0 +1,1086 @@
+openapi: 3.2.0
+info:
+  title: Procore REST Capital Planning — Programs API
+  version: v1.0/v2.0
+  description: Merged from the per-resource OpenAPI documents Procore publishes through its developer portal (https://developers.procore.com/api/v1/resource_groups). Originals are kept verbatim in openapi/_original/resources/.
+  x-source: https://developers.procore.com/api/v1/resource_groups
+servers:
+- url: https://api.procore.com
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Capital Planning — Programs
+paths:
+  /rest/v1.0/companies/{company_id}/capital_planning/programs:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: partial
+    get:
+      description: Returns all program group rows for the Capital Planning table, including aggregated rollup, variance, and metadata.
+      operationId: ProgramsController_listPrograms_rest/v1.0
+      parameters:
+      - name: company_id
+        required: true
+        in: path
+        description: Procore company identifier
+        schema:
+          type: string
+      - name: snapshot_id
+        required: false
+        in: query
+        description: When set, returns the stored data from the given completed snapshot instead of the live plan. The response shape is identical to the live plan.
+        schema:
+          type: string
+      - name: cursor
+        required: false
+        in: query
+        description: Pagination cursor from Link header
+        schema:
+          type: string
+      - name: per_page
+        required: false
+        in: query
+        description: Page size (default 50, max 100)
+        schema:
+          type: number
+      - name: filters[planned_end_date][max]
+        required: false
+        in: query
+        description: Maximum planned end date (YYYY-MM-DD)
+        schema:
+          type: string
+      - name: filters[planned_end_date][min]
+        required: false
+        in: query
+        description: Minimum planned end date (YYYY-MM-DD)
+        schema:
+          type: string
+      - name: filters[planned_start_date][max]
+        required: false
+        in: query
+        description: Maximum planned start date (YYYY-MM-DD)
+        schema:
+          type: string
+      - name: filters[planned_start_date][min]
+        required: false
+        in: query
+        description: Minimum planned start date (YYYY-MM-DD)
+        schema:
+          type: string
+      - name: filters[forecast_to_complete][max]
+        required: false
+        in: query
+        description: Maximum forecast to complete
+        schema:
+          type: string
+      - name: filters[forecast_to_complete][min]
+        required: false
+        in: query
+        description: Minimum forecast to complete
+        schema:
+          type: string
+      - name: filters[job_to_date_costs][max]
+        required: false
+        in: query
+        description: Maximum job to date costs
+        schema:
+          type: string
+      - name: filters[job_to_date_costs][min]
+        required: false
+        in: query
+        description: Minimum job to date costs
+        schema:
+          type: string
+      - name: filters[revised_budget][max]
+        required: false
+        in: query
+        description: Maximum revised budget
+        schema:
+          type: string
+      - name: filters[revised_budget][min]
+        required: false
+        in: query
+        description: Minimum revised budget
+        schema:
+          type: string
+      - name: filters[original_budget][max]
+        required: false
+        in: query
+        description: Maximum original budget
+        schema:
+          type: string
+      - name: filters[original_budget][min]
+        required: false
+        in: query
+        description: Minimum original budget
+        schema:
+          type: string
+      - name: filters[planned_amount][max]
+        required: false
+        in: query
+        description: Maximum planned amount
+        schema:
+          type: string
+      - name: filters[planned_amount][min]
+        required: false
+        in: query
+        description: Minimum planned amount
+        schema:
+          type: string
+      - name: filters[in_plan][]
+        required: false
+        in: query
+        description: Filter by in-plan state. Accepts `true` or `false`; sending both, or omitting it, returns projects in either state.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - 'true'
+            - 'false'
+      - name: filters[portfolio_program][]
+        required: false
+        in: query
+        description: Filter by portfolio program node uuid (the project's own node, descendants excluded), or the sentinel `none` for projects with no node (or a node not yet synced). With snapshot_id, matches the assignment frozen in the snapshot.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: filters[program][]
+        required: false
+        in: query
+        description: Filter by program. Send the program's procore_program_id, or the sentinel `none` to include projects with no program.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: filters[departments][]
+        required: false
+        in: query
+        description: Filter by department (matches projects containing any listed department)
+        schema:
+          type: array
+          items:
+            type: string
+      - name: filters[project_type][]
+        required: false
+        in: query
+        description: Filter by project type
+        schema:
+          type: array
+          items:
+            type: string
+      - name: filters[region][]
+        required: false
+        in: query
+        description: Filter by region
+        schema:
+          type: array
+          items:
+            type: string
+      - name: filters[priority][]
+        required: false
+        in: query
+        description: Filter by priority (low, medium, high)
+        schema:
+          type: array
+          items:
+            type: string
+      - name: filters[stage][]
+        required: false
+        in: query
+        description: Filter by stage
+        schema:
+          type: array
+          items:
+            type: string
+      - name: search
+        required: false
+        in: query
+        description: Case-insensitive substring match on project name or number
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Programs list with metadata and grand total
+          headers:
+            Per-Page:
+              description: Page size
+              schema:
+                type: integer
+            Total:
+              description: Total matching records
+              schema:
+                type: integer
+            Link:
+              description: Pagination link header
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        procore_program_id:
+                          type:
+                          - string
+                          - 'null'
+                          example: '456'
+                        name:
+                          type: string
+                          example: Infrastructure
+                        planned_amount:
+                          type: object
+                          properties:
+                            value:
+                              type:
+                              - string
+                              - 'null'
+                              example: '2500000.00'
+                            rollup:
+                              type: string
+                              example: '1750000.00'
+                            variance:
+                              type:
+                              - string
+                              - 'null'
+                              example: '750000.00'
+                          required:
+                          - value
+                          - rollup
+                          - variance
+                        monthly_forecasts:
+                          type: object
+                          properties:
+                            value:
+                              type: object
+                              additionalProperties:
+                                type: string
+                              example:
+                                2026-01: '125000.00'
+                            rollup:
+                              type: object
+                              additionalProperties:
+                                type: string
+                              example:
+                                2026-01: '100000.00'
+                            variance:
+                              type:
+                              - object
+                              - 'null'
+                              additionalProperties:
+                                type: string
+                              example:
+                                2026-01: '25000.00'
+                          required:
+                          - value
+                          - rollup
+                          - variance
+                        remaining:
+                          type: object
+                          properties:
+                            value:
+                              type:
+                              - string
+                              - 'null'
+                              example: '500000.00'
+                            rollup:
+                              type:
+                              - string
+                              - 'null'
+                              example: '400000.00'
+                            variance:
+                              type:
+                              - string
+                              - 'null'
+                              example: '100000.00'
+                          required:
+                          - value
+                          - rollup
+                          - variance
+                        original_budget:
+                          type:
+                          - string
+                          - 'null'
+                          example: '1000000.00'
+                        revised_budget:
+                          type:
+                          - string
+                          - 'null'
+                          example: '1200000.00'
+                        job_to_date_costs:
+                          type:
+                          - string
+                          - 'null'
+                          example: '300000.00'
+                        forecast_to_complete:
+                          type:
+                          - string
+                          - 'null'
+                          example: '150000.00'
+                        estimated_cost_at_completion:
+                          type:
+                          - string
+                          - 'null'
+                          example: '450000.00'
+                        child_count:
+                          type: number
+                          example: 4
+                        currency_code:
+                          type: string
+                          example: USD
+                      required:
+                      - procore_program_id
+                      - name
+                      - planned_amount
+                      - monthly_forecasts
+                      - remaining
+                      - original_budget
+                      - revised_budget
+                      - job_to_date_costs
+                      - forecast_to_complete
+                      - estimated_cost_at_completion
+                      - child_count
+                      - currency_code
+                  metadata:
+                    type: object
+                    properties:
+                      stages:
+                        example:
+                        - Concept
+                        - Active
+                        type: array
+                        items:
+                          type: string
+                      priorities:
+                        example:
+                        - low
+                        - medium
+                        - high
+                        type: array
+                        items:
+                          type: string
+                      regions:
+                        example:
+                        - NAM
+                        - EMEA
+                        - APAC
+                        type: array
+                        items:
+                          type: string
+                      project_types:
+                        example:
+                        - Office
+                        - Healthcare
+                        - Industrial
+                        type: array
+                        items:
+                          type: string
+                      departments:
+                        example:
+                        - Engineering
+                        - Finance
+                        - Operations
+                        type: array
+                        items:
+                          type: string
+                      forecast_range:
+                        type: object
+                        properties:
+                          start:
+                            type:
+                            - string
+                            - 'null'
+                            example: 2026-01
+                          end:
+                            type:
+                            - string
+                            - 'null'
+                            example: 2026-12
+                        required:
+                        - start
+                        - end
+                      total_project_count:
+                        type: number
+                        example: 6
+                      currency_code:
+                        type: string
+                        example: USD
+                      currency_display:
+                        type:
+                        - string
+                        - 'null'
+                        example: $
+                        description: Preferred currency display/symbol from company Currency Settings.
+                      fiscal_year_start:
+                        type: string
+                        enum:
+                        - january
+                        - february
+                        - march
+                        - april
+                        - may
+                        - june
+                        - july
+                        - august
+                        - september
+                        - october
+                        - november
+                        - december
+                        example: january
+                      permission_level:
+                        type: string
+                        enum:
+                        - admin
+                        - standard
+                        - readonly
+                        - none
+                        example: admin
+                        description: The requesting user's Capital Planning permission level, used by the UI to gate admin-only affordances (e.g. the settings entry point).
+                      filter_ranges:
+                        type: object
+                        properties:
+                          planned_amount:
+                            type: object
+                            properties:
+                              min:
+                                type:
+                                - string
+                                - 'null'
+                                example: '1000.00'
+                              max:
+                                type:
+                                - string
+                                - 'null'
+                                example: '500000.00'
+                            required:
+                            - min
+                            - max
+                          original_budget:
+                            type: object
+                            properties:
+                              min:
+                                type:
+                                - string
+                                - 'null'
+                                example: '1000.00'
+                              max:
+                                type:
+                                - string
+                                - 'null'
+                                example: '500000.00'
+                            required:
+                            - min
+                            - max
+                          revised_budget:
+                            type: object
+                            properties:
+                              min:
+                                type:
+                                - string
+                                - 'null'
+                                example: '1000.00'
+                              max:
+                                type:
+                                - string
+                                - 'null'
+                                example: '500000.00'
+                            required:
+                            - min
+                            - max
+                          job_to_date_costs:
+                            type: object
+                            properties:
+                              min:
+                                type:
+                                - string
+                                - 'null'
+                                example: '1000.00'
+                              max:
+                                type:
+                                - string
+                                - 'null'
+                                example: '500000.00'
+                            required:
+                            - min
+                            - max
+                          forecast_to_complete:
+                            type: object
+                            properties:
+                              min:
+                                type:
+                                - string
+                                - 'null'
+                                example: '1000.00'
+                              max:
+                                type:
+                                - string
+                                - 'null'
+                                example: '500000.00'
+                            required:
+                            - min
+                            - max
+                        required:
+                        - planned_amount
+                        - original_budget
+                        - revised_budget
+                        - job_to_date_costs
+                        - forecast_to_complete
+                    required:
+                    - stages
+                    - priorities
+                    - regions
+                    - project_types
+                    - departments
+                    - forecast_range
+                    - total_project_count
+                    - currency_code
+                    - currency_display
+                    - fiscal_year_start
+                    - permission_level
+                    - filter_ranges
+                  grand_total:
+                    type: object
+                    properties:
+                      planned_amount:
+                        type:
+                        - string
+                        - 'null'
+                        example: '2500000.00'
+                      original_budget:
+                        type:
+                        - string
+                        - 'null'
+                        example: '1000000.00'
+                      revised_budget:
+                        type:
+                        - string
+                        - 'null'
+                        example: '1200000.00'
+                      job_to_date_costs:
+                        type:
+                        - string
+                        - 'null'
+                        example: '300000.00'
+                      forecast_to_complete:
+                        type:
+                        - string
+                        - 'null'
+                        example: '150000.00'
+                      estimated_cost_at_completion:
+                        type:
+                        - string
+                        - 'null'
+                        example: '450000.00'
+                      remaining:
+                        type:
+                        - string
+                        - 'null'
+                        example: '2050000.00'
+                      monthly_forecasts:
+                        type: object
+                        additionalProperties:
+                          type: string
+                        example:
+                          2026-01: '175000.00'
+                          2026-02: '200000.00'
+                    required:
+                    - planned_amount
+                    - original_budget
+                    - revised_budget
+                    - job_to_date_costs
+                    - forecast_to_complete
+                    - estimated_cost_at_completion
+                    - remaining
+                    - monthly_forecasts
+                required:
+                - data
+                - metadata
+                - grand_total
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '403':
+          description: Access denied — `TOOL_NOT_ACTIVATED`, `INSUFFICIENT_PERMISSIONS`, `READONLY_ACCESS`, or `ADMIN_ACCESS_REQUIRED`
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '503':
+          description: The permission check could not be completed (`AUTHORIZATION_UNAVAILABLE`) — safe to retry
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+      summary: List programs
+      tags:
+      - Capital Planning — Programs
+      x-doc:
+        visibility: public
+        stage: beta
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'GET',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/programs',\n  qs: {\n    snapshot_id: 'SOME_STRING_VALUE',\n    cursor: 'SOME_STRING_VALUE',\n    per_page: 'SOME_NUMBER_VALUE',\n    'filters[planned_end_date][max]': 'SOME_STRING_VALUE',\n    'filters[planned_end_date][min]': 'SOME_STRING_VALUE',\n    'filters[planned_start_date][max]': 'SOME_STRING_VALUE',\n    'filters[planned_start_date][min]': 'SOME_STRING_VALUE',\n    'filters[forecast_to_complete][max]': 'SOME_STRING_VALUE',\n    'filters[forecast_to_complete][min]': 'SOME_STRING_VALUE',\n    'filters[job_to_date_costs][max]': 'SOME_STRING_VALUE',\n    'filters[job_to_date_costs][min]': 'SOME_STRING_VALUE',\n    'filters[revised_budget][max]': 'SOME_STRING_VALUE',\n    'filters[revised_budget][min]': 'SOME_STRING_VALUE',\n    'filters[original_budget][max]': 'SOME_STRING_VALUE',\n    'filters[original_budget][min]': 'SOME_STRING_VALUE',\n    'filters[planned_amount][max]': 'SOME_STRING_VALUE',\n    'filters[planned_amount][min]': 'SOME_STRING_VALUE',\n    'filters[in_plan][]': 'SOME_ARRAY_VALUE',\n    'filters[portfolio_program][]': 'SOME_ARRAY_VALUE',\n    'filters[program][]': 'SOME_ARRAY_VALUE',\n    'filters[departments][]': 'SOME_ARRAY_VALUE',\n    'filters[project_type][]': 'SOME_ARRAY_VALUE',\n    'filters[region][]': 'SOME_ARRAY_VALUE',\n    'filters[priority][]': 'SOME_ARRAY_VALUE',\n    'filters[stage][]': 'SOME_ARRAY_VALUE',\n    search: 'SOME_STRING_VALUE'\n  },\n  headers: {'Procore-Company-Id': 'SOME_STRING_VALUE'}\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        title: Python3
+        content: 'import http.client
+
+
+          conn = http.client.HTTPSConnection("api.procore.com")
+
+
+          headers = { ''Procore-Company-Id'': "SOME_STRING_VALUE" }
+
+
+          conn.request("GET", "/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/programs?snapshot_id=SOME_STRING_VALUE&cursor=SOME_STRING_VALUE&per_page=SOME_NUMBER_VALUE&filters%5Bplanned_end_date%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Bplanned_end_date%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Bplanned_start_date%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Bplanned_start_date%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Bforecast_to_complete%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Bforecast_to_complete%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Bjob_to_date_costs%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Bjob_to_date_costs%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Brevised_budget%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Brevised_budget%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Boriginal_budget%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Boriginal_budget%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Bplanned_amount%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Bplanned_amount%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Bin_plan%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bportfolio_program%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bprogram%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bdepartments%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bproject_type%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bregion%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bpriority%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bstage%5D%5B%5D=SOME_ARRAY_VALUE&search=SOME_STRING_VALUE", headers=headers)
+
+
+          res = conn.getresponse()
+
+          data = res.read()
+
+
+          print(data.decode("utf-8"))'
+      - id: shell_curl
+        title: Curl
+        content: "curl --request GET \\\n  --url 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/programs?snapshot_id=SOME_STRING_VALUE&cursor=SOME_STRING_VALUE&per_page=SOME_NUMBER_VALUE&filters%5Bplanned_end_date%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Bplanned_end_date%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Bplanned_start_date%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Bplanned_start_date%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Bforecast_to_complete%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Bforecast_to_complete%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Bjob_to_date_costs%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Bjob_to_date_costs%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Brevised_budget%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Brevised_budget%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Boriginal_budget%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Boriginal_budget%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Bplanned_amount%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Bplanned_amount%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Bin_plan%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bportfolio_program%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bprogram%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bdepartments%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bproject_type%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bregion%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bpriority%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bstage%5D%5B%5D=SOME_ARRAY_VALUE&search=SOME_STRING_VALUE' \\\n  --header 'Procore-Company-Id: SOME_STRING_VALUE'"
+      - id: csharp_httpclient
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Get,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/programs?snapshot_id=SOME_STRING_VALUE&cursor=SOME_STRING_VALUE&per_page=SOME_NUMBER_VALUE&filters%5Bplanned_end_date%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Bplanned_end_date%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Bplanned_start_date%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Bplanned_start_date%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Bforecast_to_complete%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Bforecast_to_complete%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Bjob_to_date_costs%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Bjob_to_date_costs%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Brevised_budget%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Brevised_budget%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Boriginal_budget%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Boriginal_budget%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Bplanned_amount%5D%5Bmax%5D=SOME_STRING_VALUE&filters%5Bplanned_amount%5D%5Bmin%5D=SOME_STRING_VALUE&filters%5Bin_plan%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bportfolio_program%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bprogram%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bdepartments%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bproject_type%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bregion%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bpriority%5D%5B%5D=SOME_ARRAY_VALUE&filters%5Bstage%5D%5B%5D=SOME_ARRAY_VALUE&search=SOME_STRING_VALUE\"),\n    Headers =\n    {\n        { \"Procore-Company-Id\", \"SOME_STRING_VALUE\" },\n    },\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+  /rest/v1.0/companies/{company_id}/capital_planning/programs/{procore_program_id}:
+    parameters:
+    - name: Procore-Company-Id
+      in: header
+      description: Unique company identifier associated with the Procore User Account.
+      required: true
+      schema:
+        type: integer
+    x-compliance-level: partial
+    patch:
+      description: Upserts capital planning data (planned_amount, monthly_forecasts) for the given program.
+      operationId: ProgramsController_updateProgram_rest/v1.0
+      parameters:
+      - name: company_id
+        required: true
+        in: path
+        description: Procore company identifier
+        schema:
+          type: string
+      - name: procore_program_id
+        required: true
+        in: path
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                planned_amount:
+                  type:
+                  - string
+                  - 'null'
+                  example: '2500000.00'
+                monthly_forecasts:
+                  type: object
+                  additionalProperties:
+                    type:
+                    - string
+                    - 'null'
+                  description: Manual forecast values keyed by month (`YYYY-MM`); a null clears that month. At most 240 months in one request.
+                  example:
+                    2026-01: '125000.00'
+                    2026-02: null
+      responses:
+        '200':
+          description: Updated program row
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      procore_program_id:
+                        type:
+                        - string
+                        - 'null'
+                        example: '456'
+                      name:
+                        type: string
+                        example: Infrastructure
+                      planned_amount:
+                        type: object
+                        properties:
+                          value:
+                            type:
+                            - string
+                            - 'null'
+                            example: '2500000.00'
+                          rollup:
+                            type: string
+                            example: '1750000.00'
+                          variance:
+                            type:
+                            - string
+                            - 'null'
+                            example: '750000.00'
+                        required:
+                        - value
+                        - rollup
+                        - variance
+                      monthly_forecasts:
+                        type: object
+                        properties:
+                          value:
+                            type: object
+                            additionalProperties:
+                              type: string
+                            example:
+                              2026-01: '125000.00'
+                          rollup:
+                            type: object
+                            additionalProperties:
+                              type: string
+                            example:
+                              2026-01: '100000.00'
+                          variance:
+                            type:
+                            - object
+                            - 'null'
+                            additionalProperties:
+                              type: string
+                            example:
+                              2026-01: '25000.00'
+                        required:
+                        - value
+                        - rollup
+                        - variance
+                      remaining:
+                        type: object
+                        properties:
+                          value:
+                            type:
+                            - string
+                            - 'null'
+                            example: '500000.00'
+                          rollup:
+                            type:
+                            - string
+                            - 'null'
+                            example: '400000.00'
+                          variance:
+                            type:
+                            - string
+                            - 'null'
+                            example: '100000.00'
+                        required:
+                        - value
+                        - rollup
+                        - variance
+                      original_budget:
+                        type:
+                        - string
+                        - 'null'
+                        example: '1000000.00'
+                      revised_budget:
+                        type:
+                        - string
+                        - 'null'
+                        example: '1200000.00'
+                      job_to_date_costs:
+                        type:
+                        - string
+                        - 'null'
+                        example: '300000.00'
+                      forecast_to_complete:
+                        type:
+                        - string
+                        - 'null'
+                        example: '150000.00'
+                      estimated_cost_at_completion:
+                        type:
+                        - string
+                        - 'null'
+                        example: '450000.00'
+                      child_count:
+                        type: number
+                        example: 4
+                      currency_code:
+                        type: string
+                        example: USD
+                    required:
+                    - procore_program_id
+                    - name
+                    - planned_amount
+                    - monthly_forecasts
+                    - remaining
+                    - original_budget
+                    - revised_budget
+                    - job_to_date_costs
+                    - forecast_to_complete
+                    - estimated_cost_at_completion
+                    - child_count
+                    - currency_code
+                required:
+                - data
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '403':
+          description: Access denied — `TOOL_NOT_ACTIVATED`, `INSUFFICIENT_PERMISSIONS`, `READONLY_ACCESS`, or `ADMIN_ACCESS_REQUIRED`
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '404':
+          description: Program not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+        '503':
+          description: The permission check could not be completed (`AUTHORIZATION_UNAVAILABLE`) — safe to retry
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+                          required:
+                          - field
+                          - message
+                    required:
+                    - code
+                    - message
+                    - details
+                required:
+                - error
+      summary: Update a program
+      tags:
+      - Capital Planning — Programs
+      x-doc:
+        visibility: public
+        stage: beta
+        exposure: public
+      x-code-samples:
+      - id: node_request
+        mimeType: application/json
+        title: Node.js
+        content: "const request = require('request');\n\nconst options = {\n  method: 'PATCH',\n  url: 'https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/programs/%7Bprocore_program_id%7D',\n  headers: {'Procore-Company-Id': 'SOME_STRING_VALUE', 'content-type': 'application/json'},\n  body: {\n    planned_amount: '2500000.00',\n    monthly_forecasts: {'2026-01': '125000.00', '2026-02': null}\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+      - id: python_python3
+        mimeType: application/json
+        title: Python3
+        content: "import http.client\n\nconn = http.client.HTTPSConnection(\"api.procore.com\")\n\npayload = \"{\\\"planned_amount\\\":\\\"2500000.00\\\",\\\"monthly_forecasts\\\":{\\\"2026-01\\\":\\\"125000.00\\\",\\\"2026-02\\\":null}}\"\n\nheaders = {\n    'Procore-Company-Id': \"SOME_STRING_VALUE\",\n    'content-type': \"application/json\"\n    }\n\nconn.request(\"PATCH\", \"/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/programs/%7Bprocore_program_id%7D\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+      - id: shell_curl
+        mimeType: application/json
+        title: Curl
+        content: "curl --request PATCH \\\n  --url https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/programs/%7Bprocore_program_id%7D \\\n  --header 'Procore-Company-Id: SOME_STRING_VALUE' \\\n  --header 'content-type: application/json' \\\n  --data '{\"planned_amount\":\"2500000.00\",\"monthly_forecasts\":{\"2026-01\":\"125000.00\",\"2026-02\":null}}'"
+      - id: csharp_httpclient
+        mimeType: application/json
+        title: C#
+        content: "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Patch,\n    RequestUri = new Uri(\"https://api.procore.com/rest/v1.0/companies/%7Bcompany_id%7D/capital_planning/programs/%7Bprocore_program_id%7D\"),\n    Headers =\n    {\n        { \"Procore-Company-Id\", \"SOME_STRING_VALUE\" },\n    },\n    Content = new StringContent(\"{\\\"planned_amount\\\":\\\"2500000.00\\\",\\\"monthly_forecasts\\\":{\\\"2026-01\\\":\\\"125000.00\\\",\\\"2026-02\\\":null}}\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"application/json\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+      x-rate-limit-enabled: true
+      x-procore-kong-tags:
+      - rate-limit:enabled
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
