@@ -1,0 +1,2407 @@
+slug: procore
+provider: Procore
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Engineering Services
+- Infrastructure
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 238
+edges:
+- tag: Bid Forms
+  spec_file: procore-bid-forms-api-openapi.yml
+  capability_id: BC-5030.20
+  capability_id_l1: BC-5030
+  capability_name: Tendering & Bid Management
+  confidence: 0.92
+  evidence: GET /rest/v1.1/projects/{project_id}/bid_packages/{bid_package_id}/bid_forms/{bid_form_id}/bid_leveling  bidLevelAcrossABidForm
+  reason: Create, update and export bid forms within bid packages plus bid levelling (comparative tender
+    evaluation) — plainly preparation and evaluation of tenders for construction works.
+- tag: BIM Models
+  spec_file: procore-bim-models-api-openapi.yml
+  capability_id: BC-5060.10
+  capability_id_l1: BC-5060
+  capability_name: BIM Management
+  confidence: 0.9
+  evidence: GET /rest/v1.0/bim_models/{id}/change_history  listBimModelChangeHistory  List BIM Model Change
+    History
+  reason: 'Core BIM model management: create/update/delete BIM models, BIM levels, revision plans and
+    change history. Unambiguously building information modelling coordination.'
+- tag: Bids
+  spec_file: procore-bids-api-openapi.yml
+  capability_id: BC-5030.20
+  capability_id_l1: BC-5030
+  capability_name: Tendering & Bid Management
+  confidence: 0.9
+  evidence: POST /rest/v1.0/projects/{project_id}/bid_packages/{bid_package_id}/bids  createBid  Create
+    bid
+  reason: Operations create, list and update bids within bid packages, list bid contacts and planroom
+    documents — the preparation and evaluation of tenders for construction works.
+- tag: Equipment
+  spec_file: procore-equipment-api-openapi.yml
+  capability_id: BC-5040.40
+  capability_id_l1: BC-5040
+  capability_name: Plant & Equipment Management
+  confidence: 0.9
+  evidence: GET /rest/v2.0/companies/{company_id}/equipment_register  getAllEquipment_1  Get all equipment
+    (Company); POST .../equipment_register/{equipment_id}/project_log  Set current project
+  reason: An equipment register with assignment of equipment to current projects on a construction management
+    platform is plant and equipment provision and deployment — Construction & Field Delivery Management
+    / Plant & Equipment Management.
+- tag: Accident Logs
+  spec_file: procore-accident-logs-api-openapi.yml
+  capability_id: BC-5050.50
+  capability_id_l1: BC-5050
+  capability_name: Incident & Emergency Management
+  confidence: 0.88
+  evidence: POST /rest/v1.0/projects/{project_id}/accident_logs  'Create Accident Log'
+  reason: Project-scoped accident log CRUD on a construction management platform is recording of safety
+    incidents on site, i.e. HSE incident reporting and investigation records (BC-5050.50). Slight residual
+    uncertainty only over whether the gold prefers the parent HSE capability.
+- tag: Purchase Orders
+  spec_file: procore-purchase-orders-api-openapi.yml
+  capability_id: BC-500.30
+  capability_id_l1: BC-500
+  capability_name: Purchase Order Management
+  confidence: 0.88
+  evidence: PATCH .../materials_mgmt/purchase_orders/{id} 'Update a purchase order'; 'Updates a single
+    purchase order line item'; 'Sync Purchase Order headers'
+  reason: Operations create, update, sync and delete purchase order headers and line items under materials
+    management — purchase order lifecycle management within procurement.
+- tag: Accident Logs
+  spec_file: procore-accident-logs-api-openapi.yml
+  capability_id: BC-1150.70
+  capability_id_l1: BC-1150
+  capability_name: Site HSE Management
+  confidence: 0.85
+  evidence: POST /rest/v1.0/projects/{project_id}/accident_logs  createAccidentLog  Create Accident Log
+  reason: Project-scoped accident log CRUD on a construction management platform is site safety/incident
+    recording, i.e. Site HSE Management.
+- tag: BIM Files
+  spec_file: procore-bim-files-api-openapi.yml
+  capability_id: BC-5060.10
+  capability_id_l1: BC-5060
+  capability_name: BIM Management
+  confidence: 0.85
+  evidence: GET /rest/v1.0/bim_files — List BIM Files; POST /rest/v1.0/bim_files — Create BIM File
+  reason: Full CRUD over building information model files is squarely BIM management under digital engineering
+    and asset information.
+- tag: BIM Model Revisions
+  spec_file: procore-bim-model-revisions-api-openapi.yml
+  capability_id: BC-5060.10
+  capability_id_l1: BC-5060
+  capability_name: BIM Management
+  confidence: 0.85
+  evidence: POST /rest/v1.0/bim_model_revisions  createBimModelRevision  Create BIM Model Revision
+  reason: Full CRUD over BIM model revisions = version control and coordination of building information
+    models across the project, i.e. BIM Management within digital engineering.
+- tag: BIM Models
+  spec_file: procore-bim-models-api-openapi.yml
+  capability_id: BC-1120.50
+  capability_id_l1: BC-1120
+  capability_name: Design Software & CAD Management
+  confidence: 0.85
+  evidence: '"List BIM Models", "Create BIM Model", "List BIM Model Change History", "Create a batch of
+    BIM Levels"'
+  reason: Core BIM model lifecycle (models, levels, geometry file bundles, revision plans/viewpoints)
+    — squarely the CAD/3D/BIM digital design environment of BC-1120.50.
+- tag: Bid Packages
+  spec_file: procore-bid-packages-api-openapi.yml
+  capability_id: BC-5030.20
+  capability_id_l1: BC-5030
+  capability_name: Tendering & Bid Management
+  confidence: 0.85
+  evidence: POST /rest/v1.0/projects/{project_id}/bid_packages  createBidPackage  Create Bid Package
+  reason: Bid packages are the work packages issued for tender on a construction project; the CRUD surface
+    manages the tender/bid solicitation artefacts, which is Tendering & Bid Management within infrastructure
+    procurement.
+- tag: Bids
+  spec_file: procore-bids-api-openapi.yml
+  capability_id: BC-500.10
+  capability_id_l1: BC-500
+  capability_name: Sourcing Management
+  confidence: 0.85
+  evidence: List Bids within a Bid Package; Create bid; List Bid Contacts; Gets documents attached to
+    Bid Package
+  reason: Full lifecycle of bids received from bidders against bid packages, including bid contacts and
+    attached documents — the RFx response and supplier-selection stage of Sourcing Management.
+- tag: Budget
+  spec_file: procore-budget-api-openapi.yml
+  capability_id: BC-5020.20
+  capability_id_l1: BC-5020
+  capability_name: Cost Estimating & Management
+  confidence: 0.85
+  evidence: GET /rest/v2.0/companies/{company_id}/projects/{project_id}/budget_views/{budget_view_id}/detail_rows  getDetailRowsForAProjectSBudget  Get
+    Detail Rows for a Project's Budget
+  reason: Project budget views, detail rows, budget locks and advanced forecasting rows are the baselining
+    and control of capital project costs — Cost Estimating & Management in project controls.
+- tag: Budget Line Items
+  spec_file: procore-budget-line-items-api-openapi.yml
+  capability_id: BC-5020.20
+  capability_id_l1: BC-5020
+  capability_name: Cost Estimating & Management
+  confidence: 0.85
+  evidence: POST /rest/v1.0/budget_line_items createBudgetLineItem 'Create Budget Line Item'; List/Update
+    Budget Line Items under companies/{company_id}/projects/{project_id}
+  reason: Construction project budget line items are the baselining and control of project cost structure,
+    i.e. cost estimating and management within capital project controls.
+- tag: Commitment Change Orders
+  spec_file: procore-commitment-change-orders-api-openapi.yml
+  capability_id: BC-5030.50
+  capability_id_l1: BC-5030
+  capability_name: Variations & Claims Management
+  confidence: 0.85
+  evidence: POST /rest/v1.0/projects/{project_id}/commitment_change_orders  Create Commitment Change Order
+  reason: Create, read, update and delete of change orders against project commitments (subcontracts/purchase
+    orders) — the core record of a contract variation and its cost impact. Maps cleanly to variations
+    management in contract administration.
+- tag: Drawings
+  spec_file: procore-drawings-api-openapi.yml
+  capability_id: BC-1130.20
+  capability_id_l1: BC-1130
+  capability_name: Drawing Management
+  confidence: 0.85
+  evidence: '''List drawing areas'', ''Create drawing area'', ''List Drawing Disciplines'', ''Update drawing
+    discipline'''
+  reason: Full CRUD over project drawing areas and disciplines — management of the project drawing set
+    lifecycle and organisation.
+- tag: Incidents
+  spec_file: procore-incidents-api-openapi.yml
+  capability_id: BC-5050.50
+  capability_id_l1: BC-5050
+  capability_name: Incident & Emergency Management
+  confidence: 0.85
+  evidence: GET /rest/v1.0/projects/{project_id}/incidents/actions  listActions  List Actions
+  reason: Large project-level incident surface with corrective actions and attachments — safety incident
+    reporting, investigation and follow-up actions on construction projects.
+- tag: Potential Change Orders
+  spec_file: procore-potential-change-orders-api-openapi.yml
+  capability_id: BC-5030.50
+  capability_id_l1: BC-5030
+  capability_name: Variations & Claims Management
+  confidence: 0.85
+  evidence: POST /rest/v1.0/potential_change_orders — Create Potential Change Order; List Potential Change
+    Orders
+  reason: Lifecycle management of potential change orders on construction contracts — the origination
+    and tracking of variations/compensation events under a contract.
+- tag: Prime Change Orders
+  spec_file: procore-prime-change-orders-api-openapi.yml
+  capability_id: BC-5030.50
+  capability_id_l1: BC-5030
+  capability_name: Variations & Claims Management
+  confidence: 0.85
+  evidence: POST /rest/v1.0/projects/{project_id}/prime_change_orders — Create Prime Change Order; Update
+    Prime Change Order
+  reason: Full lifecycle of prime contract change orders — formal variations to the head construction
+    contract, with document generation.
+- tag: Prime Contracts
+  spec_file: procore-prime-contracts-api-openapi.yml
+  capability_id: BC-5030.30
+  capability_id_l1: BC-5030
+  capability_name: Contract Administration
+  confidence: 0.85
+  evidence: POST /rest/v1.0/prime_contract — Create Prime Contract; PATCH /rest/v1.0/prime_contract/{id}
+    — Update Prime Contract; List Prime Contract Attachments
+  reason: Full CRUD and document attachment management over prime (head) construction contracts on a project
+    — administration of infrastructure/construction contracts through formation and governance.
+- tag: Request for Quotes
+  spec_file: procore-request-for-quotes-api-openapi.yml
+  capability_id: BC-5030.20
+  capability_id_l1: BC-5030
+  capability_name: Tendering & Bid Management
+  confidence: 0.85
+  evidence: '''Create RFQ'', ''List RFQ Quotes'', ''Create RFQ Response'''
+  reason: Request-for-quote issuance and receipt/evaluation of supplier quotes and responses is tendering
+    and bid management within infrastructure procurement.
+- tag: Safety Violation Logs
+  spec_file: procore-safety-violation-logs-api-openapi.yml
+  capability_id: BC-1150.70
+  capability_id_l1: BC-1150
+  capability_name: Site HSE Management
+  confidence: 0.85
+  evidence: POST /rest/v1.0/projects/{project_id}/safety_violation_logs  Create Safety Violation Log
+  reason: Project-scoped logging of safety violations is site safety/hazard management on a construction
+    project, matching Site HSE Management.
+- tag: Schedule
+  spec_file: procore-schedule-api-openapi.yml
+  capability_id: BC-5020.30
+  capability_id_l1: BC-5020
+  capability_name: Planning & Scheduling
+  confidence: 0.85
+  evidence: Create Lookahead Task / List Lookaheads / Create Calendar Item under /projects/{project_id}/schedule
+  reason: Project schedule, lookahead planning and calendar items are core construction planning and scheduling
+    control.
+- tag: Transfers
+  spec_file: procore-transfers-api-openapi.yml
+  capability_id: BC-5040.50
+  capability_id_l1: BC-5040
+  capability_name: Site Materials & Logistics
+  confidence: 0.85
+  evidence: POST /rest/v2.0/.../materials_mgmt/transfers  Transfers_CreateTransfer; Transfers_ConsolidateTransfer  'Consolidates
+    inventory of a material from multiple locations into a single…'
+  reason: Operations move and consolidate material inventory between locations on a project under materials_mgmt,
+    which is on-site materials handling and logistics.
+- tag: Accident Logs
+  spec_file: procore-accident-logs-api-openapi.yml
+  capability_id: BC-730.40
+  capability_id_l1: BC-730
+  capability_name: Incident & Investigation Management
+  confidence: 0.82
+  evidence: POST /rest/v1.0/projects/{project_id}/accident_logs  createAccidentLog  Create Accident Log
+  reason: CRUD over accident logs recorded against a project is capture of safety incidents, matching
+    HSE incident and investigation management.
+- tag: Harm Sources
+  spec_file: procore-harm-sources-api-openapi.yml
+  capability_id: BC-5050.50
+  capability_id_l1: BC-5050
+  capability_name: Incident & Emergency Management
+  confidence: 0.82
+  evidence: GET /rest/v1.0/companies/{company_id}/incidents/harm_sources — 'List Harm Sources'; 'Create
+    Harm Source'
+  reason: Harm source records under the incidents resource support safety incident recording and investigation
+    on construction sites, mapping to Incident & Emergency Management within HSE.
+- tag: Incidents
+  spec_file: procore-incidents-api-openapi.yml
+  capability_id: BC-730.40
+  capability_id_l1: BC-730
+  capability_name: Incident & Investigation Management
+  confidence: 0.82
+  evidence: GET /rest/v1.0/projects/{project_id}/incidents/actions  List Actions
+  reason: Large surface for project safety incidents including corrective actions and attachments, matching
+    HSE incident capture, investigation and follow-up on a construction platform.
+- tag: Managed Equipment
+  spec_file: procore-managed-equipment-api-openapi.yml
+  capability_id: BC-5040.40
+  capability_id_l1: BC-5040
+  capability_name: Plant & Equipment Management
+  confidence: 0.82
+  evidence: GET /rest/v1.0/companies/{company_id}/managed_equipment  List all Equipment; Setup Managed
+    Equipment Taxonomy; Update Deleted Equipment Serial Number
+  reason: Full register of company- and project-level managed construction equipment with create/update/delete,
+    search, serial numbers and change history — provision and upkeep of construction plant and equipment.
+- tag: Webhooks
+  spec_file: procore-webhooks-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.82
+  evidence: POST /rest/v1.0/webhooks/hooks  createWebhooksHook ; GET /rest/v1.0/webhooks/hooks/{hook_id}/deliveries  listWebhooksDeliveries
+  reason: Operations create and manage outbound webhook subscriptions ('hooks') and inspect their delivery
+    records for external integrators — precisely Webhook & Event Subscription Management within the developer
+    platform capability.
+- tag: Actual Production Quantities
+  spec_file: procore-actual-production-quantities-api-openapi.yml
+  capability_id: BC-1150.60
+  capability_id_l1: BC-1150
+  capability_name: Construction Progress Management
+  confidence: 0.8
+  evidence: POST /rest/v1.0/projects/{project_id}/actual_production_quantities/bulk_create  Bulk Create
+    Actual Production Quantities
+  reason: Records actual installed/production quantities per project, the core input to field progress
+    measurement and productivity/earned-value tracking on construction projects.
+- tag: Admin Equipment Logs
+  spec_file: procore-admin-equipment-logs-api-openapi.yml
+  capability_id: BC-5040.40
+  capability_id_l1: BC-5040
+  capability_name: Plant & Equipment Management
+  confidence: 0.8
+  evidence: GET /rest/v1.0/projects/{project_id}/equipment_logs  'List Equipment Logs'
+  reason: Project equipment logs record deployment and usage of construction plant on site, which is plant
+    & equipment management within field delivery.
+- tag: BIM Files
+  spec_file: procore-bim-files-api-openapi.yml
+  capability_id: BC-1120.50
+  capability_id_l1: BC-1120
+  capability_name: Design Software & CAD Management
+  confidence: 0.8
+  evidence: GET /rest/v1.0/bim_files — List BIM Files; POST /rest/v1.0/bim_files — Create BIM File
+  reason: Full lifecycle management of BIM model files maps to CAD/BIM digital design environment management.
+- tag: BIM Geometry Files
+  spec_file: procore-bim-geometry-files-api-openapi.yml
+  capability_id: BC-5060.10
+  capability_id_l1: BC-5060
+  capability_name: BIM Management
+  confidence: 0.8
+  evidence: POST /rest/v1.0/bim_geometry_file_bundles — Create BIM Geometry File Bundle
+  reason: Creation of BIM geometry file bundles is management of model data within building information
+    modelling.
+- tag: BIM Levels
+  spec_file: procore-bim-levels-api-openapi.yml
+  capability_id: BC-5060.10
+  capability_id_l1: BC-5060
+  capability_name: BIM Management
+  confidence: 0.8
+  evidence: GET /rest/v1.0/bim_levels — List BIM Levels; POST /rest/v1.0/bim_levels — Create BIM Level
+  reason: BIM levels are model structuring constructs (building storeys) managed as part of BIM coordination
+    and standards.
+- tag: BIM Model Properties
+  spec_file: procore-bim-model-properties-api-openapi.yml
+  capability_id: BC-5060.10
+  capability_id_l1: BC-5060
+  capability_name: BIM Management
+  confidence: 0.8
+  evidence: GET /rest/v1.0/bim_model_revisions/{id}/properties — List BIM Model Revision properties
+  reason: Reading properties of BIM model revisions is structured model information management under BIM.
+- tag: BIM Model Revision Objects
+  spec_file: procore-bim-model-revision-objects-api-openapi.yml
+  capability_id: BC-5060.10
+  capability_id_l1: BC-5060
+  capability_name: BIM Management
+  confidence: 0.8
+  evidence: GET /rest/v1.0/bim_model_revisions/{id}/objects — List BIM Model Revision objects
+  reason: Enumerating objects within a BIM model revision is model content management under building information
+    modelling.
+- tag: BIM Model Revisions
+  spec_file: procore-bim-model-revisions-api-openapi.yml
+  capability_id: BC-1120.50
+  capability_id_l1: BC-1120
+  capability_name: Design Software & CAD Management
+  confidence: 0.8
+  evidence: '"List BIM Model Revisions", "Create BIM Model Revision", "Update BIM Model Revision"'
+  reason: CRUD over revisions of BIM models = management of the 3D/BIM digital design environment (BC-1120.50
+    names BIM and 3D modelling explicitly).
+- tag: BIM Plans
+  spec_file: procore-bim-plans-api-openapi.yml
+  capability_id: BC-5060.10
+  capability_id_l1: BC-5060
+  capability_name: BIM Management
+  confidence: 0.8
+  evidence: GET /rest/v1.0/bim_plans  listBimPlans  List BIM Plans
+  reason: BIM plans (model-derived plan sheets/BIM execution plan artefacts) managed within Procore's
+    BIM resource family; sits under BIM Management.
+- tag: BIM Viewpoints
+  spec_file: procore-bim-viewpoints-api-openapi.yml
+  capability_id: BC-5060.10
+  capability_id_l1: BC-5060
+  capability_name: BIM Management
+  confidence: 0.8
+  evidence: POST /rest/v1.0/bim_viewpoints/{bim_viewpoint_id}/associations  createViewpointAndProcoreItemAssociation  Create
+    Viewpoint and Procore Item association
+  reason: Creates BIM viewpoints and links them to project items (e.g. RFIs, issues) — model-based coordination
+    and markup, a BIM Management function.
+- tag: Bid Forms
+  spec_file: procore-bid-forms-api-openapi.yml
+  capability_id: BC-500.10
+  capability_id_l1: BC-500
+  capability_name: Sourcing Management
+  confidence: 0.8
+  evidence: Bid Level across a Bid Form; Export Forms with Bids; Create a Bid Form
+  reason: Operations create, publish and compare bid forms including 'bid leveling' (side-by-side comparison
+    of submitted bids), which is the RFx issuance and supplier-selection motion of strategic sourcing.
+- tag: Bid Packages
+  spec_file: procore-bid-packages-api-openapi.yml
+  capability_id: BC-500.10
+  capability_id_l1: BC-500
+  capability_name: Sourcing Management
+  confidence: 0.8
+  evidence: POST /rest/v1.0/projects/{project_id}/bid_packages  Create Bid Package; List Bid Packages
+  reason: Bid packages are the solicitation units issued to prospective subcontractors on a construction
+    project — RFx package management, i.e. Sourcing Management.
+- tag: Body Parts
+  spec_file: procore-body-parts-api-openapi.yml
+  capability_id: BC-5050.50
+  capability_id_l1: BC-5050
+  capability_name: Incident & Emergency Management
+  confidence: 0.8
+  evidence: GET /rest/v1.0/companies/{company_id}/incidents/body_parts  listBodyParts  List Body Parts
+  reason: The path is nested under incidents — this is the reference list of injured body parts used when
+    recording a site safety incident, i.e. HSE incident reporting, not anything anatomical/clinical.
+- tag: Budget Modifications
+  spec_file: procore-budget-modifications-api-openapi.yml
+  capability_id: BC-5020.20
+  capability_id_l1: BC-5020
+  capability_name: Cost Estimating & Management
+  confidence: 0.8
+  evidence: POST /rest/v1.0/projects/{project_id}/budget_modifications 'Create Budget Modification'
+  reason: Modifications reallocate/adjust project budget amounts — control of project cost against baseline.
+    Could arguably touch change control, but the object is the budget itself.
+- tag: Catalog
+  spec_file: procore-catalog-api-openapi.yml
+  capability_id: BC-5020.20
+  capability_id_l1: BC-5020
+  capability_name: Cost Estimating & Management
+  confidence: 0.8
+  evidence: POST /rest/v2.0/companies/{company_id}/estimating/catalogs/{catalog_id}  Create new sub Cost
+    Catalog
+  reason: The endpoints sit under /estimating/ and manage cost catalogs used to build construction estimates,
+    which is cost estimating and management. 'Catalog' here is a cost-item library, not a product catalogue
+    for sales.
+- tag: Change Order Packages
+  spec_file: procore-change-order-packages-api-openapi.yml
+  capability_id: BC-5030.50
+  capability_id_l1: BC-5030
+  capability_name: Variations & Claims Management
+  confidence: 0.8
+  evidence: POST /rest/v1.0/change_order_packages — 'Create Change Order Package'
+  reason: Change order packages are the bundled contract variations issued for approval under a construction
+    contract — squarely Variations & Claims Management.
+- tag: Change Order Requests
+  spec_file: procore-change-order-requests-api-openapi.yml
+  capability_id: BC-5030.50
+  capability_id_l1: BC-5030
+  capability_name: Variations & Claims Management
+  confidence: 0.8
+  evidence: POST /rest/v1.0/change_order_requests — 'Create Change Order Request'
+  reason: 'Requests for contract change orders: the request/approval step of variation management on a
+    construction contract.'
+- tag: Checklists (Inspections)
+  spec_file: procore-checklists-inspections-api-openapi.yml
+  capability_id: BC-1150.50
+  capability_id_l1: BC-1150
+  capability_name: Construction Quality Management
+  confidence: 0.8
+  evidence: GET /rest/v1.0/projects/{project_id}/checklist/list_item_comments listChecklistInspectionComments
+    'List Checklist (Inspection) Comments'; 'List Alternative Response Sets'; 'Bulk Create Checklist (Inspections)
+    Item Attachments'
+  reason: The surface manages project inspection checklists — items, responses, comments and evidence
+    attachments — which is site QA/QC inspection execution on a construction project. Maps to Construction
+    Quality Management; some residual ambiguity because Procore checklists are also used for safety inspections.
+- tag: Commitment Change Order Batches
+  spec_file: procore-commitment-change-order-batches-api-openapi.yml
+  capability_id: BC-5030.50
+  capability_id_l1: BC-5030
+  capability_name: Variations & Claims Management
+  confidence: 0.8
+  evidence: POST /rest/v1.0/projects/{project_id}/commitment_change_order_batches  Create Commitment Change
+    Order Batch
+  reason: Commitments in Procore are subcontracts and purchase orders; change order batches are groupings
+    of contract variations. CRUD plus PDF export over these records realises variation management under
+    infrastructure/construction contracts.
+- tag: CostItems
+  spec_file: procore-costitems-api-openapi.yml
+  capability_id: BC-5020.20
+  capability_id_l1: BC-5020
+  capability_name: Cost Estimating & Management
+  confidence: 0.8
+  evidence: GET /rest/v2.0/companies/{company_id}/estimating/catalogs/{catalog_id}/items  CostItems_GetCostItems  Get
+    Cost Items
+  reason: Operations manage cost items within estimating catalogs (create, update, delete cost items),
+    which is plainly construction cost estimating. Residual ambiguity only between cost estimating and
+    commercial/quantity-surveying measurement.
+- tag: Document Revisions V2
+  spec_file: procore-document-revisions-v2-api-openapi.yml
+  capability_id: BC-5060.20
+  capability_id_l1: BC-5060
+  capability_name: Common Data Environment
+  confidence: 0.8
+  evidence: '''List Document Revisions'', ''Bulk Create Document Revisions'', ''List Recycled Document
+    Revisions'' under /document_management/document_revisions'
+  reason: Revision control over project documents is squarely document control within the project common
+    data environment on a construction platform.
+- tag: Equipment Log
+  spec_file: procore-equipment-log-api-openapi.yml
+  capability_id: BC-5040.40
+  capability_id_l1: BC-5040
+  capability_name: Plant & Equipment Management
+  confidence: 0.8
+  evidence: GET /rest/v1.0/projects/{project_id}/managed_equipment_logs  listProjectEquipmentLogs; POST
+    .../managed_equipment_maintenance_logs/{id}/attachments
+  reason: Project-level logging of managed equipment usage, including maintenance log attachments — upkeep
+    and deployment records for construction plant, i.e. Plant & Equipment Management.
+- tag: Equipment Maintenance
+  spec_file: procore-equipment-maintenance-api-openapi.yml
+  capability_id: BC-5040.40
+  capability_id_l1: BC-5040
+  capability_name: Plant & Equipment Management
+  confidence: 0.8
+  evidence: POST /rest/v2.0/companies/{company_id}/equipment_register/{equipment_id}/maintenance/records  createMaintenanceRecord_1  Create
+    a new maintenance record (Company)
+  reason: Maintenance records against the construction equipment register. Scoped to construction plant
+    upkeep rather than live infrastructure asset maintenance, so Plant & Equipment Management is the better
+    fit than BC-5090.
+- tag: Equipment Maintenance Log
+  spec_file: procore-equipment-maintenance-log-api-openapi.yml
+  capability_id: BC-5040.40
+  capability_id_l1: BC-5040
+  capability_name: Plant & Equipment Management
+  confidence: 0.8
+  evidence: GET /rest/v1.0/companies/{company_id}/managed_equipment_maintenance_logs  listEquipmentMaintenanceLogs  List
+    Equipment Maintenance Logs
+  reason: CRUD over maintenance logs for managed construction equipment at company and project level —
+    upkeep of construction plant and equipment.
+- tag: Harm Source
+  spec_file: procore-harm-source-api-openapi.yml
+  capability_id: BC-5050.50
+  capability_id_l1: BC-5050
+  capability_name: Incident & Emergency Management
+  confidence: 0.8
+  evidence: DELETE /rest/v1.0/companies/{company_id}/incidents/harm_sources/{id} — 'Delete Harm Source'
+  reason: Nested under /incidents/, these maintain the taxonomy of harm sources used when recording HSE
+    incidents on construction projects — part of incident reporting and investigation under Infrastructure
+    HSE Management.
+- tag: Harm Sources
+  spec_file: procore-harm-sources-api-openapi.yml
+  capability_id: BC-1150.70
+  capability_id_l1: BC-1150
+  capability_name: Site HSE Management
+  confidence: 0.8
+  evidence: GET /rest/v1.0/companies/{company_id}/incidents/harm_sources — 'List Harm Sources'; 'Create
+    Harm Source'
+  reason: Manages the catalogue of harm sources used in incident reporting (/incidents/harm_sources) —
+    hazard and safety incident management on construction sites, matching Site HSE Management.
+- tag: Inspections
+  spec_file: procore-inspections-api-openapi.yml
+  capability_id: BC-1150.50
+  capability_id_l1: BC-1150
+  capability_name: Construction Quality Management
+  confidence: 0.8
+  evidence: POST /rest/v1.0/projects/{project_id}/checklist/lists  createChecklistInspection  Create Checklist
+    (Inspection)
+  reason: Project inspection checklists, inspection item evidence configuration and signature requests
+    — site inspection execution and sign-off, i.e. Construction Quality Management (QA/QC on site, inspections).
+- tag: InterProjectTransfers
+  spec_file: procore-interprojecttransfers-api-openapi.yml
+  capability_id: BC-5040.50
+  capability_id_l1: BC-5040
+  capability_name: Site Materials & Logistics
+  confidence: 0.8
+  evidence: POST /materials_mgmt/inter_project_transfers — "Creates a new inter-project transfer"; "Adds
+    a line item to an inter-project transfer"
+  reason: Under the materials_mgmt namespace, these operations document the transfer of materials between
+    project sites with quantities on line items — construction site materials movement and logistics.
+- tag: Issuing
+  spec_file: procore-issuing-api-openapi.yml
+  capability_id: BC-5040.50
+  capability_id_l1: BC-5040
+  capability_name: Site Materials & Logistics
+  confidence: 0.8
+  evidence: POST /materials_mgmt/issuing — "Creates a new Direct Issue document"; "Updates quantity on
+    a Direct Issue line item location"
+  reason: Direct Issue documents under materials management record the issue of materials from stock locations
+    with quantities — site materials handling and logistics, not financial issuance.
+- tag: Prime Change Order Batches
+  spec_file: procore-prime-change-order-batches-api-openapi.yml
+  capability_id: BC-5030.50
+  capability_id_l1: BC-5030
+  capability_name: Variations & Claims Management
+  confidence: 0.8
+  evidence: POST /rest/v1.0/projects/{project_id}/prime_change_order_batches — Create Prime Change Order
+    Batch
+  reason: CRUD over batches of change orders against the prime contract; this is variation management
+    on the owner-contractor contract.
+- tag: Project Permission Template Assignments
+  spec_file: procore-project-permission-template-assignments-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: PATCH /rest/v1.0/projects/{project_id}/permission_template_assignments  Update a permission
+    template assignment for a user on a project
+  reason: The single operation assigns a permission template to a user on a project, which is plainly
+    the granting of access rights — identity and access management. Confidence slightly below top because
+    only one operation grounds the edge.
+- tag: Projects
+  spec_file: procore-projects-api-openapi.yml
+  capability_id: BC-900.30
+  capability_id_l1: BC-900
+  capability_name: Project Management
+  confidence: 0.8
+  evidence: POST /rest/v1.0/projects  createProject  Create project
+  reason: Core project record lifecycle — create, show, update, sync and list projects for a company;
+    the central project management object on a construction delivery platform.
+- tag: Punch Items
+  spec_file: procore-punch-items-api-openapi.yml
+  capability_id: BC-5040.60
+  capability_id_l1: BC-5040
+  capability_name: Construction Quality Management
+  confidence: 0.8
+  evidence: POST /rest/v1.0/punch_items createPunchItem 'Create Punch Item'; 'List Punch Item Activities';
+    'Send Punch Item Email'
+  reason: Punch items are construction defect/snag records raised at inspection and tracked to closeout,
+    with assignment, comments and notification. That is construction quality assurance and control on
+    a built asset, i.e. Construction Quality Management, not a generic ticketing surface.
+- tag: Safety Violation Logs
+  spec_file: procore-safety-violation-logs-api-openapi.yml
+  capability_id: BC-5050.20
+  capability_id_l1: BC-5050
+  capability_name: Construction Safety Management
+  confidence: 0.8
+  evidence: POST /rest/v1.0/projects/{project_id}/safety_violation_logs  Create Safety Violation Log
+  reason: Project-level logging of safety violations observed on site is construction safety risk control
+    within the HSE management domain.
+- tag: Shipments
+  spec_file: procore-shipments-api-openapi.yml
+  capability_id: BC-5040.50
+  capability_id_l1: BC-5040
+  capability_name: Site Materials & Logistics
+  confidence: 0.8
+  evidence: Shipments_AddBulkLineItemsFromPo  Adds bulk line items to a shipment from a purchase order
+    ... /materials_mgmt/shipments
+  reason: Materials management shipments, containers and line items received against purchase orders represent
+    construction site materials delivery and logistics.
+- tag: Submittals
+  spec_file: procore-submittals-api-openapi.yml
+  capability_id: BC-1130.40
+  capability_id_l1: BC-1130
+  capability_name: Vendor Document Management
+  confidence: 0.8
+  evidence: Return a list of all External Submittals; List revisions for an External Submittal; Update
+    linked local submittals for an External Submittal
+  reason: A large surface managing submittals and their revisions, linkage and export — the formal process
+    by which contractor/vendor technical documents are submitted and reviewed, matching Vendor Document
+    Management (submissions, reviews, dispositions).
+- tag: Telematics
+  spec_file: procore-telematics-api-openapi.yml
+  capability_id: BC-5040.40
+  capability_id_l1: BC-5040
+  capability_name: Plant & Equipment Management
+  confidence: 0.8
+  evidence: GET .../telematics/field_definition/{target_type}  getDiagnosticsFields  Get supported equipment
+    telematics fields; 'Save AEMP 2.0 telematics data and link new equipment to a telematics provider'
+  reason: Ingests AEMP equipment telematics and diagnostics for construction equipment linked to providers,
+    which directly serves deployment and upkeep of construction plant and equipment.
+- tag: schedules-controller
+  spec_file: procore-schedules-controller-api-openapi.yml
+  capability_id: BC-5020.30
+  capability_id_l1: BC-5020
+  capability_name: Planning & Scheduling
+  confidence: 0.8
+  evidence: GET /rest/v2.0/companies/{company_id}/projects/{project_id}/schedules  listSchedules  List
+    Schedules
+  reason: Read access to project schedules on a construction management platform — the project schedule/programme
+    record, which maps to planning and scheduling within capital project controls.
+- tag: Actual Production Quantities
+  spec_file: procore-actual-production-quantities-api-openapi.yml
+  capability_id: BC-5040.20
+  capability_id_l1: BC-5040
+  capability_name: Work Front & Production Management
+  confidence: 0.78
+  evidence: POST /rest/v1.0/projects/{project_id}/actual_production_quantities/bulk_create  Bulk Create
+    Actual Production Quantities
+  reason: Recording of actual installed/production quantities on a construction project — field productivity
+    tracking against work fronts, i.e. production management during site delivery.
+- tag: Actual Production Quantity
+  spec_file: procore-actual-production-quantity-api-openapi.yml
+  capability_id: BC-5040.20
+  capability_id_l1: BC-5040
+  capability_name: Work Front & Production Management
+  confidence: 0.78
+  evidence: GET /rest/v1.0/projects/{project_id}/actual_production_quantities  'List all Actual Production
+    Quantities'
+  reason: Project-scoped recording of actual installed/production quantities is field production tracking
+    on construction work fronts, i.e. work front & production management within construction delivery.
+- tag: Affliction Type
+  spec_file: procore-affliction-type-api-openapi.yml
+  capability_id: BC-5050.50
+  capability_id_l1: BC-5050
+  capability_name: Incident & Emergency Management
+  confidence: 0.78
+  evidence: DELETE /rest/v1.0/companies/{company_id}/incidents/affliction_types/{id}  'Delete Affliction
+    Type'
+  reason: Affliction types are reference data for injury/illness classification under the incidents resource,
+    supporting HSE incident reporting and investigation.
+- tag: Affliction Types
+  spec_file: procore-affliction-types-api-openapi.yml
+  capability_id: BC-5050.50
+  capability_id_l1: BC-5050
+  capability_name: Incident & Emergency Management
+  confidence: 0.78
+  evidence: GET /rest/v1.0/companies/{company_id}/incidents/affliction_types  'List Affliction Types'
+  reason: Same incident-domain reference data (injury/affliction classification) used when recording safety
+    incidents, so incident & emergency management.
+- tag: Checklists (Inspections)
+  spec_file: procore-checklists-inspections-api-openapi.yml
+  capability_id: BC-5040.60
+  capability_id_l1: BC-5040
+  capability_name: Construction Quality Management
+  confidence: 0.78
+  evidence: List Checklist (Inspection) Comments; List Checklist (Inspections) Item Attachments; List
+    Alternative Response Sets
+  reason: Full CRUD surface over project checklists/inspections — lists, items, responses, comments and
+    attachments. In Procore this is the Inspections tool used to verify works conform to specification,
+    i.e. construction quality control. Some ambiguity remains as checklists are also used for safety inspections
+    (BC-5050.20), hence not higher.
+- tag: Direct Costs
+  spec_file: procore-direct-costs-api-openapi.yml
+  capability_id: BC-5020.20
+  capability_id_l1: BC-5020
+  capability_name: Cost Estimating & Management
+  confidence: 0.78
+  evidence: GET /rest/v1.0/projects/{project_id}/direct_costs  List Direct Cost Items
+  reason: Creating and maintaining project direct cost items and line items is capital project cost capture
+    and control.
+- tag: Document Revisions V2
+  spec_file: procore-document-revisions-v2-api-openapi.yml
+  capability_id: BC-1130.10
+  capability_id_l1: BC-1130
+  capability_name: Document Control Management
+  confidence: 0.78
+  evidence: '''List Document Revisions'', ''Bulk Create Document Revisions'', ''List Recycled Document
+    Revisions'''
+  reason: Operations manage revisions of project documents within document_management — revision control
+    is the core of Document Control Management.
+- tag: Dumpster Logs
+  spec_file: procore-dumpster-logs-api-openapi.yml
+  capability_id: BC-5040.50
+  capability_id_l1: BC-5040
+  capability_name: Site Materials & Logistics
+  confidence: 0.78
+  evidence: '''List Dumpster Logs'', ''Create Dumpster Log'' at /projects/{project_id}/dumpster_logs'
+  reason: Site daily logs recording dumpster/waste activity map to site materials and logistics, which
+    explicitly covers on-site logistics and waste.
+- tag: Field Production Report
+  spec_file: procore-field-production-report-api-openapi.yml
+  capability_id: BC-5040.20
+  capability_id_l1: BC-5040
+  capability_name: Work Front & Production Management
+  confidence: 0.78
+  evidence: GET /rest/v1.0/field_production_report — "List Field Production Report Summary"
+  reason: Field production reporting tracks installed quantities and labour productivity on active work
+    fronts, which is construction production management. Only one summary operation is exposed, so confidence
+    is high but not maximal.
+- tag: Filing Types
+  spec_file: procore-filing-types-api-openapi.yml
+  capability_id: BC-5050.50
+  capability_id_l1: BC-5050
+  capability_name: Incident & Emergency Management
+  confidence: 0.78
+  evidence: GET /rest/v1.0/companies/{company_id}/incidents/injury_filing_types — "List Incident Filing
+    Types"
+  reason: The resources are injury filing types under the incidents tool, i.e. reference data for HSE
+    incident recording and reportability classification. It is configuration-flavoured, which keeps confidence
+    below 0.8, but the domain (safety incident reporting) is unambiguous.
+- tag: Forecasting
+  spec_file: procore-forecasting-api-openapi.yml
+  capability_id: BC-5020.20
+  capability_id_l1: BC-5020
+  capability_name: Cost Estimating & Management
+  confidence: 0.78
+  evidence: GET /rest/v2.0/companies/{company_id}/projects/{project_id}/advanced_forecastings/rows — 'Get
+    Advanced Forecasting Rows of a Project'; 'Creates or updates a budget note for a budget or a forecasting
+    row'
+  reason: Operations manage project budget/forecast rows and budget notes against WBS codes — this is
+    cost forecasting and budget control on a capital construction project, i.e. Cost Estimating & Management
+    within project controls. Not a demand/revenue forecast.
+- tag: Project Area Bids
+  spec_file: procore-project-area-bids-api-openapi.yml
+  capability_id: BC-5030.20
+  capability_id_l1: BC-5030
+  capability_name: Tendering & Bid Management
+  confidence: 0.78
+  evidence: GET /rest/v2.0/companies/{company_id}/projects/{project_id}/bids  listBidsWithinAProject2  List
+    Bids within a Project
+  reason: Lists bids submitted within a construction project, which is tender/bid administration on a
+    works package. Maps to Tendering & Bid Management; a single read-only operation with no schemas limits
+    certainty about whether it also covers evaluation and award.
+- tag: Punch Item Assignments
+  spec_file: procore-punch-item-assignments-api-openapi.yml
+  capability_id: BC-5040.60
+  capability_id_l1: BC-5040
+  capability_name: Construction Quality Management
+  confidence: 0.78
+  evidence: PATCH /rest/v1.0/projects/{project_id}/punch_item_assignments/{id}  Update Punch Item Assignment
+  reason: Punch items are construction defect/snag records; assigning and updating them is the control
+    of works conformance to specification on site.
+- tag: Receipts
+  spec_file: procore-receipts-api-openapi.yml
+  capability_id: BC-500.40
+  capability_id_l1: BC-500
+  capability_name: Procure-to-Pay Operations Management
+  confidence: 0.78
+  evidence: PATCH .../materials_mgmt/receipts/{id} 'Updates a receipt header'; 'Adds multiple line items
+    to a draft receipt in bulk'; 'Updates a single receipt line item'
+  reason: Receipts under materials management with headers and line items are goods receipts recorded
+    against purchase orders, which is explicitly within procure-to-pay operations ('requisitions, receipts').
+- tag: Schedule
+  spec_file: procore-schedule-api-openapi.yml
+  capability_id: BC-900.30
+  capability_id_l1: BC-900
+  capability_name: Project Management
+  confidence: 0.78
+  evidence: POST /rest/v1.0/projects/{project_id}/schedule/lookahead_tasks  Create Lookahead Task; List
+    Calendar Items
+  reason: Manages project schedule artefacts — calendar items, lookahead plans and tasks — which is project
+    planning and tracking execution. Clearly Project Management; small residual doubt only about sub-capability
+    granularity.
+- tag: activities-controller
+  spec_file: procore-activities-controller-api-openapi.yml
+  capability_id: BC-900.30
+  capability_id_l1: BC-900
+  capability_name: Project Management
+  confidence: 0.78
+  evidence: GET /projects/{project_id}/schedules/{schedule_id}/activities — "List Activities"; "Get Activity
+    by ID"
+  reason: Activities are nested under a project schedule, i.e. the tasks of a construction project schedule.
+    Reading schedule activities is project planning and tracking (BC-900.30 Project Management). 'Activities'
+    is a homograph risk (audit/user activity feeds), but the /schedules/{schedule_id}/ path grounds the
+    scheduling reading.
+- tag: activities-controller
+  spec_file: procore-activities-controller-api-openapi.yml
+  capability_id: BC-5020.30
+  capability_id_l1: BC-5020
+  capability_name: Planning & Scheduling
+  confidence: 0.78
+  evidence: GET /rest/v2.0/companies/{company_id}/projects/{project_id}/schedules/{schedule_id}/activities  listActivities  List
+    Activities
+  reason: Activities are read from a project schedule, i.e. the scheduled tasks of a construction programme,
+    which is project planning and scheduling control.
+- tag: Affliction Type
+  spec_file: procore-affliction-type-api-openapi.yml
+  capability_id: BC-1150.70
+  capability_id_l1: BC-1150
+  capability_name: Site HSE Management
+  confidence: 0.76
+  evidence: DELETE /rest/v1.0/companies/{company_id}/incidents/affliction_types/{id}  deleteAfflictionType
+  reason: The path is scoped under '/incidents/affliction_types' — injury/affliction classification for
+    safety incident reporting on a construction platform, which realises Site HSE Management. Slightly
+    reduced because the tag only manages reference-data taxonomy rather than incidents themselves.
+- tag: Affliction Types
+  spec_file: procore-affliction-types-api-openapi.yml
+  capability_id: BC-1150.70
+  capability_id_l1: BC-1150
+  capability_name: Site HSE Management
+  confidence: 0.76
+  evidence: GET /rest/v1.0/companies/{company_id}/incidents/affliction_types  listAfflictionTypes  'List
+    Affliction Types'
+  reason: Incident affliction (injury) type configuration supports safety incident recording and hazard
+    management on site, fitting Site HSE Management. Reference-data nature keeps confidence below 0.8.
+- tag: BIM File
+  spec_file: procore-bim-file-api-openapi.yml
+  capability_id: BC-1120.50
+  capability_id_l1: BC-1120
+  capability_name: Design Software & CAD Management
+  confidence: 0.75
+  evidence: DELETE /rest/v1.0/bim_files/{id} — deleteBimFile Delete BIM File
+  reason: Operates on Building Information Model files, i.e. the digital design/3D model environment,
+    which is Design Software & CAD/BIM management. Single delete operation limits certainty slightly.
+- tag: BIM File
+  spec_file: procore-bim-file-api-openapi.yml
+  capability_id: BC-5060.10
+  capability_id_l1: BC-5060
+  capability_name: BIM Management
+  confidence: 0.75
+  evidence: DELETE /rest/v1.0/bim_files/{id} — Delete BIM File
+  reason: Operates directly on building information model files, which is BIM management within digital
+    engineering; thin single-operation surface lowers confidence slightly.
+- tag: BIM Geometry Files
+  spec_file: procore-bim-geometry-files-api-openapi.yml
+  capability_id: BC-1120.50
+  capability_id_l1: BC-1120
+  capability_name: Design Software & CAD Management
+  confidence: 0.75
+  evidence: POST /rest/v1.0/bim_geometry_file_bundles — Create BIM Geometry File Bundle
+  reason: Creation of 3D geometry bundles for BIM models is part of the 3D modelling/BIM design environment.
+- tag: BIM Model Revision Plans
+  spec_file: procore-bim-model-revision-plans-api-openapi.yml
+  capability_id: BC-5060.10
+  capability_id_l1: BC-5060
+  capability_name: BIM Management
+  confidence: 0.75
+  evidence: GET /rest/v1.0/bim_model_revision_plans — List BIM Model Revision Plans
+  reason: '''Plans'' here are drawing sheets derived from BIM model revisions, so this is BIM model/drawing
+    management rather than programme planning.'
+- tag: BIM Model Revision Planss
+  spec_file: procore-bim-model-revision-planss-api-openapi.yml
+  capability_id: BC-5060.10
+  capability_id_l1: BC-5060
+  capability_name: BIM Management
+  confidence: 0.75
+  evidence: POST /rest/v1.0/bim_model_revision_plans — Create BIM Model Revision Plan
+  reason: Same BIM model revision plan (drawing sheet) resource as the sibling tag; creation of model-derived
+    plans is BIM management, not scheduling.
+- tag: BIM Model Revision Viewpoints
+  spec_file: procore-bim-model-revision-viewpoints-api-openapi.yml
+  capability_id: BC-5060.10
+  capability_id_l1: BC-5060
+  capability_name: BIM Management
+  confidence: 0.75
+  evidence: DELETE /rest/v1.0/bim_model_revision_viewpoints/{id}  deleteBimModelRevisionViewpoint  Delete
+    BIM model revision viewpoint
+  reason: Operations manage viewpoints attached to BIM model revisions — building information modelling
+    coordination artefacts within a construction management platform. Maps to BIM Management; thin surface
+    (two delete ops) caps confidence.
+- tag: BIM Planss
+  spec_file: procore-bim-planss-api-openapi.yml
+  capability_id: BC-5060.10
+  capability_id_l1: BC-5060
+  capability_name: BIM Management
+  confidence: 0.75
+  evidence: POST /rest/v1.0/bim_plans  createBimPlan  Create BIM Plan
+  reason: Duplicate/variant tag exposing the create operation for the same BIM Plans resource; same BIM
+    Management capability, single operation lowers confidence.
+- tag: Bid Form Items
+  spec_file: procore-bid-form-items-api-openapi.yml
+  capability_id: BC-5030.20
+  capability_id_l1: BC-5030
+  capability_name: Tendering & Bid Management
+  confidence: 0.75
+  evidence: DELETE /rest/v1.0/projects/{project_id}/bid_packages/{bid_package_id}/bid_form_items/{bid_form_item_id}  deleteBidFormItem
+  reason: Line items on a bid form within a bid package — tender preparation and pricing structure. Maps
+    to Tendering & Bid Management, though only one operation is exposed.
+- tag: Bid Form Sections
+  spec_file: procore-bid-form-sections-api-openapi.yml
+  capability_id: BC-5030.20
+  capability_id_l1: BC-5030
+  capability_name: Tendering & Bid Management
+  confidence: 0.75
+  evidence: DELETE /rest/v1.0/projects/{project_id}/bid_packages/{bid_package_id}/bid_form_sections/{bid_form_section_id}  deleteBidFormSection
+  reason: Sections structuring a bid form inside a bid package — part of tender document preparation for
+    construction procurement; single operation keeps confidence moderate.
+- tag: Budget Views
+  spec_file: procore-budget-views-api-openapi.yml
+  capability_id: BC-5020.20
+  capability_id_l1: BC-5020
+  capability_name: Cost Estimating & Management
+  confidence: 0.75
+  evidence: POST /rest/v1.0/budget_views/{budget_view_id}/budget_details 'List Budget Details'; 'List
+    Budget View Summary Rows'
+  reason: Configurable budget detail/summary reporting on project cost data is project cost management
+    and control.
+- tag: Change Events
+  spec_file: procore-change-events-api-openapi.yml
+  capability_id: BC-5030.50
+  capability_id_l1: BC-5030
+  capability_name: Variations & Claims Management
+  confidence: 0.75
+  evidence: POST /rest/v1.0/change_events 'Create Change Event'; 'Update the Change Event settings for
+    the project'
+  reason: Procore Change Events capture potential scope/cost changes that feed change orders — i.e. the
+    compensation-event/variation pipeline under a construction contract. Maps to Variations & Claims Management;
+    some chance a reader would prefer programme change control (BC-5020.50), hence 0.75.
+- tag: Change Orders
+  spec_file: procore-change-orders-api-openapi.yml
+  capability_id: BC-5030.50
+  capability_id_l1: BC-5030
+  capability_name: Variations & Claims Management
+  confidence: 0.75
+  evidence: PATCH /rest/v1.0/potential_change_orders/{potential_change_order_id}/line_items/{id} — 'Update
+    Potential Change Order Line Item'; 'Retrieve a list of Markups'
+  reason: Potential change order line items and financial markups applied to them — pricing and administration
+    of contract variations. Markup management edges toward commercial/QS (.40), so not full confidence.
+- tag: Checklists (Inspections)
+  spec_file: procore-checklists-inspections-api-openapi.yml
+  capability_id: BC-720.30
+  capability_id_l1: BC-720
+  capability_name: Quality Control Management
+  confidence: 0.75
+  evidence: '''List Checklist (Inspection) Comments'', ''List Alternative Response Sets'', ''Bulk Create
+    Checklist (Inspections) Item Attachments'''
+  reason: 'This is the core inspection/checklist surface of a construction platform: checklist lists,
+    items, responses, comments and distribution. That corresponds to Quality Control Management (''Inspections,
+    testing, acceptance criteria''). Some ambiguity remains since construction inspections also touch
+    safety, hence not higher confidence.'
+- tag: Commitments
+  spec_file: procore-commitments-api-openapi.yml
+  capability_id: BC-500.20
+  capability_id_l1: BC-500
+  capability_name: Procurement Contract Management
+  confidence: 0.75
+  evidence: '''Show compliance information for a Work Order Contract'', ''Show compliance documents for
+    a contract'', ''.../purchase_order_contracts/{contract_id}/compliance_documents'''
+  reason: The surface manages work order contracts and purchase order contracts with the subcontractors/vendors,
+    including contract compliance documentation — i.e. lifecycle and terms management of procurement contracts.
+    Some overlap with Purchase Order Management and supplier compliance keeps this below 0.8.
+- tag: Commitments
+  spec_file: procore-commitments-api-openapi.yml
+  capability_id: BC-5030.30
+  capability_id_l1: BC-5030
+  capability_name: Contract Administration
+  confidence: 0.75
+  evidence: GET /rest/v1.0/projects/{project_id}/work_order_contracts/{contract_id}/compliance  Show compliance
+    information for a Work Order Contract
+  reason: Manages work order and purchase order contracts and their compliance information and documents
+    — administration of contract obligations and governance on construction projects. Could also read
+    as supply-chain management (BC-5030.60) since commitments are with subcontractors, hence not higher.
+- tag: Company Managed Equipment
+  spec_file: procore-company-managed-equipment-api-openapi.yml
+  capability_id: BC-5040.40
+  capability_id_l1: BC-5040
+  capability_name: Plant & Equipment Management
+  confidence: 0.75
+  evidence: PATCH /rest/v1.0/companies/{company_id}/managed_equipment/bulk_restore — "Bulk Retrieve Managed
+    Equipment"
+  reason: Procore's managed equipment resource tracks construction plant and equipment at company level,
+    which is the Plant & Equipment Management capability within construction field delivery. Single thin
+    operation, so confidence is moderate.
+- tag: Company Permission Templates
+  spec_file: procore-company-permission-templates-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: POST /rest/v1.0/companies/{company_id}/permission_templates "Create Permission Template";
+    "List permission templates"
+  reason: Defines and retrieves permission templates (role-based access profiles) for a company — clearly
+    access-rights management within the platform.
+- tag: Cost Codes
+  spec_file: procore-cost-codes-api-openapi.yml
+  capability_id: BC-200.50
+  capability_id_l1: BC-200
+  capability_name: Cost Accounting Management
+  confidence: 0.75
+  evidence: GET /rest/v1.0/cost_codes  List Cost Codes; POST /rest/v1.0/cost_codes/copy_from_standard_list  Copy
+    from Standard Cost Code List
+  reason: Cost codes and standard cost code lists are the cost-object/coding structure used for job costing,
+    which is cost accounting master structure. Mapped to Cost Accounting Management; some chance a reviewer
+    would place it under general ledger chart-of-accounts instead.
+- tag: Daily Construction Report Logs
+  spec_file: procore-daily-construction-report-logs-api-openapi.yml
+  capability_id: BC-1150.30
+  capability_id_l1: BC-1150
+  capability_name: Construction Supervision Management
+  confidence: 0.75
+  evidence: '''Create Daily Construction Report Log'' / GET /projects/{project_id}/daily_construction_report_logs'
+  reason: Daily construction report logs are the record of daily site operations and work performed, which
+    is Construction Supervision Management under Construction Management.
+- tag: Daily Construction Report Logs
+  spec_file: procore-daily-construction-report-logs-api-openapi.yml
+  capability_id: BC-5040.20
+  capability_id_l1: BC-5040
+  capability_name: Work Front & Production Management
+  confidence: 0.75
+  evidence: POST /rest/v1.0/projects/{project_id}/daily_construction_report_logs  Create Daily Construction
+    Report Log
+  reason: Daily construction reporting records site activity and progress on active work fronts, which
+    is construction production tracking within field delivery management.
+- tag: Delivery Logs
+  spec_file: procore-delivery-logs-api-openapi.yml
+  capability_id: BC-5040.50
+  capability_id_l1: BC-5040
+  capability_name: Site Materials & Logistics
+  confidence: 0.75
+  evidence: POST /rest/v1.0/projects/{project_id}/delivery_logs  Create Delivery Log
+  reason: Logging deliveries to a project site is direct evidence of site materials receipt and logistics
+    management.
+- tag: Document
+  spec_file: procore-document-api-openapi.yml
+  capability_id: BC-5060.20
+  capability_id_l1: BC-5060
+  capability_name: Common Data Environment
+  confidence: 0.75
+  evidence: GET /rest/v1.0/projects/{project_id}/documents — 'Project Folder and File index'; 'List project
+    root folder children'
+  reason: Construction-project document/folder repository on a construction management platform — this
+    is the shared project information environment (CDE) for structured project data, not generic file
+    storage for an unrelated domain.
+- tag: Documents
+  spec_file: procore-documents-api-openapi.yml
+  capability_id: BC-5060.20
+  capability_id_l1: BC-5060
+  capability_name: Common Data Environment
+  confidence: 0.75
+  evidence: '''Company Folder and File index''; ''List of Document Revisions (Project)'''
+  reason: Company- and project-scoped document folders with revision listings — project/asset document
+    control within the common data environment.
+- tag: Equipment Category
+  spec_file: procore-equipment-category-api-openapi.yml
+  capability_id: BC-5040.40
+  capability_id_l1: BC-5040
+  capability_name: Plant & Equipment Management
+  confidence: 0.75
+  evidence: GET /rest/v1.0/companies/{company_id}/managed_equipment_categories  listAllEquipmentCategories  List
+    all equipment categories
+  reason: Reference/configuration data for the managed equipment register. It is a taxonomy rather than
+    an operational process, but it is tightly scoped to construction plant and equipment, so a moderate-confidence
+    edge to Plant & Equipment Management is warranted.
+- tag: Harm Source
+  spec_file: procore-harm-source-api-openapi.yml
+  capability_id: BC-1150.70
+  capability_id_l1: BC-1150
+  capability_name: Site HSE Management
+  confidence: 0.75
+  evidence: DELETE /rest/v1.0/companies/{company_id}/incidents/harm_sources/{id} — 'Delete Harm Source'
+  reason: Harm sources are reference data within the incidents (safety) domain, per the /incidents/harm_sources
+    path — supporting hazard and incident management on site, i.e. Site HSE Management. Only maintenance
+    operations here, so confidence is moderate.
+- tag: Inspections
+  spec_file: procore-inspections-api-openapi.yml
+  capability_id: BC-5040.60
+  capability_id_l1: BC-5040
+  capability_name: Construction Quality Management
+  confidence: 0.75
+  evidence: POST /rest/v1.0/projects/{project_id}/checklist/lists  createChecklistInspection  Create Checklist
+    (Inspection)
+  reason: Checklist-based project inspections with item evidence configuration and signature requests
+    — conformance verification of construction work against specification.
+- tag: Line Item
+  spec_file: procore-line-item-api-openapi.yml
+  capability_id: BC-5030
+  capability_id_l1: BC-5030
+  capability_name: Infrastructure Procurement & Contract Management
+  confidence: 0.75
+  evidence: '"Show Commitment Contract Line Item", "Update Prime Change Order Line Item", "Delete Prime
+    Contract Line Item"'
+  reason: Operations maintain line items on prime contracts, commitment (subcontract) contracts and their
+    change orders — construction contract commercial records. Spread across contract administration and
+    variations, so no single sub-capability is named.
+- tag: Manpower Logs
+  spec_file: procore-manpower-logs-api-openapi.yml
+  capability_id: BC-5040.20
+  capability_id_l1: BC-5040
+  capability_name: Work Front & Production Management
+  confidence: 0.75
+  evidence: GET /rest/v1.0/projects/{project_id}/manpower_logs/daily_totals — "Get total workers and man
+    hours"
+  reason: Daily site manpower logs recording workers and man-hours per project are construction production
+    tracking across work fronts; sits in Construction & Field Delivery, closest to Work Front & Production
+    Management.
+- tag: Project Folders and Files
+  spec_file: procore-project-folders-and-files-api-openapi.yml
+  capability_id: BC-1130
+  capability_id_l1: BC-1130
+  capability_name: Engineering Document Management
+  confidence: 0.75
+  evidence: Create project file version / Show project file version / List project folders and files /
+    Create Document Custom Tag
+  reason: 'Operations manage project documents: folders, files, file versions and document tagging — a
+    controlled project document repository with versioning. Maps to engineering document management at
+    L1; the surface is generic file/folder CRUD so no specific sub-capability (drawings, specs, transmittals)
+    is named.'
+- tag: Project Permission Templates
+  spec_file: procore-project-permission-templates-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: GET /rest/v1.0/projects/{project_id}/permission_templates  List all available permission templates
+    for a Project
+  reason: Exposes the catalogue of permission templates (role-based access rights) available on a project,
+    which belongs to identity and access management. Read-only single operation, so confidence is moderate-high
+    rather than near-certain.
+- tag: Requisitions (Subcontractor Invoices)
+  spec_file: procore-requisitions-subcontractor-invoices-api-openapi.yml
+  capability_id: BC-200.20
+  capability_id_l1: BC-200
+  capability_name: Accounts Payable Management
+  confidence: 0.75
+  evidence: GET /rest/v1.0/requisitions/{requisition_id}/contract_detail_items  List Requisition (Subcontractor
+    Invoice) Contract Detail Items; POST .../single_pdf_compilers  Merges one or more PDFs of a requisition
+    into a single PDF
+  reason: Rich surface over subcontractor invoice line items, contract items and change order items with
+    change history and PDF compilation — inbound vendor invoice processing against contracts, i.e. accounts
+    payable.
+- tag: Requisitions (Subcontractor Invoices)
+  spec_file: procore-requisitions-subcontractor-invoices-api-openapi.yml
+  capability_id: BC-1150.40
+  capability_id_l1: BC-1150
+  capability_name: Subcontractor Management
+  confidence: 0.75
+  evidence: GET /rest/v1.0/requisitions/{requisition_id}/contract_items  List Requisition (Subcontractor
+    Invoice) Contract Items
+  reason: Rich surface over subcontractor invoice contract items, change order items and change histories
+    — i.e. administering subcontractor contracts and certifying their payment applications.
+- tag: Schedule
+  spec_file: procore-schedule-api-openapi.yml
+  capability_id: BC-1150.10
+  capability_id_l1: BC-1150
+  capability_name: Construction Planning Management
+  confidence: 0.75
+  evidence: POST /rest/v1.0/projects/{project_id}/schedule/lookahead_tasks  Create Lookahead Task
+  reason: Project schedule calendar items and lookahead schedules/tasks are construction sequencing and
+    short-interval planning, fitting Construction Planning Management.
+- tag: Specifications
+  spec_file: procore-specifications-api-openapi.yml
+  capability_id: BC-1130.30
+  capability_id_l1: BC-1130
+  capability_name: Specification Management
+  confidence: 0.75
+  evidence: POST .../specification_areas  Create Specification Area; GET /rest/v2.1/.../specification_section_divisions  List
+    Specification Section Divisions
+  reason: The surface manages a project's specification book — spec areas, spec section divisions and
+    revisions (incl. revision emails). This is controlled technical specification content, matching Specification
+    Management under Engineering Document Management. Some risk that it is purely a document-register
+    sub-feature, hence not 0.9.
+- tag: Transfers
+  spec_file: procore-transfers-api-openapi.yml
+  capability_id: BC-530
+  capability_id_l1: BC-530
+  capability_name: Inventory Management
+  confidence: 0.75
+  evidence: Transfers_ConsolidateTransfer  Consolidates inventory of a material from multiple locations
+    into a single…
+  reason: Operations sit under materials_mgmt and move material stock between locations via transfer documents
+    with line items, including consolidation of inventory across locations — inventory movement/allocation.
+    L1 Inventory Management is well supported; the specific sub-capability (allocation vs accuracy) is
+    not pinned down by the summaries.
+- tag: Unmanaged Equipment
+  spec_file: procore-unmanaged-equipment-api-openapi.yml
+  capability_id: BC-5040.40
+  capability_id_l1: BC-5040
+  capability_name: Plant & Equipment Management
+  confidence: 0.75
+  evidence: GET /rest/v2.0/companies/{company_id}/projects/{project_id}/equipment_register/equipment_unmanaged  getEquipmentUnmanaged  Get
+    unmanaged equipment (Project)
+  reason: Maintains entries in the project equipment register for equipment not formally managed, which
+    is construction plant and equipment record-keeping.
+- tag: Alerts
+  spec_file: procore-alerts-api-openapi.yml
+  capability_id: BC-1150.70
+  capability_id_l1: BC-1150
+  capability_name: Site HSE Management
+  confidence: 0.74
+  evidence: GET /rest/v1.0/projects/{project_id}/incidents/alerts  listIncidentAlerts  'List Incident
+    Alerts'
+  reason: Project-scoped incident alerts on a construction management platform are safety incident notifications,
+    mapping to Site HSE Management rather than any IT/observability alerting reading.
+- tag: Project
+  spec_file: procore-project-api-openapi.yml
+  capability_id: BC-5030.20
+  capability_id_l1: BC-5030
+  capability_name: Tendering & Bid Management
+  confidence: 0.74
+  evidence: GET /rest/v2.0/companies/{company_id}/estimating/bid_board_projects  Project_GetProjects  Get
+    all Bid Board projects
+  reason: Despite the generic 'Project' tag, every operation targets estimating/bid_board_projects — the
+    bid board used to track and manage bid opportunities and estimates, i.e. tendering and bid management
+    rather than project delivery controls.
+- tag: Action Plan Test Records
+  spec_file: procore-action-plan-test-records-api-openapi.yml
+  capability_id: BC-720.30
+  capability_id_l1: BC-720
+  capability_name: Quality Control Management
+  confidence: 0.72
+  evidence: POST /rest/v1.0/projects/{project_id}/action_plans/plan_test_records  createActionPlanTestRecord  Create
+    Action Plan Test Record
+  reason: Creation and retrieval of test records against project action plan items is recording of inspection/test
+    results — Quality Control Management.
+- tag: Action Type
+  spec_file: procore-action-type-api-openapi.yml
+  capability_id: BC-5050.50
+  capability_id_l1: BC-5050
+  capability_name: Incident & Emergency Management
+  confidence: 0.72
+  evidence: DELETE /rest/v1.0/companies/{company_id}/incidents/action_types/{id}  Delete Incident Action
+    Type
+  reason: The endpoints sit under /incidents/action_types — configuration of the corrective-action taxonomy
+    for Procore's safety Incidents tool, i.e. HSE incident reporting and follow-up. Configuration-only
+    surface, so not higher confidence.
+- tag: Action Types
+  spec_file: procore-action-types-api-openapi.yml
+  capability_id: BC-5050.50
+  capability_id_l1: BC-5050
+  capability_name: Incident & Emergency Management
+  confidence: 0.72
+  evidence: GET /rest/v1.0/companies/{company_id}/incidents/action_types  List Incident Action Types
+  reason: CRUD over incident action types within the company's safety Incidents module, supporting construction
+    HSE incident recording and corrective action classification.
+- tag: Adjustments
+  spec_file: procore-adjustments-api-openapi.yml
+  capability_id: BC-5040.50
+  capability_id_l1: BC-5040
+  capability_name: Site Materials & Logistics
+  confidence: 0.72
+  evidence: POST /rest/v2.0/companies/{company_id}/projects/{project_id}/materials_mgmt/adjustments  'Creates
+    a new adjustment document'
+  reason: The path segment materials_mgmt plus adjustment documents with line items indicates site materials
+    inventory adjustments, mapping to site materials and logistics rather than any financial adjustment
+    capability.
+- tag: Admin Equipment
+  spec_file: procore-admin-equipment-api-openapi.yml
+  capability_id: BC-5040.40
+  capability_id_l1: BC-5040
+  capability_name: Plant & Equipment Management
+  confidence: 0.72
+  evidence: GET /rest/v1.0/equipment  'List equipment'
+  reason: Company-level equipment register in a construction management platform corresponds to construction
+    plant & equipment management; single read-only operation keeps confidence moderate.
+- tag: Alerts
+  spec_file: procore-alerts-api-openapi.yml
+  capability_id: BC-5050.50
+  capability_id_l1: BC-5050
+  capability_name: Incident & Emergency Management
+  confidence: 0.72
+  evidence: GET /rest/v1.0/projects/{project_id}/incidents/alerts  'List Incident Alerts'
+  reason: Project incident alerts are safety incident notifications within Procore's incidents module,
+    mapping to HSE incident reporting and response.
+- tag: BIM Model Revision Viewpoints
+  spec_file: procore-bim-model-revision-viewpoints-api-openapi.yml
+  capability_id: BC-1120.50
+  capability_id_l1: BC-1120
+  capability_name: Design Software & CAD Management
+  confidence: 0.72
+  evidence: DELETE /rest/v1.0/bim_model_revision_viewpoints/{id} — "Delete BIM model revision viewpoint"
+  reason: Operations manage viewpoints on BIM model revisions — artefacts of the 3D/BIM digital design
+    environment, which BC-1120.50 explicitly covers ("3D modelling, BIM"). Thin surface (deletes only),
+    hence moderate confidence.
+- tag: BIM Viewpoints
+  spec_file: procore-bim-viewpoints-api-openapi.yml
+  capability_id: BC-1120.50
+  capability_id_l1: BC-1120
+  capability_name: Design Software & CAD Management
+  confidence: 0.72
+  evidence: '"Create a BIM Viewpoint", "Create Viewpoint and Procore Item association"'
+  reason: Creates saved viewpoints in the BIM model and links them to project items — use of the 3D/BIM
+    model environment (BC-1120.50).
+- tag: Bid Forms
+  spec_file: procore-bid-forms-api-openapi.yml
+  capability_id: BC-1140
+  capability_id_l1: BC-1140
+  capability_name: Engineering Tendering & Estimation Management
+  confidence: 0.72
+  evidence: '"Bid Level across a Bid Form", "Export Forms with Bids", "Create a Bid Form"'
+  reason: Manages bid forms within bid packages and levels/compares bids received — tendering and bid
+    management. Procore's angle is soliciting and comparing bids rather than authoring one's own proposal,
+    so the specific L2 is ambiguous; L1 only.
+- tag: Body Parts
+  spec_file: procore-body-parts-api-openapi.yml
+  capability_id: BC-1150.70
+  capability_id_l1: BC-1150
+  capability_name: Site HSE Management
+  confidence: 0.72
+  evidence: GET /rest/v1.0/companies/{company_id}/incidents/body_parts  listBodyParts  List Body Parts
+  reason: The endpoint is nested under incidents — body parts is the injury-classification reference list
+    used when recording site safety incidents, which belongs to Site HSE Management. Confidence tempered
+    because it is a single reference-data lookup rather than incident management itself.
+- tag: Company Users
+  spec_file: procore-company-users-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.72
+  evidence: POST /rest/v1.0/companies/{company_id}/users  createCompanyUser  Create company user; PATCH
+    .../users/{id}/invite  sendInvite  Send invite; PATCH .../users/sync  syncCompanyUsers
+  reason: Operations create, update, invite, sync and deactivate user accounts for a company, including
+    listing inactive people — i.e. user account provisioning and joiner/mover/leaver administration, which
+    is Identity & Access Management. Moderate confidence because the surface is also a directory of construction
+    'people' records rather than a pure IAM product.
+- tag: Company Vendor Insurances
+  spec_file: procore-company-vendor-insurances-api-openapi.yml
+  capability_id: BC-5030.60
+  capability_id_l1: BC-5030
+  capability_name: Subcontractor & Supply Chain Management
+  confidence: 0.72
+  evidence: GET /rest/v1.0/companies/{company_id}/vendors/{vendor_id}/insurances  listCompanyVendorInsurances  List
+    company vendor insurances
+  reason: Tracking insurance certificates held against each vendor is supply-chain/subcontractor compliance
+    management within infrastructure procurement, not an insurance product capability.
+- tag: Company Vendors
+  spec_file: procore-company-vendors-api-openapi.yml
+  capability_id: BC-510
+  capability_id_l1: BC-510
+  capability_name: Supplier Management
+  confidence: 0.72
+  evidence: POST /rest/v1.0/vendors  createCompanyVendor; PATCH /rest/v1.0/vendors/sync  syncCompanyVendors
+  reason: Create, read, update and bulk-sync of the company's vendor (subcontractor/supplier) records
+    — maintenance of the supplier register. L1 only, since the operations are generic record management
+    and do not name onboarding, performance or risk specifically.
+- tag: Company Vendors
+  spec_file: procore-company-vendors-api-openapi.yml
+  capability_id: BC-5030.60
+  capability_id_l1: BC-5030
+  capability_name: Subcontractor & Supply Chain Management
+  confidence: 0.72
+  evidence: POST /rest/v1.0/vendors  createCompanyVendor  Create company vendor
+  reason: CRUD over the company's vendor/subcontractor directory on a construction management platform
+    maps to subcontractor and supply chain management.
+- tag: CostItems
+  spec_file: procore-costitems-api-openapi.yml
+  capability_id: BC-1140.30
+  capability_id_l1: BC-1140
+  capability_name: Cost & Schedule Estimation Management
+  confidence: 0.72
+  evidence: GET /rest/v2.0/companies/{company_id}/estimating/catalogs/{catalog_id}/items  CostItems_GetCostItems  Get
+    Cost Items
+  reason: The paths sit explicitly under '/estimating/catalogs', so these are cost-catalogue line items
+    used to build construction cost estimates, matching cost estimation management. Slight residual ambiguity
+    between cost estimation and general estimating data management.
+- tag: Document Uploads V2
+  spec_file: procore-document-uploads-v2-api-openapi.yml
+  capability_id: BC-5060.20
+  capability_id_l1: BC-5060
+  capability_name: Common Data Environment
+  confidence: 0.72
+  evidence: '''Bulk Create Document Uploads'', ''Show Document Upload'', ''Recycle Document Uploads''
+    under /document_management/document_uploads'
+  reason: Upload mechanics are partly plumbing, but they are the ingest path of the project document management
+    module (versioned, recyclable project records), i.e. controlled exchange of project information.
+- tag: Documents
+  spec_file: procore-documents-api-openapi.yml
+  capability_id: BC-1130.10
+  capability_id_l1: BC-1130
+  capability_name: Document Control Management
+  confidence: 0.72
+  evidence: '''Company Folder and File index''; ''List of Document Revisions (Project)'''
+  reason: Combines the document register with revision listing at company and project scope — document
+    control (register plus revisions).
+- tag: Environmental Types
+  spec_file: procore-environmental-types-api-openapi.yml
+  capability_id: BC-730
+  capability_id_l1: BC-730
+  capability_name: Health, Safety & Environment Management
+  confidence: 0.72
+  evidence: GET /rest/v1.0/companies/{company_id}/incidents/environmental_types  listEnvironmentalTypes  List
+    Environmental Types
+  reason: The single operation is reference data nested under the company incidents resource, i.e. the
+    classification of environmental aspects of HSE incidents. That grounds Health, Safety & Environment
+    Management at L1, but the evidence does not disambiguate between environmental management and incident/investigation
+    management, so no L2 is asserted.
+- tag: Harm Source
+  spec_file: procore-harm-source-api-openapi.yml
+  capability_id: BC-730.40
+  capability_id_l1: BC-730
+  capability_name: Incident & Investigation Management
+  confidence: 0.72
+  evidence: DELETE /rest/v1.0/companies/{company_id}/incidents/harm_sources/{id}  Delete Harm Source
+  reason: The resource is nested under 'incidents' and classifies sources of harm, i.e. reference data
+    for safety incident recording and investigation in Procore's Quality & Safety domain. Slight uncertainty
+    as these are configuration lists rather than the incidents themselves.
+- tag: Harm Sources
+  spec_file: procore-harm-sources-api-openapi.yml
+  capability_id: BC-730.40
+  capability_id_l1: BC-730
+  capability_name: Incident & Investigation Management
+  confidence: 0.72
+  evidence: GET /rest/v1.0/companies/{company_id}/incidents/harm_sources  List Harm Sources
+  reason: Harm sources are maintained under the incidents namespace and describe what caused harm in a
+    safety incident, supporting HSE incident capture and investigation.
+- tag: Hazards
+  spec_file: procore-hazards-api-openapi.yml
+  capability_id: BC-1150.70
+  capability_id_l1: BC-1150
+  capability_name: Site HSE Management
+  confidence: 0.72
+  evidence: POST /rest/v1.0/companies/{company_id}/hazards  createHazard  Create Hazard
+  reason: Procore is a construction management platform; a company-level hazard register (list/create/update
+    hazards) is site safety hazard management, which falls under Site HSE Management within Construction
+    Management. Thin context (no schemas), so moderate confidence.
+- tag: Incidents
+  spec_file: procore-incidents-api-openapi.yml
+  capability_id: BC-1150.70
+  capability_id_l1: BC-1150
+  capability_name: Site HSE Management
+  confidence: 0.72
+  evidence: GET /rest/v1.0/projects/{project_id}/incidents/actions  listActions  List Actions
+  reason: Project-level incident records with corrective actions and attachments on a construction platform
+    — safety incident and hazard management on site. Mapped to Site HSE Management; some residual ambiguity
+    as the listed operations focus on the generic actions/recycle-bin sub-resources.
+- tag: Lookaheads
+  spec_file: procore-lookaheads-api-openapi.yml
+  capability_id: BC-900.30
+  capability_id_l1: BC-900
+  capability_name: Project Management
+  confidence: 0.72
+  evidence: POST /rest/v1.0/projects/{project_id}/schedule/lookahead_tasks  createLookaheadTask  'Create
+    Lookahead Task'; 'List Lookaheads'
+  reason: Lookaheads are short-interval project schedule plans with tasks under /projects/{project_id}/schedule/,
+    i.e. project planning and tracking. Maps to Project Management; confidence tempered by the construction-specific
+    framing.
+- tag: Manual Forecast Line Items
+  spec_file: procore-manual-forecast-line-items-api-openapi.yml
+  capability_id: BC-5020.20
+  capability_id_l1: BC-5020
+  capability_name: Cost Estimating & Management
+  confidence: 0.72
+  evidence: POST /rest/v1.0/projects/{project_id}/manual_forecast_line_items — "Create A Manual Forecast
+    Line Item"
+  reason: Project-level manual cost forecast line items are part of project cost control and forecasting
+    within capital project controls.
+- tag: Materials
+  spec_file: procore-materials-api-openapi.yml
+  capability_id: BC-5040.50
+  capability_id_l1: BC-5040
+  capability_name: Site Materials & Logistics
+  confidence: 0.72
+  evidence: PATCH .../materials_mgmt/materials/sensors/unassign — "Unassign sensors from materials"
+  reason: Materials management module tracking project materials (including sensor assignment for tracking)
+    is construction site materials and logistics management.
+- tag: Payment Application (Owner Invoice)
+  spec_file: procore-payment-application-owner-invoice-api-openapi.yml
+  capability_id: BC-200.30
+  capability_id_l1: BC-200
+  capability_name: Accounts Receivable Management
+  confidence: 0.72
+  evidence: PATCH /rest/v1.0/prime_contracts/{prime_contract_id}/payment_applications/{id}  'Update Payment
+    Application (Owner Invoice) for Prime Contract'
+  reason: Payment applications against a prime contract are the contractor's invoices to the project owner,
+    including line items and markup lines — customer invoicing/billing, i.e. Accounts Receivable. Some
+    overlap with contract administration keeps confidence below 0.8.
+- tag: Payment Application (Owner Invoice)
+  spec_file: procore-payment-application-owner-invoice-api-openapi.yml
+  capability_id: BC-5030.30
+  capability_id_l1: BC-5030
+  capability_name: Contract Administration
+  confidence: 0.72
+  evidence: PATCH /rest/v1.0/prime_contracts/{prime_contract_id}/payment_applications/{id}  Update Payment
+    Application (Owner Invoice) for Prime Contract
+  reason: Progress payment applications and their line items/markups raised against a prime contract are
+    contract administration of payment under the construction contract. Some overlap with commercial/quantity-surveying
+    valuation (BC-5030.40) keeps confidence moderate.
+- tag: Payment Applications (Owner Invoices)
+  spec_file: procore-payment-applications-owner-invoices-api-openapi.yml
+  capability_id: BC-5030.30
+  capability_id_l1: BC-5030
+  capability_name: Contract Administration
+  confidence: 0.72
+  evidence: POST /rest/v1.0/prime_contracts/{prime_contract_id}/payment_applications  Create Payment Application
+    (Owner Invoice) for Prime Contract
+  reason: Lifecycle management of owner invoices/payment applications against prime contracts — contract
+    administration covering obligations and payment. Alternative reading as commercial/QS valuation keeps
+    confidence at ~0.7.
+- tag: Project Vendors
+  spec_file: procore-project-vendors-api-openapi.yml
+  capability_id: BC-5030.60
+  capability_id_l1: BC-5030
+  capability_name: Subcontractor & Supply Chain Management
+  confidence: 0.72
+  evidence: POST /rest/v1.0/projects/{project_id}/vendors/{id}/actions/add  Add to project
+  reason: Maintains the set of vendors/subcontractors assigned to a construction project, i.e. onboarding
+    and management of the delivery supply chain on the project.
+- tag: Proposal
+  spec_file: procore-proposal-api-openapi.yml
+  capability_id: BC-1140.40
+  capability_id_l1: BC-1140
+  capability_name: Proposal Development Management
+  confidence: 0.72
+  evidence: GET .../estimating/bid_board_projects/{bid_board_project_id}/proposals/{proposal_id}/summary  Proposal_GetEstimateSummary2  Retrieve
+    the Estimate Summary for a proposal
+  reason: Creates and maintains proposals with estimate summaries, line item groups and markups inside
+    the estimating/bid board module — proposal development for tendering. Some ambiguity between Proposal
+    Development and Pricing & Margin (markups), hence 0.72 on the L2.
+- tag: Punch Items
+  spec_file: procore-punch-items-api-openapi.yml
+  capability_id: BC-720
+  capability_id_l1: BC-720
+  capability_name: Quality Management
+  confidence: 0.72
+  evidence: POST /rest/v1.0/punch_items 'Create Punch Item'; GET /rest/v1.0/punch_items/{id}/activities
+    'List Punch Item Activities'; 'Send Punch Item Email'
+  reason: Punch items are the construction snag/defect records raised during inspection and tracked to
+    closure, with attachments, comments and notification to responsible parties — defect/quality management
+    of delivered work. The narrower choice between non-conformance tracking and quality control inspection
+    is not resolvable from the summaries.
+- tag: Requisitions (Subcontractor Invoice)
+  spec_file: procore-requisitions-subcontractor-invoice-api-openapi.yml
+  capability_id: BC-200.20
+  capability_id_l1: BC-200
+  capability_name: Accounts Payable Management
+  confidence: 0.72
+  evidence: PATCH /rest/v1.0/requisitions/{id}  updateRequisitionSubcontractorInvoice  Update Requisition
+    (Subcontractor Invoice)
+  reason: Updates to subcontractor invoices (payment applications received from vendors) — vendor invoice
+    processing under Accounts Payable Management.
+- tag: Severity Levels
+  spec_file: procore-severity-levels-api-openapi.yml
+  capability_id: BC-5050.50
+  capability_id_l1: BC-5050
+  capability_name: Incident & Emergency Management
+  confidence: 0.72
+  evidence: GET /rest/v1.0/companies/{company_id}/incidents/severity_levels  List Incident Severity Levels
+  reason: Severity classification configuration for safety incidents sits within HSE incident management,
+    though the operations are reference-data maintenance rather than incident handling itself.
+- tag: activity-links-controller
+  spec_file: procore-activity-links-controller-api-openapi.yml
+  capability_id: BC-900.30
+  capability_id_l1: BC-900
+  capability_name: Project Management
+  confidence: 0.72
+  evidence: GET /projects/{project_id}/schedules/{schedule_id}/activity_links — "List Activity Links"
+  reason: Activity links under a project schedule represent predecessor/successor dependencies between
+    schedule activities — core project schedule structure, hence Project Management. Confidence slightly
+    reduced because the operations are read-only and the schemas are not shown.
+- tag: activity-links-controller
+  spec_file: procore-activity-links-controller-api-openapi.yml
+  capability_id: BC-5020.30
+  capability_id_l1: BC-5020
+  capability_name: Planning & Scheduling
+  confidence: 0.72
+  evidence: GET .../schedules/{schedule_id}/activity_links  listActivityLinks  List Activity Links
+  reason: Activity links are the logic/dependency relationships between schedule activities within a project
+    schedule, part of programme scheduling and control.
+- tag: Action Plan Test Record Requests
+  spec_file: procore-action-plan-test-record-requests-api-openapi.yml
+  capability_id: BC-720.30
+  capability_id_l1: BC-720
+  capability_name: Quality Control Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/projects/{project_id}/action_plans/plan_test_record_requests  createActionPlanTestRecordRequest  Create
+    Action Plan Test Record Request
+  reason: Requests for test records attached to action plan items are inspection/testing requirements,
+    which is Quality Control Management (inspections, testing, acceptance criteria).
+- tag: Action Plan Test Records
+  spec_file: procore-action-plan-test-records-api-openapi.yml
+  capability_id: BC-1150.50
+  capability_id_l1: BC-1150
+  capability_name: Construction Quality Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/projects/{project_id}/action_plans/plan_test_records  Create Action Plan Test
+    Record
+  reason: Creates and retrieves test records tied to project Action Plan items — documented evidence of
+    inspection/testing on a construction project, i.e. QA/QC record keeping on site.
+- tag: Action Plan Test Records
+  spec_file: procore-action-plan-test-records-api-openapi.yml
+  capability_id: BC-5040.60
+  capability_id_l1: BC-5040
+  capability_name: Construction Quality Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/projects/{project_id}/action_plans/plan_test_records  Create Action Plan Test
+    Record
+  reason: Creation and retrieval of test records attached to project action plans — the documented inspection
+    and test evidence underpinning construction quality assurance on a Procore project.
+- tag: Action Plans
+  spec_file: procore-action-plans-api-openapi.yml
+  capability_id: BC-1150.50
+  capability_id_l1: BC-1150
+  capability_name: Construction Quality Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/projects/{project_id}/action_plans/plans/{id}/publish  Move Action Plan into
+    "In Progress"
+  reason: Full lifecycle (draft, publish, create-from-template, bulk create for locations/assets) of project
+    Action Plans, Procore's quality/safety control-plan tool with associated test records and verification
+    methods. Best fit is on-site quality management; some chance it is read as general project execution
+    control.
+- tag: Action Plans
+  spec_file: procore-action-plans-api-openapi.yml
+  capability_id: BC-5040.60
+  capability_id_l1: BC-5040
+  capability_name: Construction Quality Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/projects/{project_id}/action_plans/plans/{id}/publish  Move Action Plan into
+    "In Progress"
+  reason: Project-scoped action plans with draft/in-progress lifecycle, creation from templates and bulk
+    creation for locations and assets. In Procore this is the Quality & Safety action-plan tool that plans
+    and evidences conformance of works; mapped to construction quality management rather than a generic
+    planning capability.
+- tag: BIM Levels
+  spec_file: procore-bim-levels-api-openapi.yml
+  capability_id: BC-1120.50
+  capability_id_l1: BC-1120
+  capability_name: Design Software & CAD Management
+  confidence: 0.7
+  evidence: GET /rest/v1.0/bim_levels — List BIM Levels; POST /rest/v1.0/bim_levels — Create BIM Level
+  reason: BIM levels are structural elements of the building information model; CRUD on them supports
+    the 3D model/BIM environment. Somewhat structural-metadata in nature, hence lower confidence.
+- tag: BIM Model Properties
+  spec_file: procore-bim-model-properties-api-openapi.yml
+  capability_id: BC-1120.50
+  capability_id_l1: BC-1120
+  capability_name: Design Software & CAD Management
+  confidence: 0.7
+  evidence: GET /rest/v1.0/bim_model_revisions/{id}/properties — List BIM Model Revision properties
+  reason: Reads properties of a BIM model revision, part of managing the 3D/BIM digital design model.
+- tag: BIM Model Revision Objects
+  spec_file: procore-bim-model-revision-objects-api-openapi.yml
+  capability_id: BC-1120.50
+  capability_id_l1: BC-1120
+  capability_name: Design Software & CAD Management
+  confidence: 0.7
+  evidence: GET /rest/v1.0/bim_model_revisions/{id}/objects — List BIM Model Revision objects
+  reason: Enumerates objects within a BIM model revision — 3D model content management within the BIM
+    design environment.
+- tag: BIM Plans
+  spec_file: procore-bim-plans-api-openapi.yml
+  capability_id: BC-1120.50
+  capability_id_l1: BC-1120
+  capability_name: Design Software & CAD Management
+  confidence: 0.7
+  evidence: '"List BIM Plans", "Show BIM Plan", "Update BIM Plan"'
+  reason: BIM Plans are containers within Procore's BIM module (sibling of bim_models/bim_levels), so
+    they belong to the BIM/3D design environment capability; no other reading of the operations fits,
+    though the surface is sparse.
+- tag: BIM Property File Objects
+  spec_file: procore-bim-property-file-objects-api-openapi.yml
+  capability_id: BC-5060.10
+  capability_id_l1: BC-5060
+  capability_name: BIM Management
+  confidence: 0.7
+  evidence: GET /rest/v1.0/bim_property_files/{id}/objects  listBimPropertyFileObjects  List BIM Property
+    File Objects
+  reason: Exposes the object inventory extracted from BIM property files — model-embedded asset/element
+    data, part of BIM information management. Only one read operation, so confidence moderate.
+- tag: BIM Property File Properties
+  spec_file: procore-bim-property-file-properties-api-openapi.yml
+  capability_id: BC-5060.10
+  capability_id_l1: BC-5060
+  capability_name: BIM Management
+  confidence: 0.7
+  evidence: GET /rest/v1.0/bim_property_files/{id}/properties  listBimPropertyFileProperties  List BIM
+    Property File Properties
+  reason: Reads parameter/property data carried by BIM model objects — structured model information under
+    BIM Management. Thin surface limits confidence.
+- tag: BIM View Folders
+  spec_file: procore-bim-view-folders-api-openapi.yml
+  capability_id: BC-5060.10
+  capability_id_l1: BC-5060
+  capability_name: BIM Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/nested_bim_view_folders  createOrFindBimViewFolderByPath  Create or find BIM
+    View Folder by path
+  reason: Organises saved BIM views into folder hierarchies for model coordination; partly filing plumbing
+    but scoped entirely to the BIM model environment, so BIM Management at moderate confidence.
+- tag: Body Parts
+  spec_file: procore-body-parts-api-openapi.yml
+  capability_id: BC-730.40
+  capability_id_l1: BC-730
+  capability_name: Incident & Investigation Management
+  confidence: 0.7
+  evidence: GET /rest/v1.0/companies/{company_id}/incidents/body_parts  List Body Parts
+  reason: The path nests body parts under /incidents — this is the reference list of injured body parts
+    used when recording a safety incident, i.e. HSE incident capture. It is only a lookup list, so confidence
+    is moderate.
+- tag: Budget
+  spec_file: procore-budget-api-openapi.yml
+  capability_id: BC-230.10
+  capability_id_l1: BC-230
+  capability_name: Budgeting Management
+  confidence: 0.7
+  evidence: Get Detail Rows for a Project's Budget; Get Advanced Forecasting Rows of a Project; Creates
+    or updates a budget note for a budget or a forecasting row
+  reason: Project budget views, detail rows, budget locks and forecasting rows — budget construction and
+    cost forecasting for a project. Budgeting Management is the closest fit, though some operations lean
+    toward cost accounting/project controls.
+- tag: Budget Change
+  spec_file: procore-budget-change-api-openapi.yml
+  capability_id: BC-230.10
+  capability_id_l1: BC-230
+  capability_name: Budgeting Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/projects/{project_id}/budget_changes  Create a budget change
+  reason: Creation, update and listing of budget changes with adjustment line items against a project
+    budget — in-life budget revision, which falls under Budgeting Management.
+- tag: Budget Change
+  spec_file: procore-budget-change-api-openapi.yml
+  capability_id: BC-5020.20
+  capability_id_l1: BC-5020
+  capability_name: Cost Estimating & Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/projects/{project_id}/budget_changes  createABudgetChange  Create a budget
+    change
+  reason: Budget changes adjust project budget line items, which is cost control on a capital project.
+    Some ambiguity with programme change control, so confidence is moderate.
+- tag: Budget Columns
+  spec_file: procore-budget-columns-api-openapi.yml
+  capability_id: BC-5020.20
+  capability_id_l1: BC-5020
+  capability_name: Cost Estimating & Management
+  confidence: 0.7
+  evidence: addOrUpdateADirectEntryValueForABudgetColumnAndWbsCode  Add or update a Direct Entry value
+    for a Budget Column and WBS Code
+  reason: Writing direct-entry values against budget columns and WBS codes is maintenance of the project
+    cost baseline/forecast, i.e. cost management, though the surface is a single field-level write.
+- tag: Budget Line Items
+  spec_file: procore-budget-line-items-api-openapi.yml
+  capability_id: BC-230.10
+  capability_id_l1: BC-230
+  capability_name: Budgeting Management
+  confidence: 0.7
+  evidence: '"Create Budget Line Item", "Update Budget Line Item", "Sync Budget Line Items"'
+  reason: Full CRUD over project budget line items — the core artefact of budget preparation and revision.
+    Maps to budgeting management; not accounts/ledger postings, so General Ledger is wrong.
+- tag: Budget Modifications
+  spec_file: procore-budget-modifications-api-openapi.yml
+  capability_id: BC-230.10
+  capability_id_l1: BC-230
+  capability_name: Budgeting Management
+  confidence: 0.7
+  evidence: '"Create Budget Modification", "Update Budget Modification", "List Budget Modifications"'
+  reason: CRUD over modifications (revisions/transfers) to a project budget, which is budget maintenance
+    within financial planning rather than accounting or change-order contracting.
+- tag: Budget Notes
+  spec_file: procore-budget-notes-api-openapi.yml
+  capability_id: BC-5020.20
+  capability_id_l1: BC-5020
+  capability_name: Cost Estimating & Management
+  confidence: 0.7
+  evidence: '''Creates or updates a budget note for a budget or a forecasting row'''
+  reason: Annotation of budget and forecasting rows supports project cost management and forecasting;
+    thin surface so moderate confidence.
+- tag: Budget View
+  spec_file: procore-budget-view-api-openapi.yml
+  capability_id: BC-5020.20
+  capability_id_l1: BC-5020
+  capability_name: Cost Estimating & Management
+  confidence: 0.7
+  evidence: GET /rest/v2.0/companies/{company_id}/budget_views/{budget_view_id} 'Get a Budget View'
+  reason: Budget views present project cost/budget data for control and reporting; single read operation
+    keeps confidence moderate.
+- tag: Budget View Snapshots
+  spec_file: procore-budget-view-snapshots-api-openapi.yml
+  capability_id: BC-5020.20
+  capability_id_l1: BC-5020
+  capability_name: Cost Estimating & Management
+  confidence: 0.7
+  evidence: GET /rest/v1.0/budget_view_snapshots/{budget_view_snapshot_id}/summary_rows 'List Budget View
+    Snapshot Summary Rows'
+  reason: Retrieval of budgeted cost detail and summary rows over time supports project cost management
+    and reporting.
+- tag: Calendar Items
+  spec_file: procore-calendar-items-api-openapi.yml
+  capability_id: BC-900.30
+  capability_id_l1: BC-900
+  capability_name: Project Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/projects/{project_id}/schedule/calendar_items  createCalendarItem  Create
+    Calendar Item
+  reason: CRUD plus sync over calendar items nested under a project's schedule path, i.e. scheduled items
+    on a construction project plan. That is project execution/planning and tracking, mapped to Project
+    Management; some residual risk that these are purely personal calendar entries, hence 0.7.
+- tag: Catalog
+  spec_file: procore-catalog-api-openapi.yml
+  capability_id: BC-1140.30
+  capability_id_l1: BC-1140
+  capability_name: Cost & Schedule Estimation Management
+  confidence: 0.7
+  evidence: POST /rest/v2.0/companies/{company_id}/estimating/catalogs/{catalog_id}  Create new sub Cost
+    Catalog
+  reason: The operations manage cost catalogs under the estimating module, i.e. the cost-item library
+    used to build construction/equipment cost estimates. Maps to cost estimation; some ambiguity between
+    the estimation sub-capabilities keeps confidence moderate.
+- tag: Category
+  spec_file: procore-category-api-openapi.yml
+  capability_id: BC-5040.40
+  capability_id_l1: BC-5040
+  capability_name: Plant & Equipment Management
+  confidence: 0.7
+  evidence: POST /rest/v2.0/companies/{company_id}/projects/{project_id}/equipment_register_categories  Create
+    equipment category (Project)
+  reason: Despite the generic tag 'Category', every operation manages equipment register categories —
+    reference taxonomy for the construction plant/equipment register. Maps to plant & equipment management;
+    confidence tempered because it is master-data for that register rather than equipment operations themselves.
+- tag: Change Events
+  spec_file: procore-change-events-api-openapi.yml
+  capability_id: BC-1110.30
+  capability_id_l1: BC-1110
+  capability_name: Engineering Change Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/change_events  Create Change Event; GET /rest/v2.0/companies/{company_id}/projects/{project_id}/change_event_settings  Get
+    Change Event Settings
+  reason: Core CRUD over project change events — the record of a potential change to project scope/cost,
+    i.e. change request raising and tracking against a project baseline. Closest available capability
+    is project change management; it leans commercial rather than purely technical, so not top confidence.
+- tag: Commitment Change Orders
+  spec_file: procore-commitment-change-orders-api-openapi.yml
+  capability_id: BC-500.20
+  capability_id_l1: BC-500
+  capability_name: Procurement Contract Management
+  confidence: 0.7
+  evidence: '''Show All Commitment Change Orders'', ''Create Commitment Change Order'', ''Update Commitment
+    Change Order'''
+  reason: Change orders amend commitments (subcontracts / purchase order contracts) with the buyer's suppliers,
+    i.e. lifecycle management of procurement contracts. Not mapped to Purchase Order Management because
+    the objects are contract amendments rather than PO issuance.
+- tag: Commitments
+  spec_file: procore-commitments-api-openapi.yml
+  capability_id: BC-1150.40
+  capability_id_l1: BC-1150
+  capability_name: Subcontractor Management
+  confidence: 0.7
+  evidence: GET /rest/v1.0/projects/{project_id}/work_order_contracts/{contract_id}/compliance 'Show compliance
+    information for a Work Order Contract'; 'Create a compliance document'
+  reason: The operations administer work order and purchase order contracts and their compliance information
+    and documents — oversight of subcontracted parties on a construction project, i.e. Subcontractor Management.
+- tag: Company Schedule
+  spec_file: procore-company-schedule-api-openapi.yml
+  capability_id: BC-5020.30
+  capability_id_l1: BC-5020
+  capability_name: Planning & Scheduling
+  confidence: 0.7
+  evidence: GET /rest/v1.0/companies/{company_id}/schedule/summary — "Return company schedule summary"
+  reason: The operation returns schedule information rolled up at company level, which corresponds to
+    construction programme planning and scheduling control. Single summary endpoint with no schemas, so
+    confidence is tempered.
+- tag: Company Vendor Insurances
+  spec_file: procore-company-vendor-insurances-api-openapi.yml
+  capability_id: BC-510.30
+  capability_id_l1: BC-510
+  capability_name: Supplier Risk Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/companies/{company_id}/vendors/{vendor_id}/insurances  createCompanyVendorInsurance
+  reason: Full CRUD over insurance records held against each vendor (subcontractor), which is the classic
+    certificate-of-insurance tracking used to control supplier risk and qualification. Some ambiguity
+    between supplier risk (BC-510.30) and supplier onboarding due diligence (BC-510.10), hence 0.7.
+- tag: Contract Payments
+  spec_file: procore-contract-payments-api-openapi.yml
+  capability_id: BC-5030.30
+  capability_id_l1: BC-5030
+  capability_name: Contract Administration
+  confidence: 0.7
+  evidence: POST /rest/v1.0/contract_payments  createContractPayment  Create Contract Payment
+  reason: Recording payments made under construction contracts is contract administration (payment and
+    obligations) on the delivery side.
+- tag: Cost Codes
+  spec_file: procore-cost-codes-api-openapi.yml
+  capability_id: BC-5020.20
+  capability_id_l1: BC-5020
+  capability_name: Cost Estimating & Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/cost_codes/copy_from_standard_list  Copy from Standard Cost Code List; GET
+    /rest/v1.0/standard_cost_codes  List Standard Cost Codes
+  reason: Cost codes and standard cost code lists are the cost breakdown structure underpinning construction
+    project cost estimating and control, so the closest fit is cost estimating and management within capital
+    programme controls. Some ambiguity remains with commercial/quantity-surveying use of the same codes.
+- tag: Daily Logs
+  spec_file: procore-daily-logs-api-openapi.yml
+  capability_id: BC-5040.20
+  capability_id_l1: BC-5040
+  capability_name: Work Front & Production Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/projects/{project_id}/daily_logs/clones  Clones Daily Logs from one Date to
+    another Date
+  reason: Project daily logs are the site record of daily construction activity and progress, supporting
+    work front and production management.
+- tag: Delay Logs
+  spec_file: procore-delay-logs-api-openapi.yml
+  capability_id: BC-5040.20
+  capability_id_l1: BC-5040
+  capability_name: Work Front & Production Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/projects/{project_id}/delay_logs  Create Delay Log
+  reason: Recording delays encountered on a project site is part of tracking construction production and
+    progress across active work fronts.
+- tag: Direct Entries
+  spec_file: procore-direct-entries-api-openapi.yml
+  capability_id: BC-5020.20
+  capability_id_l1: BC-5020
+  capability_name: Cost Estimating & Management
+  confidence: 0.7
+  evidence: Add or update a Direct Entry value for a Budget Column and WBS Code
+  reason: Writing values into project budget columns against WBS codes is project budget/cost baselining
+    and control.
+- tag: Drawings
+  spec_file: procore-drawings-api-openapi.yml
+  capability_id: BC-5060.20
+  capability_id_l1: BC-5060
+  capability_name: Common Data Environment
+  confidence: 0.7
+  evidence: '''List drawing areas'', ''Create drawing area'', ''List Drawing Disciplines'' under /projects/{project_id}/drawing_*'
+  reason: Management of project drawing areas, disciplines and drawing records is controlled design-information
+    management — the project common data environment — rather than physical construction execution.
+- tag: Equipment Make
+  spec_file: procore-equipment-make-api-openapi.yml
+  capability_id: BC-5040.40
+  capability_id_l1: BC-5040
+  capability_name: Plant & Equipment Management
+  confidence: 0.7
+  evidence: GET /rest/v1.0/companies/{company_id}/managed_equipment_makes/{id}  showAnEquipmentMake  Show
+    an equipment make
+  reason: Manufacturer reference data for the managed equipment register. Supporting taxonomy for Plant
+    & Equipment Management; low operational content so confidence is moderate.
+- tag: Equipment Model
+  spec_file: procore-equipment-model-api-openapi.yml
+  capability_id: BC-5040.40
+  capability_id_l1: BC-5040
+  capability_name: Plant & Equipment Management
+  confidence: 0.7
+  evidence: GET /rest/v1.0/companies/{company_id}/managed_equipment_models  listAllEquipmentModels  List
+    all equipment models
+  reason: Model reference data underpinning the managed construction equipment register — supporting data
+    for Plant & Equipment Management, hence moderate rather than high confidence.
+- tag: Equipment Timecard (Project)
+  spec_file: procore-equipment-timecard-project-api-openapi.yml
+  capability_id: BC-5040.40
+  capability_id_l1: BC-5040
+  capability_name: Plant & Equipment Management
+  confidence: 0.7
+  evidence: GET /rest/v1.0/companies/{company_id}/projects/{project_id}/equipment_timecard_entries  listEquipmentTimecardEntriesProject
+  reason: Timecard entries recorded against equipment (machine hours) on a project — tracking of plant
+    deployment and utilisation on site. Could alternatively be read as production/cost tracking, so confidence
+    is moderate.
+- tag: Equipment Type
+  spec_file: procore-equipment-type-api-openapi.yml
+  capability_id: BC-5040.40
+  capability_id_l1: BC-5040
+  capability_name: Plant & Equipment Management
+  confidence: 0.7
+  evidence: GET /rest/v1.0/companies/{company_id}/managed_equipment_types  listAllEquipmentTypes  List
+    all equipment types
+  reason: Type taxonomy for the managed construction equipment register — configuration data supporting
+    Plant & Equipment Management; moderate confidence given it is reference data.
+- tag: EstimatingProject
+  spec_file: procore-estimatingproject-api-openapi.yml
+  capability_id: BC-1140.30
+  capability_id_l1: BC-1140
+  capability_name: Cost & Schedule Estimation Management
+  confidence: 0.7
+  evidence: GET /rest/v2.0/companies/{company_id}/projects/{project_id}/estimating/estimating_project
+    — 'Get estimating project data by Procore project id'
+  reason: The operation retrieves estimating data for a construction project, i.e. the cost-estimation
+    record behind a bid. That lands in Engineering Tendering & Estimation, most specifically construction/equipment
+    cost estimation. Confidence held at 0.7 because the single read operation does not show what the estimate
+    contains (hours vs. cost), leaving some doubt between the .20 and .30 sub-capabilities.
+- tag: EstimatingProject
+  spec_file: procore-estimatingproject-api-openapi.yml
+  capability_id: BC-5020.20
+  capability_id_l1: BC-5020
+  capability_name: Cost Estimating & Management
+  confidence: 0.7
+  evidence: GET .../estimating/estimating_project — "Get estimating project data by Procore project id"
+  reason: Retrieves estimating data for a construction project, which is cost estimating for a capital
+    project. Evidence is a single read operation with no schemas, so confidence is tempered; the alternative
+    reading (commercial/QS) keeps it below 0.8.
+- tag: Export
+  spec_file: procore-export-api-openapi.yml
+  capability_id: BC-5030.20
+  capability_id_l1: BC-5030
+  capability_name: Tendering & Bid Management
+  confidence: 0.7
+  evidence: GET /rest/v1.1/projects/{project_id}/bid_packages/{bid_package_id}/bid_forms/export_forms
+    — "Export Forms with Bids"
+  reason: Despite the generic tag name, the only operation acts on bid packages and bid forms, i.e. tender/bid
+    data. The export mechanism itself is plumbing, which caps confidence, but the business object is tendering.
+- tag: Field Production Report
+  spec_file: procore-field-production-report-api-openapi.yml
+  capability_id: BC-1150.60
+  capability_id_l1: BC-1150
+  capability_name: Construction Progress Management
+  confidence: 0.7
+  evidence: GET /rest/v1.0/field_production_report — 'List Field Production Report Summary'
+  reason: Field production reporting measures installed quantities and labour productivity on site, which
+    is construction progress measurement. Only one summary read operation is exposed, so confidence is
+    moderate.
+- tag: Filing Types
+  spec_file: procore-filing-types-api-openapi.yml
+  capability_id: BC-730.40
+  capability_id_l1: BC-730
+  capability_name: Incident & Investigation Management
+  confidence: 0.7
+  evidence: GET /rest/v1.0/companies/{company_id}/incidents/injury_filing_types  listIncidentFilingTypes  List
+    Incident Filing Types
+  reason: Operations manage reference data (filing types) attached to injury incident records, i.e. classification
+    used when recording and reporting workplace safety incidents. That places it in HSE incident management
+    rather than any generic configuration capability; moderate confidence because the tag only exposes
+    the lookup list, not incident handling itself.
+- tag: Hazards
+  spec_file: procore-hazards-api-openapi.yml
+  capability_id: BC-730.20
+  capability_id_l1: BC-730
+  capability_name: Safety Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/companies/{company_id}/hazards  Create Hazard
+  reason: Company-level hazard register CRUD on a construction management platform maps to workplace safety
+    hazard management under HSE; could alternatively sit with incident reference data, hence moderate
+    confidence.
+- tag: Hazards
+  spec_file: procore-hazards-api-openapi.yml
+  capability_id: BC-5050.20
+  capability_id_l1: BC-5050
+  capability_name: Construction Safety Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/companies/{company_id}/hazards  createHazard  Create Hazard
+  reason: Company-level hazard register CRUD on a construction management platform — this is safety hazard
+    identification/control, the core of construction HSE. L1 (HSE Management) is secure; the L2 split
+    between construction safety management and the HSE management system is less certain, hence moderate
+    confidence.
+- tag: Inspections
+  spec_file: procore-inspections-api-openapi.yml
+  capability_id: BC-720.30
+  capability_id_l1: BC-720
+  capability_name: Quality Control Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/projects/{project_id}/checklist/lists  Create Checklist (Inspection); Show
+    a Company Inspection Template Item Evidence Configuration
+  reason: Operations create and manage project inspection checklists, inspection items, evidence configuration
+    and sign-off signature requests — i.e. inspection/acceptance activity, which is Quality Control Management.
+    Some ambiguity as construction inspections can also serve safety/HSE purposes, hence 0.7.
+- tag: InterProjectTransfers
+  spec_file: procore-interprojecttransfers-api-openapi.yml
+  capability_id: BC-530
+  capability_id_l1: BC-530
+  capability_name: Inventory Management
+  confidence: 0.7
+  evidence: POST .../materials_mgmt/inter_project_transfers  Creates a new inter-project transfer; Adds
+    a line item to an inter-project transfer
+  reason: Operations sit under materials management and move material stock between projects via transfer
+    documents with line items — stock movement/allocation, i.e. Inventory Management. Left at L1 because
+    the surface spans transfer documents rather than clearly one sub-capability.
+- tag: Invoice Configuration
+  spec_file: procore-invoice-configuration-api-openapi.yml
+  capability_id: BC-5030.30
+  capability_id_l1: BC-5030
+  capability_name: Contract Administration
+  confidence: 0.7
+  evidence: '"Get Contract''s Invoice Configuration" / "Update Contract''s Invoice Configuration" on /projects/{project_id}/contracts/{contract_id}/invoice_configuration'
+  reason: The resource governs how invoicing/payment operates under a specific construction contract,
+    which sits in contract administration (formation, obligations, payment). Thin surface (2 config operations)
+    so confidence is moderate.
+- tag: Invoice Management
+  spec_file: procore-invoice-management-api-openapi.yml
+  capability_id: BC-200.20
+  capability_id_l1: BC-200
+  capability_name: Accounts Payable Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/projects/{project_id}/payment_readiness/manual_holds  Create a manual hold
+    for a given invoice
+  reason: Operations place and manage manual holds on invoices under 'payment_readiness', i.e. controlling
+    whether a received (subcontractor) invoice is cleared for payment — invoice processing within Accounts
+    Payable.
+- tag: Issuing
+  spec_file: procore-issuing-api-openapi.yml
+  capability_id: BC-530
+  capability_id_l1: BC-530
+  capability_name: Inventory Management
+  confidence: 0.7
+  evidence: POST .../materials_mgmt/issuing  Creates a new Direct Issue document; Updates quantity on
+    a Direct Issue line item location
+  reason: Operations create and maintain 'Direct Issue' documents with line items, locations and quantities
+    under materials management — issuing stock from inventory locations, i.e. Inventory Management. Kept
+    at L1 as it spans issue documents rather than one named sub-capability.
+- tag: Layer
+  spec_file: procore-layer-api-openapi.yml
+  capability_id: BC-1140.30
+  capability_id_l1: BC-1140
+  capability_name: Cost & Schedule Estimation Management
+  confidence: 0.7
+  evidence: Create an estimate line item in the proposal (/estimating/proposals/{proposal_id}/line_items)
+  reason: Despite the opaque tag name 'Layer', the operations manage estimate line items inside estimating
+    proposals and bid board projects — construction cost estimation for bids. L2 chosen as cost estimation;
+    some chance the better fit is proposal development, hence 0.7.
+- tag: LayerGroup
+  spec_file: procore-layergroup-api-openapi.yml
+  capability_id: BC-1140.30
+  capability_id_l1: BC-1140
+  capability_name: Cost & Schedule Estimation Management
+  confidence: 0.7
+  evidence: Create a line item group in the proposal (/estimating/proposals/{proposal_id}/line_item_groups)
+  reason: 'Same estimating surface as ''Layer'': grouping of estimate line items within bid/estimating
+    proposals, i.e. structuring of construction cost estimates for tender. Residual ambiguity between
+    cost estimation and proposal development sub-capabilities.'
+- tag: Line Items
+  spec_file: procore-line-items-api-openapi.yml
+  capability_id: BC-5030.30
+  capability_id_l1: BC-5030
+  capability_name: Contract Administration
+  confidence: 0.7
+  evidence: Create Commitment Contract Line Item; Create Prime Contract Line Item; List Commitment Change
+    Order Line Items; List Requisition Line Item Payment Application Associations
+  reason: Operations create and list the detailed line items of prime contracts, commitment contracts
+    and change orders, and link them to payment applications/requisitions — i.e. administration and valuation
+    of construction contracts. L1 procurement & contract management is clear; the split between contract
+    administration, commercial/QS valuation and variations keeps L2 confidence moderate.
+- tag: Lookaheads
+  spec_file: procore-lookaheads-api-openapi.yml
+  capability_id: BC-1150.10
+  capability_id_l1: BC-1150
+  capability_name: Construction Planning Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/projects/{project_id}/schedule/lookahead_tasks  'Create Lookahead Task' ;
+    'List Lookaheads'
+  reason: Lookaheads are short-interval construction schedules under the project schedule namespace, with
+    tasks planned over a forward window — construction sequencing and scheduling. Maps to Construction
+    Planning Management; some ambiguity since it is schedule data rather than full planning process, hence
+    0.7.
+- tag: MaterialRequirements
+  spec_file: procore-materialrequirements-api-openapi.yml
+  capability_id: BC-5040.50
+  capability_id_l1: BC-5040
+  capability_name: Site Materials & Logistics
+  confidence: 0.7
+  evidence: PATCH .../materials_mgmt/material_requirements/{id} — "Updates a material requirements document
+    header"
+  reason: Material requirements documents with line items under the materials management module represent
+    planning of material needs for site delivery; maps to Site Materials & Logistics.
+- tag: Observations
+  spec_file: procore-observations-api-openapi.yml
+  capability_id: BC-5040.60
+  capability_id_l1: BC-5040
+  capability_name: Construction Quality Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/observations/items  createObservationItem  Create Observation Item; GET /rest/v1.0/observations/items/{item_id}/response_logs  List
+    Observation Item Response Logs
+  reason: Procore Observations record and track site-raised issues with assignees, response logs, distribution
+    and PDF issue — i.e. quality/defect control on construction works. Mapped to Construction Quality
+    Management, though some observation types are safety-oriented (BC-5050), hence 0.7.
+- tag: Payment Applications (Owner Invoices)
+  spec_file: procore-payment-applications-owner-invoices-api-openapi.yml
+  capability_id: BC-200.30
+  capability_id_l1: BC-200
+  capability_name: Accounts Receivable Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/prime_contracts/{prime_contract_id}/payment_applications  createPaymentApplicationOwnerInvoiceForPrimeContract
+  reason: Payment applications are progress-billing invoices raised against a prime contract to the project
+    owner, i.e. customer invoicing/receivables rather than vendor payables. Operations create/list/show
+    owner invoices per contract, which is accounts receivable invoicing. Some ambiguity remains since
+    construction pay applications also drive project cost reporting.
+- tag: Prime Contract
+  spec_file: procore-prime-contract-api-openapi.yml
+  capability_id: BC-5030
+  capability_id_l1: BC-5030
+  capability_name: Infrastructure Procurement & Contract Management
+  confidence: 0.7
+  evidence: GET /rest/v1.0/prime_contracts/{prime_contract_id}/line_items — List Prime Contract line items;
+    Sync Prime Contract Line Items
+  reason: Management of prime contract line items (schedule of values) and change order line items — contract
+    commercial detail. Sits between Contract Administration and Commercial & Quantity Surveying, so L1
+    only.
+- tag: Prime Contracts
+  spec_file: procore-prime-contracts-api-openapi.yml
+  capability_id: BC-150.10
+  capability_id_l1: BC-150
+  capability_name: Contract Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/prime_contract  createPrimeContract  Create Prime Contract
+  reason: Full CRUD over prime contract records plus attachments — creating, showing, updating and deleting
+    the owner contract for a project. That is contract lifecycle management from drafting through closure.
+- tag: Project Area Bids
+  spec_file: procore-project-area-bids-api-openapi.yml
+  capability_id: BC-500.10
+  capability_id_l1: BC-500
+  capability_name: Sourcing Management
+  confidence: 0.7
+  evidence: GET /rest/v2.0/companies/{company_id}/projects/{project_id}/bids — "List Bids within a Project"
+  reason: Bids collected within a construction project are the solicitation/response artefacts of trade
+    procurement, matching Sourcing Management (RFx, supplier selection). Some ambiguity remains as bids
+    could be read as sell-side tendering, hence not higher.
+- tag: Project Association
+  spec_file: procore-project-association-api-openapi.yml
+  capability_id: BC-5040.40
+  capability_id_l1: BC-5040
+  capability_name: Plant & Equipment Management
+  confidence: 0.7
+  evidence: POST /rest/v2.0/companies/{company_id}/projects/{project_id}/equipment_register/associate  Associate
+    equipment with project
+  reason: Despite the generic tag, the operations associate and disassociate items in the equipment_register
+    with construction projects, which is deployment/allocation of construction plant and equipment.
+- tag: Project Folders and Files
+  spec_file: procore-project-folders-and-files-api-openapi.yml
+  capability_id: BC-5060.20
+  capability_id_l1: BC-5060
+  capability_name: Common Data Environment
+  confidence: 0.7
+  evidence: List project folders and files; Create project file version; Create Document Custom Tag
+  reason: Operations manage the project document repository — folders, files, versioning and document
+    tagging — which is the shared project information environment (common data environment) for a construction
+    project, rather than generic file upload plumbing.
+- tag: Project Inspection Template Item References
+  spec_file: procore-project-inspection-template-item-references-api-openapi.yml
+  capability_id: BC-1150.50
+  capability_id_l1: BC-1150
+  capability_name: Construction Quality Management
+  confidence: 0.7
+  evidence: Create Project Inspection Template Item Reference (/projects/{project_id}/inspection_templates/{inspection_template_id}/item_references)
+  reason: Procore inspections are site QA/QC checklists; these operations configure reference items on
+    project inspection templates, supporting construction quality inspections. Confidence moderated because
+    the endpoints only manage template metadata rather than inspection execution.
+- tag: Project Vendor Insurances
+  spec_file: procore-project-vendor-insurances-api-openapi.yml
+  capability_id: BC-510.30
+  capability_id_l1: BC-510
+  capability_name: Supplier Risk Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/projects/{project_id}/vendors/{vendor_id}/insurances  createProjectVendorInsurance
+  reason: Tracks insurance certificates held by vendors/subcontractors on a project — supplier compliance
+    and risk verification, not the company's own insurance programme.
+- tag: Project Vendor Insurances
+  spec_file: procore-project-vendor-insurances-api-openapi.yml
+  capability_id: BC-5030.60
+  capability_id_l1: BC-5030
+  capability_name: Subcontractor & Supply Chain Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/projects/{project_id}/vendors/{vendor_id}/insurances  Create project vendor
+    insurance
+  reason: Tracks insurance certificates held by vendors/subcontractors engaged on a construction project
+    — a core compliance element of onboarding and managing the delivery supply chain.
+- tag: Requisitions
+  spec_file: procore-requisitions-api-openapi.yml
+  capability_id: BC-200.20
+  capability_id_l1: BC-200
+  capability_name: Accounts Payable Management
+  confidence: 0.7
+  evidence: PATCH /rest/v1.0/requisitions/{requisition_id}/bulk_item_update  Bulk Update Subcontractor
+    Invoice (Requisitions) Items
+  reason: The summary explicitly equates requisitions with subcontractor invoices, i.e. inbound vendor
+    invoice line processing — accounts payable. Single endpoint, hence moderate confidence.
+- tag: Requisitions
+  spec_file: procore-requisitions-api-openapi.yml
+  capability_id: BC-5030.30
+  capability_id_l1: BC-5030
+  capability_name: Contract Administration
+  confidence: 0.7
+  evidence: PATCH /rest/v1.0/requisitions/{requisition_id}/bulk_item_update  'Bulk Update Subcontractor
+    Invoice (Requisitions) Items'
+  reason: Requisitions here are subcontractor payment applications/invoices against a subcontract, i.e.
+    contract administration of payment; single thin operation limits confidence.
+- tag: Requisitions (Subcontractor Invoice)
+  spec_file: procore-requisitions-subcontractor-invoice-api-openapi.yml
+  capability_id: BC-1150.40
+  capability_id_l1: BC-1150
+  capability_name: Subcontractor Management
+  confidence: 0.7
+  evidence: PATCH /rest/v1.0/requisitions/{id}  Update Requisition (Subcontractor Invoice)
+  reason: Maintains subcontractor payment applications/invoices, aligning with subcontractor management
+    and payment certification on construction projects.
+- tag: Requisitions (Subcontractor Invoice)
+  spec_file: procore-requisitions-subcontractor-invoice-api-openapi.yml
+  capability_id: BC-5030.30
+  capability_id_l1: BC-5030
+  capability_name: Contract Administration
+  confidence: 0.7
+  evidence: PATCH /rest/v1.0/requisitions/{id}  'Update Requisition (Subcontractor Invoice)'
+  reason: Maintenance of subcontractor invoices/payment applications under a construction contract is
+    contract administration (payment and obligations).
+- tag: Requisitions (Subcontractor Invoices)
+  spec_file: procore-requisitions-subcontractor-invoices-api-openapi.yml
+  capability_id: BC-5030.30
+  capability_id_l1: BC-5030
+  capability_name: Contract Administration
+  confidence: 0.7
+  evidence: '''List Requisition (Subcontractor Invoice) Contract Detail Items'', ''Update Requisition
+    (Subcontractor Invoice) Change Order Item'''
+  reason: Valuation of contract and change-order line items on subcontractor payment applications is contract
+    administration/commercial management; evidence spans both payment governance and measurement, so the
+    broader payment reading is taken.
+- tag: Safety Violation Logs
+  spec_file: procore-safety-violation-logs-api-openapi.yml
+  capability_id: BC-730.20
+  capability_id_l1: BC-730
+  capability_name: Safety Management
+  confidence: 0.7
+  evidence: POST /rest/v1.0/projects/{project_id}/safety_violation_logs  Create Safety Violation Log
+  reason: Records safety violations logged against a construction project — workplace safety recording
+    under Health, Safety & Environment. Sub-capability choice between Safety Management and Incident &
+    Investigation is somewhat open, so confidence is moderate.
+- tag: Severity Levels
+  spec_file: procore-severity-levels-api-openapi.yml
+  capability_id: BC-1150.70
+  capability_id_l1: BC-1150
+  capability_name: Site HSE Management
+  confidence: 0.7
+  evidence: GET /rest/v1.0/companies/{company_id}/incidents/severity_levels  List Incident Severity Levels
+  reason: Configuration of severity classifications for safety incidents belongs to site HSE/incident
+    management, though it is a reference-data surface, so moderate confidence.
+- tag: Submittal Packages
+  spec_file: procore-submittal-packages-api-openapi.yml
+  capability_id: BC-1130.40
+  capability_id_l1: BC-1130
+  capability_name: Vendor Document Management
+  confidence: 0.7
+  evidence: GET /rest/v1.0/projects/{project_id}/submittal_packages  List Submittal Packages on a project
+  reason: Submittal packages group contractor/vendor submissions (shop drawings, product data) routed
+    for engineering review, which is the Vendor Document Management pattern of submissions, reviews and
+    dispositions. Only one read operation is exposed, so confidence is moderate.
+- tag: Tax
+  spec_file: procore-tax-api-openapi.yml
+  capability_id: BC-220
+  capability_id_l1: BC-220
+  capability_name: Tax Management
+  confidence: 0.7
+  evidence: '"List Tax Codes", "Create Tax Code", "List Tax Types", "Create Tax Type", "Sync Tax Types"'
+  reason: Maintenance of tax codes and tax types used to apply tax to construction contracts and invoices
+    — tax determination master data. L1 Tax Management is supported; the operations do not state whether
+    these are indirect (sales/GST) or other tax types, so no L2 is asserted.
+- tag: Tax Codes
+  spec_file: procore-tax-codes-api-openapi.yml
+  capability_id: BC-220
+  capability_id_l1: BC-220
+  capability_name: Tax Management
+  confidence: 0.7
+  evidence: '"Create Tax Code", "Get Tax Codes", "Bulk Create Tax Codes", "Bulk Update Tax Codes"'
+  reason: Company-level tax code master data CRUD, the configuration that drives tax calculation on billings.
+    Tax Management at L1; evidence does not name the tax category precisely enough for an L2.
+- tag: assets-controller
+  spec_file: procore-assets-controller-api-openapi.yml
+  capability_id: BC-5070.20
+  capability_id_l1: BC-5070
+  capability_name: Asset Register & Information
+  confidence: 0.7
+  evidence: POST /rest/v2.0/companies/{company_id}/assets  createCompanyAsset  Create Asset; linkSubAssetsAtCompanyLevel  Link
+    Sub-Assets to a Parent Asset; getAssetByCode_1  Show Asset by Code
+  reason: Full CRUD over asset records with asset codes and parent/sub-asset hierarchy at company and
+    project level — this is maintenance of an asset register and its information base. Some ambiguity
+    whether Procore's assets are construction plant/equipment (BC-5040.40) rather than owned infrastructure
+    assets, so confidence capped.
+- tag: schedules-controller
+  spec_file: procore-schedules-controller-api-openapi.yml
+  capability_id: BC-900.30
+  capability_id_l1: BC-900
+  capability_name: Project Management
+  confidence: 0.7
+  evidence: GET /rest/v2.0/companies/{company_id}/projects/{project_id}/schedules  listSchedules  List
+    Schedules
+  reason: Project-scoped construction schedules read API; schedule management is core project planning/tracking.
+    Confidence moderated because only list/get operations are exposed and no schema detail is given.
