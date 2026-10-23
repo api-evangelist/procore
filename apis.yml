@@ -45,6 +45,9 @@ maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 common:
+- type: CapabilityMap
+  url: capabilities/procore-capability-edges.yml
+  name: Procore Business Capability Map
 - type: AgentSkill
   url: skills/_index.yml
 - type: Overlay
