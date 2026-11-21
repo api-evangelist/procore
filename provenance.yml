@@ -47,6 +47,9 @@ artifacts:
   heartbeat/2026-11-13.yml:
     method: unknown
     evidence: no authorship recorded
+  heartbeat/2026-11-20.yml:
+    method: unknown
+    evidence: no authorship recorded
   hosts/procore-hosts.yml:
     method: derived
     evidence: declared in the artifact
@@ -77,7 +80,7 @@ artifacts:
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  kin/checks-2026-11-06T143934.yml:
+  kin/checks-2026-11-13T214628.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-23T000603.yml:
@@ -144,6 +147,9 @@ artifacts:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-11-06T143934.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-13T214628.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   lifecycle/procore-lifecycle.yml:
@@ -1797,12 +1803,1605 @@ artifacts:
   openapi/procore-workflow-tools-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
+  overlays/procore-accessible-tools-v-2-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-accident-logs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-plan-approver-signature-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-plan-approvers-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-plan-item-assignee-signatures-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-plan-item-assignees-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-plan-items-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-plan-parties-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-plan-receivers-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-plan-reference-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-plan-references-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-plan-sections-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-plan-signatures-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-plan-template-item-assignees-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-plan-template-items-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-plan-template-references-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-plan-template-sections-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-plan-test-record-requests-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-plan-test-records-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-plan-verification-methods-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-plans-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-type-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-action-types-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-activities-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-activity-links-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-actual-production-quantities-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-actual-production-quantity-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-adjustments-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-admin-equipment-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-admin-equipment-logs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-advanced-forecasting-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-affliction-type-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-affliction-types-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-alert-recipient-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-alert-recipients-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-alerts-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-app-configurations-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-app-installations-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-asset-permissions-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-asset-status-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-asset-system-state-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-asset-type-attachment-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-asset-type-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-async-job-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-attachment-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-audit-logs-company-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-audit-logs-project-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-authentication-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-available-punch-item-managers-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bid-form-items-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bid-form-sections-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bid-forms-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bid-packages-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bid-uploads-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bids-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-billing-period-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-billing-periods-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bim-file-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bim-files-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bim-geometry-files-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bim-levels-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bim-model-properties-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bim-model-revision-objects-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bim-model-revision-plans-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bim-model-revision-planss-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bim-model-revision-viewpoints-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bim-model-revisions-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bim-models-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bim-plans-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bim-planss-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bim-property-file-objects-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bim-property-file-properties-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bim-view-folders-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-bim-viewpoints-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-body-parts-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-budget-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-budget-change-adjustment-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-budget-change-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-budget-change-history-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-budget-columns-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-budget-import-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-budget-line-items-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-budget-modifications-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-budget-notes-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-budget-view-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-budget-view-snapshot-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-budget-view-snapshots-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-budget-views-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-budgeted-production-quantities-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-budgeted-production-quantity-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-cached-open-items-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-calendar-events-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-calendar-items-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-calendars-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-calendars-controller-v-21-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-call-logs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-capital-planning-change-history-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-capital-planning-line-items-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-capital-planning-onboarding-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-capital-planning-portfolio-programs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-capital-planning-programs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-capital-planning-projects-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-capital-planning-settings-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-capital-planning-snapshots-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-catalog-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-category-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-change-event-comments-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-change-event-production-quantities-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-change-event-statuses-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-change-events-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-change-history-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-change-history-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-change-order-change-reasons-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-change-order-packages-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-change-order-requests-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-change-orders-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-change-types-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-checklist-list-filter-options-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-checklist-schedule-attachments-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-checklist-schedule-change-histories-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-checklist-schedule-filter-options-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-clones-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-commitment-change-order-batches-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-commitment-change-order-rows-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-commitment-change-orders-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-commitment-contract-summary-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-communications-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-companies-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-action-plan-template-item-assignees-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-action-plan-template-items-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-action-plan-template-reference-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-action-plan-template-references-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-action-plan-template-sections-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-action-plan-template-test-record-requests-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-action-plan-types-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-admin-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-checklist-template-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-context-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-context-v-2-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-domain-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-domain-v-2-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-folders-and-files-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-inactive-users-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-inactive-vendors-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-insurances-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-managed-equipment-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-managed-equipment-user-permissions-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-observation-templates-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-observation-types-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-offices-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-people-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-permission-templates-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-project-tools-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-schedule-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-security-settings-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-users-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-vendor-comments-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-vendor-insurances-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-vendors-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-company-vendors-business-registers-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-companyprojects-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-compliance-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-configurable-field-sets-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-construction-volume-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-construction-volume-migration-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-contact-options-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-context-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-context-v-2-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-contract-payments-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-contracts-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-contributing-behaviors-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-contributing-conditions-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-coordination-issue-assignment-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-coordination-issue-attachment-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-coordination-issue-templates-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-coordination-issues-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-correspondence-type-items-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-correspondence-types-defaults-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-correspondence-types-permissions-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-correspondence-types-users-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-correspondences-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-cost-codes-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-costitems-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-count-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-counts-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-crew-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-crews-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-currency-configuration-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-custom-field-definitions-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-custom-field-lov-entries-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-custom-field-sections-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-custom-fields-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-custom-fields-sections-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-custom-fields-user-options-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-custom-tools-users-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-daily-construction-report-logs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-daily-log-header-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-daily-logs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-default-field-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-delay-log-types-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-delay-logs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-delivery-logs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-delivery-methods-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-departments-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-direct-costs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-direct-entries-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-document-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-document-collections-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-document-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-document-controller-v-1-dot-1-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-document-markup-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-document-revisions-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-document-uploads-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-document-v-2-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-documents-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-domain-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-domain-v-2-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-drawing-disciplines-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-drawing-uploads-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-drawings-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-dumpster-logs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-electronic-signatures-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-email-communications-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-environmental-types-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-equipment-category-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-equipment-log-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-equipment-maintenance-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-equipment-maintenance-log-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-equipment-make-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-equipment-model-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-equipment-models-bulk-update-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-equipment-timecard-entries-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-equipment-timecard-project-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-equipment-type-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-equipment-types-bulk-update-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-estimatingproject-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-estimatingsettings-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-export-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-external-rfis-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-field-production-report-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-field-rule-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-field-sets-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-fields-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-fieldset-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-file-uploads-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-filing-types-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-filters-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-financial-markups-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-forecasting-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-forms-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-funding-rules-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-funding-sources-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-generic-tool-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-generic-tool-item-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-generic-tool-item-responses-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-generic-tool-items-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-generic-tool-status-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-generic-tool-statuses-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-generic-tools-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-gps-positions-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-group-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-group-v-2-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-harm-source-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-harm-sources-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-hazards-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-image-categories-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-images-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-imports-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-incident-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-incidents-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-inspection-item-references-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-inspection-logs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-inspection-schedules-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-inspections-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-installation-requests-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-instruction-types-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-instructions-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-interprojecttransfers-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-invoice-configuration-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-invoice-management-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-invoice-payment-terms-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-invoicing-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-issuing-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-item-permission-v-2-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-labels-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-layergroup-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-layers-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-layers-v-2-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-line-item-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-line-item-type-categories-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-line-item-types-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-line-items-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-links-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-locations-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-lookaheads-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-maintenance-logs-attachments-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-make-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-managed-equipment-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-managed-equipment-attachment-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-managed-equipment-maintenance-log-attachment-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-managed-equipment-make-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-managed-equipment-user-permissions-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-manpower-logs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-manual-forecast-line-items-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-markup-copy-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-markup-indicator-v-2-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-markup-retrieval-v-2-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-markup-save-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-markup-stamp-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-markup-stamp-v-2-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-markup-stamp-v-2-dot-1-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-markup-v-2-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-material-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-materialrequirements-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-materials-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-me-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-meeting-templates-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-meeting-topics-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-meetings-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-minutes-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-model-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-monitoring-resources-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
   overlays/procore-mpz-api-certification-overlay.yaml:
     method: derived
+    evidence: declared in the artifact
+  overlays/procore-mpz-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-note-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-notes-logs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-observation-assignee-options-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-observations-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-open-items-api-phrasing-overlay.yaml:
+    method: generated
     evidence: declared in the artifact
   overlays/procore-openapi-overlay.yaml:
     method: unknown
     evidence: no authorship recorded
+  overlays/procore-operations-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-pages-edit-v-2-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-payment-application-owner-invoice-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-payment-applications-owner-invoices-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-payment-readiness-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-payment-terms-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-payments-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-pdf-template-configs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-permission-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-permission-v-2-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-permissions-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-permissions-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-plan-revision-logs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-plan-template-references-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-potential-change-orders-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-pre-processing-v-2-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-prime-change-order-batches-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-prime-change-order-rows-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-prime-change-orders-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-prime-change-orders-batches-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-prime-contract-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-prime-contract-summary-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-prime-contracts-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-productivity-logs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-programs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-action-plan-template-approvers-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-action-plan-template-items-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-action-plan-template-receivers-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-action-plan-template-reference-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-action-plan-template-references-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-action-plan-template-sections-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-action-plan-template-test-record-requests-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-action-plan-templates-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-area-bids-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-assignable-users-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-assignments-filter-options-names-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-assignments-filter-options-permission-templates-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-assignments-filter-options-programs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-assignments-filter-options-project-numbers-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-assignments-filter-options-project-types-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-assignments-filter-options-regions-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-assignments-filter-options-roles-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-assignments-filter-options-stages-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-association-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-bid-types-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-dates-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-distribution-groups-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-entitlements-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-filter-options-cost-codes-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-filter-options-country-codes-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-filter-options-job-titles-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-filter-options-permission-templates-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-filter-options-state-codes-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-filter-options-trades-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-folders-and-files-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-funding-sources-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-inactive-users-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-inactive-vendors-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-inspection-template-item-references-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-insurances-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-memberships-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-observation-templates-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-observation-types-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-owner-types-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-people-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-permission-template-assignments-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-permission-templates-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-punch-item-templates-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-regions-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-roles-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-stages-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-status-snapshots-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-templates-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-tools-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-types-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-users-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-vendor-insurances-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-project-vendors-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-projects-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-projecttask-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-punch-item-assignments-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-punch-item-filter-options-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-punch-item-types-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-punch-list-assignee-options-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-punch-list-available-final-approvers-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-punch-list-filter-options-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-punch-list-read-user-options-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-purchase-orders-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-quantity-logs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-rate-columns-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-rate-columns-project-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-rate-tables-company-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-rate-tables-project-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-rate-values-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-receipts-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-recent-activity-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-recycle-bin-company-action-plan-templates-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-recycle-bin-forms-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-recyclebin-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-recycled-action-plans-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-request-for-quotes-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-requested-change-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-requested-changes-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-requirement-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-requisitions-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-requisitions-subcontractor-invoice-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-requisitions-subcontractor-invoices-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-resource-assignments-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-resource-planning-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-resources-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-rest-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-rfis-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-roles-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-safety-violation-logs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-saved-views-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-schedule-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-schedule-import-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-schedule-integration-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-schedule-resources-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-schedule-type-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-schedules-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-segment-item-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-segment-items-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-settings-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-severity-levels-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-shipments-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-signature-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-specifications-user-permissions-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-standard-cost-codes-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-status-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-sub-jobs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-submittal-logs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-submittal-packages-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-submittal-statuses-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-submittal-types-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-support-pins-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-task-item-assignee-options-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-task-item-categories-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-task-item-comments-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-task-items-distribution-members-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-tasks-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-tax-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-tax-codes-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-tax-project-codes-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-tax-project-configuration-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-tax-rates-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-tbd-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-telematics-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-thumbnail-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-time-and-material-attachment-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-time-and-material-attachments-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-time-and-material-entry-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-time-and-material-entry-configurable-field-sets-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-time-and-material-equipment-log-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-time-and-material-notification-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-time-and-material-signature-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-time-and-material-subcontractor-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-time-and-material-timecard-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-timecard-entries-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-timecards-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-timecards-company-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-timecards-project-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-timeline-events-controller-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-timesheet-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-timesheets-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-todos-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-trades-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-transfers-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-type-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-unit-of-measure-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-unit-of-measure-categories-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-units-of-measure-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-unmanaged-equipment-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-upload-requirements-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-user-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-vendor-options-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-visitor-logs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-waste-logs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-wbs-attribute-items-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-wbs-attributes-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-wbs-codes-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-wbs-patterns-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-wbs-segment-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-wbs-segment-item-lists-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-wbs-segments-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-wbs-task-codes-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-weather-logs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-work-activities-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-work-activity-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-work-classification-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-work-logs-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-work-scopes-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-workflow-bulk-replace-requests-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-workflow-instances-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-workflow-instances-bulk-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-workflow-instances-flow-control-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-workflow-managers-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-workflow-possible-assignees-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-workflow-presets-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-workflow-template-versions-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-workflow-templates-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/procore-workflow-tools-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
   packages/procore-packages.yml:
     method: searched
     evidence: declared in the artifact
@@ -1846,9 +3445,6 @@ artifacts:
     method: generated
     evidence: declared in the artifact
   skills/procore-submit-submittals.md:
-    method: generated
-    evidence: declared in the artifact
-  sla/procore-sla.yml:
     method: generated
     evidence: declared in the artifact
   vendors/procore-vendors.yml:
